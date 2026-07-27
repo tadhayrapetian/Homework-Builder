@@ -1,21 +1,24 @@
 # Worksheet Studio
 
-A free, offline **worksheet & lesson builder** for A4 printables. Build worksheets block by block, apply one of 20 designs, and export a clean PDF. Works on Mac and iPad — no install, no account, no internet required.
+A free, offline **worksheet & lesson builder** for A4 printables. Build worksheets block by block, apply one of 40 designs, and export a clean PDF. Works on Mac and iPad — no install, no account, no internet required.
 
 **▶️ Live app: https://tadhayrapetian.github.io/Homework-Builder/**
 
 ## Features
 
 - **Drag-and-build editor** — 25+ block types: headers, instructions, reading text, multiple choice, true/false, gap-fill, matching, odd-one-out, unscramble, tables, writing lines, handwriting practice, images, and more.
-- **Exercise Library** — 57 ready-made, pre-filled exercises for **vocabulary** and **grammar**, ordered from recognition to free production (receptive → productive / PPP). One click drops a complete exercise onto the page.
-- **20 A4 designs** — plus adjustable accent colour, 11 header styles, page backgrounds, and fonts.
+- **Exercise Library** — ready-made, pre-filled exercises for **vocabulary** and **grammar**, ordered from recognition to free production (receptive → productive / PPP). One click drops a complete exercise onto the page.
+- **B1 grammar course** — 39 topics with a theory card (form · use · signal words) and 179 exercises; "Full worksheet" builds a whole printable page with an answer key.
+- **Built-in dictionary** — type words into a vocabulary list and English definitions / Russian translations fill in automatically (offline).
+- **40 A4 designs** — plus adjustable accent colour, 11 header styles, page backgrounds, and fonts.
 - **Crossword generator** — type words + clues and it auto-interlocks the grid with numbered Across/Down lists.
 - **Word search generator** — hides your words in a grid automatically.
 - **Answer key** — toggle an auto-generated answer-key page appended at the end.
 - **Points / scoring** — add marks per exercise; totals appear on the answer key.
 - **Custom footer branding** on every page.
 - **Multi-page**, undo/redo, autosave, and save/open project files (`.wsp`).
-- **PDF export** via the browser's *Save as PDF* — crisp A4 output with the interface hidden.
+- **Vector PDF export** — one click downloads a true vector PDF (selectable text, sharp at any zoom, no print dialog, no white margins). Long pages are split across A4 sheets at block boundaries.
+- **Send by e-mail** — shares the PDF straight to Mail / AirDrop on Mac and iPad.
 
 ## How to use
 
