@@ -517,6 +517,41 @@ button{font-family:inherit;color:inherit}
   -webkit-mask:radial-gradient(circle at 13px -6px,transparent 13px,#000 14px) repeat-x 0 0/26px 26px;mask:radial-gradient(circle at 13px -6px,transparent 13px,#000 14px) repeat-x 0 0/26px 26px}
 .paper[data-deco="confetti"]{background-image:radial-gradient(circle,var(--pa-accent) 3px,transparent 4px),radial-gradient(circle,var(--pa-accent2) 3px,transparent 4px);background-size:120px 120px,90px 90px;background-position:12px 22px,64px 74px}
 
+/* ---------- LOCK SCREEN ---------- */
+.lock{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;padding:24px;
+  background:linear-gradient(150deg,#12142a,#1c1740 55%,#241a4d)}
+.lock.show{display:flex}
+body.locked .app,body.locked .zoombar{display:none !important}
+.lock::before{content:"";position:absolute;inset:0;opacity:.5;
+  background:radial-gradient(900px 500px at 20% 15%,rgba(91,91,240,.35),transparent 60%),
+             radial-gradient(700px 480px at 82% 82%,rgba(139,92,246,.32),transparent 60%)}
+.lock-card{position:relative;width:100%;max-width:360px;background:rgba(255,255,255,.06);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:34px 30px 28px;text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.lock-mark{width:60px;height:60px;border-radius:18px;margin:0 auto 16px;display:grid;place-items:center;
+  background:linear-gradient(140deg,#5b5bf0,#8b5cf6);box-shadow:0 12px 30px rgba(91,91,240,.5)}
+.lock-mark svg{width:30px;height:30px;color:#fff}
+.lock-card h1{margin:0;font-size:20px;color:#fff;letter-spacing:-.02em;font-weight:750}
+.lock-card p{margin:6px 0 22px;font-size:13px;color:rgba(255,255,255,.6)}
+.pin-dots{display:flex;justify-content:center;gap:13px;margin-bottom:22px}
+.pin-dots i{width:13px;height:13px;border-radius:50%;background:rgba(255,255,255,.16);
+  border:1.5px solid rgba(255,255,255,.28);transition:.18s}
+.pin-dots i.on{background:#fff;border-color:#fff;transform:scale(1.12)}
+.lock.err .pin-dots{animation:shake .4s}
+.lock.err .pin-dots i{background:rgba(239,68,68,.85);border-color:rgba(239,68,68,.9)}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.keypad button{height:56px;border-radius:16px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);
+  color:#fff;font-size:21px;font-weight:600;cursor:pointer;transition:.13s;-webkit-tap-highlight-color:transparent}
+.keypad button:hover{background:rgba(255,255,255,.16)}
+.keypad button:active{transform:scale(.94)}
+.keypad button.wide{grid-column:span 1;font-size:15px}
+.keypad button.ghost{background:transparent;border-color:transparent}
+.lock-msg{min-height:18px;margin-top:15px;font-size:12.5px;color:#fca5a5;font-weight:600}
+.lock-hint{margin-top:14px;font-size:11px;color:rgba(255,255,255,.35);line-height:1.5}
+#pinField{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
+@media (max-width:400px){.keypad button{height:50px;font-size:19px}}
+
 /* ---------- TOAST + MODAL ---------- */
 .toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;
   background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:12px;font-size:13px;z-index:200;
@@ -607,7 +642,27 @@ button{font-family:inherit;color:inherit}
 }
 </style>
 </head>
-<body>
+<body class="locked">
+
+<!-- LOCK SCREEN -->
+<div class="lock show" id="lock">
+  <div class="lock-card">
+    <div class="lock-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+    <h1>Worksheet Studio</h1>
+    <p>Enter your access code</p>
+    <div class="pin-dots" id="pinDots"><i></i><i></i><i></i><i></i></div>
+    <div class="keypad" id="keypad">
+      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+      <button class="ghost" disabled></button><button data-k="0">0</button><button class="wide" data-k="del">⌫</button>
+    </div>
+    <div class="lock-msg" id="lockMsg"></div>
+    <div class="lock-hint">You can also type the code on your keyboard.</div>
+  </div>
+  <input id="pinField" inputmode="numeric" autocomplete="off">
+</div>
+
 <div class="app" id="app">
 
   <!-- TOP BAR -->
@@ -659,6 +714,7 @@ button{font-family:inherit;color:inherit}
         <button class="ibtn" id="newBtn" style="margin-top:0">🗎 New</button>
         <button class="ibtn" id="uiThemeBtn" style="margin-top:0">🌓 UI theme</button>
       </div>
+      <button class="ibtn" id="lockBtn">🔒 Lock</button>
     </div>
   </aside>
 
@@ -1539,8 +1595,46 @@ document.addEventListener('keydown',e=>{const m=e.metaKey||e.ctrlKey;
     e.preventDefault();const f=findBlock(selectedId);if(f){snapshot();const i=f.pg.blocks.indexOf(f.b);f.pg.blocks.splice(i,1);selectedId=null;renderAll();}}});
 $('#canvas').addEventListener('mousedown',e=>{if(e.target.closest('.paper'))return;selectedId=null;document.querySelectorAll('.block.sel').forEach(x=>x.classList.remove('sel'));refreshInspector();});
 
+/* =====================================================================
+   ACCESS CODE (soft lock — deters casual visitors only, not real security:
+   this file is public, so the code below is readable in the page source)
+   ===================================================================== */
+const ACCESS_CODE='3105';
+let pinBuf='';
+function paintDots(){document.querySelectorAll('#pinDots i').forEach((d,i)=>d.classList.toggle('on',i<pinBuf.length));}
+function pinPush(k){
+  const lock=$('#lock');lock.classList.remove('err');$('#lockMsg').textContent='';
+  if(k==='del'){pinBuf=pinBuf.slice(0,-1);paintDots();return;}
+  if(pinBuf.length>=ACCESS_CODE.length)return;
+  pinBuf+=k;paintDots();
+  if(pinBuf.length===ACCESS_CODE.length){
+    if(pinBuf===ACCESS_CODE){setTimeout(unlock,160);}
+    else{lock.classList.add('err');$('#lockMsg').textContent='Wrong code — try again';
+      setTimeout(()=>{pinBuf='';paintDots();lock.classList.remove('err');},600);}
+  }
+}
+function unlock(remember){
+  document.body.classList.remove('locked');
+  $('#lock').classList.remove('show');
+  try{localStorage.setItem('ws_unlocked','1');}catch(e){}
+  pinBuf='';paintDots();
+}
+function lockNow(){
+  try{localStorage.removeItem('ws_unlocked');}catch(e){}
+  pinBuf='';paintDots();$('#lockMsg').textContent='';
+  document.body.classList.add('locked');$('#lock').classList.add('show');
+}
+$('#keypad').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(b)pinPush(b.dataset.k);});
+$('#lockBtn').onclick=lockNow;
+document.addEventListener('keydown',e=>{
+  if(!document.body.classList.contains('locked'))return;
+  if(/^[0-9]$/.test(e.key)){e.preventDefault();pinPush(e.key);}
+  else if(e.key==='Backspace'){e.preventDefault();pinPush('del');}
+});
+
 /* BOOT */
 (function boot(){
+  try{if(localStorage.getItem('ws_unlocked')==='1'){document.body.classList.remove('locked');$('#lock').classList.remove('show');}}catch(e){}
   try{const u=localStorage.getItem('ws_ui');if(u)document.documentElement.setAttribute('data-ui',u);}catch(e){}
   buildPalette();buildThemeGallery();buildTemplates();
   const saved=loadAutosave();DOC=(saved&&saved.pages)?saved:newDoc('indigo');
