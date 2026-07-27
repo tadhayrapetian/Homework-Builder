@@ -239,6 +239,8 @@ button{font-family:inherit;color:inherit}
   color:var(--muted);display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow-sm);transition:.12s}
 .bbar button:hover{color:var(--brand);border-color:var(--brand)}
 .bbar button.del:hover{color:#fff;background:var(--danger);border-color:var(--danger)}
+.bbar button.addb{color:var(--brand);font-weight:800}
+.bbar button.addb:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
 .bbar svg{width:14px;height:14px}
 .block.dragging{opacity:.35}
 .drop-line{height:3px;background:var(--pa-accent);border-radius:3px;margin:7px 0;box-shadow:0 0 8px var(--pa-accent)}
@@ -770,6 +772,7 @@ body.locked .app,body.locked .zoombar{display:none !important}
     </div>
     <button class="tb solo hide-mob" id="tmplBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18" opacity=".0"/><path d="m12 2 2.4 5.6L20 9l-4.5 3.9L17 19l-5-3.2L7 19l1.5-6.1L4 9l5.6-1.4Z"/></svg><span>Templates</span></button>
     <button class="tb solo" id="ansBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><span class="hide-mob">Answers</span></button>
+    <button class="tb solo" id="shareBtn" title="Send by e-mail / share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="m4 6 8 6 8-6"/></svg><span class="hide-mob">Send</span></button>
     <button class="tb primary" id="pdfBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M5 21h14"/></svg>PDF</button>
     <button class="tb icon mob" id="mobRight" aria-label="Design">🎨</button>
   </div>
@@ -802,7 +805,12 @@ body.locked .app,body.locked .zoombar{display:none !important}
         <button class="ibtn" id="newBtn" style="margin-top:0">🗎 New</button>
         <button class="ibtn" id="uiThemeBtn" style="margin-top:0">🌓 UI theme</button>
       </div>
-      <button class="ibtn" id="printBtn">🖨️ Print (browser dialog)</button>
+      <div class="field" style="margin-top:12px"><label>PDF mode</label>
+        <div class="seg" id="pdfQ">
+          <button data-s="0">Vector</button><button data-s="3">Image</button>
+        </div>
+        <div class="hint" style="margin-top:6px">Vector keeps text sharp at any zoom and selectable.</div></div>
+      <button class="ibtn" id="printBtn">🖨️ Browser print</button>
       <button class="ibtn" id="lockBtn">🔒 Lock</button>
     </div>
   </aside>
@@ -1090,7 +1098,7 @@ function makeBlock(type){
 }
 let DOC=null,selectedId=null,history=[],future=[],zoom=1;
 
-function newDoc(id='indigo'){return{title:'Untitled worksheet',brand:'English with Tad',showAnswers:false,appendKey:false,applyAll:true,
+function newDoc(id='indigo'){return{title:'Untitled worksheet',brand:'English with Tad',showAnswers:false,appendKey:false,applyAll:true,pdfScale:3,
   pages:[{id:uid(),style:defaultStyle(id),blocks:[makeBlock('header'),makeBlock('namebar')]}]};}
 
 /* history */
@@ -1145,9 +1153,37 @@ function renderAll(){
   if(DOC.appendKey)wrap.appendChild(renderAnswerKey());
   refreshLeft();refreshThemeUI();refreshInspector();enableBlockDrag();
 }
+/* add / remove one more item — works on every list-style block */
+const ADDERS={
+ mcq:{a:b=>b.opts.push('New option'),r:b=>{if(b.opts.length>1){b.opts.pop();if(b.correct>=b.opts.length)b.correct=-1;}}},
+ truefalse:{a:b=>{b.rows.push('New statement');b.correct.push(true);},r:b=>{if(b.rows.length>1){b.rows.pop();b.correct.pop();}}},
+ oddone:{a:b=>b.rows.push(['word','word','word','word']),r:b=>{if(b.rows.length>1)b.rows.pop();}},
+ anagram:{a:b=>b.rows.push({c:'letters',a:'answer'}),r:b=>{if(b.rows.length>1)b.rows.pop();}},
+ promptlines:{a:b=>b.prompts.push('New prompt…'),r:b=>{if(b.prompts.length>1)b.prompts.pop();}},
+ wordbank:{a:b=>b.words.push('word'),r:b=>{if(b.words.length>1)b.words.pop();}},
+ vocablist:{a:b=>b.items.push({w:'word'}),r:b=>{if(b.items.length>1)b.items.pop();}},
+ match:{a:b=>{b.left.push('…');b.right.push('…');},r:b=>{if(b.left.length>1){b.left.pop();b.right.pop();}}},
+ checklist:{a:b=>b.items.push('New item'),r:b=>{if(b.items.length>1)b.items.pop();}},
+ steps:{a:b=>b.items.push({t:'New stage',d:'Description'}),r:b=>{if(b.items.length>1)b.items.pop();}},
+ rating:{a:b=>b.rows.push('New criterion'),r:b=>{if(b.rows.length>1)b.rows.pop();}},
+ speaking:{a:b=>b.prompts.push('New prompt…'),r:b=>{if(b.prompts.length>1)b.prompts.pop();}},
+ cards:{a:b=>b.items.push({title:'WORD',lines:['clue','clue','clue']}),r:b=>{if(b.items.length>1)b.items.pop();}},
+ sortcols:{a:b=>b.cols.push({title:'New category'}),r:b=>{if(b.cols.length>1)b.cols.pop();}},
+ fillblank:{a:b=>{b.parts.push({tx:' '},{blank:'answer'});},r:b=>{if(b.parts.length>1)b.parts.pop();}},
+ lines:{a:b=>b.count++,r:b=>{if(b.count>1)b.count--;}},
+ short:{a:b=>b.lines++,r:b=>{if(b.lines>1)b.lines--;}},
+ handwriting:{a:b=>b.count++,r:b=>{if(b.count>1)b.count--;}},
+ table:{a:b=>{b.rowsN++;resizeTable(b,b.rowsN,b.colsN);},r:b=>{if(b.rowsN>1){b.rowsN--;resizeTable(b,b.rowsN,b.colsN);}}},
+ theory:{a:b=>b.uses.push({r:'New rule',x:'Example sentence.'}),r:b=>{if(b.uses.length>1)b.uses.pop();}}
+};
 function blockToolbar(b,pg){
   const bar=el('div','bbar');
   const mk=(icon,title,fn,cls)=>{const x=el('button',cls||'',icon);x.title=title;x.onclick=e=>{e.stopPropagation();fn();};return x;};
+  const ad=ADDERS[b.type];
+  if(ad){
+    bar.appendChild(mk('<b style="font-size:15px;line-height:1">+</b>','Add one more item',()=>{snapshot();ad.a(b);renderAll();},'addb'));
+    bar.appendChild(mk('<b style="font-size:15px;line-height:1">−</b>','Remove the last item',()=>{snapshot();ad.r(b);renderAll();},'addb'));
+  }
   bar.appendChild(mk(I.up,'Move up',()=>moveBlock(pg,b,-1)));
   bar.appendChild(mk(I.down,'Move down',()=>moveBlock(pg,b,1)));
   bar.appendChild(mk(I.copy,'Duplicate',()=>{snapshot();const c=JSON.parse(JSON.stringify(b));c.id=uid();const i=pg.blocks.indexOf(b);pg.blocks.splice(i+1,0,c);renderAll();}));
@@ -1548,6 +1584,7 @@ function refreshLeft(){
   DOC.pages.forEach((pg,i)=>{const row=el('div','prow');row.innerHTML=`<div class="pn">${i+1}</div><div class="pt"><b>Page ${i+1}</b><small>${pg.blocks.length} blocks · ${THEMES.find(t=>t.id===pg.style.theme)?.name||''}</small></div>`;
     row.onclick=()=>{const e=document.querySelectorAll('.paper')[i];if(e)e.scrollIntoView({behavior:'smooth',block:'start'});};pl.appendChild(row);});
   const kt=$('#keyTog');if(kt)kt.classList.toggle('on',!!DOC.appendKey);
+  refreshPdfQ();
   const bi=$('#brandInput');if(bi&&document.activeElement!==bi)bi.value=DOC.brand||'';
 }
 function buildThemeGallery(){const g=$('#themeGallery');g.innerHTML='';
@@ -1596,6 +1633,186 @@ let imgTarget=null;
 function pickImage(b){imgTarget=b;$('#imgInput').click();}
 $('#imgInput').addEventListener('change',e=>{const file=e.target.files[0];if(!file||!imgTarget)return;const rd=new FileReader();
   rd.onload=()=>{snapshot();imgTarget.src=rd.result;renderAll();};rd.readAsDataURL(file);e.target.value='';});
+/* =====================================================================
+   VECTOR PDF ENGINE — walks the DOM and emits real PDF text & shapes.
+   Text stays selectable and sharp at any zoom. Non-Latin runs (Cyrillic,
+   emoji) fall back to a high-res image so they still look right.
+   ===================================================================== */
+const K=72/96;                       // CSS px -> PDF points
+const PDF_FONTS={
+  'h':'Helvetica','hb':'Helvetica-Bold','hi':'Helvetica-Oblique','hbi':'Helvetica-BoldOblique',
+  't':'Times-Roman','tb':'Times-Bold','ti':'Times-Italic','tbi':'Times-BoldItalic',
+  'c':'Courier','cb':'Courier-Bold','ci':'Courier-Oblique','cbi':'Courier-BoldOblique'
+};
+function fontKey(cs){
+  const f=(cs.fontFamily||'').toLowerCase();
+  let base='h';
+  if(/times|georgia|iowan|palatino|serif/.test(f)&&!/sans-serif/.test(f))base='t';
+  if(/courier|mono/.test(f))base='c';
+  const bold=(parseInt(cs.fontWeight)||400)>=600||cs.fontWeight==='bold';
+  const ital=cs.fontStyle==='italic'||cs.fontStyle==='oblique';
+  return base+(bold?'b':'')+(ital?'i':'');
+}
+function pdfEsc(s){return s.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');}
+function normText(s){
+  return s.replace(/[\u2018\u2019\u02BC]/g,"'").replace(/[\u201C\u201D]/g,'"')
+          .replace(/[\u2013\u2014]/g,"-").replace(/\u2026/g,"...")
+          .replace(/[\u00A0\u2009\u202F\u2007]/g," ").replace(/\u2192/g,"->")
+          .replace(/\u2264/g,"<=").replace(/\u2265/g,">=");
+}
+function isLatin1(s){return !/[^\u0000-\u00FF]/.test(s);}
+function parseCol(c){
+  if(!c)return null;
+  const m=c.match(/rgba?\(([^)]+)\)/);if(!m)return null;
+  const p=m[1].split(',').map(x=>parseFloat(x));
+  const a=p.length>3?p[3]:1;if(a<0.04)return null;
+  return[p[0]/255,p[1]/255,p[2]/255,a];
+}
+function gradCol(bg){
+  if(!bg||bg==='none')return null;
+  const m=bg.match(/rgba?\([^)]+\)/g);
+  if(!m||!m.length)return null;
+  const cols=m.map(parseCol).filter(Boolean);
+  if(!cols.length)return null;
+  const mid=cols[Math.floor(cols.length/2)];
+  return mid;
+}
+/* collect drawing ops from a laid-out element tree */
+function collectOps(sheet,W,H){
+  const base=sheet.getBoundingClientRect();
+  const ops=[];
+  const X=v=>(v-base.left);
+  const Y=v=>(v-base.top);
+  function pushRect(x,y,w,h,col,rad){
+    if(w<=0.2||h<=0.2||!col)return;
+    ops.push({t:'rect',x:x,y:y,w:w,h:h,c:col,r:Math.min(rad||0,w/2,h/2)});
+  }
+  function walk(el){
+    const cs=getComputedStyle(el);
+    if(cs.display==='none'||cs.visibility==='hidden')return;
+    const op=parseFloat(cs.opacity);if(op===0)return;
+    const r=el.getBoundingClientRect();
+    if(r.width>0&&r.height>0){
+      const rad=parseFloat(cs.borderTopLeftRadius)||0;
+      let bg=parseCol(cs.backgroundColor);
+      if(!bg)bg=gradCol(cs.backgroundImage);
+      if(bg){const c=bg.slice();if(op<1)c[3]=c[3]*op;pushRect(X(r.left),Y(r.top),r.width,r.height,c,rad);}
+      // borders
+      [['Top',0],['Right',1],['Bottom',2],['Left',3]].forEach(([side,i])=>{
+        const bw=parseFloat(cs['border'+side+'Width'])||0;
+        const st=cs['border'+side+'Style'];
+        if(bw<=0||st==='none'||st==='hidden')return;
+        const bc=parseCol(cs['border'+side+'Color']);if(!bc)return;
+        if(i===0)pushRect(X(r.left),Y(r.top),r.width,bw,bc,0);
+        if(i===1)pushRect(X(r.right)-bw,Y(r.top),bw,r.height,bc,0);
+        if(i===2)pushRect(X(r.left),Y(r.bottom)-bw,r.width,bw,bc,0);
+        if(i===3)pushRect(X(r.left),Y(r.top),bw,r.height,bc,0);
+      });
+    }
+    // children: elements and text
+    el.childNodes.forEach(n=>{
+      if(n.nodeType===1)walk(n);
+      else if(n.nodeType===3&&n.nodeValue&&n.nodeValue.trim())textOps(n,cs);
+    });
+  }
+  function textOps(node,cs){
+    const size=parseFloat(cs.fontSize)||13;
+    const col=parseCol(cs.color)||[0,0,0,1];
+    const fk=fontKey(cs);
+    const deco=cs.textDecorationLine||cs.textDecoration||'';
+    const tt=cs.textTransform||'none';
+    const txt=node.nodeValue;
+    const re=/\S+/g;let m;
+    while((m=re.exec(txt))){
+      const rng=document.createRange();
+      rng.setStart(node,m.index);rng.setEnd(node,m.index+m[0].length);
+      const rects=rng.getClientRects();
+      if(!rects.length)continue;
+      const rc=rects[0];
+      if(rc.width<=0)continue;
+      const baseline=Y(rc.top)+(rc.height-size)/2+size*0.80;
+      let word=normText(m[0]);
+      if(tt==='uppercase')word=word.toUpperCase();
+      else if(tt==='lowercase')word=word.toLowerCase();
+      else if(tt==='capitalize')word=word.replace(/\b\w/g,c=>c.toUpperCase());
+      if(isLatin1(word)){
+        ops.push({t:'text',x:X(rc.left),y:baseline,s:size,f:fk,c:col,str:word,w:rc.width});
+      }else{
+        ops.push({t:'raw',x:X(rc.left),y:Y(rc.top),w:rc.width,h:rc.height,node:node,i:m.index,len:m[0].length,cs:cs});
+      }
+      if(/line-through/.test(deco))pushRect(X(rc.left),Y(rc.top)+rc.height*0.5,rc.width,Math.max(0.7,size*0.06),col,0);
+      if(/underline/.test(deco))pushRect(X(rc.left),Y(rc.top)+rc.height*0.78,rc.width,Math.max(0.7,size*0.05),col,0);
+    }
+  }
+  walk(sheet);
+  // images
+  sheet.querySelectorAll('img').forEach(im=>{
+    const r=im.getBoundingClientRect();
+    if(r.width<=0||!im.src||im.src.indexOf('data:image')!==0)return;
+    ops.push({t:'img',x:X(r.left),y:Y(r.top),w:r.width,h:r.height,src:im.src});
+  });
+  return ops;
+}
+/* rasterise a single non-Latin word (Cyrillic / emoji) */
+function rasterWord(o){
+  const scale=6;
+  const c=document.createElement('canvas');
+  c.width=Math.max(2,Math.ceil(o.w*scale));c.height=Math.max(2,Math.ceil(o.h*scale));
+  const ctx=c.getContext('2d');
+  const cs=o.cs;
+  ctx.scale(scale,scale);
+  ctx.font=cs.fontStyle+' '+cs.fontWeight+' '+parseFloat(cs.fontSize)+'px '+cs.fontFamily;
+  ctx.fillStyle=cs.color;ctx.textBaseline='alphabetic';
+  const size=parseFloat(cs.fontSize)||13;
+  const str=o.node.nodeValue.substr(o.i,o.len);
+  ctx.fillText(str,0,(o.h-size)/2+size*0.80);
+  return{dataURL:c.toDataURL('image/png'),w:c.width,h:c.height};
+}
+function roundRectPath(x,y,w,h,r,Hpt){
+  const y0=Hpt-(y+h)*K, x0=x*K, w0=w*K, h0=h*K, r0=Math.min(r*K,w0/2,h0/2);
+  if(r0<0.5)return x0.toFixed(2)+' '+y0.toFixed(2)+' '+w0.toFixed(2)+' '+h0.toFixed(2)+' re';
+  const c=0.5523*r0;
+  const x1=x0+w0,y1=y0+h0;
+  return [
+    (x0+r0).toFixed(2)+' '+y0.toFixed(2)+' m',
+    (x1-r0).toFixed(2)+' '+y0.toFixed(2)+' l',
+    (x1-r0+c).toFixed(2)+' '+y0.toFixed(2)+' '+x1.toFixed(2)+' '+(y0+r0-c).toFixed(2)+' '+x1.toFixed(2)+' '+(y0+r0).toFixed(2)+' c',
+    x1.toFixed(2)+' '+(y1-r0).toFixed(2)+' l',
+    x1.toFixed(2)+' '+(y1-r0+c).toFixed(2)+' '+(x1-r0+c).toFixed(2)+' '+y1.toFixed(2)+' '+(x1-r0).toFixed(2)+' '+y1.toFixed(2)+' c',
+    (x0+r0).toFixed(2)+' '+y1.toFixed(2)+' l',
+    (x0+r0-c).toFixed(2)+' '+y1.toFixed(2)+' '+x0.toFixed(2)+' '+(y1-r0+c).toFixed(2)+' '+x0.toFixed(2)+' '+(y1-r0).toFixed(2)+' c',
+    x0.toFixed(2)+' '+(y0+r0).toFixed(2)+' l',
+    x0.toFixed(2)+' '+(y0+r0-c).toFixed(2)+' '+(x0+r0-c).toFixed(2)+' '+y0.toFixed(2)+' '+(x0+r0).toFixed(2)+' '+y0.toFixed(2)+' c'
+  ].join('\n');
+}
+function opsToStream(ops,Hpt,imgNames){
+  const out=[];let curFont=null,curSize=null,curCol=null;
+  ops.forEach(o=>{
+    if(o.t==='rect'){
+      const c=o.c;
+      out.push('q');
+      if(c[3]<1)out.push('/GS'+Math.round(c[3]*100)+' gs');
+      out.push(c[0].toFixed(3)+' '+c[1].toFixed(3)+' '+c[2].toFixed(3)+' rg');
+      out.push(roundRectPath(o.x,o.y,o.w,o.h,o.r,Hpt));
+      out.push('f');out.push('Q');
+    }else if(o.t==='text'){
+      const c=o.c;
+      out.push('BT');
+      out.push('/F'+o.f+' '+(o.s*K).toFixed(2)+' Tf');
+      out.push(c[0].toFixed(3)+' '+c[1].toFixed(3)+' '+c[2].toFixed(3)+' rg');
+      out.push((o.x*K).toFixed(2)+' '+(Hpt-o.y*K).toFixed(2)+' Td');
+      out.push('('+pdfEsc(o.str)+') Tj');
+      out.push('ET');
+    }else if(o.t==='imgref'){
+      const yb=Hpt-(o.y+o.h)*K;
+      out.push('q');
+      out.push((o.w*K).toFixed(2)+' 0 0 '+(o.h*K).toFixed(2)+' '+(o.x*K).toFixed(2)+' '+yb.toFixed(2)+' cm');
+      out.push('/'+o.name+' Do');
+      out.push('Q');
+    }
+  });
+  return out.join('\n');
+}
 /* ---------- direct PDF export (no print dialog) ---------- */
 function bytesFromDataURL(u){const b=atob(u.split(',')[1]);const a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
 function makePDF(imgs,ptW,ptH){
@@ -1677,20 +1894,140 @@ function renderPaper(paper,W,H,scale){
       const c=document.createElement('canvas');c.width=Math.round(W*scale);c.height=Math.round(H*scale);
       const ctx=c.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);
       ctx.drawImage(img,0,0,c.width,c.height);
-      try{resolve({bytes:bytesFromDataURL(c.toDataURL('image/jpeg',0.94)),width:c.width,height:c.height});}
+      try{resolve({bytes:bytesFromDataURL(c.toDataURL('image/jpeg',0.97)),width:c.width,height:c.height});}
       catch(e){reject(e);}
     };
     img.onerror=()=>reject(new Error('render failed'));
     img.src=paperToSVGUrl(paper,W,H);
   });
 }
+function effectiveBg(el){
+  let n=el;
+  while(n&&n.nodeType===1){
+    const c=parseCol(getComputedStyle(n).backgroundColor);
+    if(c&&c[3]>0.5)return 'rgb('+Math.round(c[0]*255)+','+Math.round(c[1]*255)+','+Math.round(c[2]*255)+')';
+    n=n.parentElement;
+  }
+  return '#ffffff';
+}
+function toJPEG(dataURL,cb){
+  const im=new Image();
+  im.onload=()=>{const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;
+    const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0);
+    cb({bytes:bytesFromDataURL(c.toDataURL('image/jpeg',0.95)),width:c.width,height:c.height});};
+  im.onerror=()=>cb(null);
+  im.src=dataURL;
+}
+function makeVectorPDF(pages,ptW,ptH){
+  const enc=s=>{const a=new Uint8Array(s.length);for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i)&0xff;return a;};
+  const objs=[];
+  const add=o=>{objs.push(o);return objs.length;};
+  const fontIds={},gsIds={};
+  const allFonts=new Set(),allAlphas=new Set();
+  pages.forEach(p=>{p.fonts.forEach(f=>allFonts.add(f));p.alphas.forEach(a=>allAlphas.add(a));});
+  add(null);add(null);                                    // 1 catalog, 2 pages (filled later)
+  allFonts.forEach(fk=>{fontIds[fk]=add('<< /Type /Font /Subtype /Type1 /BaseFont /'+PDF_FONTS[fk]+' /Encoding /WinAnsiEncoding >>');});
+  allAlphas.forEach(a=>{gsIds[a]=add('<< /Type /ExtGState /ca '+(a/100).toFixed(2)+' /CA '+(a/100).toFixed(2)+' >>');});
+  const pageIds=[];
+  pages.forEach(p=>{
+    const imgIds={};
+    p.images.forEach(im=>{imgIds[im.name]=add({dict:'<< /Type /XObject /Subtype /Image /Width '+im.width+' /Height '+im.height+
+      ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+im.bytes.length+' >>',bytes:im.bytes});});
+    const cid=add({dict:'<< /Length '+p.stream.length+' >>',text:p.stream});
+    let fRes='';p.fonts.forEach(f=>{fRes+='/F'+f+' '+fontIds[f]+' 0 R ';});
+    let gRes='';p.alphas.forEach(a=>{gRes+='/GS'+a+' '+gsIds[a]+' 0 R ';});
+    let xRes='';p.images.forEach(im=>{xRes+='/'+im.name+' '+imgIds[im.name]+' 0 R ';});
+    const res='<< /Font << '+fRes+'>>'+(gRes?' /ExtGState << '+gRes+'>>':'')+(xRes?' /XObject << '+xRes+'>>':'')+' >>';
+    pageIds.push(add('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+ptW+' '+ptH+'] /Resources '+res+' /Contents '+cid+' 0 R >>'));
+  });
+  objs[0]='<< /Type /Catalog /Pages 2 0 R >>';
+  objs[1]='<< /Type /Pages /Kids ['+pageIds.map(i=>i+' 0 R').join(' ')+'] /Count '+pageIds.length+' >>';
+  const chunks=[];let pos=0;
+  const w=x=>{const b=(typeof x==='string')?enc(x):x;chunks.push(b);pos+=b.length;};
+  w('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+  const off=[];
+  objs.forEach((o,i)=>{
+    off[i]=pos;w((i+1)+' 0 obj\n');
+    if(typeof o==='string')w(o+'\n');
+    else if(o&&o.bytes){w(o.dict+'\nstream\n');w(o.bytes);w('\nendstream\n');}
+    else if(o&&o.text){w(o.dict+'\nstream\n'+o.text+'\nendstream\n');}
+    w('endobj\n');
+  });
+  const xrefPos=pos,total=objs.length+1;
+  let x='xref\n0 '+total+'\n0000000000 65535 f \n';
+  for(let n=0;n<objs.length;n++)x+=String(off[n]).padStart(10,'0')+' 00000 n \n';
+  w(x);w('trailer\n<< /Size '+total+' /Root 1 0 R >>\nstartxref\n'+xrefPos+'\n%%EOF\n');
+  let size=0;chunks.forEach(c=>size+=c.length);
+  const out=new Uint8Array(size);let o=0;chunks.forEach(c=>{out.set(c,o);o+=c.length;});
+  return new Blob([out],{type:'application/pdf'});
+}
 let pdfBusy=false;
-async function exportPDF(){
+async function exportVectorPDF(){
   if(pdfBusy)return;
-  let papers=[...document.querySelectorAll('.paper')];
+  const papers=[...document.querySelectorAll('.paper')];
   if(!papers.length){toast('Nothing to export');return;}
   pdfBusy=true;const btn=$('#pdfBtn');const label=btn.innerHTML;
-  const W=794,H=1123,scale=2;
+  const W=794,H=1123,Hpt=841.89;
+  const stage=document.createElement('div');
+  stage.style.cssText='position:fixed;left:-10000px;top:0;width:'+W+'px;z-index:-1';
+  document.body.appendChild(stage);
+  try{
+    let sheets=[];
+    papers.forEach(p=>{sheets=sheets.concat(splitPaperPages(p,W,H));});
+    sheets.forEach((s,i)=>{const f=s.querySelector('.pg-foot');
+      if(f&&f.lastElementChild)f.lastElementChild.textContent=s.classList.contains('akey')?'Answer key':('Page '+(i+1)+' / '+sheets.length);});
+    const pageData=[];
+    for(let i=0;i<sheets.length;i++){
+      btn.innerHTML='⏳ '+(i+1)+'/'+sheets.length;
+      stage.innerHTML='';stage.appendChild(sheets[i]);
+      await new Promise(r=>setTimeout(r,0));
+      const ops=collectOps(sheets[i],W,H);
+      const fonts=new Set(),alphas=new Set(),images=[];
+      let imgN=0;
+      const finalOps=[];
+      for(const o of ops){
+        if(o.t==='text'){fonts.add(o.f);finalOps.push(o);}
+        else if(o.t==='rect'){if(o.c[3]<1)alphas.add(Math.round(o.c[3]*100));finalOps.push(o);}
+        else if(o.t==='raw'){
+          const parent=o.node.parentElement;
+          const bg=effectiveBg(parent);
+          const scale=6;
+          const c=document.createElement('canvas');
+          c.width=Math.max(2,Math.ceil(o.w*scale));c.height=Math.max(2,Math.ceil(o.h*scale));
+          const ctx=c.getContext('2d');ctx.fillStyle=bg;ctx.fillRect(0,0,c.width,c.height);
+          ctx.scale(scale,scale);
+          const cs=o.cs,size=parseFloat(cs.fontSize)||13;
+          ctx.font=cs.fontStyle+' '+cs.fontWeight+' '+size+'px '+cs.fontFamily;
+          ctx.fillStyle=cs.color;ctx.textBaseline='alphabetic';
+          ctx.fillText(o.node.nodeValue.substr(o.i,o.len),0,(o.h-size)/2+size*0.80);
+          const nm='Iw'+(imgN++);
+          images.push({name:nm,bytes:bytesFromDataURL(c.toDataURL('image/jpeg',0.95)),width:c.width,height:c.height});
+          finalOps.push({t:'imgref',name:nm,x:o.x,y:o.y,w:o.w,h:o.h});
+        }
+        else if(o.t==='img'){
+          const jp=await new Promise(res=>toJPEG(o.src,res));
+          if(jp){const nm='Iw'+(imgN++);images.push({name:nm,bytes:jp.bytes,width:jp.width,height:jp.height});
+            finalOps.push({t:'imgref',name:nm,x:o.x,y:o.y,w:o.w,h:o.h});}
+        }
+      }
+      pageData.push({stream:opsToStream(finalOps,Hpt),fonts:fonts,alphas:alphas,images:images});
+    }
+    const blob=makeVectorPDF(pageData,595.28,841.89);
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download=(DOC.title||'worksheet').replace(/[^\w\- ]/g,'').trim()+'.pdf';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+    toast('Vector PDF downloaded — '+pageData.length+' page'+(pageData.length>1?'s':''));
+  }catch(e){
+    toast('Vector export failed — trying image mode');
+    await exportRasterPDF();
+  }finally{stage.remove();btn.innerHTML=label;pdfBusy=false;}
+}
+async function exportRasterPDF(){
+  let papers=[...document.querySelectorAll('.paper')];
+  if(!papers.length){toast('Nothing to export');return;}
+  const btn=$('#pdfBtn');const label=btn.innerHTML;
+  const W=794,H=1123,scale=(DOC.pdfScale||3);
   try{
     let sheets=[];
     papers.forEach(p=>{sheets=sheets.concat(splitPaperPages(p,W,H));});
@@ -1709,9 +2046,84 @@ async function exportPDF(){
     setTimeout(()=>URL.revokeObjectURL(a.href),3000);
     toast('PDF downloaded — '+papers.length+' page'+(papers.length>1?'s':''));
   }catch(e){
-    toast('Direct export failed — opening print instead');
+    toast('Export failed — opening print instead');
     setTimeout(()=>window.print(),400);
-  }finally{btn.innerHTML=label;pdfBusy=false;}
+  }finally{btn.innerHTML=label;}
+}
+const exportPDF=exportVectorPDF;
+
+/* ---------- build the PDF as a File (for sharing / e-mail) ---------- */
+async function buildPdfFile(){
+  const papers=[...document.querySelectorAll('.paper')];
+  if(!papers.length)return null;
+  const W=794,H=1123,Hpt=841.89;
+  const stage=document.createElement('div');
+  stage.style.cssText='position:fixed;left:-10000px;top:0;width:'+W+'px;z-index:-1';
+  document.body.appendChild(stage);
+  try{
+    let sheets=[];papers.forEach(p=>{sheets=sheets.concat(splitPaperPages(p,W,H));});
+    sheets.forEach((s,i)=>{const f=s.querySelector('.pg-foot');
+      if(f&&f.lastElementChild)f.lastElementChild.textContent=s.classList.contains('akey')?'Answer key':('Page '+(i+1)+' / '+sheets.length);});
+    const pageData=[];
+    for(let i=0;i<sheets.length;i++){
+      stage.innerHTML='';stage.appendChild(sheets[i]);
+      await new Promise(r=>setTimeout(r,0));
+      const ops=collectOps(sheets[i],W,H);
+      const fonts=new Set(),alphas=new Set(),images=[],finalOps=[];let imgN=0;
+      for(const o of ops){
+        if(o.t==='text'){fonts.add(o.f);finalOps.push(o);}
+        else if(o.t==='rect'){if(o.c[3]<1)alphas.add(Math.round(o.c[3]*100));finalOps.push(o);}
+        else if(o.t==='raw'){
+          const bg=effectiveBg(o.node.parentElement),sc=6;
+          const c=document.createElement('canvas');
+          c.width=Math.max(2,Math.ceil(o.w*sc));c.height=Math.max(2,Math.ceil(o.h*sc));
+          const ctx=c.getContext('2d');ctx.fillStyle=bg;ctx.fillRect(0,0,c.width,c.height);ctx.scale(sc,sc);
+          const cs=o.cs,size=parseFloat(cs.fontSize)||13;
+          ctx.font=cs.fontStyle+' '+cs.fontWeight+' '+size+'px '+cs.fontFamily;
+          ctx.fillStyle=cs.color;ctx.textBaseline='alphabetic';
+          ctx.fillText(o.node.nodeValue.substr(o.i,o.len),0,(o.h-size)/2+size*0.80);
+          const nm='Iw'+(imgN++);
+          images.push({name:nm,bytes:bytesFromDataURL(c.toDataURL('image/jpeg',0.95)),width:c.width,height:c.height});
+          finalOps.push({t:'imgref',name:nm,x:o.x,y:o.y,w:o.w,h:o.h});
+        }else if(o.t==='img'){
+          const jp=await new Promise(res=>toJPEG(o.src,res));
+          if(jp){const nm='Iw'+(imgN++);images.push({name:nm,bytes:jp.bytes,width:jp.width,height:jp.height});
+            finalOps.push({t:'imgref',name:nm,x:o.x,y:o.y,w:o.w,h:o.h});}
+        }
+      }
+      pageData.push({stream:opsToStream(finalOps,Hpt),fonts:fonts,alphas:alphas,images:images});
+    }
+    const blob=makeVectorPDF(pageData,595.28,841.89);
+    const name=(DOC.title||'worksheet').replace(/[^\w\- ]/g,'').trim()+'.pdf';
+    return new File([blob],name,{type:'application/pdf'});
+  }finally{stage.remove();}
+}
+async function sharePDF(){
+  if(pdfBusy)return;
+  pdfBusy=true;const btn=$('#shareBtn');const label=btn?btn.innerHTML:'';
+  if(btn)btn.innerHTML='⏳';
+  try{
+    const file=await buildPdfFile();
+    if(!file){toast('Nothing to send');return;}
+    const title=DOC.title||'Worksheet';
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:title,
+        text:'Worksheet: '+title+'\n\n— '+(DOC.brand||'English with Tad')});
+      toast('Shared');
+    }else{
+      // fallback: download the PDF, then open the mail client with the text ready
+      const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=file.name;
+      document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+      const subj=encodeURIComponent(title);
+      const body=encodeURIComponent('Hi,\n\nPlease find the worksheet "'+title+'" attached.\n\nBest regards,\n'+(DOC.brand||'English with Tad'));
+      setTimeout(()=>{window.location.href='mailto:?subject='+subj+'&body='+body;},600);
+      toast('PDF saved — attach it to the e-mail that opens');
+    }
+  }catch(e){
+    if(e&&e.name==='AbortError')toast('Cancelled');
+    else toast('Could not share — use the PDF button instead');
+  }finally{if(btn)btn.innerHTML=label;pdfBusy=false;}
 }
 function printPDF(){toast('Set Margins to “None” and turn off headers');setTimeout(()=>window.print(),300);}
 
@@ -2221,6 +2633,10 @@ function lookup(word){
    ===================================================================== */
 function T(o){return Object.assign(makeBlock('theory'),o,{id:uid()});}
 function FIB(s){return B('fillblank',{parts:parseFib(s)});}
+function FIBS(){return [].slice.call(arguments).map(s=>FIB(s));}
+function PL(lines){return function(){return B('promptlines',{lines:lines,prompts:[].slice.call(arguments)});};}
+const CIRCLE=function(){return B('promptlines',{lines:0,prompts:[].slice.call(arguments)});};
+const WRITE=function(lines){return function(){return B('promptlines',{lines:lines,prompts:[].slice.call(arguments)});};};
 function TASK(lead,text){return B('instr',{num:'★',lead:lead,text:text});}
 const GRAMMAR_B1=[
 {id:'pres-simple',name:'Present Simple',
@@ -2231,14 +2647,21 @@ const GRAMMAR_B1=[
   note:'<b>Watch out:</b> after <b>does</b> / <b>doesn\'t</b> the verb has no -s — <i>Does she work here?</i> not <s>Does she works</s>.'}),
  ex:[
   {n:'Choose the correct form',b:()=>[TASK('Choose the correct form','Circle the correct option in each sentence.'),
-    B('promptlines',{lines:0,prompts:['1  My brother ( live / lives ) in Berlin.','2  We ( don\'t / doesn\'t ) work on Sundays.','3  ( Do / Does ) your parents speak English?','4  The museum ( open / opens ) at ten.']})]},
+    CIRCLE('1  My brother ( live / lives ) in Berlin.','2  We ( don\'t / doesn\'t ) work on Sundays.','3  ( Do / Does ) your parents speak English?','4  The museum ( open / opens ) at ten.','5  She ( study / studies ) medicine at university.','6  My friends ( go / goes ) swimming every Tuesday.','7  ( Do / Does ) the shop close at six?','8  Tom ( don\'t / doesn\'t ) like spicy food.','9  The sun ( rise / rises ) in the east.','10  I ( catch / catches ) the bus at half past seven.')]},
   {n:'Put the verb in the correct form',b:()=>[TASK('Complete the sentences','Put the verb in brackets into the Present Simple.'),
-    FIB('1  She [teaches:teach] maths at a primary school.'),FIB('2  They [don\'t live:not live] near the centre.'),
-    FIB('3  [Does:do] your dog bark at night?'),FIB('4  Water [freezes:freeze] at zero degrees.')]},
-  {n:'Make questions',b:()=>[TASK('Write the questions','Turn each statement into a question.'),
-    B('promptlines',{lines:1,prompts:['He works at the airport.','They speak three languages.','Anna finishes school in June.']})]},
+    ...FIBS('1  She [teaches:teach] maths at a primary school.','2  They [don\'t live:not live] near the centre.',
+    '3  [Does:do] your dog bark at night?','4  Water [freezes:freeze] at zero degrees.',
+    '5  My parents [watch:watch] the news every evening.','6  He [doesn\'t drink:not drink] coffee after six.',
+    '7  [Do:do] you often visit your grandparents?','8  The train [arrives:arrive] at platform four.',
+    '9  Sara [tries:try] to walk to work every day.','10  We [don\'t have:not have] classes on Friday afternoon.')]},
+  {n:'Third person: -s, -es or -ies',b:()=>[TASK('Write the he/she/it form','Write the correct third person form of each verb.'),
+    B('anagram',{line:true,rows:[{c:'go',a:'goes'},{c:'study',a:'studies'},{c:'watch',a:'watches'},{c:'play',a:'plays'},{c:'fly',a:'flies'},{c:'finish',a:'finishes'},{c:'do',a:'does'},{c:'carry',a:'carries'},{c:'mix',a:'mixes'},{c:'have',a:'has'}]})]},
+  {n:'Make questions',b:()=>[TASK('Write the questions','Turn each statement into a Present Simple question.'),
+    WRITE(1)('He works at the airport.','They speak three languages.','Anna finishes school in June.','Your sister plays the piano.','The film starts at eight.','You get up early at weekends.')]},
+  {n:'Make it negative',b:()=>[TASK('Write the negative','Rewrite each sentence in the negative form.'),
+    WRITE(1)('I drink tea in the morning.','She lives in a big house.','They work at the weekend.','My computer works well.','We understand this rule.')]},
   {n:'True about you',b:()=>[TASK('Make it true for you','Complete each sentence so that it is true about your life.'),
-    B('promptlines',{lines:1,prompts:['Every morning I …','My best friend usually …','I never … at the weekend.']})]}
+    WRITE(1)('Every morning I …','My best friend usually …','I never … at the weekend.','My family always …','On Sundays I often …','I hardly ever …')]}
 ]},
 {id:'pres-cont',name:'Present Continuous',
  theory:T({icon:'⏱️',title:'Present Continuous',
@@ -3008,6 +3431,7 @@ $('#docTitle').addEventListener('blur',scheduleSnapshot);
 $('#blkSearch').addEventListener('input',e=>buildPalette(e.target.value));
 $('#addPage').onclick=()=>{snapshot();const st=DOC.applyAll?{...DOC.pages[0].style}:defaultStyle('indigo');DOC.pages.push({id:uid(),style:st,blocks:[]});renderAll();setTimeout(()=>document.querySelectorAll('.paper')[DOC.pages.length-1].scrollIntoView({behavior:'smooth'}),60);};
 $('#pdfBtn').onclick=exportPDF;
+$('#shareBtn').onclick=sharePDF;
 $('#saveBtn2').onclick=saveProject;$('#openBtn2').onclick=openProject;
 $('#undoBtn').onclick=undo;$('#redoBtn').onclick=redo;
 $('#newBtn').onclick=()=>{if(confirm('Start a new empty document? Unsaved work will be lost.')){history.push(JSON.stringify(DOC));DOC=newDoc('indigo');selectedId=null;renderAll();}};
@@ -3100,6 +3524,10 @@ function lockNow(){
 $('#keypad').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(b)pinPush(b.dataset.k);});
 $('#lockBtn').onclick=lockNow;
 $('#printBtn').onclick=printPDF;
+$('#pdfQ').addEventListener('click',e=>{const b=e.target.closest('button[data-s]');if(!b)return;
+  DOC.pdfScale=parseInt(b.dataset.s);autosave();refreshPdfQ();
+  toast(DOC.pdfScale===2?'Fast — smaller file':DOC.pdfScale===3?'High — recommended':'Max — sharpest, large file');});
+function refreshPdfQ(){const s=DOC.pdfScale||3;document.querySelectorAll('#pdfQ button').forEach(b=>b.classList.toggle('on',parseInt(b.dataset.s)===s));}
 document.addEventListener('keydown',e=>{
   if(!document.body.classList.contains('locked'))return;
   if(/^[0-9]$/.test(e.key)){e.preventDefault();pinPush(e.key);}
