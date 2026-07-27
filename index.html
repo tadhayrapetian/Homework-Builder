@@ -5,9 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Worksheet Studio">
+<meta name="apple-mobile-web-app-title" content="English with Tad">
 <meta name="theme-color" content="#5b5bf0">
-<title>Worksheet Studio — Worksheet & Lesson Builder</title>
+<title>English with Tad — Worksheet Builder</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b5bf0'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='26' fill='url(%23g)'/%3E%3Cpath d='M27 31h46M50 31v42' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3Ccircle cx='73' cy='71' r='9' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b5bf0'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23g)'/%3E%3Cpath d='M27 31h46M50 31v42' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3Ccircle cx='73' cy='71' r='9' fill='%23fbbf24'/%3E%3C/svg%3E">
 <style>
 /* ==========================================================================
    WORKSHEET STUDIO
@@ -519,20 +521,51 @@ button{font-family:inherit;color:inherit}
 
 /* ---------- LOCK SCREEN ---------- */
 .lock{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;padding:24px;
-  background:linear-gradient(150deg,#12142a,#1c1740 55%,#241a4d)}
+  overflow:hidden;background:linear-gradient(150deg,#0f1128,#1c1740 45%,#2a1a52 75%,#141033);
+  background-size:300% 300%;animation:bgShift 18s ease-in-out infinite}
 .lock.show{display:flex}
 body.locked .app,body.locked .zoombar{display:none !important}
-.lock::before{content:"";position:absolute;inset:0;opacity:.5;
-  background:radial-gradient(900px 500px at 20% 15%,rgba(91,91,240,.35),transparent 60%),
-             radial-gradient(700px 480px at 82% 82%,rgba(139,92,246,.32),transparent 60%)}
-.lock-card{position:relative;width:100%;max-width:360px;background:rgba(255,255,255,.06);backdrop-filter:blur(18px);
-  border:1px solid rgba(255,255,255,.14);border-radius:24px;padding:34px 30px 28px;text-align:center;
-  box-shadow:0 30px 80px rgba(0,0,0,.5)}
-.lock-mark{width:60px;height:60px;border-radius:18px;margin:0 auto 16px;display:grid;place-items:center;
-  background:linear-gradient(140deg,#5b5bf0,#8b5cf6);box-shadow:0 12px 30px rgba(91,91,240,.5)}
-.lock-mark svg{width:30px;height:30px;color:#fff}
-.lock-card h1{margin:0;font-size:20px;color:#fff;letter-spacing:-.02em;font-weight:750}
-.lock-card p{margin:6px 0 22px;font-size:13px;color:rgba(255,255,255,.6)}
+@keyframes bgShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* floating orbs */
+.orbs{position:absolute;inset:0;pointer-events:none}
+.orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55}
+.orb.o1{width:420px;height:420px;background:#5b5bf0;top:-90px;left:-70px;animation:drift1 16s ease-in-out infinite}
+.orb.o2{width:360px;height:360px;background:#a855f7;bottom:-100px;right:-60px;animation:drift2 20s ease-in-out infinite}
+.orb.o3{width:280px;height:280px;background:#f472b6;top:45%;right:12%;opacity:.32;animation:drift3 24s ease-in-out infinite}
+@keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(70px,60px) scale(1.15)}}
+@keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-60px,-50px) scale(1.2)}}
+@keyframes drift3{0%,100%{transform:translate(0,0)}33%{transform:translate(-50px,40px)}66%{transform:translate(40px,-30px)}}
+
+/* sparkles */
+.sparkles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.sparkles span{position:absolute;bottom:-12px;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.75);
+  box-shadow:0 0 8px rgba(255,255,255,.8);animation:rise linear infinite}
+@keyframes rise{0%{transform:translateY(0) scale(.5);opacity:0}
+  12%{opacity:.85}80%{opacity:.6}100%{transform:translateY(-104vh) scale(1.1);opacity:0}}
+.lock-card{position:relative;width:100%;max-width:360px;background:rgba(255,255,255,.07);backdrop-filter:blur(22px);
+  border:1px solid rgba(255,255,255,.15);border-radius:26px;padding:34px 30px 28px;text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.16);
+  animation:cardIn .75s cubic-bezier(.2,.9,.25,1.05) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(34px) scale(.94)}to{opacity:1;transform:none}}
+.lock-mark{width:64px;height:64px;border-radius:20px;margin:0 auto 16px;display:grid;place-items:center;position:relative;
+  background:linear-gradient(140deg,#5b5bf0,#8b5cf6);box-shadow:0 12px 30px rgba(91,91,240,.55);
+  animation:markIn .8s .12s cubic-bezier(.2,1.3,.4,1) both,float 4.5s 1s ease-in-out infinite}
+@keyframes markIn{from{opacity:0;transform:scale(.4) rotate(-25deg)}to{opacity:1;transform:none}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.lock-mark::after{content:"";position:absolute;inset:-5px;border-radius:24px;
+  background:linear-gradient(140deg,#5b5bf0,#8b5cf6);filter:blur(15px);opacity:.55;z-index:-1;
+  animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.75;transform:scale(1.1)}}
+.lock-mark svg{width:34px;height:34px}
+.lock-card h1{margin:0;font-size:21px;color:#fff;letter-spacing:-.02em;font-weight:750;
+  animation:fadeUp .6s .28s both;
+  background:linear-gradient(100deg,#fff 20%,#c7b8ff 40%,#fff 60%);background-size:200% auto;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:fadeUp .6s .28s both,shine 5s 1.2s linear infinite}
+@keyframes shine{to{background-position:-200% center}}
+.lock-card p{margin:6px 0 22px;font-size:13px;color:rgba(255,255,255,.6);animation:fadeUp .6s .38s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .pin-dots{display:flex;justify-content:center;gap:13px;margin-bottom:22px}
 .pin-dots i{width:13px;height:13px;border-radius:50%;background:rgba(255,255,255,.16);
   border:1.5px solid rgba(255,255,255,.28);transition:.18s}
@@ -542,9 +575,26 @@ body.locked .app,body.locked .zoombar{display:none !important}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
 .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
 .keypad button{height:56px;border-radius:16px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);
-  color:#fff;font-size:21px;font-weight:600;cursor:pointer;transition:.13s;-webkit-tap-highlight-color:transparent}
-.keypad button:hover{background:rgba(255,255,255,.16)}
-.keypad button:active{transform:scale(.94)}
+  color:#fff;font-size:21px;font-weight:600;cursor:pointer;transition:.13s;-webkit-tap-highlight-color:transparent;
+  animation:keyIn .45s both}
+.keypad button:nth-child(1){animation-delay:.44s}.keypad button:nth-child(2){animation-delay:.48s}
+.keypad button:nth-child(3){animation-delay:.52s}.keypad button:nth-child(4){animation-delay:.56s}
+.keypad button:nth-child(5){animation-delay:.60s}.keypad button:nth-child(6){animation-delay:.64s}
+.keypad button:nth-child(7){animation-delay:.68s}.keypad button:nth-child(8){animation-delay:.72s}
+.keypad button:nth-child(9){animation-delay:.76s}.keypad button:nth-child(10){animation-delay:.80s}
+.keypad button:nth-child(11){animation-delay:.84s}.keypad button:nth-child(12){animation-delay:.88s}
+@keyframes keyIn{from{opacity:0;transform:translateY(14px) scale(.85)}to{opacity:1;transform:none}}
+.keypad button:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
+.keypad button:active{transform:scale(.92)}
+.keypad button.tap{animation:tapPulse .32s}
+@keyframes tapPulse{0%{transform:scale(.9);background:rgba(255,255,255,.4)}100%{transform:scale(1)}}
+
+/* success */
+.lock.ok .lock-card{animation:okPop .5s cubic-bezier(.2,1.4,.4,1) both}
+.lock.ok .pin-dots i{background:#34d399;border-color:#34d399;box-shadow:0 0 14px rgba(52,211,153,.9)}
+@keyframes okPop{0%{transform:none}40%{transform:scale(1.05)}100%{transform:scale(.9);opacity:0}}
+.lock.closing{animation:lockOut .5s .18s ease-in forwards}
+@keyframes lockOut{to{opacity:0;transform:scale(1.08)}}
 .keypad button.wide{grid-column:span 1;font-size:15px}
 .keypad button.ghost{background:transparent;border-color:transparent}
 .lock-msg{min-height:18px;margin-top:15px;font-size:12.5px;color:#fca5a5;font-weight:600}
@@ -646,9 +696,11 @@ body.locked .app,body.locked .zoombar{display:none !important}
 
 <!-- LOCK SCREEN -->
 <div class="lock show" id="lock">
+  <div class="orbs"><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span></div>
+  <div class="sparkles" id="sparkles"></div>
   <div class="lock-card">
-    <div class="lock-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
-    <h1>Worksheet Studio</h1>
+    <div class="lock-mark"><svg viewBox="0 0 100 100" fill="none"><path d="M27 31h46M50 31v42" stroke="#fff" stroke-width="11" stroke-linecap="round"/><circle cx="74" cy="72" r="9" fill="#fbbf24"/></svg></div>
+    <h1>English with Tad</h1>
     <p>Enter your access code</p>
     <div class="pin-dots" id="pinDots"><i></i><i></i><i></i><i></i></div>
     <div class="keypad" id="keypad">
@@ -669,8 +721,8 @@ body.locked .app,body.locked .zoombar{display:none !important}
   <div class="topbar">
     <button class="tb icon mob" id="mobLeft" aria-label="Blocks">☰</button>
     <div class="brand hide-mob">
-      <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg></div>
-      <div class="txt"><b>Worksheet Studio</b><small>A4 Builder</small></div>
+      <div class="mark"><svg viewBox="0 0 100 100" fill="none"><path d="M27 31h46M50 31v42" stroke="currentColor" stroke-width="11" stroke-linecap="round"/><circle cx="74" cy="72" r="9" fill="#fbbf24"/></svg></div>
+      <div class="txt"><b>English with Tad</b><small>Worksheet Builder</small></div>
     </div>
     <div class="divx hide-mob"></div>
     <input class="tb-title" id="docTitle" value="Untitled worksheet" spellcheck="false">
@@ -1602,27 +1654,40 @@ $('#canvas').addEventListener('mousedown',e=>{if(e.target.closest('.paper'))retu
 const ACCESS_CODE='3105';
 let pinBuf='';
 function paintDots(){document.querySelectorAll('#pinDots i').forEach((d,i)=>d.classList.toggle('on',i<pinBuf.length));}
+function makeSparkles(){
+  const box=$('#sparkles');if(!box||box.children.length)return;
+  for(let i=0;i<18;i++){const s=document.createElement('span');
+    s.style.left=Math.random()*100+'%';
+    s.style.animationDuration=(9+Math.random()*11)+'s';
+    s.style.animationDelay=(-Math.random()*18)+'s';
+    const sz=2+Math.random()*4;s.style.width=s.style.height=sz+'px';
+    s.style.opacity=(.3+Math.random()*.5);box.appendChild(s);}
+}
 function pinPush(k){
   const lock=$('#lock');lock.classList.remove('err');$('#lockMsg').textContent='';
+  const btn=document.querySelector(`.keypad button[data-k="${k}"]`);
+  if(btn){btn.classList.remove('tap');void btn.offsetWidth;btn.classList.add('tap');}
   if(k==='del'){pinBuf=pinBuf.slice(0,-1);paintDots();return;}
   if(pinBuf.length>=ACCESS_CODE.length)return;
   pinBuf+=k;paintDots();
   if(pinBuf.length===ACCESS_CODE.length){
-    if(pinBuf===ACCESS_CODE){setTimeout(unlock,160);}
+    if(pinBuf===ACCESS_CODE){lock.classList.add('ok','closing');setTimeout(unlock,620);}
     else{lock.classList.add('err');$('#lockMsg').textContent='Wrong code — try again';
       setTimeout(()=>{pinBuf='';paintDots();lock.classList.remove('err');},600);}
   }
 }
-function unlock(remember){
+function unlock(){
   document.body.classList.remove('locked');
-  $('#lock').classList.remove('show');
+  const lock=$('#lock');lock.classList.remove('show','ok','closing');
   try{localStorage.setItem('ws_unlocked','1');}catch(e){}
   pinBuf='';paintDots();
 }
 function lockNow(){
   try{localStorage.removeItem('ws_unlocked');}catch(e){}
   pinBuf='';paintDots();$('#lockMsg').textContent='';
-  document.body.classList.add('locked');$('#lock').classList.add('show');
+  const lock=$('#lock');lock.classList.remove('ok','closing','err');
+  document.body.classList.add('locked');lock.classList.add('show');
+  makeSparkles();
 }
 $('#keypad').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(b)pinPush(b.dataset.k);});
 $('#lockBtn').onclick=lockNow;
@@ -1635,6 +1700,7 @@ document.addEventListener('keydown',e=>{
 /* BOOT */
 (function boot(){
   try{if(localStorage.getItem('ws_unlocked')==='1'){document.body.classList.remove('locked');$('#lock').classList.remove('show');}}catch(e){}
+  if(document.body.classList.contains('locked'))makeSparkles();
   try{const u=localStorage.getItem('ws_ui');if(u)document.documentElement.setAttribute('data-ui',u);}catch(e){}
   buildPalette();buildThemeGallery();buildTemplates();
   const saved=loadAutosave();DOC=(saved&&saved.pages)?saved:newDoc('indigo');
