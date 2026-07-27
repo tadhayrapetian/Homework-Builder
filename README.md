@@ -8,7 +8,7 @@ A free, offline **worksheet & lesson builder** for A4 printables. Build workshee
 
 - **Drag-and-build editor** — 25+ block types: headers, instructions, reading text, multiple choice, true/false, gap-fill, matching, odd-one-out, unscramble, tables, writing lines, handwriting practice, images, and more.
 - **Exercise Library** — ready-made, pre-filled exercises for **vocabulary** and **grammar**, ordered from recognition to free production (receptive → productive / PPP). One click drops a complete exercise onto the page.
-- **B1 grammar course** — 39 topics with a theory card (form · use · signal words) and 179 exercises; "Full worksheet" builds a whole printable page with an answer key.
+- **B1 grammar course** — 53 topics with a theory card (form · use · signal words) and 237 exercises; "Full worksheet" builds a whole printable page with an answer key.
 - **Built-in dictionary** — type words into a vocabulary list and English definitions / Russian translations fill in automatically (offline).
 - **40 A4 designs** — plus adjustable accent colour, 11 header styles, page backgrounds, and fonts.
 - **Crossword generator** — type words + clues and it auto-interlocks the grid with numbered Across/Down lists.
