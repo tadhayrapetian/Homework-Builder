@@ -444,6 +444,30 @@ button{font-family:inherit;color:inherit}
 .ladder .lad-slots .arrow{color:var(--pa-muted);font-size:15px;flex:none}
 .ladder-bar{height:8px;border-radius:6px;background:linear-gradient(90deg,color-mix(in srgb,var(--pa-accent) 25%,var(--pa-paper)),var(--pa-accent));margin-top:9px}
 
+/* theory card */
+.theory{border:1.8px solid var(--pa-line);border-radius:15px;overflow:hidden;background:var(--pa-paper)}
+.theory .th-h{background:linear-gradient(120deg,var(--pa-accent),var(--pa-accent2));color:#fff;padding:12px 16px;
+  display:flex;align-items:center;gap:10px}
+.theory .th-h .ti{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:14px;flex:none}
+.theory .th-h b{font-size:15.5px;font-weight:750;letter-spacing:-.01em}
+.theory .th-body{padding:14px 16px;display:flex;flex-direction:column;gap:13px}
+.theory .th-sec>.th-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--pa-accent);margin-bottom:6px}
+.th-form{display:grid;gap:6px}
+.th-form .tf-r{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:baseline;font-size:13px}
+.th-form .tf-r .sg{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-weight:800;font-size:13px;
+  background:var(--pa-soft);color:var(--pa-accent)}
+.th-form .tf-r .fx{font-family:var(--pa-font)}
+.th-form .tf-r .fx em{font-style:normal;font-weight:750;color:var(--pa-accent)}
+.th-uses{display:flex;flex-direction:column;gap:8px}
+.th-use{font-size:13px;line-height:1.5}
+.th-use .ur{font-weight:650;display:block}
+.th-use .ux{color:var(--pa-muted);font-style:italic;display:block;padding-left:12px;border-left:2px solid var(--pa-line);margin-top:3px}
+.th-note{background:var(--pa-soft2);border-radius:10px;padding:10px 13px;font-size:12.5px;line-height:1.5;
+  border-left:4px solid var(--pa-accent2)}
+.th-note b{font-weight:750}
+.th-words{display:flex;flex-wrap:wrap;gap:6px}
+.th-words span{background:var(--pa-soft);color:var(--pa-accent);border-radius:7px;padding:3px 10px;font-size:12px;font-weight:650}
+
 /* points badge */
 .pts-badge{position:absolute;top:6px;right:8px;font-size:11px;font-weight:800;color:var(--pa-accent);
   background:var(--pa-soft);border:1.5px solid color-mix(in srgb,var(--pa-accent) 30%,var(--pa-line));
@@ -900,6 +924,7 @@ const BLOCK_DEFS=[
  {t:'namebar',g:'Layout',icon:I.name,name:'Name / Date',hint:'Student info row'},
  {t:'instr',g:'Layout',icon:I.instr,name:'Task',hint:'Instruction card'},
  {t:'text',g:'Layout',icon:I.text,name:'Text',hint:'Paragraph / reading'},
+ {t:'theory',g:'Layout',icon:I.instr,name:'Grammar theory',hint:'Rule card: form + use'},
  {t:'divider',g:'Layout',icon:I.div,name:'Divider',hint:'Line / scissors'},
 
  {t:'mcq',g:'Questions',icon:I.mcq,name:'Multiple choice',hint:'A / B / C / D'},
@@ -993,6 +1018,11 @@ function makeBlock(type){
    case'namebar':b.fields=['Name','Date','Class','Score'];break;
    case'instr':b.num='1';b.lead='Instruction';b.text='Write what the student has to do here.';break;
    case'text':b.html='Type the reading text here. You can add a paragraph, a definition or an example.';b.lead=false;b.reading=false;break;
+   case'theory':b.title='Grammar point';b.icon='📘';
+     b.form=[{s:'+',x:'I <em>work</em> in an office.'},{s:'−',x:'I <em>don\'t work</em> at weekends.'},{s:'?',x:'<em>Do</em> you <em>work</em> here?'}];
+     b.uses=[{r:'Routines and habits',x:'She takes the bus every morning.'},{r:'Facts and general truths',x:'Water boils at 100°C.'}];
+     b.words=['always','usually','often','sometimes','never'];
+     b.note='<b>Watch out:</b> add <b>-s</b> in the third person — he work<b>s</b>, she go<b>es</b>.';break;
    case'mcq':b.q='Question?';b.opts=['Option A','Option B','Option C','Option D'];b.correct=0;b.cols=false;break;
    case'truefalse':b.rows=['A true statement.','A false statement.','Another statement.'];b.correct=[true,false,true];b.tlabel='T';b.flabel='F';break;
    case'fillblank':b.parts=[{tx:'The cat '},{blank:'is'},{tx:' sleeping on the '},{blank:'sofa'},{tx:'.'}];break;
@@ -1113,6 +1143,20 @@ function renderContent(b){
      const tx=el('div','tx');tx.appendChild(ce('b','lead',b.lead,'What to do',v=>b.lead=v));tx.appendChild(ce('span','',b.text,'Task description…',v=>b.text=v));
      w.appendChild(num);w.appendChild(tx);return w;}
    case'text':return ce('div','ws-text'+(b.lead?' lead':'')+(b.reading?' reading':''),b.html,'Text…',v=>b.html=v);
+   case'theory':{const w=el('div','theory');
+     const h=el('div','th-h');h.appendChild(el('div','ti',b.icon||'📘'));h.appendChild(ce('b','',b.title,'Grammar point',v=>b.title=v));w.appendChild(h);
+     const bd=el('div','th-body');
+     if(b.form&&b.form.length){const s=el('div','th-sec');s.appendChild(el('div','th-lbl','Form'));
+       const f=el('div','th-form');b.form.forEach((r,i)=>{const row=el('div','tf-r');row.appendChild(el('div','sg',r.s));
+         row.appendChild(ce('div','fx',r.x,'example',v=>b.form[i].x=v));f.appendChild(row);});s.appendChild(f);bd.appendChild(s);}
+     if(b.uses&&b.uses.length){const s=el('div','th-sec');s.appendChild(el('div','th-lbl','We use it for'));
+       const u=el('div','th-uses');b.uses.forEach((x,i)=>{const it=el('div','th-use');
+         it.appendChild(ce('span','ur',x.r,'Rule',v=>b.uses[i].r=v));it.appendChild(ce('span','ux',x.x,'Example',v=>b.uses[i].x=v));u.appendChild(it);});
+       s.appendChild(u);bd.appendChild(s);}
+     if(b.words&&b.words.length){const s=el('div','th-sec');s.appendChild(el('div','th-lbl','Signal words'));
+       const ws=el('div','th-words');b.words.forEach((x,i)=>ws.appendChild(ce('span','',x,'word',v=>b.words[i]=v)));s.appendChild(ws);bd.appendChild(s);}
+     if(b.note)bd.appendChild(ce('div','th-note',b.note,'Note…',v=>b.note=v));
+     w.appendChild(bd);return w;}
    case'mcq':{const w=el('div','qrow');const bd=el('div','qbody');const qh=el('div');qh.style.display='flex';qh.style.alignItems='flex-start';
      qh.appendChild(el('span','qnum','?'));qh.appendChild(ce('div','qtext',b.q,'Question?',v=>b.q=v));bd.appendChild(qh);
      const opts=el('div','opts'+(b.cols?' c2':''));
@@ -1277,8 +1321,14 @@ function answerText(b){
 }
 function blockLabel(t){const d=BLOCK_DEFS.find(x=>x.t===t);return d?d.name:t;}
 function collectAnswers(){const out=[];let last=null;
-  DOC.pages.forEach(pg=>pg.blocks.forEach(b=>{if(b.type==='instr'){last=stripHtml(b.lead);return;}
-    const a=answerText(b);if(a!=null&&a!=='')out.push({title:last||blockLabel(b.type),ans:a});}));return out;}
+  DOC.pages.forEach(pg=>pg.blocks.forEach(b=>{
+    if(b.type==='instr'){last=stripHtml(b.lead);return;}
+    const a=answerText(b);if(a==null||a==='')return;
+    const title=last||blockLabel(b.type);
+    const prev=out[out.length-1];
+    if(prev&&prev.title===title)prev.parts.push(a);else out.push({title:title,parts:[a]});
+  }));
+  return out.map(o=>({title:o.title,ans:o.parts.length>1?o.parts.map((p,i)=>(i+1)+'. '+p).join('    '):o.parts[0]}));}
 function totalPoints(){let s=0;DOC.pages.forEach(pg=>pg.blocks.forEach(b=>{if(b.points>0)s+=b.points;}));return s;}
 function renderAnswerKey(){
   const p=el('div','paper akey');applyPageStyle(p,DOC.pages[0].style);p.classList.add('answers-on');
@@ -1382,6 +1432,21 @@ function refreshInspector(){
     if(b.style==='line'){const w=el('div','field');w.innerHTML='<label>Centre symbol</label>';const s=el('div','seg');['✦','★','❀','♦','✿','➜','—','♥'].forEach(ic=>{const x=el('button',b.ic===ic?'on':'',ic);x.onclick=()=>{b.ic=ic;renderAll();};s.appendChild(x);});w.appendChild(s);box.appendChild(w);}}
   else if(b.type==='text'){box.appendChild(seg('Size',[{l:'Normal',v:false},{l:'Large',v:true}],b.lead,v=>b.lead=v));box.appendChild(seg('Reading box',[{l:'Off',v:false},{l:'On',v:true}],b.reading,v=>b.reading=v));}
   else if(b.type==='namebar'){const{w,ta}=list('Fields (one per line)',b.fields);ta.addEventListener('input',()=>{b.fields=ta.value.split('\n').filter(Boolean);renderAll();});box.appendChild(w);}
+  else if(b.type==='theory'){
+    const wi=el('div','field');wi.innerHTML='<label>Icon</label>';const si=el('div','seg');
+    ['📘','📗','⏱️','🔮','🔁','💬','❓','⚡'].forEach(ic=>{const x=el('button',b.icon===ic?'on':'',ic);x.onclick=()=>{b.icon=ic;renderAll();};si.appendChild(x);});
+    wi.appendChild(si);box.appendChild(wi);
+    const wf=el('div','field');wf.innerHTML='<label>Form — "sign | example", one per line</label>';const tf=el('textarea');tf.rows=3;
+    tf.value=b.form.map(r=>`${r.s} | ${r.x}`).join('\n');
+    tf.addEventListener('input',()=>{b.form=tf.value.split('\n').filter(Boolean).map(l=>{const i=l.indexOf('|');return i<0?{s:'+',x:l.trim()}:{s:l.slice(0,i).trim(),x:l.slice(i+1).trim()};});renderAll();});
+    wf.appendChild(tf);box.appendChild(wf);
+    const wu=el('div','field');wu.innerHTML='<label>Uses — "rule | example", one per line</label>';const tu=el('textarea');tu.rows=4;
+    tu.value=b.uses.map(r=>`${r.r} | ${r.x}`).join('\n');
+    tu.addEventListener('input',()=>{b.uses=tu.value.split('\n').filter(Boolean).map(l=>{const i=l.indexOf('|');return i<0?{r:l.trim(),x:''}:{r:l.slice(0,i).trim(),x:l.slice(i+1).trim()};});renderAll();});
+    wu.appendChild(tu);box.appendChild(wu);
+    const{w:ww,ta:tw}=list('Signal words (one per line)',b.words||[]);
+    tw.addEventListener('input',()=>{b.words=tw.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(ww);
+    box.appendChild(el('div','hint','Edit the title, examples and the note directly on the page.'));}
   else{box.appendChild(el('div','hint','Edit the content directly on the page — click any text.'));}
   // points (every block)
   const pf=num('Points for this exercise (0 = hide)',b.points||0,0,100,v=>{b.points=v;});pf.style.marginTop='14px';pf.style.paddingTop='14px';pf.style.borderTop='1px solid var(--line)';box.appendChild(pf);
@@ -1559,15 +1624,497 @@ const LIBRARY={
   ]},
  ]
 };
+/* =====================================================================
+   B1 GRAMMAR COURSE — original theory + exercises (English with Tad)
+   ===================================================================== */
+function T(o){return Object.assign(makeBlock('theory'),o,{id:uid()});}
+function FIB(s){return B('fillblank',{parts:parseFib(s)});}
+function TASK(lead,text){return B('instr',{num:'★',lead:lead,text:text});}
+const GRAMMAR_B1=[
+{id:'pres-simple',name:'Present Simple',
+ theory:T({icon:'📘',title:'Present Simple',
+  form:[{s:'+',x:'I / you / we / they <em>work</em> · he / she / it <em>works</em>'},{s:'−',x:'I <em>don\'t work</em> · he <em>doesn\'t work</em>'},{s:'?',x:'<em>Do</em> you work? · <em>Does</em> he work?'}],
+  uses:[{r:'Habits and routines',x:'I get up at seven every day.'},{r:'Facts and permanent situations',x:'My sister lives in Prague.'},{r:'Timetables and schedules',x:'The train leaves at 6.15.'}],
+  words:['always','usually','often','sometimes','rarely','never','every day'],
+  note:'<b>Watch out:</b> after <b>does</b> / <b>doesn\'t</b> the verb has no -s — <i>Does she work here?</i> not <s>Does she works</s>.'}),
+ ex:[
+  {n:'Choose the correct form',b:()=>[TASK('Choose the correct form','Circle the correct option in each sentence.'),
+    B('promptlines',{lines:0,prompts:['1  My brother ( live / lives ) in Berlin.','2  We ( don\'t / doesn\'t ) work on Sundays.','3  ( Do / Does ) your parents speak English?','4  The museum ( open / opens ) at ten.']})]},
+  {n:'Put the verb in the correct form',b:()=>[TASK('Complete the sentences','Put the verb in brackets into the Present Simple.'),
+    FIB('1  She [teaches:teach] maths at a primary school.'),FIB('2  They [don\'t live:not live] near the centre.'),
+    FIB('3  [Does:do] your dog bark at night?'),FIB('4  Water [freezes:freeze] at zero degrees.')]},
+  {n:'Make questions',b:()=>[TASK('Write the questions','Turn each statement into a question.'),
+    B('promptlines',{lines:1,prompts:['He works at the airport.','They speak three languages.','Anna finishes school in June.']})]},
+  {n:'True about you',b:()=>[TASK('Make it true for you','Complete each sentence so that it is true about your life.'),
+    B('promptlines',{lines:1,prompts:['Every morning I …','My best friend usually …','I never … at the weekend.']})]}
+]},
+{id:'pres-cont',name:'Present Continuous',
+ theory:T({icon:'⏱️',title:'Present Continuous',
+  form:[{s:'+',x:'I <em>am</em> working · he <em>is</em> working · they <em>are</em> working'},{s:'−',x:'I <em>am not</em> working · she <em>isn\'t</em> working'},{s:'?',x:'<em>Are</em> you working? · <em>Is</em> he working?'}],
+  uses:[{r:'Actions happening right now',x:'Be quiet — the baby is sleeping.'},{r:'Temporary situations around now',x:'I\'m staying with my aunt this month.'},{r:'Fixed future arrangements',x:'We\'re meeting Tom on Friday.'}],
+  words:['now','right now','at the moment','today','this week','currently'],
+  note:'<b>Watch out:</b> state verbs (<i>know, like, want, need, believe</i>) are not normally used in the continuous — <i>I know him</i>, not <s>I am knowing him</s>.'}),
+ ex:[
+  {n:'Find the continuous forms',b:()=>[TASK('Underline the Present Continuous','Read the text and underline every Present Continuous verb.'),
+    B('text',{reading:true,html:'It\'s eight in the evening. Mum <b>is cooking</b> dinner and my brother <b>is doing</b> his homework. I usually watch TV at this time, but tonight I <b>am writing</b> a letter to my cousin. Outside it <b>is raining</b> again.'})]},
+  {n:'Complete with the verb',b:()=>[TASK('Complete the sentences','Put the verb into the Present Continuous.'),
+    FIB('1  Look! It [is snowing:snow] outside.'),FIB('2  We [are not watching:not watch] this film — it\'s boring.'),
+    FIB('3  What [are:be] you doing right now?'),FIB('4  My parents [are travelling:travel] in Italy this week.')]},
+  {n:'What is happening?',b:()=>[TASK('Describe the picture','Write five sentences about the picture using the Present Continuous.'),B('image'),B('lines',{count:5})]},
+  {n:'Your week',b:()=>[TASK('Talk about now','Answer in full sentences.'),
+    B('promptlines',{lines:1,prompts:['What are you doing at the moment?','What is your family doing right now?','What are you studying this term?']})]}
+]},
+{id:'simple-vs-cont',name:'Present Simple vs Continuous',
+ theory:T({icon:'⚖️',title:'Present Simple or Continuous?',
+  form:[{s:'S',x:'I <em>work</em> here. (always / in general)'},{s:'C',x:'I <em>am working</em> late today. (now / temporary)'}],
+  uses:[{r:'Present Simple — routine, fact, permanent',x:'She works in a hospital.'},{r:'Present Continuous — now, temporary, changing',x:'She is working from home this week.'},{r:'State verbs stay simple',x:'I want a coffee. / I don\'t understand.'}],
+  words:['every day vs now','usually vs at the moment','always vs today'],
+  note:'<b>Compare:</b> <i>He plays tennis</i> (every Sunday) — <i>He is playing tennis</i> (at this moment).'}),
+ ex:[
+  {n:'Choose by context',b:()=>[TASK('Choose the correct tense','Underline the time expression, then circle the correct form.'),
+    B('promptlines',{lines:0,prompts:['1  Sam ( walks / is walking ) to school every day.','2  Listen! Somebody ( sings / is singing ).','3  I ( don\'t drink / am not drinking ) coffee in the evening.','4  She ( stays / is staying ) with friends until Sunday.']})]},
+  {n:'Complete the pairs',b:()=>[TASK('Complete each pair','Use the Present Simple in one gap and the Present Continuous in the other.'),
+    FIB('1a  Julia usually [cycles:cycle] to work.'),FIB('1b  Today she [is taking:take] the bus.'),
+    FIB('2a  We [have:have] lunch at one every day.'),FIB('2b  Sorry, we [are having:have] lunch right now.')]},
+  {n:'Sort the sentences',b:()=>[TASK('Sort the sentences','Write each sentence in the correct column.'),
+    B('sortcols',{cols:[{title:'Present Simple'},{title:'Present Continuous'}]})]},
+  {n:'Now and always',b:()=>[TASK('Write about yourself','Write two sentences with the Simple and two with the Continuous.'),
+    B('promptlines',{lines:1,prompts:['Something you do every day:','Something you are doing this month:','A fact about your family:','Something happening around you now:']})]}
+]},
+{id:'past-simple',name:'Past Simple',
+ theory:T({icon:'📗',title:'Past Simple',
+  form:[{s:'+',x:'I <em>worked</em> · she <em>went</em> · they <em>saw</em>'},{s:'−',x:'I <em>didn\'t work</em> · she <em>didn\'t go</em>'},{s:'?',x:'<em>Did</em> you work? · <em>Did</em> she go?'}],
+  uses:[{r:'Finished actions at a definite past time',x:'We moved here in 2019.'},{r:'A sequence of past events',x:'She opened the door and walked in.'},{r:'Past habits and states',x:'As a child I hated vegetables.'}],
+  words:['yesterday','last week','two years ago','in 2015','then','when I was young'],
+  note:'<b>Watch out:</b> after <b>did</b> / <b>didn\'t</b> use the base form — <i>Did you go?</i> not <s>Did you went?</s>'}),
+ ex:[
+  {n:'Regular or irregular',b:()=>[TASK('Write the past form','Write the Past Simple of each verb.'),
+    B('anagram',{line:true,rows:[{c:'go',a:'went'},{c:'study',a:'studied'},{c:'buy',a:'bought'},{c:'stop',a:'stopped'},{c:'write',a:'wrote'}]})]},
+  {n:'Complete the story',b:()=>[TASK('Complete the story','Put the verbs into the Past Simple.'),
+    FIB('Last summer we [went:go] to Greece.'),FIB('The weather [was:be] perfect and we [swam:swim] every day.'),
+    FIB('We [didn\'t visit:not visit] the museums because it [was:be] too hot.')]},
+  {n:'Ask about the past',b:()=>[TASK('Write questions','Write a Past Simple question for each answer.'),
+    B('promptlines',{lines:1,prompts:['… ?  — I got home at eight.','… ?  — Yes, I enjoyed the concert.','… ?  — We stayed for three nights.']})]},
+  {n:'Your last weekend',b:()=>[TASK('Write about last weekend','Write six sentences about what you did last weekend.'),B('lines',{count:6})]}
+]},
+{id:'past-cont',name:'Past Continuous',
+ theory:T({icon:'⏳',title:'Past Continuous',
+  form:[{s:'+',x:'I / he / she <em>was</em> working · we / they <em>were</em> working'},{s:'−',x:'I <em>wasn\'t</em> working · they <em>weren\'t</em> working'},{s:'?',x:'<em>Was</em> he working? · <em>Were</em> you working?'}],
+  uses:[{r:'An action in progress at a past moment',x:'At nine last night I was reading.'},{r:'A longer action interrupted by a shorter one',x:'I was cooking when the phone rang.'},{r:'Two actions happening together',x:'She was singing while he was driving.'}],
+  words:['while','when','at 8 o\'clock yesterday','all morning','as'],
+  note:'<b>Compare:</b> <i>while</i> + Past Continuous (longer action), <i>when</i> + Past Simple (shorter action).'}),
+ ex:[
+  {n:'Which tense?',b:()=>[TASK('Choose the correct tense','Circle the correct form in each sentence.'),
+    B('promptlines',{lines:0,prompts:['1  I ( watched / was watching ) TV when you called.','2  While she ( cooked / was cooking ), the oven broke.','3  They ( arrived / were arriving ) at six.','4  What ( did you do / were you doing ) at midnight?']})]},
+  {n:'Complete with while / when',b:()=>[TASK('Complete the sentences','Put the verbs into the Past Simple or Past Continuous.'),
+    FIB('1  We [were waiting:wait] for the bus when it [started:start] to rain.'),
+    FIB('2  While I [was walking:walk] home, I [met:meet] an old friend.'),
+    FIB('3  He [was sleeping:sleep] when the alarm [went:go] off.')]},
+  {n:'Interrupted actions',b:()=>[TASK('Join the sentences','Join each pair using <b>when</b> or <b>while</b>.'),
+    B('promptlines',{lines:1,prompts:['I was having a shower. / The doorbell rang.','She was driving home. / She saw an accident.','We were playing outside. / It began to snow.']})]},
+  {n:'Where were you?',b:()=>[TASK('Answer about yourself','Use the Past Continuous in full sentences.'),
+    B('promptlines',{lines:1,prompts:['What were you doing at 8 p.m. yesterday?','What were you doing this time last week?','What was your family doing when you got home?']})]}
+]},
+{id:'pres-perfect',name:'Present Perfect',
+ theory:T({icon:'🔗',title:'Present Perfect',
+  form:[{s:'+',x:'I / you / we / they <em>have</em> seen · he / she <em>has</em> seen'},{s:'−',x:'I <em>haven\'t</em> seen · she <em>hasn\'t</em> seen'},{s:'?',x:'<em>Have</em> you seen? · <em>Has</em> she seen?'}],
+  uses:[{r:'A past action with a result now',x:'I\'ve lost my keys — I can\'t get in.'},{r:'Life experience (time not stated)',x:'She has travelled to twelve countries.'},{r:'Unfinished time up to now',x:'We haven\'t seen him this week.'}],
+  words:['ever','never','already','yet','just','since','for','recently'],
+  note:'<b>Watch out:</b> never use the Present Perfect with a finished past time — <i>I saw him yesterday</i>, not <s>I have seen him yesterday</s>.'}),
+ ex:[
+  {n:'Meaning check',b:()=>[TASK('True or False','Decide whether each statement about the grammar is true or false.'),
+    B('truefalse',{rows:['“I have lost my wallet” means I still don\'t have it.','We use “ago” with the Present Perfect.','“Since” is followed by a point in time (since 2020).','“For” is followed by a period of time (for three years).'],correct:[true,false,true,true]})]},
+  {n:'since or for',b:()=>[TASK('Complete with since or for','Write <b>since</b> or <b>for</b> in each gap.'),
+    FIB('1  We have lived here [for] six years.'),FIB('2  I haven\'t seen her [since] March.'),
+    FIB('3  He has worked there [since] he left school.'),FIB('4  They have been married [for] a long time.')]},
+  {n:'already / yet / just',b:()=>[TASK('Complete the sentences','Put the verb into the Present Perfect and add already, yet or just.'),
+    FIB('1  I [have already finished:already finish] my homework.'),
+    FIB('2  [Have:have] you called the doctor yet?'),
+    FIB('3  She [has just left:just leave] the office.')]},
+  {n:'Life experience',b:()=>[TASK('Write about your experience','Write true sentences about yourself.'),
+    B('promptlines',{lines:1,prompts:['I have never …','I have already … today.','I have been to …','I haven\'t … yet.']})]}
+]},
+{id:'pp-vs-past',name:'Present Perfect vs Past Simple',
+ theory:T({icon:'⚖️',title:'Present Perfect or Past Simple?',
+  form:[{s:'PP',x:'I <em>have visited</em> Rome. (when? — not important)'},{s:'PS',x:'I <em>visited</em> Rome in 2018. (finished time)'}],
+  uses:[{r:'Present Perfect — the time is open or unfinished',x:'I have seen that film. / We have finished today.'},{r:'Past Simple — the time is finished and known',x:'I saw that film last night.'},{r:'A typical pattern: start with PP, continue with PS',x:'I\'ve been to Japan. I went there in 2019.'}],
+  words:['PP: ever, never, yet, already, so far','PS: yesterday, ago, last year, in 2020, when'],
+  note:'<b>Key question:</b> is the time period finished? Finished → Past Simple. Still open → Present Perfect.'}),
+ ex:[
+  {n:'Choose and explain',b:()=>[TASK('Choose the correct tense','Circle the correct form and be ready to explain your choice.'),
+    B('promptlines',{lines:0,prompts:['1  I ( lost / have lost ) my phone — I can\'t call anyone!','2  We ( visited / have visited ) Paris last spring.','3  ( Did you ever eat / Have you ever eaten ) sushi?','4  She ( didn\'t come / hasn\'t come ) to work yesterday.']})]},
+  {n:'Complete the pairs',b:()=>[TASK('Complete the sentences','Use the Present Perfect or the Past Simple.'),
+    FIB('1a  I [have finished:finish] the report. Here it is.'),FIB('1b  I [finished:finish] the report on Monday.'),
+    FIB('2a  She [has lived:live] in Spain since 2020.'),FIB('2b  She [lived:live] in Spain for two years, then moved.')]},
+  {n:'Sort by tense',b:()=>[TASK('Sort the time expressions','Write each time expression in the correct column.'),
+    B('wordbank',{title:'Time expressions',words:['yesterday','ever','last week','since 2020','ago','already','so far','in 2019']}),
+    B('sortcols',{cols:[{title:'Present Perfect'},{title:'Past Simple'}]})]},
+  {n:'Experience + detail',b:()=>[TASK('Two sentences each','Write one Present Perfect sentence, then add a Past Simple detail.'),
+    B('promptlines',{lines:2,prompts:['a country you have visited','a famous person you have met or seen','an interesting thing you have tried']})]}
+]},
+{id:'pp-cont',name:'Present Perfect Continuous',
+ theory:T({icon:'🔁',title:'Present Perfect Continuous',
+  form:[{s:'+',x:'I <em>have been</em> waiting · he <em>has been</em> waiting'},{s:'−',x:'I <em>haven\'t been</em> waiting'},{s:'?',x:'<em>How long have</em> you <em>been</em> waiting?'}],
+  uses:[{r:'An action that started in the past and still continues',x:'I\'ve been studying English for five years.'},{r:'A recent action with a visible result',x:'She\'s tired — she\'s been running.'},{r:'Emphasis on the duration, not the result',x:'They\'ve been working all morning.'}],
+  words:['for','since','how long','all day','lately','recently'],
+  note:'<b>Compare:</b> <i>I\'ve painted the room</i> (finished, result) — <i>I\'ve been painting the room</i> (duration, maybe unfinished).'}),
+ ex:[
+  {n:'Which form?',b:()=>[TASK('Choose the correct form','Circle the better option.'),
+    B('promptlines',{lines:0,prompts:['1  I ( have read / have been reading ) this book for a month.','2  She ( has written / has been writing ) three emails.','3  How long ( have you learnt / have you been learning ) Spanish?','4  He ( has fixed / has been fixing ) the car — it works now.']})]},
+  {n:'Complete with how long',b:()=>[TASK('Complete the sentences','Use the Present Perfect Continuous.'),
+    FIB('1  We [have been waiting:wait] here for an hour.'),
+    FIB('2  How long [have:have] you been living in this city?'),
+    FIB('3  They [have been working:work] on the project since Monday.')]},
+  {n:'Explain the situation',b:()=>[TASK('Why?','Explain each situation using the Present Perfect Continuous.'),
+    B('promptlines',{lines:1,prompts:['Her hands are covered in flour.','His eyes are red and tired.','The garden looks beautiful now.']})]},
+  {n:'How long?',b:()=>[TASK('Write about yourself','Answer with for or since.'),
+    B('promptlines',{lines:1,prompts:['How long have you been learning English?','How long have you been living in your home?','What have you been doing a lot lately?']})]}
+]},
+{id:'past-perfect',name:'Past Perfect',
+ theory:T({icon:'⏮️',title:'Past Perfect',
+  form:[{s:'+',x:'I / she / they <em>had</em> left'},{s:'−',x:'I <em>hadn\'t</em> left'},{s:'?',x:'<em>Had</em> you left?'}],
+  uses:[{r:'An action before another past action',x:'When I arrived, the film had already started.'},{r:'Explaining a past cause',x:'She was upset because she had failed the test.'},{r:'In reported speech (past of the Past Simple)',x:'He said he had seen the email.'}],
+  words:['already','just','never','before','after','by the time','when'],
+  note:'<b>Order matters:</b> the Past Perfect marks the <b>earlier</b> action; the Past Simple marks the later one.'}),
+ ex:[
+  {n:'Which happened first?',b:()=>[TASK('Which action came first?','Read each sentence and underline the action that happened first.'),
+    B('promptlines',{lines:0,prompts:['1  When we got to the station, the train had left.','2  She had finished dinner before he arrived.','3  I couldn\'t enter because I had lost my key.']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Use the Past Perfect or the Past Simple.'),
+    FIB('1  By the time we arrived, they [had eaten:eat] everything.'),
+    FIB('2  He [didn\'t recognise:not recognise] her because she [had changed:change] a lot.'),
+    FIB('3  After she [had sent:send] the message, she felt better.')]},
+  {n:'Join the events',b:()=>[TASK('Join the sentences','Join each pair with <b>when</b>, <b>after</b> or <b>because</b> and the Past Perfect.'),
+    B('promptlines',{lines:1,prompts:['I lost my ticket. / I couldn\'t get on the train.','She studied hard. / She passed the exam easily.','They left the cinema. / The film ended.']})]},
+  {n:'Tell a story',b:()=>[TASK('Write a short story','Write about a day when something went wrong. Use the Past Perfect at least twice.'),B('lines',{count:7})]}
+]},
+{id:'future-will',name:'Future: will',
+ theory:T({icon:'🔮',title:'Future with will',
+  form:[{s:'+',x:'I <em>will</em> (\'ll) help you.'},{s:'−',x:'I <em>won\'t</em> tell anyone.'},{s:'?',x:'<em>Will</em> you come with me?'}],
+  uses:[{r:'A decision made at the moment of speaking',x:'It\'s cold — I\'ll close the window.'},{r:'Predictions and opinions about the future',x:'I think she will win.'},{r:'Promises, offers and refusals',x:'I\'ll call you tonight, I promise.'}],
+  words:['I think','probably','maybe','perhaps','definitely','in the future'],
+  note:'<b>Watch out:</b> after <b>will</b> always use the base form — <i>will go</i>, not <s>will to go</s> or <s>will goes</s>.'}),
+ ex:[
+  {n:'Prediction or decision?',b:()=>[TASK('Why is will used?','Match each sentence with its function.'),
+    B('match',{left:['I\'ll get you a glass of water.','Robots will do most jobs one day.','I promise I won\'t be late.','I\'ll have the soup, please.'],right:['a promise','an instant decision (ordering)','an offer','a prediction']})]},
+  {n:'Complete with will',b:()=>[TASK('Complete the sentences','Use will or won\'t and the verb in brackets.'),
+    FIB('1  Don\'t worry, I [will help:help] you with the boxes.'),
+    FIB('2  I think it [will rain:rain] tomorrow.'),
+    FIB('3  She [won\'t come:not come] — she\'s very busy.')]},
+  {n:'Offers and promises',b:()=>[TASK('Respond with will','Write a suitable response using will.'),
+    B('promptlines',{lines:1,prompts:['“I\'m really thirsty.”','“This bag is so heavy!”','“I don\'t understand this exercise.”']})]},
+  {n:'The future',b:()=>[TASK('Your predictions','Write five predictions about life in 2050.'),B('lines',{count:5})]}
+]},
+{id:'future-going',name:'Future: going to & arrangements',
+ theory:T({icon:'🗓️',title:'going to · Present Continuous',
+  form:[{s:'G',x:'I <em>am going to</em> study medicine.'},{s:'C',x:'I <em>am meeting</em> Sara at six.'},{s:'W',x:'I think it <em>will</em> be fine.'}],
+  uses:[{r:'going to — an intention or plan already decided',x:'We\'re going to buy a new car.'},{r:'going to — a prediction from present evidence',x:'Look at those clouds! It\'s going to rain.'},{r:'Present Continuous — a fixed arrangement with a time',x:'I\'m flying to Rome on Tuesday.'}],
+  words:['tomorrow','next week','tonight','on Friday','soon','this evening'],
+  note:'<b>Compare:</b> <i>I\'ll help you</i> (decided now) — <i>I\'m going to help him</i> (decided before).'}),
+ ex:[
+  {n:'will or going to',b:()=>[TASK('Choose the correct form','Circle will or going to.'),
+    B('promptlines',{lines:0,prompts:['1  A: The phone is ringing.  B: I ( \'ll / \'m going to ) answer it.','2  We ( \'ll / \'re going to ) paint the kitchen — we bought the paint.','3  Careful! You ( \'ll / \'re going to ) drop those plates.','4  I think she ( \'ll / \'s going to ) like the present.']})]},
+  {n:'Complete the plans',b:()=>[TASK('Complete the sentences','Use going to and the verb in brackets.'),
+    FIB('1  They [are going to move:move] house next month.'),
+    FIB('2  I [am not going to watch:not watch] TV tonight.'),
+    FIB('3  What [are:be] you going to do after school?')]},
+  {n:'My diary',b:()=>[TASK('Your arrangements','Write four fixed arrangements using the Present Continuous.'),
+    B('table',{rowsN:5,colsN:2,head:true,data:[['Day','What I am doing'],['Monday',''],['Wednesday',''],['Friday',''],['Sunday','']]})]},
+  {n:'Plans and intentions',b:()=>[TASK('Write about your plans','Answer in full sentences with going to.'),
+    B('promptlines',{lines:1,prompts:['What are you going to do this weekend?','What are you going to study or learn next?','Where are you going to travel one day?']})]}
+]},
+{id:'modals-ability',name:'Modals: ability',
+ theory:T({icon:'💪',title:'can · could · be able to',
+  form:[{s:'+',x:'I <em>can</em> swim. · I <em>could</em> swim at five. · I <em>was able to</em> escape.'},{s:'−',x:'I <em>can\'t</em> drive. · She <em>couldn\'t</em> come.'},{s:'?',x:'<em>Can</em> you help? · <em>Could</em> you repeat that?'}],
+  uses:[{r:'can — present ability or possibility',x:'She can speak four languages.'},{r:'could — general past ability',x:'I could read before I started school.'},{r:'was/were able to — one successful action in the past',x:'The door was stuck, but I was able to open it.'},{r:'could — polite requests',x:'Could you pass me the salt?'}],
+  words:['can','can\'t','could','couldn\'t','be able to','manage to'],
+  note:'<b>Watch out:</b> modals take the base form and never add -s — <i>She can go</i>, not <s>She cans go</s>.'}),
+ ex:[
+  {n:'can or could',b:()=>[TASK('Choose the correct modal','Circle the correct option.'),
+    B('promptlines',{lines:0,prompts:['1  When I was six I ( can / could ) ride a bike.','2  ( Can / Could ) you help me tomorrow?','3  The exam was hard, but she ( could / was able to ) finish it.','4  I ( can\'t / couldn\'t ) come to the party last night.']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Use can, can\'t, could, couldn\'t or was/were able to.'),
+    FIB('1  Sorry, I [can\'t] hear you — the line is bad.'),
+    FIB('2  My grandmother [could] speak three languages.'),
+    FIB('3  After the storm, we [were able to] reach the village.')]},
+  {n:'Polite requests',b:()=>[TASK('Make polite requests','Rewrite each request politely with could.'),
+    B('promptlines',{lines:1,prompts:['Open the window.','Tell me the time.','Explain this word.']})]},
+  {n:'Then and now',b:()=>[TASK('Write about your abilities','Compare what you could do as a child and what you can do now.'),
+    B('table',{rowsN:4,colsN:2,head:true,data:[['When I was a child I could…','Now I can…'],['',''],['','']]})]}
+]},
+{id:'modals-obligation',name:'Modals: obligation & advice',
+ theory:T({icon:'⚠️',title:'must · have to · should',
+  form:[{s:'+',x:'You <em>must</em> stop. · I <em>have to</em> work. · You <em>should</em> rest.'},{s:'−',x:'You <em>mustn\'t</em> smoke. · I <em>don\'t have to</em> work.'},{s:'?',x:'<em>Do</em> you <em>have to</em> go? · <em>Should</em> I call her?'}],
+  uses:[{r:'must — strong obligation from the speaker',x:'I must finish this tonight.'},{r:'have to — obligation from rules or outside',x:'Nurses have to wear a uniform.'},{r:'should / shouldn\'t — advice',x:'You should see a doctor.'}],
+  words:['must','mustn\'t','have to','don\'t have to','should','ought to','need to'],
+  note:'<b>Important difference:</b> <i>mustn\'t</i> = it is forbidden · <i>don\'t have to</i> = it is not necessary.'}),
+ ex:[
+  {n:'mustn\'t or don\'t have to',b:()=>[TASK('Choose the correct form','Circle mustn\'t or don\'t have to.'),
+    B('promptlines',{lines:0,prompts:['1  You ( mustn\'t / don\'t have to ) touch that — it\'s dangerous.','2  It\'s Sunday, so we ( mustn\'t / don\'t have to ) get up early.','3  Students ( mustn\'t / don\'t have to ) use phones in the exam.','4  The ticket is free — you ( mustn\'t / don\'t have to ) pay.']})]},
+  {n:'Complete with the right modal',b:()=>[TASK('Complete the sentences','Write must, mustn\'t, have to, don\'t have to or should.'),
+    FIB('1  Drivers [must] stop at a red light.'),
+    FIB('2  You [mustn\'t] use your phone while driving.'),
+    FIB('3  It\'s Saturday — I [don\'t have to] get up early.'),
+    FIB('4  You look ill. You [should] go home and rest.'),
+    FIB('5  In my job I [have to] wear a uniform.')]},
+  {n:'Give advice',b:()=>[TASK('Give advice','Write advice with should or shouldn\'t.'),
+    B('promptlines',{lines:1,prompts:['“I have a terrible headache.”','“I want to improve my English.”','“I\'m always tired in the morning.”']})]},
+  {n:'Rules',b:()=>[TASK('Write the rules','Write four rules for your school or workplace using must / mustn\'t / have to.'),B('lines',{count:4})]},
+  {n:'Your obligations',b:()=>[TASK('True for you','Complete the sentences about your life.'),
+    B('promptlines',{lines:1,prompts:['Every day I have to …','At home I don\'t have to …','I think students should …']})]}
+]},
+{id:'conditionals-01',name:'Zero & First Conditional',
+ theory:T({icon:'🔀',title:'Zero & First Conditional',
+  form:[{s:'0',x:'If you <em>heat</em> ice, it <em>melts</em>. (if + present, present)'},{s:'1',x:'If it <em>rains</em>, we <em>will stay</em> in. (if + present, will + verb)'}],
+  uses:[{r:'Zero — facts that are always true',x:'If you don\'t water plants, they die.'},{r:'First — a real, possible future situation',x:'If I finish early, I\'ll call you.'},{r:'unless = if not',x:'We\'ll go unless it rains.'}],
+  words:['if','unless','when','as soon as','in case','until'],
+  note:'<b>Watch out:</b> never use <i>will</i> after <b>if</b> — <i>If it rains…</i>, not <s>If it will rain…</s>'}),
+ ex:[
+  {n:'Match the halves',b:()=>[TASK('Match the halves','Match the beginning of each sentence with the correct ending.'),
+    B('match',{left:['If you mix blue and yellow,','If we leave now,','If you don\'t hurry,','If I see him,'],right:['we\'ll catch the train.','I\'ll give him your message.','you get green.','you\'ll miss the bus.']})]},
+  {n:'Complete the conditionals',b:()=>[TASK('Complete the sentences','Put the verbs into the correct form.'),
+    FIB('1  If you [heat:heat] water to 100°C, it boils.'),
+    FIB('2  If she [studies:study] hard, she [will pass:pass] the exam.'),
+    FIB('3  We [won\'t go:not go] out if the weather [is:be] bad.')]},
+  {n:'Chain conditionals',b:()=>[TASK('Continue the chain','Finish each sentence, then start the next one with your ending.'),
+    B('promptlines',{lines:1,prompts:['If I have free time tomorrow, …','If I …, I will …','If …']})]},
+  {n:'Real possibilities',b:()=>[TASK('True for you','Complete each sentence so it is true about your life.'),
+    B('promptlines',{lines:1,prompts:['If I have enough money this year, …','If the weather is good at the weekend, …','I won\'t be happy unless …']})]}
+]},
+{id:'conditional-2',name:'Second Conditional',
+ theory:T({icon:'💭',title:'Second Conditional',
+  form:[{s:'2',x:'If I <em>had</em> more time, I <em>would</em> travel. (if + past, would + verb)'},{s:'?',x:'What <em>would</em> you do if you <em>won</em> the lottery?'}],
+  uses:[{r:'Imaginary or unlikely present/future situations',x:'If I were you, I would accept the job.'},{r:'Dreams and hypotheses',x:'If we lived by the sea, I\'d swim every day.'},{r:'Giving advice with "If I were you…"',x:'If I were you, I\'d apologise.'}],
+  words:['would','wouldn\'t','could','might','if I were you','imagine'],
+  note:'<b>Note:</b> with <i>I / he / she / it</i> we often use <b>were</b>, not <i>was</i> — <i>If I were rich…</i>'}),
+ ex:[
+  {n:'First or second?',b:()=>[TASK('Real or imaginary?','Decide whether each sentence is a real possibility (1st) or imaginary (2nd).'),
+    B('truefalse',{tlabel:'1st',flabel:'2nd',rows:['If it rains tomorrow, we\'ll take a taxi.','If I had wings, I would fly to school.','If she calls, I\'ll tell her the news.','If I spoke Japanese, I would live in Tokyo.'],correct:[true,false,true,false]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Put the verbs into the Second Conditional.'),
+    FIB('1  If I [had:have] a car, I [would drive:drive] to work.'),
+    FIB('2  If she [were:be] taller, she [could play:can play] basketball.'),
+    FIB('3  What [would:will] you do if you [lost:lose] your passport?')]},
+  {n:'If I were you',b:()=>[TASK('Give advice','Give advice with “If I were you, I would…”.'),
+    B('promptlines',{lines:1,prompts:['“I can\'t sleep at night.”','“My friend never answers my messages.”','“I want to change my job.”']})]},
+  {n:'What would you do?',b:()=>[B('speaking',{icon:'🎭',title:'What would you do if…?',prompts:['…you found a bag with a lot of money in the street?','…you could live in any country in the world?','…you met your favourite actor or singer?','…you could change one thing about your town?']})]}
+]},
+{id:'passive',name:'Passive Voice',
+ theory:T({icon:'🔄',title:'The Passive',
+  form:[{s:'P',x:'The letter <em>is written</em> · <em>was written</em> · <em>will be written</em>'},{s:'−',x:'The room <em>isn\'t cleaned</em> every day.'},{s:'?',x:'<em>Was</em> the house <em>built</em> in 1990?'}],
+  uses:[{r:'The action matters more than the doer',x:'This bridge was built in 1885.'},{r:'The doer is unknown or obvious',x:'My bike has been stolen.'},{r:'Adding the doer with "by"',x:'The song was written by Lennon.'}],
+  words:['by','be + past participle','is made','was built','has been done'],
+  note:'<b>Formula:</b> the correct form of <b>be</b> + <b>past participle</b>. Only verbs with an object can be passive.'}),
+ ex:[
+  {n:'Active or passive?',b:()=>[TASK('Active or passive?','Decide whether each sentence is active or passive.'),
+    B('truefalse',{tlabel:'A',flabel:'P',rows:['They built the school in 1998.','The school was built in 1998.','Someone has taken my umbrella.','My umbrella has been taken.'],correct:[true,false,true,false]})]},
+  {n:'Complete the passive',b:()=>[TASK('Complete the sentences','Put the verb into the correct passive form.'),
+    FIB('1  This bridge [was built:build] two hundred years ago.'),
+    FIB('2  Coffee [is grown:grow] in Brazil.'),
+    FIB('3  The report [will be finished:finish] tomorrow.'),
+    FIB('4  My car [has been repaired:repair] already.')]},
+  {n:'Rewrite in the passive',b:()=>[TASK('Rewrite the sentences','Change each sentence from active to passive.'),
+    B('promptlines',{lines:1,prompts:['Shakespeare wrote this play.','They are building a new hospital.','Someone has broken the window.','The company will announce the results.']})]},
+  {n:'Famous things',b:()=>[TASK('Write passive sentences','Write about famous things using the passive.'),
+    B('promptlines',{lines:1,prompts:['a building in your country (when / build)','a food from your region (how / make)','a famous book or song (who / write / by)']})]}
+]},
+{id:'reported',name:'Reported Speech',
+ theory:T({icon:'💬',title:'Reported Speech',
+  form:[{s:'"',x:'“I <em>am</em> tired,” she said.'},{s:'→',x:'She said (that) she <em>was</em> tired.'},{s:'?',x:'He asked <em>if</em> I <em>had</em> finished.'}],
+  uses:[{r:'Tenses usually shift one step back',x:'am → was · work → worked · will → would'},{r:'Pronouns and time words change',x:'“I\'ll come tomorrow” → He said he would come the next day.'},{r:'Questions become statements in word order',x:'“Where do you live?” → She asked where I lived.'}],
+  words:['said','told','asked','if / whether','that','the day before'],
+  note:'<b>Watch out:</b> in reported questions there is no <i>do/does/did</i> and no question mark — <i>He asked where she worked.</i>'}),
+ ex:[
+  {n:'Match the changes',b:()=>[TASK('Match the tense changes','Match each direct form with its reported form.'),
+    B('match',{left:['am / is','will','can','Present Simple'],right:['could','Past Simple','was / were','would']})]},
+  {n:'Complete the reported sentence',b:()=>[TASK('Complete the sentences','Put the verb into the correct reported form.'),
+    FIB('1  “I am busy.” → He said he [was] busy.'),
+    FIB('2  “We will help.” → They said they [would] help.'),
+    FIB('3  “I can\'t come.” → She said she [couldn\'t] come.'),
+    FIB('4  “I have finished.” → He said he [had] finished.'),
+    FIB('5  “Do you live here?” → She asked [if] I lived there.')]},
+  {n:'Report the statements',b:()=>[TASK('Report the sentences','Rewrite each sentence in reported speech.'),
+    B('promptlines',{lines:1,prompts:['“I am very busy today,” he said.','“We will call you tomorrow,” they said.','“I can\'t swim,” she admitted.','“I have finished my work,” he told me.']})]},
+  {n:'Report the questions',b:()=>[TASK('Report the questions','Rewrite each question in reported speech.'),
+    B('promptlines',{lines:1,prompts:['“Where do you live?” she asked.','“Have you seen my keys?” he asked.','“Are you coming with us?” they asked.']})]},
+  {n:'A conversation',b:()=>[TASK('Report a conversation','Think of a real conversation you had this week and report five sentences from it.'),B('lines',{count:6})]}
+]},
+{id:'relative',name:'Relative Clauses',
+ theory:T({icon:'🔗',title:'Relative Clauses',
+  form:[{s:'who',x:'the woman <em>who</em> lives next door (people)'},{s:'which',x:'the book <em>which</em> won the prize (things)'},{s:'that',x:'the film <em>that</em> we saw (people or things)'},{s:'where',x:'the town <em>where</em> I grew up (places)'}],
+  uses:[{r:'Defining — gives essential information, no commas',x:'The man who called you is my boss.'},{r:'Non-defining — extra information, with commas',x:'My brother, who lives in Rome, is a chef.'},{r:'whose = possession',x:'That\'s the girl whose father is a pilot.'}],
+  words:['who','which','that','where','when','whose'],
+  note:'<b>Watch out:</b> don\'t repeat the subject — <i>The man who called me</i>, not <s>The man who he called me</s>.'}),
+ ex:[
+  {n:'Choose the pronoun',b:()=>[TASK('Choose the correct pronoun','Circle who, which, where or whose.'),
+    B('promptlines',{lines:0,prompts:['1  That\'s the teacher ( who / which ) taught my sister.','2  This is the café ( which / where ) we first met.','3  I have a friend ( whose / who\'s ) mother is a doctor.','4  The phone ( who / that ) I bought is very fast.']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete with a relative pronoun','Write who, which, that, where or whose.'),
+    FIB('1  A dentist is a person [who] takes care of your teeth.'),
+    FIB('2  A greenhouse is a place [where] plants grow.'),
+    FIB('3  I met a man [whose] son plays for the national team.')]},
+  {n:'Join the sentences',b:()=>[TASK('Join the sentences','Join each pair using a relative pronoun.'),
+    B('promptlines',{lines:1,prompts:['I read a book. It changed my life.','She has a friend. His brother is famous.','That\'s the hotel. We stayed there last year.']})]},
+  {n:'Define the words',b:()=>[TASK('Write definitions','Define each word using a relative clause: “It\'s a thing/place/person that…”.'),
+    B('promptlines',{lines:1,prompts:['a library','a vet','an umbrella','a passport']})]}
+]},
+{id:'gerund-inf',name:'Gerund & Infinitive',
+ theory:T({icon:'🎯',title:'-ing or to + verb?',
+  form:[{s:'-ing',x:'I enjoy <em>reading</em>. · I\'m good at <em>cooking</em>.'},{s:'to',x:'I want <em>to go</em>. · She decided <em>to stay</em>.'},{s:'both',x:'It started <em>raining</em> / <em>to rain</em>.'}],
+  uses:[{r:'-ing after certain verbs',x:'enjoy, finish, avoid, mind, suggest, keep'},{r:'-ing after prepositions',x:'She left without saying goodbye.'},{r:'to + verb after certain verbs',x:'want, decide, hope, promise, learn, need'},{r:'to + verb to express purpose',x:'I went out to buy some milk.'}],
+  words:['enjoy + ing','want + to','good at + ing','decide + to','avoid + ing'],
+  note:'<b>Watch out:</b> after a preposition always use <b>-ing</b> — <i>interested in learning</i>, not <s>interested in to learn</s>.'}),
+ ex:[
+  {n:'Sort the verbs',b:()=>[TASK('Sort the verbs','Write each verb in the correct column.'),
+    B('wordbank',{title:'Verbs',words:['enjoy','want','decide','avoid','hope','finish','promise','suggest']}),
+    B('sortcols',{cols:[{title:'+ -ing'},{title:'+ to + verb'}]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Use the -ing form or to + verb.'),
+    FIB('1  She enjoys [swimming:swim] in the sea.'),
+    FIB('2  We decided [to leave:leave] early.'),
+    FIB('3  He\'s very good at [drawing:draw].'),
+    FIB('4  I need [to finish:finish] this report today.')]},
+  {n:'Why did you do it?',b:()=>[TASK('Explain the purpose','Answer using to + verb.'),
+    B('promptlines',{lines:1,prompts:['Why did you go to the shop?','Why do you study English?','Why did she call you?']})]},
+  {n:'About you',b:()=>[TASK('True for you','Complete the sentences about yourself.'),
+    B('promptlines',{lines:1,prompts:['I really enjoy …','I want … next year.','I\'m quite good at …','I\'ve decided …']})]}
+]},
+{id:'comparatives',name:'Comparatives & Superlatives',
+ theory:T({icon:'📊',title:'Comparatives & Superlatives',
+  form:[{s:'-er',x:'old → old<em>er</em> → the old<em>est</em>'},{s:'more',x:'expensive → <em>more</em> expensive → <em>the most</em> expensive'},{s:'≠',x:'good → <em>better</em> → <em>the best</em> · bad → <em>worse</em> → <em>the worst</em>'}],
+  uses:[{r:'Comparing two things with than',x:'This bag is cheaper than that one.'},{r:'Superlative for the top of a group',x:'It\'s the tallest building in the city.'},{r:'as … as for equality',x:'She is as tall as her brother.'}],
+  words:['than','the most','as … as','a bit','much','far'],
+  note:'<b>Watch out:</b> one syllable → <b>-er/-est</b>; three or more → <b>more/most</b>. Never both: <s>more cheaper</s>.'}),
+ ex:[
+  {n:'Write the forms',b:()=>[TASK('Complete the table','Write the comparative and superlative forms.'),
+    B('table',{rowsN:6,colsN:3,head:true,data:[['Adjective','Comparative','Superlative'],['big','',''],['interesting','',''],['good','',''],['happy','',''],['far','','']]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Use the correct comparative or superlative.'),
+    FIB('1  Today is [hotter:hot] than yesterday.'),
+    FIB('2  It\'s [the most beautiful:beautiful] place I\'ve ever seen.'),
+    FIB('3  My new phone is [better:good] than my old one.'),
+    FIB('4  He isn\'t as [tall:tall] as his father.')]},
+  {n:'Compare them',b:()=>[TASK('Compare the pairs','Write two sentences comparing each pair.'),
+    B('promptlines',{lines:2,prompts:['cats and dogs','living in a city and living in a village','summer and winter']})]},
+  {n:'The most…',b:()=>[TASK('Your superlatives','Answer with a superlative and give a reason.'),
+    B('promptlines',{lines:1,prompts:['the best film you have ever seen','the most difficult subject at school','the most beautiful place in your country']})]}
+]},
+{id:'articles',name:'Articles: a / an / the',
+ theory:T({icon:'📄',title:'a · an · the · —',
+  form:[{s:'a/an',x:'<em>a</em> book · <em>an</em> apple (one of many, first mention)'},{s:'the',x:'<em>the</em> book on the table (we both know which)'},{s:'—',x:'I like <em>—</em> music. · <em>—</em> Dogs are friendly. (general)'}],
+  uses:[{r:'a / an — first mention, one of many',x:'I saw a cat in the garden.'},{r:'the — mentioned before, or unique',x:'The cat was black. / the sun, the internet'},{r:'no article — plurals and uncountables in general',x:'Children love chocolate.'}],
+  words:['a','an','the','no article','first mention','second mention'],
+  note:'<b>Tip:</b> use <b>an</b> before a vowel <i>sound</i> — <i>an hour</i>, but <i>a university</i>.'}),
+ ex:[
+  {n:'a, an or the',b:()=>[TASK('Complete with a, an or the','Write a, an, the or — (no article).'),
+    FIB('1  I bought [a] new laptop yesterday.'),
+    FIB('2  [The] laptop I bought is very light.'),
+    FIB('3  She waited for [an] hour.'),
+    FIB('4  I love [—] Italian food.')]},
+  {n:'Correct the mistakes',b:()=>[TASK('Find and correct the mistake','Each sentence has one article mistake. Rewrite it correctly.'),
+    B('promptlines',{lines:1,prompts:['I want to be a engineer.','The music makes me happy.','She plays a piano very well.','I go to the school by bus.']})]},
+  {n:'Complete the story',b:()=>[TASK('Complete the text','Fill each gap with a, an, the or — .'),
+    B('text',{reading:true,html:'Yesterday I saw ___ dog in ___ park. ___ dog was very friendly. I gave it ___ sandwich, and then ___ owner arrived.'})]},
+  {n:'Describe your room',b:()=>[TASK('Describe your room','Write six sentences. Use a/an for new things and the for things you mention again.'),B('lines',{count:6})]}
+]},
+{id:'quantifiers',name:'Quantifiers',
+ theory:T({icon:'🔢',title:'some · any · much · many',
+  form:[{s:'C',x:'countable: <em>many</em> books · a <em>few</em> books · <em>How many</em>?'},{s:'U',x:'uncountable: <em>much</em> water · a <em>little</em> water · <em>How much</em>?'},{s:'±',x:'<em>some</em> (+) · <em>any</em> (− and ?) · <em>a lot of</em> (both)'}],
+  uses:[{r:'some — positive sentences and offers',x:'I\'ve got some questions. / Would you like some tea?'},{r:'any — negatives and questions',x:'We haven\'t got any milk. / Have you got any brothers?'},{r:'a few / a little — a small amount',x:'a few friends · a little sugar'}],
+  words:['some','any','much','many','a lot of','a few','a little','enough'],
+  note:'<b>Watch out:</b> <i>much</i> is mostly used in negatives and questions — in positives prefer <b>a lot of</b>.'}),
+ ex:[
+  {n:'Countable or uncountable',b:()=>[TASK('Sort the nouns','Write each noun in the correct column.'),
+    B('wordbank',{title:'Nouns',words:['bread','apple','water','chair','money','idea','rice','book']}),
+    B('sortcols',{cols:[{title:'Countable'},{title:'Uncountable'}]})]},
+  {n:'some or any',b:()=>[TASK('Complete with some or any','Write some or any in each gap.'),
+    FIB('1  There are [some] eggs in the fridge.'),
+    FIB('2  We don\'t have [any] sugar left.'),
+    FIB('3  Have you got [any] questions?'),
+    FIB('4  Would you like [some] coffee?')]},
+  {n:'much, many, a lot of',b:()=>[TASK('Complete the sentences','Use much, many, a few or a little.'),
+    FIB('1  How [many] students are there in your class?'),
+    FIB('2  I don\'t drink [much] coffee.'),
+    FIB('3  There are [a few] chairs in the room.')]},
+  {n:'In your fridge',b:()=>[TASK('What have you got?','Write about the food in your kitchen using quantifiers.'),B('lines',{count:5})]}
+]},
+{id:'used-to',name:'used to',
+ theory:T({icon:'⏪',title:'used to',
+  form:[{s:'+',x:'I <em>used to</em> play football.'},{s:'−',x:'I <em>didn\'t use to</em> like coffee.'},{s:'?',x:'<em>Did</em> you <em>use to</em> live here?'}],
+  uses:[{r:'Past habits that are finished',x:'We used to walk to school every day.'},{r:'Past states that are no longer true',x:'She used to have long hair.'},{r:'Contrast with now',x:'I used to hate reading, but now I love it.'}],
+  words:['used to','didn\'t use to','when I was younger','in those days','no longer'],
+  note:'<b>Watch out:</b> in negatives and questions there is no -d — <i>didn\'t use to</i>, not <s>didn\'t used to</s>.'}),
+ ex:[
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Use used to or didn\'t use to.'),
+    FIB('1  I [used to] believe in magic when I was little.'),
+    FIB('2  She [didn\'t use to] enjoy sport, but now she runs every day.'),
+    FIB('3  [Did] you use to have a pet?')]},
+  {n:'Then and now',b:()=>[TASK('Write the contrast','Write a sentence with used to and one about now.'),
+    B('table',{rowsN:4,colsN:2,head:true,data:[['I used to…','Now I…'],['',''],['','']]})]},
+  {n:'Childhood',b:()=>[TASK('Your childhood','Write five sentences about your childhood using used to.'),B('lines',{count:5})]},
+  {n:'Talk about the past',b:()=>[B('speaking',{icon:'💬',title:'How life has changed',prompts:['What did you use to do that you don\'t do now?','How did people use to communicate before mobile phones?','What used to be your favourite game or programme?']})]}
+]},
+{id:'questions',name:'Question forms & tags',
+ theory:T({icon:'❓',title:'Questions & question tags',
+  form:[{s:'?',x:'<em>Do</em> you like it? · <em>Where did</em> she go?'},{s:'S',x:'<em>Who</em> broke the window? (subject — no do)'},{s:'tag',x:'You\'re Spanish, <em>aren\'t you</em>? · She didn\'t call, <em>did she</em>?'}],
+  uses:[{r:'Word order: (question word) + auxiliary + subject + verb',x:'Where do you live?'},{r:'Subject questions need no auxiliary',x:'Who called you? / What happened?'},{r:'Question tags: positive sentence → negative tag',x:'It\'s cold today, isn\'t it?'}],
+  words:['who','what','where','when','why','how','how long','how often'],
+  note:'<b>Watch out:</b> no <i>do</i> in subject questions — <i>Who wrote it?</i>, not <s>Who did write it?</s>'}),
+ ex:[
+  {n:'Word order',b:()=>[TASK('Put the words in order','Rearrange the words to make correct questions.'),
+    B('anagram',{line:true,rows:[{c:'you / where / do / live',a:'Where do you live?'},{c:'she / did / what / say',a:'What did she say?'},{c:'often / how / you / do / travel',a:'How often do you travel?'}]})]},
+  {n:'Add the question tag',b:()=>[TASK('Complete the tags','Write the correct question tag.'),
+    FIB('1  You\'re from Italy, [aren\'t you]?'),
+    FIB('2  She didn\'t call you, [did she]?'),
+    FIB('3  They\'ve finished, [haven\'t they]?'),
+    FIB('4  It isn\'t very warm, [is it]?')]},
+  {n:'Write the questions',b:()=>[TASK('Write the question','Write a question for each answer.'),
+    B('promptlines',{lines:1,prompts:['… ?  — I live in Yerevan.','… ?  — Because I missed the bus.','… ?  — About twice a week.','… ?  — My sister broke it.']})]},
+  {n:'Interview a partner',b:()=>[TASK('Class interview','Write five questions, then ask a partner and note the answers.'),
+    B('table',{rowsN:6,colsN:2,head:true,data:[['My question','Partner\'s answer'],['',''],['',''],['',''],['','']]})]}
+]}
+];
+
 const LIB_PRINCIPLE={
  vocab:{ic:'🎯',title:'One principle to keep in mind',text:'Recognition and form first, free use later. A word should travel from reception to production — otherwise it stays passive.'},
- grammar:{ic:'🎯',title:'The main principle',text:'From controlled practice to free practice. Drill the form in tight frames, then use the structure in meaningful context, and only then in free speech. Mechanical drills with no communication leave grammar dead.'}
+ grammar:{ic:'🎯',title:'The main principle',text:'From controlled practice to free practice. Drill the form in tight frames, then use the structure in meaningful context, and only then in free speech. Mechanical drills with no communication leave grammar dead.'},
+ b1:{ic:'📚',title:'How each B1 worksheet is built',text:'Every topic follows the same path: a theory card (form · use · signal words), then noticing, then controlled drills, then meaningful practice, and finally free production. “Full worksheet” drops the whole sequence on a new page and switches the answer key on automatically.'}
 };
-let libTab='vocab';
+let libTab='b1';
 function buildLibTabs(){const t=$('#libTabs');t.innerHTML='';
-  [['vocab','Vocabulary'],['grammar','Grammar']].forEach(([k,lbl])=>{const b=el('button','lib-tab'+(libTab===k?' on':''),lbl);b.onclick=()=>{libTab=k;buildLibTabs();buildLibBody($('#libSearch').value);};t.appendChild(b);});}
+  [['b1','B1 Course'],['vocab','Vocabulary'],['grammar','Grammar']].forEach(([k,lbl])=>{const b=el('button','lib-tab'+(libTab===k?' on':''),lbl);b.onclick=()=>{libTab=k;buildLibTabs();buildLibBody($('#libSearch').value);};t.appendChild(b);});}
+function buildB1Body(q){
+  const body=$('#libBody');
+  GRAMMAR_B1.forEach(topic=>{
+    const exs=topic.ex.filter(e=>!q||topic.name.toLowerCase().includes(q)||e.n.toLowerCase().includes(q));
+    if(!exs.length&&!(q&&topic.name.toLowerCase().includes(q)))return;
+    const g=el('div','lib-group');
+    g.innerHTML=`<div class="lib-group-h"><div class="gi"></div><b>${esc(topic.name)}</b><small>B1</small></div>`;
+    const grid=el('div','lib-items');
+    const full=el('button','lib-item',`<div class="li-ic">📄</div><div class="li-tx"><b>Full worksheet</b><span>Theory + all ${topic.ex.length} exercises + key</span></div><div class="li-add">${I.plus}</div>`);
+    full.style.gridColumn='1/-1';
+    full.onclick=()=>insertTopic(topic);
+    grid.appendChild(full);
+    const th=el('button','lib-item',`<div class="li-ic">📘</div><div class="li-tx"><b>Theory only</b><span>Rule card: form, use, signal words</span></div><div class="li-add">${I.plus}</div>`);
+    th.onclick=()=>insertExercise({name:topic.name+' — theory',make:()=>[Object.assign(JSON.parse(JSON.stringify(topic.theory)),{id:uid()})]});
+    grid.appendChild(th);
+    exs.forEach(e=>{const c=el('button','lib-item',`<div class="li-ic">✏️</div><div class="li-tx"><b>${esc(e.n)}</b><span>${esc(topic.name)}</span></div><div class="li-add">${I.plus}</div>`);
+      c.onclick=()=>insertExercise({name:e.n,make:e.b});grid.appendChild(c);});
+    g.appendChild(grid);body.appendChild(g);
+  });
+}
+function insertTopic(topic){
+  snapshot();
+  const blocks=[Object.assign(JSON.parse(JSON.stringify(topic.theory)),{id:uid()})];
+  topic.ex.forEach(e=>blocks.push(...e.b()));
+  const st=DOC.applyAll?{...DOC.pages[0].style}:defaultStyle('indigo');
+  const pg={id:uid(),style:st,blocks:[Object.assign(makeBlock('header'),{eyebrow:'GRAMMAR · B1',title:topic.name,sub:'English with Tad'}),makeBlock('namebar'),...blocks]};
+  DOC.pages.push(pg);
+  DOC.appendKey=true;
+  selectedId=null;renderAll();closeModal('#libModal');
+  setTimeout(()=>{const ps=document.querySelectorAll('.paper');const i=DOC.pages.length-1;if(ps[i])ps[i].scrollIntoView({behavior:'smooth',block:'start'});},80);
+  toast('Added worksheet: '+topic.name);
+}
 function buildLibBody(filter){
   const body=$('#libBody');body.innerHTML='';const q=(filter||'').toLowerCase().trim();
+  if(libTab==='b1'){buildB1Body(q);
+    if(!body.children.length)body.appendChild(el('div','hint','No topics match your search.'));
+    const pr=LIB_PRINCIPLE.b1;body.appendChild(el('div','lib-principle',`<div class="lp-ic">${pr.ic}</div><div><b>${pr.title}</b><p>${pr.text}</p></div>`));
+    return;}
   LIBRARY[libTab].forEach(grp=>{
     const items=grp.items.filter(it=>!q||it.name.toLowerCase().includes(q)||it.desc.toLowerCase().includes(q)||grp.group.toLowerCase().includes(q));
     if(!items.length)return;
