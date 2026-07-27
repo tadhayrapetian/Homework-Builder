@@ -307,6 +307,18 @@ button{font-family:inherit;color:inherit}
 .wordbank .wb-t{font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:800;color:var(--pa-accent);margin-bottom:9px;display:flex;align-items:center;gap:6px}
 .wordbank .wb-t::before{content:"◆";font-size:9px}
 .wordbank .wb-ws{display:flex;flex-wrap:wrap;gap:8px 10px}
+/* vocabulary list */
+.voclist{border:1.5px solid var(--pa-line);border-radius:13px;overflow:hidden}
+.voclist .vl-h{background:var(--pa-soft);color:var(--pa-accent);font-weight:800;font-size:10.5px;
+  text-transform:uppercase;letter-spacing:.8px;padding:9px 14px;border-bottom:1.5px solid var(--pa-line)}
+.voclist .vl-r{display:flex;gap:12px;align-items:baseline;padding:9px 14px;border-bottom:1px dashed var(--pa-line);font-size:13px}
+.voclist .vl-r:last-child{border-bottom:0}
+.voclist .vl-n{color:var(--pa-muted);font-weight:700;font-size:11px;min-width:14px;flex:none}
+.voclist .vl-w{font-weight:750;color:var(--pa-ink);min-width:110px;flex:none}
+.voclist .vl-d{flex:1;color:var(--pa-ink);line-height:1.45}
+.voclist .vl-d .ru{color:var(--pa-accent);font-weight:600}
+.voclist .vl-d .sep{color:var(--pa-muted);margin:0 6px}
+.voclist .vl-blank{flex:1;border-bottom:1.4px solid var(--pa-line);min-height:17px}
 .wb-w{background:var(--pa-paper);border:1.5px solid color-mix(in srgb,var(--pa-accent) 30%,var(--pa-line));
   border-radius:999px;padding:5px 14px;font-size:13px;font-weight:650;box-shadow:0 1px 2px rgba(0,0,0,.04)}
 
@@ -706,7 +718,7 @@ body.locked .app,body.locked .zoombar{display:none !important}
   .canvas-inner{padding:0;gap:0;display:block}
   #pages{display:block}
   #zoomwrap{transform:none !important}
-  .paper{box-shadow:none;margin:0;width:210mm;min-height:297mm;border-radius:0;page-break-after:always;break-after:page;padding:15mm 14mm}
+  .paper{box-shadow:none;margin:0;width:210mm;height:297mm;min-height:0;max-height:297mm;overflow:hidden;border-radius:0;page-break-after:always;break-after:page;padding:15mm 14mm}
   .paper:last-child{page-break-after:auto}
   .block{border-color:transparent !important;box-shadow:none !important;margin:0;padding:0}
   [contenteditable]:focus{background:none;box-shadow:none}
@@ -790,6 +802,7 @@ body.locked .app,body.locked .zoombar{display:none !important}
         <button class="ibtn" id="newBtn" style="margin-top:0">🗎 New</button>
         <button class="ibtn" id="uiThemeBtn" style="margin-top:0">🌓 UI theme</button>
       </div>
+      <button class="ibtn" id="printBtn">🖨️ Print (browser dialog)</button>
       <button class="ibtn" id="lockBtn">🔒 Lock</button>
     </div>
   </aside>
@@ -804,7 +817,7 @@ body.locked .app,body.locked .zoombar{display:none !important}
   <!-- RIGHT -->
   <aside class="side right" id="rightPanel">
     <div class="sec">
-      <h3>Worksheet design <span class="pill">20</span></h3>
+      <h3>Worksheet design <span class="pill" id="themeCount">40</span></h3>
       <div class="themes" id="themeGallery"></div>
     </div>
     <div class="sec">
@@ -937,6 +950,7 @@ const BLOCK_DEFS=[
  {t:'short',g:'Questions',icon:I.short,name:'Short answer',hint:'Question + lines'},
 
  {t:'wordbank',g:'Vocabulary',icon:I.bank,name:'Word bank',hint:'Support words'},
+ {t:'vocablist',g:'Vocabulary',icon:I.text,name:'Vocabulary list',hint:'Auto definitions / RU'},
  {t:'sortcols',g:'Vocabulary',icon:I.sort,name:'Categorise',hint:'Sort into columns'},
  {t:'mindmap',g:'Vocabulary',icon:I.mind,name:'Mind map',hint:'Lexical field'},
  {t:'ladder',g:'Vocabulary',icon:I.ladder,name:'Word ladder',hint:'Order by intensity'},
@@ -987,7 +1001,27 @@ const THEMES=[
  {id:'nature',name:'Nature Leaf',accent:'#16a34a',accent2:'#ca8a04',ink:'#1a2712',paper:'#fbfef5',font:'serif',header:'sidebar',deco:'corners'},
  {id:'retro',name:'Retro 70s',accent:'#d97706',accent2:'#b45309',ink:'#2b1a08',paper:'#fdf6e3',font:'round',header:'ribbon',deco:'edge'},
  {id:'noir',name:'Minimal Noir',accent:'#111827',accent2:'#6b7280',ink:'#111827',paper:'#ffffff',font:'sans',header:'plain',deco:'none'},
- {id:'rainbow',name:'Rainbow Fun',accent:'#7c3aed',accent2:'#ec4899',ink:'#241633',paper:'#ffffff',font:'hand',header:'gradient',deco:'confetti'}
+ {id:'rainbow',name:'Rainbow Fun',accent:'#7c3aed',accent2:'#ec4899',ink:'#241633',paper:'#ffffff',font:'hand',header:'gradient',deco:'confetti'},
+ {id:'midnight',name:'Midnight',accent:'#60a5fa',accent2:'#a78bfa',ink:'#e6ecf7',paper:'#161d2e',font:'sans',header:'underline',deco:'none'},
+ {id:'rosegold',name:'Rose Gold',accent:'#be5a6f',accent2:'#d9a441',ink:'#33202a',paper:'#fff8f6',font:'serif',header:'badge',deco:'corners'},
+ {id:'emerald',name:'Emerald',accent:'#047857',accent2:'#0d9488',ink:'#0f2a22',paper:'#f4fdf9',font:'serif',header:'sidebar',deco:'edge'},
+ {id:'sunrise',name:'Sunrise',accent:'#f59e0b',accent2:'#ef4444',ink:'#33210f',paper:'#fffdf6',font:'round',header:'gradient',deco:'wave'},
+ {id:'blueprint',name:'Blueprint',accent:'#1d4ed8',accent2:'#0ea5e9',ink:'#0f2036',paper:'#f2f7ff',font:'mono',header:'corner',deco:'grid'},
+ {id:'terracotta',name:'Terracotta',accent:'#c2542a',accent2:'#8a5a3b',ink:'#33200f',paper:'#fdf5ee',font:'serif',header:'ribbon',deco:'none'},
+ {id:'nordic',name:'Nordic',accent:'#3f6b8a',accent2:'#7d99ad',ink:'#1c2a35',paper:'#f7f9fb',font:'sans',header:'plain',deco:'none'},
+ {id:'bubblegum',name:'Bubblegum',accent:'#ec4899',accent2:'#f472b6',ink:'#3d1229',paper:'#fff5fa',font:'hand',header:'badge',deco:'confetti'},
+ {id:'jungle',name:'Jungle',accent:'#15803d',accent2:'#84cc16',ink:'#12250f',paper:'#f7fff2',font:'round',header:'frame',deco:'corners'},
+ {id:'space',name:'Space',accent:'#818cf8',accent2:'#c084fc',ink:'#e8e6f7',paper:'#1b1830',font:'round',header:'gradient',deco:'confetti'},
+ {id:'vintage',name:'Vintage Map',accent:'#8a6a3a',accent2:'#5f4b2a',ink:'#3a2e1a',paper:'#f6eeda',font:'serif',header:'dotline',deco:'corners'},
+ {id:'mono',name:'Monochrome Bold',accent:'#171717',accent2:'#525252',ink:'#171717',paper:'#fafafa',font:'sans',header:'banner',deco:'none'},
+ {id:'pastel',name:'Pastel Dream',accent:'#8b9dd6',accent2:'#c9a7d9',ink:'#2b2b3d',paper:'#fbfaff',font:'round',header:'badge',deco:'dots'},
+ {id:'autumn',name:'Autumn',accent:'#b45309',accent2:'#9a3412',ink:'#2e1c0d',paper:'#fdf8f0',font:'serif',header:'sidebar',deco:'none'},
+ {id:'frost',name:'Winter Frost',accent:'#0e7490',accent2:'#67e8f9',ink:'#10262e',paper:'#f5fdff',font:'sans',header:'tab',deco:'dots'},
+ {id:'blossom',name:'Cherry Blossom',accent:'#db6f96',accent2:'#f0a6c0',ink:'#33202a',paper:'#fff7fa',font:'round',header:'frame',deco:'confetti'},
+ {id:'steel',name:'Steel',accent:'#475569',accent2:'#64748b',ink:'#1e293b',paper:'#f8fafc',font:'sans',header:'corner',deco:'edge'},
+ {id:'highlighter',name:'Highlighter',accent:'#ca8a04',accent2:'#65a30d',ink:'#1c1917',paper:'#ffffff',font:'sans',header:'tab',deco:'none'},
+ {id:'origami',name:'Origami',accent:'#e11d48',accent2:'#f43f5e',ink:'#27141a',paper:'#fffefb',font:'round',header:'ribbon',deco:'corners'},
+ {id:'sunbeam',name:'Sunbeam',accent:'#d97706',accent2:'#facc15',ink:'#2c2008',paper:'#fffdf4',font:'round',header:'badge',deco:'edge'}
 ];
 const ACCENTS=['#5b5bf0','#0284c7','#0f9d6f','#ea580c','#db2777','#7c3aed','#dc2626','#0891b2','#ca8a04','#111827'];
 
@@ -1031,6 +1065,8 @@ function makeBlock(type){
    case'promptlines':b.prompts=['Prompt one…','Prompt two…','Prompt three…'];b.lines=1;break;
    case'short':b.q='Answer the question in your own words:';b.lines=3;break;
    case'wordbank':b.title='Word bank';b.words=['apple','river','bright','travel','honest','garden'];break;
+   case'vocablist':b.title='Vocabulary';b.mode='en';b.blank=false;b.num=true;
+     b.items=[{w:'honest'},{w:'brave'},{w:'journey'},{w:'achieve'},{w:'generous'}];break;
    case'match':b.left=['dog','sun','book'];b.right=['a thing you read','a bright star','a pet animal'];break;
    case'sortcols':b.cols=[{title:'Category A'},{title:'Category B'}];b.h=130;break;
    case'mindmap':b.center='TOPIC';b.branches=['','','','','',''];break;
@@ -1188,6 +1224,26 @@ function renderContent(b){
      for(let i=0;i<b.lines;i++)ll.appendChild(el('div','wl'));w.appendChild(ll);return w;}
    case'wordbank':{const w=el('div','wordbank');w.appendChild(ce('div','wb-t',b.title,'Title',v=>b.title=v));
      const ws=el('div','wb-ws');b.words.forEach((wd,i)=>ws.appendChild(ce('span','wb-w',wd,'word',v=>b.words[i]=v)));w.appendChild(ws);return w;}
+   case'vocablist':{const w=el('div','voclist');
+     w.appendChild(ce('div','vl-h',b.title,'Vocabulary',v=>b.title=v));
+     b.items.forEach((it,i)=>{
+       const r=el('div','vl-r');
+       if(b.num)r.appendChild(el('div','vl-n',String(i+1)));
+       r.appendChild(ce('div','vl-w',it.w,'word',v=>{b.items[i].w=stripHtml(v);b.items[i].en=null;b.items[i].ru=null;}));
+       if(b.blank){r.appendChild(el('div','vl-blank'));}
+       else{
+         const hit=lookup(it.w);
+         const en=it.en!=null?it.en:(hit?hit.en:'');
+         const ru=it.ru!=null?it.ru:(hit?hit.ru:'');
+         let html='';
+         if(b.mode==='en')html=esc(en);
+         else if(b.mode==='ru')html='<span class="ru">'+esc(ru)+'</span>';
+         else html=esc(en)+(en&&ru?'<span class="sep">·</span>':'')+'<span class="ru">'+esc(ru)+'</span>';
+         const d=ce('div','vl-d',html,'—',v=>{if(b.mode==='ru')b.items[i].ru=stripHtml(v);else b.items[i].en=stripHtml(v);});
+         r.appendChild(d);
+       }
+       w.appendChild(r);});
+     return w;}
    case'match':{const w=el('div','match');const L=el('div','col l'),R=el('div','col r');
      b.left.forEach((x,i)=>{const mi=el('div','mi');mi.appendChild(ce('div','mtx',x,'…',v=>b.left[i]=v));mi.appendChild(el('div','dot'));L.appendChild(mi);});
      b.right.forEach((x,i)=>{const mi=el('div','mi');mi.appendChild(ce('div','mtx',x,'…',v=>b.right[i]=v));mi.appendChild(el('div','dot'));R.appendChild(mi);});
@@ -1397,6 +1453,17 @@ function refreshInspector(){
     box.appendChild(el('div','hint','Set lines to 0 for "circle / underline" tasks with no writing space.'));
   } else if(b.type==='short'){box.appendChild(num('Number of lines',b.lines,1,20,v=>b.lines=v));}
   else if(b.type==='wordbank'){const{w,ta}=list('Words (one per line)',b.words);ta.addEventListener('input',()=>{b.words=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);}
+  else if(b.type==='vocablist'){
+    box.appendChild(seg('Show',[{l:'EN definition',v:'en'},{l:'RU перевод',v:'ru'},{l:'Both',v:'both'}],b.mode,v=>b.mode=v));
+    box.appendChild(seg('For students',[{l:'Filled in',v:false},{l:'Blank lines',v:true}],b.blank,v=>b.blank=v));
+    box.appendChild(seg('Numbers',[{l:'On',v:true},{l:'Off',v:false}],b.num,v=>b.num=v));
+    const w=el('div','field');w.innerHTML='<label>Words (one per line) — definitions fill in automatically</label>';
+    const ta=el('textarea');ta.rows=7;ta.value=b.items.map(x=>x.w).join('\n');
+    ta.addEventListener('input',()=>{b.items=ta.value.split('\n').filter(x=>x.trim()).map(x=>({w:x.trim()}));renderAll();});
+    w.appendChild(ta);box.appendChild(w);
+    const known=b.items.filter(x=>lookup(x.w)).length;
+    box.appendChild(el('div','hint',`Found in the dictionary: <b>${known} / ${b.items.length}</b> (${Object.keys(DICT).length} words built in). Anything missing you can simply type on the page.`));
+  }
   else if(b.type==='match'){const{w:wl,ta:tl}=list('Left column',b.left);tl.addEventListener('input',()=>{b.left=tl.value.split('\n');renderAll();});
     const{w:wr,ta:tr}=list('Right column',b.right);tr.addEventListener('input',()=>{b.right=tr.value.split('\n');renderAll();});box.appendChild(wl);box.appendChild(wr);}
   else if(b.type==='sortcols'){box.appendChild(num('Column height, px',b.h,80,400,v=>b.h=v));
@@ -1484,6 +1551,7 @@ function refreshLeft(){
   const bi=$('#brandInput');if(bi&&document.activeElement!==bi)bi.value=DOC.brand||'';
 }
 function buildThemeGallery(){const g=$('#themeGallery');g.innerHTML='';
+  const tc=$('#themeCount');if(tc)tc.textContent=THEMES.length;
   THEMES.forEach(t=>{const c=el('div','tcard');c.dataset.id=t.id;
     c.innerHTML=`<div class="badge">✓</div><div class="tprev" style="background:${t.paper}"><div class="th" style="background:${t.accent}"></div><div><div class="tl s" style="background:${mix(t.ink,t.paper,.7)}"></div><div class="tl m" style="background:${mix(t.ink,t.paper,.8)}"></div></div></div><div class="tname">${t.name}</div>`;
     c.onclick=()=>applyTheme(t.id);g.appendChild(c);});}
@@ -1528,7 +1596,124 @@ let imgTarget=null;
 function pickImage(b){imgTarget=b;$('#imgInput').click();}
 $('#imgInput').addEventListener('change',e=>{const file=e.target.files[0];if(!file||!imgTarget)return;const rd=new FileReader();
   rd.onload=()=>{snapshot();imgTarget.src=rd.result;renderAll();};rd.readAsDataURL(file);e.target.value='';});
-function exportPDF(){toast('Opening print → “Save as PDF”');setTimeout(()=>window.print(),220);}
+/* ---------- direct PDF export (no print dialog) ---------- */
+function bytesFromDataURL(u){const b=atob(u.split(',')[1]);const a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
+function makePDF(imgs,ptW,ptH){
+  const enc=s=>{const a=new Uint8Array(s.length);for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i)&0xff;return a;};
+  const chunks=[];let pos=0;
+  const w=x=>{const b=(typeof x==='string')?enc(x):x;chunks.push(b);pos+=b.length;};
+  const off={};const N=imgs.length;
+  w('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+  const kids=[];for(let i=0;i<N;i++)kids.push((3+3*i)+' 0 R');
+  off[1]=pos;w('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+  off[2]=pos;w('2 0 obj\n<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+N+' >>\nendobj\n');
+  for(let i=0;i<N;i++){
+    const pno=3+3*i,cno=4+3*i,ino=5+3*i,im=imgs[i];
+    const content='q\n'+ptW+' 0 0 '+ptH+' 0 0 cm\n/Im0 Do\nQ\n';
+    off[pno]=pos;w(pno+' 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+ptW+' '+ptH+'] /Resources << /XObject << /Im0 '+ino+' 0 R >> >> /Contents '+cno+' 0 R >>\nendobj\n');
+    off[cno]=pos;w(cno+' 0 obj\n<< /Length '+content.length+' >>\nstream\n'+content+'endstream\nendobj\n');
+    off[ino]=pos;w(ino+' 0 obj\n<< /Type /XObject /Subtype /Image /Width '+im.width+' /Height '+im.height+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+im.bytes.length+' >>\nstream\n');
+    w(im.bytes);w('\nendstream\nendobj\n');
+  }
+  const xrefPos=pos,total=2+3*N+1;
+  let x='xref\n0 '+total+'\n0000000000 65535 f \n';
+  for(let n=1;n<total;n++)x+=String(off[n]).padStart(10,'0')+' 00000 n \n';
+  w(x);w('trailer\n<< /Size '+total+' /Root 1 0 R >>\nstartxref\n'+xrefPos+'\n%%EOF\n');
+  let size=0;chunks.forEach(c=>size+=c.length);
+  const out=new Uint8Array(size);let o=0;chunks.forEach(c=>{out.set(c,o);o+=c.length;});
+  return new Blob([out],{type:'application/pdf'});
+}
+/* split one on-screen paper into as many A4 sheets as its content needs,
+   cutting only between blocks so nothing is chopped in half */
+function splitPaperPages(paper,W,H){
+  const cleanup=c=>{
+    c.querySelectorAll('.bbar,.bhandle,.pg-tools,.pg-label,.drop-line').forEach(e=>e.remove());
+    c.querySelectorAll('.block').forEach(e=>{e.style.border='1.5px solid transparent';e.style.boxShadow='none';e.classList.remove('sel');});
+    c.style.boxShadow='none';c.style.margin='0';c.style.borderRadius='0';
+    c.style.width=W+'px';c.style.height=H+'px';c.style.minHeight=H+'px';c.style.overflow='hidden';
+    return c;};
+  const blocksEl=paper.querySelector('.blocks');
+  const foot=paper.querySelector('.pg-foot');
+  if(!blocksEl)return[cleanup(paper.cloneNode(true))];
+  const cs=getComputedStyle(paper);
+  const avail=H-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+  const gap=parseFloat(getComputedStyle(blocksEl).gap)||18;
+  const kids=[...blocksEl.children].filter(k=>k.classList.contains('block'));
+  if(!kids.length)return[cleanup(paper.cloneNode(true))];
+  const groups=[];let cur=[],h=0;
+  kids.forEach(k=>{
+    const kh=k.getBoundingClientRect().height;
+    if(cur.length&&h+gap+kh>avail){groups.push(cur);cur=[k];h=kh;}
+    else{h+=(cur.length?gap:0)+kh;cur.push(k);}
+  });
+  if(cur.length)groups.push(cur);
+  if(groups.length<2)return[cleanup(paper.cloneNode(true))];
+  return groups.map(g=>{
+    const c=paper.cloneNode(false);
+    const nb=document.createElement('div');nb.className='blocks';
+    g.forEach(k=>nb.appendChild(k.cloneNode(true)));
+    c.appendChild(nb);
+    if(foot)c.appendChild(foot.cloneNode(true));
+    return cleanup(c);
+  });
+}
+function paperToSVGUrl(prepared,W,H){
+  const clone=prepared;
+  const css=[...document.querySelectorAll('style')].map(s=>s.textContent).join('\n').replace(/:root/g,'.pdfroot');
+  const wrap=document.createElement('div');
+  wrap.setAttribute('xmlns','http://www.w3.org/1999/xhtml');
+  wrap.className='pdfroot';
+  wrap.style.width=W+'px';wrap.style.height=H+'px';
+  const st=document.createElement('style');st.textContent=css;
+  wrap.appendChild(st);wrap.appendChild(clone);
+  const xml=new XMLSerializer().serializeToString(wrap);
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'"><foreignObject x="0" y="0" width="'+W+'" height="'+H+'">'+xml+'</foreignObject></svg>';
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
+function renderPaper(paper,W,H,scale){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.onload=()=>{
+      const c=document.createElement('canvas');c.width=Math.round(W*scale);c.height=Math.round(H*scale);
+      const ctx=c.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);
+      ctx.drawImage(img,0,0,c.width,c.height);
+      try{resolve({bytes:bytesFromDataURL(c.toDataURL('image/jpeg',0.94)),width:c.width,height:c.height});}
+      catch(e){reject(e);}
+    };
+    img.onerror=()=>reject(new Error('render failed'));
+    img.src=paperToSVGUrl(paper,W,H);
+  });
+}
+let pdfBusy=false;
+async function exportPDF(){
+  if(pdfBusy)return;
+  let papers=[...document.querySelectorAll('.paper')];
+  if(!papers.length){toast('Nothing to export');return;}
+  pdfBusy=true;const btn=$('#pdfBtn');const label=btn.innerHTML;
+  const W=794,H=1123,scale=2;
+  try{
+    let sheets=[];
+    papers.forEach(p=>{sheets=sheets.concat(splitPaperPages(p,W,H));});
+    sheets.forEach((s,i)=>{const f=s.querySelector('.pg-foot');
+      if(f&&f.lastElementChild)f.lastElementChild.textContent=s.classList.contains('akey')?'Answer key':('Page '+(i+1)+' / '+sheets.length);});
+    const imgs=[];
+    for(let i=0;i<sheets.length;i++){
+      btn.innerHTML='⏳ '+(i+1)+'/'+sheets.length;
+      imgs.push(await renderPaper(sheets[i],W,H,scale));
+    }
+    papers=sheets;
+    const blob=makePDF(imgs,595.28,841.89);
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download=(DOC.title||'worksheet').replace(/[^\w\- ]/g,'').trim()+'.pdf';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+    toast('PDF downloaded — '+papers.length+' page'+(papers.length>1?'s':''));
+  }catch(e){
+    toast('Direct export failed — opening print instead');
+    setTimeout(()=>window.print(),400);
+  }finally{btn.innerHTML=label;pdfBusy=false;}
+}
+function printPDF(){toast('Set Margins to “None” and turn off headers');setTimeout(()=>window.print(),300);}
 
 /* =====================================================================
    EXERCISE LIBRARY
@@ -1624,6 +1809,413 @@ const LIBRARY={
   ]},
  ]
 };
+/* =====================================================================
+   BUILT-IN DICTIONARY — word | English definition | Russian translation
+   Used to auto-fill vocabulary lists. Works fully offline.
+   ===================================================================== */
+const DICT_RAW=`
+achieve|to succeed in doing something after trying hard|достигать
+admire|to respect and like someone very much|восхищаться
+advice|an opinion about what someone should do|совет
+afraid|feeling fear or worry|испуганный
+agree|to have the same opinion as someone|соглашаться
+allow|to let someone do something|разрешать
+amazing|extremely surprising and very good|потрясающий
+ancient|very old, from a long time ago|древний
+angry|feeling strong annoyance|сердитый
+announce|to tell people about something officially|объявлять
+annoying|making you feel slightly angry|раздражающий
+answer|something you say or write when asked a question|ответ
+anxious|worried and nervous|тревожный
+apologise|to say sorry for something you did|извиняться
+appointment|an arranged meeting at a fixed time|встреча, приём
+argue|to disagree with someone, often angrily|спорить
+arrive|to reach a place|прибывать
+ashamed|feeling bad about something you did|пристыжённый
+attend|to go to an event, class or meeting|посещать
+attract|to make someone interested|привлекать
+avoid|to stay away from something|избегать
+awful|very bad or unpleasant|ужасный
+beautiful|very pleasant to look at|красивый
+behave|to act in a particular way|вести себя
+believe|to think that something is true|верить
+belong|to be owned by someone|принадлежать
+bill|a piece of paper showing how much you must pay|счёт
+borrow|to take something and give it back later|занимать, брать
+brave|not afraid in a dangerous situation|смелый
+break|to damage something into pieces|ломать
+bright|full of light, or intelligent|яркий, умный
+brilliant|extremely good or very clever|блестящий
+build|to make something by putting parts together|строить
+busy|having a lot to do|занятой
+calm|quiet and relaxed, not excited|спокойный
+careful|giving attention to avoid mistakes|осторожный
+carry|to hold something and take it somewhere|нести
+celebrate|to do something enjoyable for a special occasion|праздновать
+challenge|something difficult that tests your ability|вызов, испытание
+change|to become different or make different|менять
+cheap|costing little money|дешёвый
+choose|to decide which one you want|выбирать
+clever|quick at learning and understanding|умный
+comfortable|making you feel physically relaxed|удобный
+common|happening often or shared by many|обычный, общий
+compare|to look at how things are similar or different|сравнивать
+complain|to say that you are not satisfied|жаловаться
+confident|sure about your own ability|уверенный
+confused|unable to understand clearly|растерянный
+consider|to think about something carefully|обдумывать
+continue|to keep doing something|продолжать
+convenient|useful and easy for you|удобный
+crowded|full of people|переполненный
+curious|wanting to know about something|любопытный
+damage|to harm something|повреждать
+dangerous|likely to cause harm|опасный
+decide|to choose after thinking|решать
+delay|to make something happen later|задерживать
+deliver|to take goods to a person or place|доставлять
+depend|to need something or be affected by it|зависеть
+describe|to say what someone or something is like|описывать
+develop|to grow or become more advanced|развивать
+difficult|not easy to do or understand|трудный
+disappointed|sad because something was not as good as you hoped|разочарованный
+discover|to find something for the first time|обнаруживать
+discuss|to talk about something with others|обсуждать
+distance|the amount of space between two places|расстояние
+divide|to separate into parts|делить
+doubt|to feel unsure about something|сомневаться
+earn|to get money by working|зарабатывать
+effort|energy used to do something|усилие
+embarrassed|feeling shy or uncomfortable in public|смущённый
+empty|containing nothing|пустой
+encourage|to give someone confidence to do something|поощрять
+enemy|a person who hates or opposes you|враг
+enjoy|to get pleasure from something|наслаждаться
+enormous|extremely large|огромный
+enough|as much as is needed|достаточно
+environment|the natural world around us|окружающая среда
+escape|to get away from a place or situation|убегать
+excited|very happy and interested|взволнованный
+exhausted|extremely tired|измождённый
+expect|to think something will happen|ожидать
+expensive|costing a lot of money|дорогой
+experience|knowledge you get from doing something|опыт
+explain|to make something clear|объяснять
+explore|to travel around a place to learn about it|исследовать
+fail|to not succeed|потерпеть неудачу
+famous|known by many people|знаменитый
+fantastic|extremely good|фантастический
+fault|responsibility for something wrong|вина
+favourite|liked more than others|любимый
+fix|to repair something|чинить
+foreign|from another country|иностранный
+forget|to fail to remember|забывать
+forgive|to stop being angry with someone|прощать
+freedom|the right to do what you want|свобода
+friendly|behaving in a kind way|дружелюбный
+frightened|feeling afraid|напуганный
+funny|making you laugh|смешной
+generous|willing to give and share|щедрый
+gentle|kind and careful, not rough|нежный
+guess|to give an answer without being sure|угадывать
+guilty|feeling bad because you did something wrong|виноватый
+habit|something you do regularly|привычка
+handsome|attractive, usually about a man|красивый
+happen|to take place|случаться
+hate|to dislike something very much|ненавидеть
+healthy|physically well and strong|здоровый
+heavy|weighing a lot|тяжёлый
+help|to make it easier for someone|помогать
+hide|to put something where it cannot be seen|прятать
+honest|always telling the truth|честный
+hope|to want something to happen|надеяться
+huge|extremely big|огромный
+hurry|to move or do something quickly|торопиться
+ignore|to pay no attention to something|игнорировать
+imagine|to form a picture in your mind|воображать
+important|having a big effect or value|важный
+improve|to become better|улучшать
+increase|to become larger in number|увеличивать
+independent|not needing help from others|независимый
+influence|the power to change someone or something|влияние
+injury|physical harm to your body|травма
+intelligent|able to learn and understand well|умный
+interesting|making you want to know more|интересный
+introduce|to tell people someone's name for the first time|представлять
+invent|to create something new|изобретать
+invite|to ask someone to come somewhere|приглашать
+jealous|unhappy because someone has what you want|ревнивый
+journey|an act of travelling from one place to another|путешествие
+joy|a feeling of great happiness|радость
+keep|to continue to have something|хранить
+kind|caring about other people|добрый
+knowledge|information and understanding you have|знание
+lazy|not wanting to work|ленивый
+lend|to give something for a short time|одалживать
+lonely|unhappy because you are alone|одинокий
+lose|to no longer have something|терять
+lucky|having good things happen by chance|везучий
+manage|to succeed in doing something difficult|справляться
+mean|to have a particular meaning; unkind|значить; злой
+measure|to find the size or amount of something|измерять
+mention|to talk about something briefly|упоминать
+mistake|something done wrongly|ошибка
+modern|of the present time|современный
+nervous|worried and slightly frightened|нервный
+noisy|making a lot of loud sound|шумный
+notice|to see or become aware of something|замечать
+offer|to say you are willing to give something|предлагать
+opinion|what you think about something|мнение
+opportunity|a chance to do something|возможность
+patient|able to wait without getting annoyed|терпеливый
+peaceful|quiet and calm|мирный
+perfect|as good as it can possibly be|идеальный
+permission|the right to do something|разрешение
+persuade|to make someone agree to do something|убеждать
+polite|behaving in a respectful way|вежливый
+popular|liked by many people|популярный
+possible|able to happen|возможный
+practise|to do something regularly to improve|практиковаться
+prefer|to like one thing more than another|предпочитать
+prepare|to get ready|готовить
+pretend|to behave as if something is true when it is not|притворяться
+prevent|to stop something from happening|предотвращать
+private|only for one person or group|частный
+promise|to say you will definitely do something|обещать
+protect|to keep safe from harm|защищать
+proud|pleased about something you achieved|гордый
+provide|to give something to someone|обеспечивать
+punish|to make someone suffer for doing wrong|наказывать
+quiet|making very little noise|тихий
+rare|not happening or seen often|редкий
+realise|to understand something suddenly|осознавать
+receive|to get something that is given|получать
+recognise|to know someone because you have seen them before|узнавать
+recommend|to say that something is good|рекомендовать
+reduce|to make smaller in size or amount|сокращать
+refuse|to say you will not do something|отказываться
+regret|to feel sorry about something you did|сожалеть
+relax|to rest and become less worried|расслабляться
+reliable|able to be trusted|надёжный
+remember|to keep something in your mind|помнить
+remind|to make someone remember something|напоминать
+repair|to fix something broken|ремонтировать
+repeat|to say or do something again|повторять
+reply|to answer|отвечать
+respect|to admire someone for their qualities|уважать
+responsible|having a duty to deal with something|ответственный
+result|something that happens because of an action|результат
+rich|having a lot of money|богатый
+ridiculous|very silly or unreasonable|нелепый
+rude|not polite|грубый
+sad|feeling unhappy|грустный
+safe|not in danger|безопасный
+satisfied|pleased because you got what you wanted|довольный
+save|to keep for later; to rescue|сохранять; спасать
+scared|frightened|испуганный
+selfish|caring only about yourself|эгоистичный
+sensible|showing good judgement|разумный
+serious|important and needing attention|серьёзный
+share|to have or use with others|делиться
+shy|nervous about meeting new people|застенчивый
+silly|not sensible; foolish|глупый
+similar|almost the same|похожий
+skill|the ability to do something well|навык
+solve|to find the answer to a problem|решать
+strange|unusual or surprising|странный
+strict|expecting rules to be obeyed|строгий
+succeed|to achieve what you wanted|преуспевать
+suggest|to offer an idea|предлагать
+support|to help and encourage|поддерживать
+suppose|to think something is probably true|полагать
+surprised|feeling shock at something unexpected|удивлённый
+survive|to continue to live after danger|выживать
+suspect|to think someone is guilty|подозревать
+talent|a natural ability to do something well|талант
+terrible|very bad|ужасный
+thirsty|needing to drink|испытывающий жажду
+tidy|neat and in order|аккуратный
+tired|needing rest or sleep|уставший
+tiny|extremely small|крошечный
+tough|difficult; strong|тяжёлый; крепкий
+traffic|the vehicles moving on a road|дорожное движение
+travel|to go from one place to another|путешествовать
+treat|to behave towards someone in a certain way|обращаться
+trust|to believe someone is honest|доверять
+truth|the real facts about something|правда
+ugly|unpleasant to look at|уродливый
+understand|to know the meaning of something|понимать
+unusual|different from what is normal|необычный
+useful|helpful for a purpose|полезный
+usual|happening most of the time|обычный
+valuable|worth a lot of money or very useful|ценный
+various|several different|различный
+wealthy|having a lot of money|богатый
+weird|very strange|странный
+whole|complete, all of something|целый
+wise|able to make good decisions|мудрый
+worry|to think about problems and feel unhappy|беспокоиться
+worth|having a particular value|стоящий
+airport|a place where planes take off and land|аэропорт
+apartment|a set of rooms to live in|квартира
+bakery|a shop that sells bread and cakes|пекарня
+beach|an area of sand next to the sea|пляж
+bridge|a structure built over a river or road|мост
+building|a structure with walls and a roof|здание
+castle|a large strong building from the past|замок
+ceiling|the top surface inside a room|потолок
+church|a building for Christian worship|церковь
+city|a large important town|город
+countryside|land outside towns and cities|сельская местность
+desert|a large area of dry sandy land|пустыня
+factory|a building where goods are made|фабрика
+farm|land used for growing crops or animals|ферма
+forest|a large area covered with trees|лес
+garden|an area next to a house with plants|сад
+hospital|a place where ill people are treated|больница
+hotel|a building where you pay to sleep|отель
+island|a piece of land surrounded by water|остров
+kitchen|the room where you cook|кухня
+lake|a large area of water surrounded by land|озеро
+library|a place with books you can borrow|библиотека
+market|a place where people buy and sell|рынок
+mountain|a very high hill|гора
+museum|a building showing interesting objects|музей
+neighbour|a person living next to you|сосед
+ocean|a very large area of sea|океан
+office|a room where people work at desks|офис
+pharmacy|a shop that sells medicine|аптека
+restaurant|a place where you pay to eat meals|ресторан
+river|a long natural flow of water|река
+roof|the covering on top of a building|крыша
+station|a place where trains or buses stop|станция
+street|a road in a town with houses|улица
+valley|low land between hills|долина
+village|a very small town in the countryside|деревня
+wall|a vertical structure that divides space|стена
+breakfast|the first meal of the day|завтрак
+delicious|tasting very good|вкусный
+dinner|the main evening meal|ужин
+flour|powder made from grain used for baking|мука
+fresh|recently made or picked, not old|свежий
+fruit|a sweet food that grows on plants|фрукт
+meal|the food eaten at one time|приём пищи
+recipe|instructions for cooking a dish|рецепт
+salty|containing a lot of salt|солёный
+sour|having a sharp taste like lemon|кислый
+spicy|containing strong flavours or pepper|острый
+sweet|tasting like sugar|сладкий
+taste|the flavour of food in your mouth|вкус
+vegetable|a plant eaten as food|овощ
+career|the work you do over your life|карьера
+colleague|a person you work with|коллега
+customer|a person who buys something|клиент
+employee|a person who works for a company|работник
+employer|a person or company that pays workers|работодатель
+interview|a formal meeting for a job|собеседование
+manager|a person who controls a team|менеджер
+meeting|an event where people discuss things|встреча
+salary|money paid regularly for work|зарплата
+staff|all the people working somewhere|персонал
+unemployed|without a job|безработный
+degree|a qualification from a university|степень
+exam|an official test of knowledge|экзамен
+homework|school work done at home|домашнее задание
+lesson|a period of teaching|урок
+pupil|a child at school|ученик
+research|careful study to discover facts|исследование
+subject|an area of study like maths|предмет
+teacher|a person whose job is to teach|учитель
+university|a place of higher education|университет
+battery|a device that stores electric power|батарея
+device|a machine made for a purpose|устройство
+download|to copy data from the internet|скачивать
+laptop|a small computer you can carry|ноутбук
+message|a piece of written or spoken information|сообщение
+network|a system of connected computers|сеть
+password|a secret word used to get access|пароль
+screen|the flat part of a device showing images|экран
+software|programs used by a computer|программное обеспечение
+website|a place on the internet with pages|сайт
+climate|the usual weather in an area|климат
+cloud|a mass of water vapour in the sky|облако
+flood|a large amount of water covering land|наводнение
+pollution|damage to air, water or land|загрязнение
+rubbish|things you throw away|мусор
+storm|very bad weather with strong wind|шторм
+temperature|how hot or cold something is|температура
+weather|the conditions of sun, rain and wind|погода
+wind|air moving quickly outdoors|ветер
+happy|feeling pleased and satisfied|счастливый
+stop|to finish moving or doing something|останавливать
+run|to move quickly on your feet|бежать
+quick|doing something in a short time|быстрый
+slow|not moving fast|медленный
+begin|to start|начинать
+finish|to complete something|заканчивать
+follow|to go after someone|следовать
+grow|to become bigger|расти
+learn|to gain knowledge or a skill|учиться
+teach|to help someone learn|учить
+listen|to pay attention to sound|слушать
+watch|to look at something for a time|смотреть
+speak|to say words|говорить
+walk|to move on foot|идти пешком
+buy|to get something by paying|покупать
+sell|to give something for money|продавать
+pay|to give money for something|платить
+cost|the amount of money needed|стоить
+spend|to use money or time|тратить
+work|to do a job|работать
+rest|to stop working and relax|отдыхать
+sleep|to rest with your eyes closed|спать
+wake|to stop sleeping|просыпаться
+laugh|to make sounds showing you are happy|смеяться
+cry|to produce tears|плакать
+smile|to make a happy expression|улыбаться
+shout|to say something very loudly|кричать
+whisper|to speak very quietly|шептать
+strong|having a lot of physical power|сильный
+weak|not strong|слабый
+young|not old|молодой
+old|having lived a long time|старый
+clean|free from dirt|чистый
+dirty|not clean|грязный
+warm|slightly hot in a pleasant way|тёплый
+cool|slightly cold in a pleasant way|прохладный
+soft|not hard, pleasant to touch|мягкий
+hard|firm and solid; difficult|твёрдый; трудный
+loud|making a lot of noise|громкий
+narrow|small in width|узкий
+wide|large from side to side|широкий
+deep|going a long way down|глубокий
+early|before the usual time|ранний
+late|after the usual time|поздний
+proudly|in a way that shows pride|гордо
+`;
+const DICT={};
+DICT_RAW.trim().split('\n').forEach(line=>{const p=line.split('|');if(p.length>=3)DICT[p[0].trim().toLowerCase()]={en:p[1].trim(),ru:p[2].trim()};});
+function lookup(word){
+  const w=(word||'').trim().toLowerCase().replace(/[^a-z' -]/g,'');
+  if(!w)return null;
+  if(DICT[w])return DICT[w];
+  // try simple morphology: plurals and verb endings
+  const cands=[];
+  if(w.endsWith('ies'))cands.push(w.slice(0,-3)+'y');
+  if(w.endsWith('es'))cands.push(w.slice(0,-2));
+  if(w.endsWith('s'))cands.push(w.slice(0,-1));
+  if(w.endsWith('ing')){const s=w.slice(0,-3);cands.push(s,s+'e');if(/(.)\1$/.test(s))cands.push(s.slice(0,-1));}
+  if(w.endsWith('ed')){const s=w.slice(0,-2);cands.push(s,w.slice(0,-1));if(/(.)\1$/.test(s))cands.push(s.slice(0,-1));}
+  if(w.endsWith('ily'))cands.push(w.slice(0,-3)+'y');
+  if(w.endsWith('iest'))cands.push(w.slice(0,-4)+'y');
+  if(w.endsWith('ier'))cands.push(w.slice(0,-3)+'y');
+  if(w.endsWith('iness'))cands.push(w.slice(0,-5)+'y');
+  if(w.endsWith('ly'))cands.push(w.slice(0,-2));
+  if(w.endsWith('er'))cands.push(w.slice(0,-2),w.slice(0,-1));
+  if(w.endsWith('est'))cands.push(w.slice(0,-3),w.slice(0,-2));
+  for(const c of cands)if(DICT[c])return DICT[c];
+  return null;
+}
+
 /* =====================================================================
    B1 GRAMMAR COURSE — original theory + exercises (English with Tad)
    ===================================================================== */
@@ -2048,6 +2640,275 @@ const GRAMMAR_B1=[
   {n:'Childhood',b:()=>[TASK('Your childhood','Write five sentences about your childhood using used to.'),B('lines',{count:5})]},
   {n:'Talk about the past',b:()=>[B('speaking',{icon:'💬',title:'How life has changed',prompts:['What did you use to do that you don\'t do now?','How did people use to communicate before mobile phones?','What used to be your favourite game or programme?']})]}
 ]},
+{id:'future-cont-perf',name:'Future Continuous & Perfect',
+ theory:T({icon:'🔮',title:'Future Continuous & Future Perfect',
+  form:[{s:'FC',x:'I <em>will be working</em> at 9 tomorrow.'},{s:'FP',x:'By June I <em>will have finished</em> the course.'},{s:'?',x:'<em>Will</em> you <em>be using</em> the car? · <em>Will</em> he <em>have left</em>?'}],
+  uses:[{r:'Future Continuous — in progress at a future moment',x:'This time next week I\'ll be lying on a beach.'},{r:'Future Perfect — completed before a future point',x:'They will have built the bridge by 2030.'},{r:'Polite enquiry about plans',x:'Will you be joining us for dinner?'}],
+  words:['this time tomorrow','at 8 o\'clock','by then','by 2030','before','in two years'],
+  note:'<b>Key words:</b> <b>at</b> + time → Future Continuous · <b>by</b> + time → Future Perfect.'}),
+ ex:[
+  {n:'Which future?',b:()=>[TASK('Choose the correct form','Circle the correct option.'),
+    B('promptlines',{lines:0,prompts:['1  This time tomorrow I ( will fly / will be flying ) to Madrid.','2  By Friday we ( will finish / will have finished ) the project.','3  Don\'t call at eight — I ( will have / will be having ) dinner.','4  She ( will have read / will be reading ) the book by Monday.']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Use the Future Continuous or Future Perfect.'),
+    FIB('1  At ten tonight I [will be studying:study] for the test.'),
+    FIB('2  By next year they [will have moved:move] to a new flat.'),
+    FIB('3  Don\'t worry — the shop [will have closed:close] by then.')]},
+  {n:'Your future day',b:()=>[TASK('Predict your day','Write what you will be doing at these times tomorrow.'),
+    B('promptlines',{lines:1,prompts:['At 7 a.m. tomorrow …','At midday tomorrow …','At 9 p.m. tomorrow …']})]},
+  {n:'By the end of the year',b:()=>[TASK('Achievements','Write four things you will have done by the end of this year.'),B('lines',{count:4})]}
+]},
+{id:'conditional-3',name:'Third Conditional',
+ theory:T({icon:'⏪',title:'Third Conditional',
+  form:[{s:'3',x:'If I <em>had known</em>, I <em>would have called</em> you.'},{s:'−',x:'If she <em>hadn\'t missed</em> the bus, she <em>wouldn\'t have been</em> late.'},{s:'?',x:'What <em>would</em> you <em>have done</em>?'}],
+  uses:[{r:'An imaginary situation in the past (it did not happen)',x:'If we had left earlier, we would have caught the train.'},{r:'Regrets and criticism about the past',x:'If you had studied, you would have passed.'},{r:'Alternative past results with could/might',x:'I might have won if I had tried harder.'}],
+  words:['if + had + past participle','would have','could have','might have'],
+  note:'<b>Watch out:</b> never use <i>would</i> in the if-clause — <i>If I had known…</i>, not <s>If I would have known…</s>'}),
+ ex:[
+  {n:'What really happened?',b:()=>[TASK('True or False','Read each sentence and decide if the statement is true.'),
+    B('truefalse',{rows:['“If I had studied, I would have passed.” → I passed the exam.','“If we had left earlier, we would have caught the train.” → We missed the train.','“If she hadn\'t helped me, I would have failed.” → She helped me.'],correct:[false,true,true]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Put the verbs into the Third Conditional.'),
+    FIB('1  If I [had known:know] about the party, I [would have come:come].'),
+    FIB('2  She [wouldn\'t have got:not get] wet if she [had taken:take] an umbrella.'),
+    FIB('3  If they [had left:leave] earlier, they [would have arrived:arrive] on time.')]},
+  {n:'Rewrite the situation',b:()=>[TASK('Rewrite the sentences','Rewrite each real situation as a Third Conditional.'),
+    B('promptlines',{lines:1,prompts:['I didn\'t see the sign, so I took the wrong road.','He forgot her birthday, so she was upset.','We didn\'t book a table, so we waited an hour.']})]},
+  {n:'Regrets',b:()=>[TASK('Your regrets','Write three sentences about things you would have done differently.'),B('lines',{count:4})]}
+]},
+{id:'wish',name:'wish / if only',
+ theory:T({icon:'🌠',title:'wish · if only',
+  form:[{s:'now',x:'I wish I <em>had</em> more time. (present — past form)'},{s:'past',x:'I wish I <em>had studied</em> harder. (past — past perfect)'},{s:'ann',x:'I wish he <em>would</em> stop shouting. (annoying habit)'}],
+  uses:[{r:'A present situation you want to be different',x:'I wish I lived closer to my family.'},{r:'A regret about the past',x:'I wish I hadn\'t said that.'},{r:'Wishing someone else would change',x:'I wish they would answer my emails.'}],
+  words:['I wish','if only','I\'d rather','would','had + past participle'],
+  note:'<b>Note:</b> after <i>wish</i> we often use <b>were</b> for all persons — <i>I wish I were taller.</i>'}),
+ ex:[
+  {n:'Present or past wish?',b:()=>[TASK('Which time?','Decide whether each wish is about the present or the past.'),
+    B('truefalse',{tlabel:'now',flabel:'past',rows:['I wish I spoke Chinese.','I wish I had taken that job.','I wish it wasn\'t so cold today.','I wish I hadn\'t eaten so much.'],correct:[true,false,true,false]})]},
+  {n:'Complete the wishes',b:()=>[TASK('Complete the sentences','Put the verb into the correct form.'),
+    FIB('1  I wish I [had:have] a bigger flat.'),
+    FIB('2  She wishes she [hadn\'t sold:not sell] her old car.'),
+    FIB('3  I wish it [would stop:stop] raining.'),
+    FIB('4  If only I [were:be] on holiday right now!')]},
+  {n:'Rewrite with wish',b:()=>[TASK('Rewrite the sentences','Rewrite each sentence using I wish or If only.'),
+    B('promptlines',{lines:1,prompts:['I don\'t have enough money.','I ate too much last night.','My neighbours are very noisy.']})]},
+  {n:'Three wishes',b:()=>[TASK('Your wishes','Write three real wishes about your life — one present, one past, one about other people.'),B('lines',{count:4})]}
+]},
+{id:'deduction',name:'Modals of deduction',
+ theory:T({icon:'🕵️',title:'must · might · can\'t (deduction)',
+  form:[{s:'99%',x:'He <em>must be</em> at home — the lights are on.'},{s:'50%',x:'She <em>might</em> / <em>could be</em> at work.'},{s:'0%',x:'They <em>can\'t be</em> asleep — I can hear music.'}],
+  uses:[{r:'must — you are almost sure it is true',x:'You must be tired after that journey.'},{r:'might / may / could — it is possible',x:'He might know the answer.'},{r:'can\'t — you are almost sure it is not true',x:'That can\'t be right — check it again.'}],
+  words:['must be','might be','could be','may be','can\'t be','probably'],
+  note:'<b>Watch out:</b> the opposite of <i>must be</i> is <b>can\'t be</b>, not <s>mustn\'t be</s>.'}),
+ ex:[
+  {n:'How certain?',b:()=>[TASK('Choose the right modal','Circle the correct option.'),
+    B('promptlines',{lines:0,prompts:['1  She isn\'t answering. She ( must / can\'t ) be busy.','2  That ( can\'t / must ) be John — he\'s in Japan this week.','3  I\'m not sure, but he ( might / must ) be a teacher.','4  You haven\'t eaten all day — you ( must / can\'t ) be hungry.']})]},
+  {n:'Complete the deductions',b:()=>[TASK('Complete the sentences','Use must be, might be or can\'t be.'),
+    FIB('1  The lights are off. They [must be] out.'),
+    FIB('2  He\'s wearing a uniform — he [might be] a pilot.'),
+    FIB('3  She [can\'t be] forty! She looks twenty-five.')]},
+  {n:'Explain the evidence',b:()=>[TASK('Make a deduction','Read the evidence and write a deduction.'),
+    B('promptlines',{lines:1,prompts:['The grass is wet this morning.','Your friend is yawning all the time.','There are two cups on the table.']})]},
+  {n:'Guess about the picture',b:()=>[TASK('Describe with deduction','Look at the picture. Write four deductions using must, might and can\'t.'),B('image'),B('lines',{count:4})]}
+]},
+{id:'causative',name:'Causative: have something done',
+ theory:T({icon:'🔧',title:'have / get something done',
+  form:[{s:'+',x:'I <em>had</em> my car <em>repaired</em>.'},{s:'−',x:'She <em>didn\'t have</em> her hair <em>cut</em>.'},{s:'?',x:'<em>Where do</em> you <em>have</em> your shoes <em>mended</em>?'}],
+  uses:[{r:'Someone else does the job for you',x:'We\'re having the kitchen painted next week.'},{r:'Something unpleasant happens to you',x:'He had his phone stolen on the bus.'},{r:'get is more informal than have',x:'I need to get my eyes tested.'}],
+  words:['have + object + past participle','get something done','by someone'],
+  note:'<b>Compare:</b> <i>I cut my hair</i> (I did it) — <i>I had my hair cut</i> (the hairdresser did it).'}),
+ ex:[
+  {n:'Who did it?',b:()=>[TASK('True or False','Decide whether the person did the job themselves.'),
+    B('truefalse',{tlabel:'self',flabel:'other',rows:['I painted the door.','I had the door painted.','She cut her hair.','She had her hair cut.'],correct:[true,false,true,false]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Use have something done in the correct tense.'),
+    FIB('1  We [had:have] our windows cleaned last week.'),
+    FIB('2  She is going to [have:have] her teeth whitened.'),
+    FIB('3  He [had:have] his wallet stolen at the station.')]},
+  {n:'Rewrite the sentences',b:()=>[TASK('Rewrite the sentences','Rewrite using have something done.'),
+    B('promptlines',{lines:1,prompts:['A mechanic services my car every year.','A photographer took our family photo.','Someone is delivering our shopping tomorrow.']})]},
+  {n:'Your life',b:()=>[TASK('True for you','Write about services you use.'),
+    B('promptlines',{lines:1,prompts:['Where do you have your hair cut?','When did you last have something repaired?','What would you like to have done to your home?']})]}
+]},
+{id:'indirect-q',name:'Indirect questions',
+ theory:T({icon:'🙋',title:'Indirect & polite questions',
+  form:[{s:'D',x:'<em>Where is</em> the station?'},{s:'I',x:'Could you tell me <em>where the station is</em>?'},{s:'Y/N',x:'Do you know <em>if</em> the shop <em>is</em> open?'}],
+  uses:[{r:'Being more polite with strangers',x:'Excuse me, do you know where I can find a bank?'},{r:'Word order becomes statement order',x:'Can you tell me what time it starts?'},{r:'Use if / whether for yes-no questions',x:'I wonder if you could help me.'}],
+  words:['Could you tell me…','Do you know…','I wonder…','Would you mind telling me…','if / whether'],
+  note:'<b>Watch out:</b> no <i>do/does/did</i> and no inversion — <i>Do you know where <b>she lives</b>?</i>, not <s>where does she live</s>.'}),
+ ex:[
+  {n:'Spot the mistake',b:()=>[TASK('Find and correct the mistake','Each question has one word-order mistake. Rewrite it correctly.'),
+    B('promptlines',{lines:1,prompts:['Could you tell me where is the museum?','Do you know what time does the film start?','I wonder how much does it cost.']})]},
+  {n:'Complete the questions',b:()=>[TASK('Complete the sentences','Complete each indirect question.'),
+    FIB('1  Could you tell me where the toilets [are]?'),
+    FIB('2  Do you know [if] the bank is open on Saturday?'),
+    FIB('3  I wonder what time the train [leaves].')]},
+  {n:'Make them polite',b:()=>[TASK('Make the questions polite','Rewrite each direct question as an indirect one.'),
+    B('promptlines',{lines:1,prompts:['Where is the nearest pharmacy?','How much does this cost?','Is there a bus to the airport?','When does the museum close?']})]},
+  {n:'At the information desk',b:()=>[B('speaking',{icon:'🗣️',title:'Role-play: tourist information',prompts:['Student A: You are a tourist. Ask five polite indirect questions about the city.','Student B: You work at the information desk. Answer politely.','Swap roles and choose a different city.']})]}
+]},
+{id:'time-clauses',name:'Future time clauses',
+ theory:T({icon:'⏰',title:'when · as soon as · until',
+  form:[{s:'✓',x:'I\'ll call you <em>when</em> I <em>arrive</em>.'},{s:'✗',x:'<s>I\'ll call you when I will arrive.</s>'},{s:'?',x:'What will you do <em>after</em> you <em>finish</em> school?'}],
+  uses:[{r:'Present tense after time words, even about the future',x:'We\'ll leave as soon as the rain stops.'},{r:'until / till — up to that moment',x:'Wait here until I come back.'},{r:'before / after / by the time',x:'Text me before you leave.'}],
+  words:['when','as soon as','until','till','before','after','by the time','while'],
+  note:'<b>Golden rule:</b> after <b>when, as soon as, until, before, after</b> use the <b>present</b>, never <i>will</i>.'}),
+ ex:[
+  {n:'Correct or not?',b:()=>[TASK('True or False','Decide whether each sentence is grammatically correct.'),
+    B('truefalse',{rows:['I\'ll phone you when I will get home.','I\'ll phone you when I get home.','We\'ll wait until she arrives.','As soon as it will stop raining, we\'ll go out.'],correct:[false,true,true,false]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Put the verb into the correct form.'),
+    FIB('1  I\'ll text you as soon as I [arrive:arrive].'),
+    FIB('2  We [will start:start] when everyone is here.'),
+    FIB('3  Don\'t leave until the lesson [finishes:finish].'),
+    FIB('4  By the time you [read:read] this, I\'ll be on the plane.')]},
+  {n:'Finish the sentences',b:()=>[TASK('Complete the sentences','Finish each sentence in your own words.'),
+    B('promptlines',{lines:1,prompts:['I\'ll be really happy when …','I\'m going to relax as soon as …','I won\'t stop studying until …']})]},
+  {n:'Your plans',b:()=>[TASK('After school / work','Write five sentences about what you will do when today ends.'),B('lines',{count:5})]}
+]},
+{id:'too-enough',name:'too / enough',
+ theory:T({icon:'📏',title:'too · enough · so · such',
+  form:[{s:'too',x:'It\'s <em>too</em> expensive. (more than we want)'},{s:'enough',x:'It isn\'t big <em>enough</em>. · We have <em>enough</em> time.'},{s:'so/such',x:'It was <em>so</em> cold. · It was <em>such a</em> cold day.'}],
+  uses:[{r:'too + adjective — a negative meaning',x:'This coffee is too hot to drink.'},{r:'adjective + enough — sufficient',x:'He isn\'t old enough to drive.'},{r:'enough + noun',x:'There aren\'t enough chairs.'},{r:'so + adjective · such + (a) + adjective + noun',x:'She was so kind. / She was such a kind person.'}],
+  words:['too','enough','so','such','not … enough','too much / too many'],
+  note:'<b>Word order:</b> <b>too</b> goes <i>before</i> the adjective, <b>enough</b> goes <i>after</i> it — <i>too small</i>, <i>small enough</i>.'}),
+ ex:[
+  {n:'too or enough',b:()=>[TASK('Choose the correct word','Circle too or enough.'),
+    B('promptlines',{lines:0,prompts:['1  This box is ( too / enough ) heavy for me.','2  She isn\'t tall ( too / enough ) to reach the shelf.','3  We don\'t have ( too / enough ) money for a taxi.','4  It\'s ( too / enough ) late to call him now.']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write too, enough, so or such.'),
+    FIB('1  The film was [so] boring that I fell asleep.'),
+    FIB('2  It was [such] a beautiful day that we went to the beach.'),
+    FIB('3  He\'s not experienced [enough] for this job.'),
+    FIB('4  There were [too] many people in the room.')]},
+  {n:'Join the sentences',b:()=>[TASK('Rewrite the sentences','Rewrite each sentence using the word in brackets.'),
+    B('promptlines',{lines:1,prompts:['The bag was very heavy. I couldn\'t carry it.  (too)','He is very young. He can\'t vote.  (enough)','It was a very good film. We watched it twice.  (such)']})]},
+  {n:'About your town',b:()=>[TASK('Your opinion','Write four sentences about your town using too, enough, so and such.'),B('lines',{count:4})]}
+]},
+{id:'ed-ing-adj',name:'-ed / -ing adjectives',
+ theory:T({icon:'😀',title:'bored or boring?',
+  form:[{s:'-ed',x:'I am <em>bored</em>. (how I feel)'},{s:'-ing',x:'The lesson is <em>boring</em>. (what causes the feeling)'},{s:'both',x:'I was <em>surprised</em> by the <em>surprising</em> news.'}],
+  uses:[{r:'-ed describes a person\'s feeling',x:'She was excited about the trip.'},{r:'-ing describes the thing or person causing it',x:'The trip was exciting.'},{r:'Common pairs',x:'interested/interesting · tired/tiring · confused/confusing'}],
+  words:['bored/boring','tired/tiring','interested/interesting','excited/exciting','confused/confusing'],
+  note:'<b>Quick check:</b> people are usually <b>-ed</b>; things are usually <b>-ing</b>. <i>I\'m boring</i> means you are a dull person!'}),
+ ex:[
+  {n:'Choose the adjective',b:()=>[TASK('Choose the correct adjective','Circle the correct form.'),
+    B('promptlines',{lines:0,prompts:['1  I\'m really ( interested / interesting ) in history.','2  That was a very ( tired / tiring ) journey.','3  She looked ( confused / confusing ) by the question.','4  The ending of the film was ( surprised / surprising ).']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Use the correct form of the word in brackets.'),
+    FIB('1  I was really [excited:excite] about the concert.'),
+    FIB('2  This book is very [boring:bore] — I stopped reading it.'),
+    FIB('3  Are you [interested:interest] in joining us?')]},
+  {n:'Make the pairs',b:()=>[TASK('Write two sentences','For each word, write one -ed sentence and one -ing sentence.'),
+    B('promptlines',{lines:2,prompts:['tire','amaze','frustrate']})]},
+  {n:'How do you feel?',b:()=>[TASK('True for you','Complete the sentences about yourself.'),
+    B('promptlines',{lines:1,prompts:['I find … really interesting.','I get bored when …','The most exciting thing I have done is …']})]}
+]},
+{id:'adj-order',name:'Adjective order & adverbs',
+ theory:T({icon:'📐',title:'Adjective order · adverb position',
+  form:[{s:'ADJ',x:'opinion → size → age → shape → colour → origin → material'},{s:'ex',x:'a <em>lovely small old round</em> wooden table'},{s:'ADV',x:'She <em>often</em> goes out. · She goes out <em>very often</em>.'}],
+  uses:[{r:'Opinion adjectives come first',x:'a beautiful red dress (not a red beautiful dress)'},{r:'Frequency adverbs go before the main verb',x:'I always drink coffee in the morning.'},{r:'…but after the verb "be"',x:'He is never late.'}],
+  words:['always','usually','often','sometimes','hardly ever','never','well','carefully'],
+  note:'<b>Watch out:</b> adverbs of frequency go <b>before</b> the main verb but <b>after</b> <i>am / is / are</i>.'}),
+ ex:[
+  {n:'Put in order',b:()=>[TASK('Put the adjectives in order','Rewrite each phrase with the adjectives in the correct order.'),
+    B('anagram',{line:true,rows:[{c:'red / a / big / car',a:'a big red car'},{c:'Italian / an / old / lovely / painting',a:'a lovely old Italian painting'},{c:'leather / black / new / boots',a:'new black leather boots'}]})]},
+  {n:'Where does the adverb go?',b:()=>[TASK('Put the adverb in the right place','Rewrite each sentence with the adverb in brackets.'),
+    B('promptlines',{lines:1,prompts:['I drink tea in the evening.  (usually)','She is late for class.  (never)','They go to the cinema.  (hardly ever)','He plays the guitar.  (very well)']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the adverb in the correct position.'),
+    FIB('1  My father [always] reads the news in the morning.'),
+    FIB('2  She is [often] tired after work.'),
+    FIB('3  We [hardly ever] eat out.')]},
+  {n:'Describe your things',b:()=>[TASK('Describe them','Write a description of each thing using at least two adjectives in the right order.'),
+    B('promptlines',{lines:1,prompts:['your favourite item of clothing','your phone','a room in your home']})]}
+]},
+{id:'prepositions',name:'Prepositions of time & place',
+ theory:T({icon:'📍',title:'in · on · at',
+  form:[{s:'TIME',x:'<em>in</em> July / 2020 / the morning · <em>on</em> Monday / 5 May · <em>at</em> 6 o\'clock / night'},{s:'PLACE',x:'<em>in</em> a room / city · <em>on</em> a wall / floor · <em>at</em> the door / bus stop'},{s:'MOVE',x:'<em>to</em> school · <em>into</em> the room · <em>from</em> home'}],
+  uses:[{r:'in — long periods and enclosed spaces',x:'in April, in the kitchen'},{r:'on — days, dates and surfaces',x:'on Friday, on the table'},{r:'at — exact times and points',x:'at 7.30, at the corner'}],
+  words:['in','on','at','to','from','under','between','next to','opposite'],
+  note:'<b>Learn as phrases:</b> at night, in the morning, on Monday morning, at the weekend (UK) / on the weekend (US).'}),
+ ex:[
+  {n:'Sort the phrases',b:()=>[TASK('Sort the time phrases','Write each phrase in the correct column.'),
+    B('wordbank',{title:'Time phrases',words:['Monday','June','7 o\'clock','the evening','12 May','night','2024','the weekend']}),
+    B('sortcols',{cols:[{title:'in'},{title:'on'},{title:'at'}]})]},
+  {n:'Complete with in, on or at',b:()=>[TASK('Complete the sentences','Write in, on or at.'),
+    FIB('1  The meeting is [on] Tuesday [at] nine.'),
+    FIB('2  I was born [in] 1998.'),
+    FIB('3  Your keys are [on] the table.'),
+    FIB('4  She\'s waiting [at] the bus stop.')]},
+  {n:'Describe the room',b:()=>[TASK('Where is everything?','Look at the picture and write five sentences using prepositions of place.'),B('image'),B('lines',{count:5})]},
+  {n:'Your routine',b:()=>[TASK('True for you','Complete with the right preposition and your own information.'),
+    B('promptlines',{lines:1,prompts:['I usually get up … .','My birthday is … .','I like to relax … .']})]}
+]},
+{id:'phrasal',name:'Phrasal verbs',
+ theory:T({icon:'🧩',title:'Phrasal verbs',
+  form:[{s:'V+P',x:'get <em>up</em> · turn <em>on</em> · look <em>after</em>'},{s:'sep',x:'turn <em>the light</em> on = turn on <em>the light</em>'},{s:'pron',x:'turn <em>it</em> on ✓ · <s>turn on it</s> ✗'}],
+  uses:[{r:'Very common in everyday spoken English',x:'I get up at seven and put on my coat.'},{r:'The meaning is often idiomatic',x:'give up = stop doing something'},{r:'Some cannot be separated',x:'look after the children (not look the children after)'}],
+  words:['get up','turn on/off','look for','look after','give up','put on','find out','take off'],
+  note:'<b>Watch out:</b> with a pronoun the particle always goes last — <i>switch it off</i>, never <s>switch off it</s>.'}),
+ ex:[
+  {n:'Match the meanings',b:()=>[TASK('Match the phrasal verbs','Match each phrasal verb with its meaning.'),
+    B('match',{left:['give up','look after','find out','take off','put off'],right:['discover','stop doing something','postpone','take care of','remove / leave the ground']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Use the correct phrasal verb.'),
+    FIB('1  Please [turn off] the TV before you go to bed.'),
+    FIB('2  I need to [find out] what time the train leaves.'),
+    FIB('3  She [looks after] her little brother after school.'),
+    FIB('4  He [gave up] smoking two years ago.')]},
+  {n:'Word order',b:()=>[TASK('Put the words in order','Rearrange the words to make correct sentences.'),
+    B('anagram',{line:true,rows:[{c:'it / on / turn',a:'Turn it on.'},{c:'the / off / take / coat / your',a:'Take off your coat.'},{c:'them / for / looking / I\'m',a:'I\'m looking for them.'}]})]},
+  {n:'Your day',b:()=>[TASK('Write about your day','Write five sentences about your day using phrasal verbs.'),B('lines',{count:5})]}
+]},
+{id:'there-is',name:'there is / there are',
+ theory:T({icon:'📦',title:'there is · there are',
+  form:[{s:'+',x:'<em>There is</em> a book. · <em>There are</em> two books.'},{s:'−',x:'<em>There isn\'t</em> any milk. · <em>There aren\'t</em> any eggs.'},{s:'?',x:'<em>Is there</em> a bank near here? · <em>Are there</em> any shops?'}],
+  uses:[{r:'Saying that something exists',x:'There is a park behind the school.'},{r:'Other tenses',x:'There was a shop here. / There will be a party.'},{r:'With some / any / a lot of',x:'There are a lot of tourists in summer.'}],
+  words:['there is','there are','there was','there were','there will be','any','some'],
+  note:'<b>Don\'t confuse:</b> <i>there is</i> (existence) with <i>it is</i> (identifying) — <i>There is a car outside. It is my brother\'s.</i>'}),
+ ex:[
+  {n:'is or are',b:()=>[TASK('Complete the sentences','Write there is, there are, there isn\'t or there aren\'t.'),
+    FIB('1  [There is] a big supermarket near my house.'),
+    FIB('2  [There are] three windows in this room.'),
+    FIB('3  [There aren\'t] any biscuits left.'),
+    FIB('4  [There isn\'t] much time before the train leaves.')]},
+  {n:'Ask about the town',b:()=>[TASK('Write the questions','Write questions with Is there / Are there.'),
+    B('promptlines',{lines:1,prompts:['a cinema / in your town?','any good restaurants / near here?','a bus stop / on this street?']})]},
+  {n:'Then and now',b:()=>[TASK('Complete the sentences','Use there was / there were / there will be.'),
+    FIB('1  Fifty years ago [there were] no mobile phones.'),
+    FIB('2  [There was] a cinema here before it closed.'),
+    FIB('3  I hope [there will be] a solution soon.')]},
+  {n:'Describe your street',b:()=>[TASK('Your neighbourhood','Write six sentences about what there is in your street or town.'),B('lines',{count:6})]}
+]},
+{id:'both-either',name:'both / either / neither',
+ theory:T({icon:'⚖️',title:'both · either · neither · all · none',
+  form:[{s:'2 ✓✓',x:'<em>Both</em> restaurants are good. · <em>Both of</em> them are good.'},{s:'2 ✓/✓',x:'<em>Either</em> day is fine. (one or the other)'},{s:'2 ✗✗',x:'<em>Neither</em> answer is correct.'}],
+  uses:[{r:'both — two things together (+ plural verb)',x:'Both of my parents are teachers.'},{r:'either — one of two',x:'You can take either bus.'},{r:'neither — not one and not the other (+ singular verb)',x:'Neither of them came.'},{r:'For three or more: all / none',x:'All of my friends / none of my friends'}],
+  words:['both … and','either … or','neither … nor','all','none','every'],
+  note:'<b>Watch out:</b> <i>neither</i> is already negative — <i>Neither of them came</i>, not <s>Neither of them didn\'t come</s>.'}),
+ ex:[
+  {n:'Choose the word',b:()=>[TASK('Choose the correct word','Circle both, either or neither.'),
+    B('promptlines',{lines:0,prompts:['1  ( Both / Neither ) of my sisters live in London — they share a flat.','2  I don\'t mind. ( Either / Neither ) film is fine.','3  ( Both / Neither ) of them passed — they were very disappointed.','4  She speaks ( both / either ) French and Spanish.']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write both, either, neither, all or none.'),
+    FIB('1  [Both] of my grandparents are still alive.'),
+    FIB('2  [Neither] of the answers was correct.'),
+    FIB('3  You can pay by cash or card — [either] is fine.'),
+    FIB('4  [None] of the students failed the exam.')]},
+  {n:'Compare two things',b:()=>[TASK('Write comparisons','Write one sentence with both and one with neither about each pair.'),
+    B('promptlines',{lines:2,prompts:['two subjects you study','two cities you know','two of your friends']})]},
+  {n:'About your family',b:()=>[TASK('True for you','Complete about the people in your life.'),
+    B('promptlines',{lines:1,prompts:['Both of my …','Neither of my …','All of my friends …']})]}
+]},
+{id:'state-verbs',name:'State verbs',
+ theory:T({icon:'🧠',title:'State (non-action) verbs',
+  form:[{s:'✓',x:'I <em>know</em> the answer. · She <em>loves</em> chocolate.'},{s:'✗',x:'<s>I am knowing the answer.</s>'},{s:'both',x:'I <em>think</em> it\'s good. (opinion) · I<em>\'m thinking</em> about it. (process)'}],
+  uses:[{r:'Verbs of thinking',x:'know, believe, understand, remember, mean'},{r:'Verbs of feeling and liking',x:'love, hate, prefer, want, need'},{r:'Verbs of senses and possession',x:'see, hear, smell, have, own, belong'}],
+  words:['know','believe','want','need','like','love','hate','understand','belong','seem'],
+  note:'<b>Two meanings:</b> <i>have</i> = possess (state) but <i>be having</i> = experience — <i>I\'m having lunch.</i>'}),
+ ex:[
+  {n:'Correct or wrong?',b:()=>[TASK('True or False','Decide whether each sentence is correct English.'),
+    B('truefalse',{rows:['I am knowing him very well.','I know him very well.','She is having a shower right now.','I am wanting a new phone.'],correct:[false,true,true,false]})]},
+  {n:'Choose the form',b:()=>[TASK('Choose the correct form','Circle the correct option.'),
+    B('promptlines',{lines:0,prompts:['1  I ( don\'t understand / am not understanding ) this exercise.','2  She ( has / is having ) two brothers.','3  We ( have / are having ) dinner at the moment.','4  This bag ( belongs / is belonging ) to me.']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Use the Present Simple or Present Continuous.'),
+    FIB('1  I [don\'t believe:not believe] that story.'),
+    FIB('2  Look — she [is thinking:think] about the problem.'),
+    FIB('3  This soup [tastes:taste] delicious.')]},
+  {n:'Opinions',b:()=>[TASK('Your opinions','Write five sentences with state verbs about your tastes and beliefs.'),B('lines',{count:5})]}
+]},
 {id:'questions',name:'Question forms & tags',
  theory:T({icon:'❓',title:'Questions & question tags',
   form:[{s:'?',x:'<em>Do</em> you like it? · <em>Where did</em> she go?'},{s:'S',x:'<em>Who</em> broke the window? (subject — no do)'},{s:'tag',x:'You\'re Spanish, <em>aren\'t you</em>? · She didn\'t call, <em>did she</em>?'}],
@@ -2238,6 +3099,7 @@ function lockNow(){
 }
 $('#keypad').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(b)pinPush(b.dataset.k);});
 $('#lockBtn').onclick=lockNow;
+$('#printBtn').onclick=printPDF;
 document.addEventListener('keydown',e=>{
   if(!document.body.classList.contains('locked'))return;
   if(/^[0-9]$/.test(e.key)){e.preventDefault();pinPush(e.key);}
