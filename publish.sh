@@ -12,7 +12,8 @@ if [ ! -f "$SOURCE" ]; then
   exit 1
 fi
 
-cp "$SOURCE" "$REPO_DIR/index.html"
+# index.html is the landing page; the builder lives at app.html
+cp "$SOURCE" "$REPO_DIR/app.html"
 cd "$REPO_DIR"
 
 if git diff --quiet && git diff --cached --quiet; then

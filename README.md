@@ -2,7 +2,8 @@
 
 A free, offline **worksheet & lesson builder** for A4 printables. Build worksheets block by block, apply one of 40 designs, and export a clean PDF. Works on Mac and iPad — no install, no account, no internet required.
 
-**▶️ Live app: https://tadhayrapetian.github.io/Homework-Builder/**
+**▶️ Website: https://tadhayrapetian.github.io/Homework-Builder/**
+**🛠 Builder: https://tadhayrapetian.github.io/Homework-Builder/app.html**
 
 ## Features
 
