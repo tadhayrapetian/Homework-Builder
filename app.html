@@ -1718,7 +1718,11 @@ function collectOps(sheet,W,H){
   }
   function textOps(node,cs){
     const size=parseFloat(cs.fontSize)||13;
-    const col=parseCol(cs.color)||[0,0,0,1];
+    // invisible text (hidden answers use color:transparent) must never be printed
+    const fill=cs.webkitTextFillColor||cs.textFillColor;
+    if(fill&&/rgba\([^)]*,\s*0(\.0+)?\)/.test(fill))return;
+    const col=parseCol(cs.color);
+    if(!col)return;
     const fk=fontKey(cs);
     const deco=cs.textDecorationLine||cs.textDecoration||'';
     const tt=cs.textTransform||'none';
@@ -1865,6 +1869,16 @@ function splitPaperPages(paper,W,H){
     else{h+=(cur.length?gap:0)+kh;cur.push(k);}
   });
   if(cur.length)groups.push(cur);
+  // never leave a task card (or a heading) stranded at the foot of a page —
+  // push it forward so it stays with the exercise it introduces
+  const isIntro=n=>!!(n.querySelector&&(n.querySelector('.ws-instr')||n.querySelector('.ws-header')||n.querySelector('.wordbank')));
+  for(let i=0;i<groups.length-1;i++){
+    while(groups[i].length>1&&isIntro(groups[i][groups[i].length-1])){
+      groups[i+1].unshift(groups[i].pop());
+    }
+  }
+  const nonEmpty=groups.filter(g=>g.length);
+  if(nonEmpty.length)groups.length=0,nonEmpty.forEach(g=>groups.push(g));
   if(groups.length<2)return[cleanup(paper.cloneNode(true))];
   return groups.map(g=>{
     const c=paper.cloneNode(false);
@@ -3826,25 +3840,490 @@ const GRAMMAR_B1=[
 ]}
 ];
 
+/* =====================================================================
+   C1 ADVANCED GRAMMAR — original theory + exercises (English with Tad)
+   ===================================================================== */
+const GRAMMAR_C1=[
+{id:'c1-inversion',name:'Inversion after negative adverbials',
+ theory:T({icon:'🔄',title:'Inversion for emphasis',
+  form:[{s:'normal',x:'I have <em>never</em> seen such a mess.'},{s:'inverted',x:'<em>Never have I</em> seen such a mess.'},{s:'pattern',x:'negative adverbial + <em>auxiliary</em> + subject + verb'}],
+  uses:[{r:'After negative or restrictive adverbials at the front',x:'Rarely does he arrive on time.'},{r:'After Not only … (but also)',x:'Not only did she win, but she also broke the record.'},{r:'After No sooner … than / Hardly … when',x:'No sooner had we sat down than the phone rang.'},{r:'After Only + time expression',x:'Only later did I realise my mistake.'}],
+  words:['never','rarely','seldom','hardly','no sooner','not only','little','only then','under no circumstances'],
+  note:'<b>Register:</b> inversion is emphatic and fairly formal — common in writing, speeches and dramatic narrative, rare in casual chat.'}),
+ ex:[
+  {n:'Spot the inversion',b:()=>[TASK('Underline the inversion','Read the text and underline every inverted structure.'),
+    B('text',{reading:true,html:'<b>Never</b> in her career <b>had</b> she faced such a decision. <b>Not only was</b> the deadline impossible, but the budget had also been cut. <b>Only after</b> three sleepless nights <b>did</b> she find a solution. <b>Rarely does</b> a problem look so different in the morning.'})]},
+  {n:'Rewrite with inversion',b:()=>[TASK('Rewrite the sentences','Begin each sentence with the word in brackets and use inversion.'),
+    WRITE(1)('I have never heard such nonsense.  (Never)','She had hardly sat down when the bell rang.  (Hardly)','We had no sooner left than it started to rain.  (No sooner)','He not only lied, but he also blamed me.  (Not only)','I realised the truth only later.  (Only later)','You must not open the door under any circumstances.  (Under no circumstances)','She little knew what was waiting for her.  (Little)','They seldom complain about anything.  (Seldom)')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing auxiliary or verb.'),
+    ...FIBS('1  Never [have] I been so embarrassed.','2  Rarely [does] he speak in public.',
+    '3  No sooner [had] we arrived than the show began.','4  Not only [did] she apologise, she also paid for the damage.',
+    '5  Only then [did] I understand what he meant.','6  Little [did] they know how wrong they were.',
+    '7  Hardly [had] the meeting started when the fire alarm went off.','8  Under no circumstances [should] you sign that contract.')]},
+  {n:'Add drama to a story',b:()=>[TASK('Rewrite dramatically','Rewrite this plain paragraph using at least four inverted structures.'),
+    B('text',{reading:true,html:'I had never been so nervous. I had hardly opened the envelope when my hands started shaking. I not only got the job, I also got a better salary. I only understood how much it mattered later.'}),
+    B('lines',{count:7})]},
+  {n:'Your own emphasis',b:()=>[TASK('Write about yourself','Write five emphatic sentences about your life using inversion.'),B('lines',{count:6})]}
+]},
+{id:'c1-cleft',name:'Cleft sentences & fronting',
+ theory:T({icon:'🎯',title:'Focusing: it-clauses & what-clauses',
+  form:[{s:'plain',x:'Anna broke the window yesterday.'},{s:'it-cleft',x:'<em>It was Anna who</em> broke the window.'},{s:'wh-cleft',x:'<em>What Anna did was</em> (to) break the window.'}],
+  uses:[{r:'It-cleft highlights one element — who, what, when or where',x:'It was in Prague that we first met.'},{r:'What-cleft highlights an action or a whole idea',x:'What I need is a long holiday.'},{r:'The thing / the reason / all … is that …',x:'All I want is some peace and quiet.'},{r:'Fronting moves a phrase to the front for contrast',x:'That film I have seen. This one I haven\'t.'}],
+  words:['It was … who/that','What … is','All … is','The reason why … is','The person who … is'],
+  note:'<b>Why bother?</b> Cleft sentences correct a wrong assumption or draw a contrast — <i>It wasn\'t me who told her.</i>'}),
+ ex:[
+  {n:'Match the focus',b:()=>[TASK('What is being emphasised?','Match each cleft sentence with what it highlights.'),
+    B('match',{left:['It was Tom who paid.','It was on Friday that they left.','What she wants is an apology.','It was the noise that annoyed me.','All I did was ask a question.'],right:['the time','the cause of the annoyance','the person who paid','how small the action was','the thing she wants']})]},
+  {n:'Rewrite as it-clefts',b:()=>[TASK('Emphasise the underlined part','Rewrite each sentence as an it-cleft, focusing on the part in bold.'),
+    WRITE(1)('<b>My sister</b> found the keys.','We met in <b>Vienna</b>.','They arrived <b>on Sunday</b>.','<b>The traffic</b> made us late.','I bought the tickets <b>for my parents</b>.','<b>Her attitude</b> surprised everyone.')]},
+  {n:'Rewrite as what-clefts',b:()=>[TASK('Rewrite with what','Rewrite each sentence beginning with What.'),
+    WRITE(1)('I need a break.','She said something very rude.','They want more information.','He simply forgot the date.','We should book earlier next time.')]},
+  {n:'Complete the clefts',b:()=>[TASK('Complete the sentences','Write the missing words.'),
+    ...FIBS('1  [It] was my brother who called you.','2  [What] I really want is a quiet weekend.',
+    '3  [All] I asked for was an explanation.','4  The reason [why] I left early was the noise.',
+    '5  It was in 2019 [that] we moved here.','6  [What] happened was that the printer broke.')]},
+  {n:'Correct the assumption',b:()=>[TASK('Put them right','Someone has got the facts wrong. Correct them with a cleft sentence.'),
+    WRITE(1)('“So you broke the vase.”  (my brother)','“You went to Spain, right?”  (Portugal)','“You wanted money.”  (an apology)','“They arrived on Monday.”  (Tuesday)')]}
+]},
+{id:'c1-participle',name:'Participle clauses',
+ theory:T({icon:'✂️',title:'Participle clauses',
+  form:[{s:'-ing',x:'<em>Feeling</em> tired, she went to bed early.'},{s:'-ed',x:'<em>Written</em> in 1890, the novel still feels modern.'},{s:'perfect',x:'<em>Having finished</em> the report, he went home.'}],
+  uses:[{r:'-ing clause = active, at the same time or as a reason',x:'Walking home, I met an old friend.'},{r:'-ed clause = passive meaning',x:'Damaged in the storm, the roof had to be replaced.'},{r:'Having + past participle = the earlier action',x:'Having read the contract, she signed it.'},{r:'After conjunctions for clarity',x:'While waiting, he read the paper.'}],
+  words:['having done','being','while / when / after + -ing','once','although'],
+  note:'<b>Golden rule:</b> the participle and the main clause must share the <b>same subject</b>. <s>Walking home, the rain started.</s> — the rain wasn\'t walking!'}),
+ ex:[
+  {n:'Find the dangling participle',b:()=>[TASK('True or False','Decide whether each sentence is grammatically correct.'),
+    B('truefalse',{rows:['Walking through the park, the flowers looked beautiful.','Walking through the park, I noticed the flowers.','Having finished dinner, the plates were washed.','Having finished dinner, we washed the plates.','Built in 1920, the house needs repairs.','Built in 1920, we bought the house.'],correct:[false,true,false,true,true,false]})]},
+  {n:'Join with a participle',b:()=>[TASK('Rewrite the pairs','Join each pair using a participle clause.'),
+    WRITE(1)('She felt exhausted. She went straight to bed.','He had lost his passport. He couldn\'t board the plane.','The letter was written in a hurry. It was full of mistakes.','They were waiting for the bus. They discussed the film.','I had already seen the film. I stayed at home.','The bridge was damaged by floods. It was closed for months.')]},
+  {n:'Complete the clauses',b:()=>[TASK('Complete the sentences','Write the correct participle form.'),
+    ...FIBS('1  [Having:have] finished the exam, we celebrated.',
+    '2  [Feeling:feel] unwell, she left the meeting early.',
+    '3  [Written:write] over a century ago, the book is still popular.',
+    '4  While [waiting:wait] for the train, I read the news.',
+    '5  [Not knowing:not know] the answer, he stayed silent.',
+    '6  [Surrounded:surround] by mountains, the village is hard to reach.')]},
+  {n:'Make the text more compact',b:()=>[TASK('Rewrite the paragraph','Rewrite this text using at least four participle clauses.'),
+    B('text',{reading:true,html:'She had worked in Paris for ten years. She spoke fluent French. She applied for the job. She was interviewed by three managers. She was offered the position the same day.'}),
+    B('lines',{count:6})]},
+  {n:'Describe a place',b:()=>[TASK('Write a description','Describe a place you know well in six sentences, using at least three participle clauses.'),B('lines',{count:7})]}
+]},
+{id:'c1-subjunctive',name:'Subjunctive & should in that-clauses',
+ theory:T({icon:'⚖️',title:'The subjunctive',
+  form:[{s:'base',x:'I insist that he <em>be</em> informed immediately.'},{s:'should',x:'I insist that he <em>should be</em> informed.'},{s:'were',x:'If I <em>were</em> you… · I wish I <em>were</em> taller.'}],
+  uses:[{r:'After verbs of demanding, suggesting and insisting',x:'They demanded that she resign.'},{r:'After adjectives of importance',x:'It is essential that everyone arrive on time.'},{r:'After nouns like recommendation, requirement',x:'His recommendation was that we wait.'},{r:'Fixed expressions',x:'Be that as it may. / God save the King.'}],
+  words:['insist','demand','suggest','recommend','propose','essential','vital','crucial','imperative'],
+  note:'<b>Note the form:</b> the verb has <b>no -s</b> and no <i>do</i> — <i>that he <b>be</b></i>, <i>that she <b>resign</b></i>, <i>that they <b>not attend</b></i>. British English often adds <b>should</b> instead.'}),
+ ex:[
+  {n:'Choose the correct form',b:()=>[TASK('Choose the correct form','Circle the correct option.'),
+    CIRCLE('1  The doctor insisted that he ( stays / stay ) in bed.','2  It is vital that everyone ( is / be ) informed.','3  They recommended that she ( applies / apply ) again.','4  I suggest that he ( not / doesn\'t ) mention it.','5  It is essential that the door ( remains / remain ) locked.','6  The committee proposed that the meeting ( is / be ) postponed.')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Use the subjunctive form of the verb in brackets.'),
+    ...FIBS('1  The judge ordered that the witness [be:be] called.',
+    '2  It is important that she [know:know] the truth.',
+    '3  They insisted that he [pay:pay] in advance.',
+    '4  I recommend that you [not sign:not sign] anything today.',
+    '5  It is crucial that the report [arrive:arrive] before Friday.',
+    '6  His only request was that we [keep:keep] it confidential.')]},
+  {n:'Formal rewriting',b:()=>[TASK('Make it formal','Rewrite each sentence using the subjunctive after the verb in brackets.'),
+    WRITE(1)('He must be told immediately.  (insist)','The meeting should be moved to Monday.  (propose)','She has to attend the training.  (require)','They mustn\'t leave before the end.  (demand)','We should review the contract first.  (recommend)')]},
+  {n:'Write formal requests',b:()=>[TASK('Write a formal note','Write five sentences from a formal e-mail using the subjunctive (insist, recommend, essential, vital).'),B('lines',{count:6})]}
+]},
+{id:'c1-reporting',name:'Advanced reporting',
+ theory:T({icon:'💬',title:'Reporting verbs & patterns',
+  form:[{s:'that',x:'She <em>admitted that</em> she had lied.'},{s:'obj+to',x:'He <em>persuaded me to</em> stay.'},{s:'-ing',x:'They <em>denied stealing</em> the money.'},{s:'prep',x:'She <em>apologised for</em> being late. · He <em>accused me of</em> lying.'}],
+  uses:[{r:'Each reporting verb has its own pattern — learn them together',x:'insist on doing · warn someone against doing · promise to do'},{r:'The verb carries the speaker\'s attitude',x:'admit, deny, claim, boast, complain, threaten'},{r:'Tense usually shifts back',x:'“I am tired” → He said he was tired.'},{r:'No shift if it is still true',x:'She said the earth goes round the sun.'}],
+  words:['admit','deny','claim','suggest','refuse','promise','threaten','warn','accuse','congratulate','insist'],
+  note:'<b>Careful:</b> <i>suggest</i> and <i>recommend</i> are never followed by an object + to-infinitive — <i>She suggested <b>that we go</b></i> / <i>suggested <b>going</b></i>, not <s>suggested me to go</s>.'}),
+ ex:[
+  {n:'Match verb and pattern',b:()=>[TASK('Match the patterns','Match each reporting verb with the pattern it takes.'),
+    B('match',{left:['deny','persuade','apologise','accuse','promise','insist'],right:['someone of doing','for doing','to do','on doing','doing','someone to do']})]},
+  {n:'Choose the reporting verb',b:()=>[TASK('Choose the best verb','Circle the reporting verb that fits the meaning.'),
+    CIRCLE('1  “It wasn\'t me!” — He ( denied / refused ) taking the money.','2  “Please, please come.” — She ( begged / offered ) me to come.','3  “I\'ll tell your boss.” — He ( threatened / warned ) to tell my boss.','4  “Well done!” — They ( congratulated / complimented ) me on my results.','5  “Let\'s take a break.” — She ( suggested / advised ) taking a break.','6  “I really am sorry.” — He ( apologised / admitted ) for shouting.')]},
+  {n:'Report the sentences',b:()=>[TASK('Report the statements','Report each sentence using the verb in brackets and its correct pattern.'),
+    WRITE(1)('“I didn\'t break it.”  (deny)','“You should see a doctor.”  (advise)','“I\'ll definitely be there.”  (promise)','“You took my pen!”  (accuse)','“Don\'t go near the edge.”  (warn)','“Why don\'t we meet on Friday?”  (suggest)','“Yes, I was wrong.”  (admit)','“No, I won\'t do it.”  (refuse)')]},
+  {n:'Complete the reports',b:()=>[TASK('Complete the sentences','Write the missing preposition or particle.'),
+    ...FIBS('1  She apologised [for] arriving late.','2  He accused me [of] cheating.',
+    '3  They congratulated her [on] winning.','4  I insisted [on] paying the bill.',
+    '5  She warned us [against] going alone.','6  He admitted [to] making a mistake.')]},
+  {n:'Report a real conversation',b:()=>[TASK('Report it','Think of a conversation you had recently. Report six lines using six different reporting verbs.'),B('lines',{count:8})]}
+]},
+{id:'c1-agreement',name:'Subject–verb agreement',
+ theory:T({icon:'🔗',title:'Tricky agreement',
+  form:[{s:'sing',x:'<em>Each</em> of the students <em>has</em> a laptop.'},{s:'plur',x:'<em>A number of</em> people <em>are</em> waiting.'},{s:'both',x:'The team <em>is</em> / <em>are</em> playing well. (BrE allows both)'}],
+  uses:[{r:'each, every, either, neither, one of → singular verb',x:'Neither of the answers is correct.'},{r:'a number of → plural · the number of → singular',x:'A number of files are missing. / The number of files is small.'},{r:'Collective nouns can be either in British English',x:'The government has / have decided.'},{r:'With or / nor the verb agrees with the nearer subject',x:'Neither the manager nor the staff were told.'}],
+  words:['each of','one of','neither of','a number of','the majority of','none of','police','staff','data'],
+  note:'<b>Watch out:</b> a long phrase between the subject and the verb doesn\'t change the agreement — <i>The <b>box</b> of old letters <b>was</b> heavy.</i>'}),
+ ex:[
+  {n:'Choose the verb',b:()=>[TASK('Choose the correct verb','Circle the correct form.'),
+    CIRCLE('1  Each of the rooms ( has / have ) a balcony.','2  A number of students ( was / were ) absent.','3  The number of complaints ( has / have ) fallen.','4  Neither of the options ( seems / seem ) attractive.','5  The police ( is / are ) investigating.','6  One of my friends ( lives / live ) in Berlin.','7  Neither the director nor the actors ( was / were ) available.','8  The box of documents ( was / were ) left on the desk.')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write is, are, has or have.'),
+    ...FIBS('1  Every one of the machines [has] been checked.',
+    '2  The majority of voters [are] against the plan.',
+    '3  None of the information [is] reliable.',
+    '4  A number of issues [have] been raised.',
+    '5  Each of the reports [is] two pages long.',
+    '6  Neither of them [has] replied yet.')]},
+  {n:'Correct the mistakes',b:()=>[TASK('Find and correct the mistake','Each sentence has one agreement mistake. Rewrite it correctly.'),
+    WRITE(1)('The list of names were on the wall.','Every students must register online.','A number of people was waiting outside.','Neither of the plans are realistic.','The staff is arguing among themselves.')]},
+  {n:'Write about statistics',b:()=>[TASK('Describe some data','Write six sentences about your class, town or country using a number of, the majority of, each of, none of.'),B('lines',{count:6})]}
+]},
+{id:'c1-gradable',name:'Gradable & non-gradable adjectives',
+ theory:T({icon:'📊',title:'Gradable vs non-gradable',
+  form:[{s:'grad',x:'<em>very</em> cold · <em>quite</em> tired · <em>extremely</em> difficult'},{s:'non-grad',x:'<em>absolutely</em> freezing · <em>completely</em> exhausted · <em>utterly</em> impossible'},{s:'both',x:'<em>really</em> cold · <em>really</em> freezing'}],
+  uses:[{r:'Gradable adjectives describe things by degree',x:'big, cold, tired, interesting'},{r:'Non-gradable (extreme) adjectives are already at the maximum',x:'enormous, freezing, exhausted, fascinating'},{r:'Absolute adjectives cannot be graded at all',x:'dead, unique, digital, impossible'},{r:'The intensifier must match',x:'very hungry ✓ / absolutely starving ✓ / <s>very starving</s> ✗'}],
+  words:['absolutely','completely','totally','utterly','really','very','quite','fairly','extremely'],
+  note:'<b>Note:</b> <i>quite</i> changes meaning — <i>quite good</i> = fairly good, but <i>quite perfect</i> = completely perfect.'}),
+ ex:[
+  {n:'Sort the adjectives',b:()=>[TASK('Sort the adjectives','Write each adjective in the correct column.'),
+    B('wordbank',{title:'Adjectives',words:['cold','freezing','tired','exhausted','good','perfect','big','enormous','interesting','fascinating','angry','furious']}),
+    B('sortcols',{cols:[{title:'Gradable'},{title:'Non-gradable'}]})]},
+  {n:'Choose the intensifier',b:()=>[TASK('Choose the correct intensifier','Circle the correct word.'),
+    CIRCLE('1  The film was ( very / absolutely ) fascinating.','2  I was ( very / absolutely ) tired after the flight.','3  It\'s ( very / absolutely ) freezing outside!','4  Her explanation was ( completely / very ) wrong.','5  The meal was ( absolutely / very ) delicious.','6  He is ( quite / absolutely ) good at chess.','7  That idea is ( totally / very ) ridiculous.','8  The room was ( fairly / utterly ) small.')]},
+  {n:'Complete with the intensifier',b:()=>[TASK('Complete the sentences','Write very, absolutely, completely or utterly.'),
+    ...FIBS('1  The view was [absolutely] stunning.','2  I was [very] tired after the journey.',
+    '3  Your answer is [completely] wrong.','4  The soup is [very] hot — be careful.',
+    '5  That suggestion is [utterly] ridiculous.','6  She was [absolutely] delighted with the news.')]},
+  {n:'Upgrade the adjective',b:()=>[TASK('Make it stronger','Replace the underlined phrase with an extreme adjective and a matching intensifier.'),
+    WRITE(1)('The house was <u>very big</u>.','I was <u>very hungry</u>.','The water was <u>very cold</u>.','She was <u>very angry</u>.','The story was <u>very funny</u>.','We were <u>very surprised</u>.')]},
+  {n:'Describe an experience',b:()=>[TASK('Tell the story','Describe the best or worst day of your year in six sentences, using at least four extreme adjectives with the right intensifiers.'),B('lines',{count:7})]}
+]},
+{id:'c1-compound-adj',name:'Participle & compound adjectives',
+ theory:T({icon:'🧩',title:'Compound adjectives',
+  form:[{s:'form',x:'a <em>well-known</em> writer · a <em>three-hour</em> meeting · a <em>hand-made</em> chair'},{s:'-ing',x:'a <em>time-consuming</em> task (it consumes time)'},{s:'-ed',x:'a <em>badly-written</em> report (it was written badly)'}],
+  uses:[{r:'Number + noun stays singular before a noun',x:'a five-minute walk (not five-minutes)'},{r:'-ing = active meaning · -ed = passive meaning',x:'a record-breaking run / a home-made cake'},{r:'Hyphenate before the noun, not after',x:'a well-known actor / the actor is well known'},{r:'adjective/adverb + participle',x:'good-looking, hard-working, deeply-rooted'}],
+  words:['well-known','hard-working','time-consuming','home-made','last-minute','long-term','world-famous'],
+  note:'<b>Common error:</b> the number never takes -s in a compound — <i>a <b>two-week</b> holiday</i>, not <s>a two-weeks holiday</s>.'}),
+ ex:[
+  {n:'Build the compound',b:()=>[TASK('Make one adjective','Rewrite each phrase as a compound adjective + noun.'),
+    B('anagram',{line:true,rows:[{c:'a journey that takes six hours',a:'a six-hour journey'},{c:'a man who works hard',a:'a hard-working man'},{c:'a cake made at home',a:'a home-made cake'},{c:'a decision taken at the last minute',a:'a last-minute decision'},{c:'a task that consumes time',a:'a time-consuming task'},{c:'a plan for the long term',a:'a long-term plan'},{c:'a child of five years',a:'a five-year-old child'},{c:'a singer known all over the world',a:'a world-famous singer'}]})]},
+  {n:'-ing or -ed?',b:()=>[TASK('Choose the correct participle','Circle the correct form.'),
+    CIRCLE('1  a ( record-breaking / record-broken ) performance','2  a ( hand-making / hand-made ) carpet','3  an ( English-speaking / English-spoken ) country','4  a ( badly-writing / badly-written ) essay','5  a ( mouth-watering / mouth-watered ) dessert','6  a ( well-paying / well-paid ) job')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the correct compound adjective.'),
+    ...FIBS('1  It\'s only a [ten-minute] walk from here. (ten minutes)',
+    '2  She is a very [hard-working] student. (works hard)',
+    '3  We had a [three-course] dinner. (three courses)',
+    '4  This is a [well-known] problem. (known well)',
+    '5  He gave a [last-minute] excuse. (at the last minute)')]},
+  {n:'Describe with compounds',b:()=>[TASK('Write descriptions','Describe each thing using at least two compound adjectives.'),
+    WRITE(1)('your ideal job','your last holiday','a person you admire','your home town')]}
+]},
+{id:'c1-adj-patterns',name:'Adjectives + infinitive / -ing / that',
+ theory:T({icon:'🔤',title:'Adjective patterns',
+  form:[{s:'to',x:'I\'m <em>glad to</em> hear that. · It\'s <em>easy to</em> use.'},{s:'-ing',x:'I\'m <em>interested in</em> learning Greek.'},{s:'that',x:'I\'m <em>sure that</em> he\'ll come. · It\'s <em>likely that</em> she\'ll win.'},{s:'of/for',x:'It was <em>kind of</em> you to help. · It\'s <em>hard for</em> me to say.'}],
+  uses:[{r:'Feelings + to-infinitive',x:'happy, sorry, surprised, relieved to hear'},{r:'It is + adjective + of/for + someone + to do',x:'It was silly of him to refuse.'},{r:'Adjective + preposition + -ing',x:'good at, keen on, capable of, worried about'},{r:'Adjective + that-clause for opinions',x:'I\'m convinced that he is right.'}],
+  words:['glad to','likely to','difficult to','keen on','capable of','aware that','convinced that'],
+  note:'<b>of vs for:</b> use <b>of</b> when you judge the person (<i>kind of you</i>), <b>for</b> when you describe the situation (<i>hard for me</i>).'}),
+ ex:[
+  {n:'Choose the pattern',b:()=>[TASK('Choose the correct form','Circle the correct option.'),
+    CIRCLE('1  I\'m interested in ( to learn / learning ) Italian.','2  It was very kind ( of / for ) you to call.','3  She\'s likely ( to arrive / arriving ) late.','4  It\'s difficult ( of / for ) me to explain.','5  He\'s capable ( to do / of doing ) much better.','6  I\'m glad ( to hear / hearing ) the news.','7  We\'re aware ( to / that ) there is a problem.','8  She\'s keen ( on / to ) travelling alone.')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write to, of, for, on, in, about or that.'),
+    ...FIBS('1  I\'m sorry [to] hear about your accident.','2  It was stupid [of] me to forget.',
+    '3  He\'s not very good [at] explaining things.','4  It\'s impossible [for] us to finish today.',
+    '5  I\'m convinced [that] she\'s telling the truth.','6  Are you worried [about] the exam?',
+    '7  She\'s determined [to] succeed.','8  They\'re proud [of] what they achieved.')]},
+  {n:'Rewrite the sentences',b:()=>[TASK('Rewrite the sentences','Rewrite each sentence starting with the words given.'),
+    WRITE(1)('He was silly to say that.  → It was …','I can\'t explain this easily.  → It\'s difficult …','She will probably get the job.  → She\'s likely …','You helped me — thank you.  → It was kind …','Learning Chinese interests me.  → I\'m interested …')]},
+  {n:'About you',b:()=>[TASK('True for you','Complete each sentence about yourself.'),
+    WRITE(1)('I\'m quite good at …','I\'d be delighted to …','It\'s hard for me to …','I\'m absolutely convinced that …','I\'ve always been keen on …')]}
+]},
+{id:'c1-comparative-adv',name:'Advanced comparison',
+ theory:T({icon:'⚖️',title:'Comparative phrases & clauses',
+  form:[{s:'double',x:'<em>The more</em> you practise, <em>the better</em> you get.'},{s:'far',x:'<em>far / much / considerably</em> more expensive'},{s:'as if',x:'He talks <em>as if</em> he <em>knew</em> everything.'}],
+  uses:[{r:'the + comparative … the + comparative',x:'The sooner we leave, the sooner we arrive.'},{r:'Modifying comparatives',x:'slightly / a bit / rather / far / considerably better'},{r:'as if / as though + past for unreal situations',x:'She acts as though she owned the place.'},{r:'not nearly / nowhere near as … as',x:'It\'s nowhere near as difficult as I expected.'}],
+  words:['the more … the more','far','considerably','slightly','nowhere near','as if','no less than'],
+  note:'<b>Careful:</b> in <i>the more … the more</i> there is <b>no</b> “that” and no inversion — <i>The harder you work, the luckier you get.</i>'}),
+ ex:[
+  {n:'Complete the double comparatives',b:()=>[TASK('Complete the sentences','Write the correct comparative forms.'),
+    ...FIBS('1  The [more] you practise, the [better] you become.',
+    '2  The [harder] the exam, the [more] students fail.',
+    '3  The [sooner] we start, the [earlier] we finish.',
+    '4  The [older] I get, the [less] I worry.',
+    '5  The [more expensive] the hotel, the [better] the service.')]},
+  {n:'Add the modifier',b:()=>[TASK('Strengthen or soften','Rewrite each sentence with the modifier in brackets.'),
+    WRITE(1)('This flat is bigger than the last one.  (far)','The second test was easier.  (considerably)','He\'s taller than his brother.  (slightly)','This route isn\'t as fast as the motorway.  (nowhere near)','Today is colder than yesterday.  (a great deal)')]},
+  {n:'as if / as though',b:()=>[TASK('Complete the sentences','Put the verb into the correct form after as if / as though.'),
+    ...FIBS('1  He behaves as if he [owned:own] the company.',
+    '2  She looks as though she [hadn\'t slept:not sleep] for days.',
+    '3  They talk as if they [knew:know] everything.',
+    '4  It looks as though it [is:be] going to rain.')]},
+  {n:'Life observations',b:()=>[TASK('Write your own','Write six observations about life using the more … the more and modified comparatives.'),B('lines',{count:7})]}
+]},
+{id:'c1-adverb-position',name:'Adverb position & focus adverbs',
+ theory:T({icon:'📍',title:'Where the adverb goes',
+  form:[{s:'front',x:'<em>Suddenly</em>, the lights went out.'},{s:'mid',x:'She <em>often</em> works late. · He has <em>never</em> complained.'},{s:'end',x:'They spoke <em>quietly</em>.'}],
+  uses:[{r:'Mid position: before the main verb, after be and auxiliaries',x:'I have always liked jazz. / She is always late.'},{r:'Focus adverbs go directly before what they focus on',x:'Only he saw it. / He only saw it. / He saw only it.'},{r:'Comment adverbs judge the whole sentence',x:'Frankly, I disagree. / Apparently, they left.'},{r:'Order at the end: manner → place → time',x:'She sang beautifully at the concert last night.'}],
+  words:['only','even','just','simply','frankly','apparently','obviously','fortunately','presumably'],
+  note:'<b>Meaning shifts with position:</b> <i>Only I told her</i> (nobody else did) vs <i>I only told her</i> (I didn\'t do anything else).'}),
+ ex:[
+  {n:'What does only mean?',b:()=>[TASK('Match the meanings','Match each sentence with its meaning.'),
+    B('match',{left:['Only Sam bought a ticket.','Sam only bought a ticket.','Sam bought only a ticket.','Sam bought a ticket only yesterday.'],right:['He bought nothing else.','Nobody else bought one.','It was as recent as yesterday.','He didn\'t do anything more than buy it.']})]},
+  {n:'Put the adverb in place',b:()=>[TASK('Insert the adverb','Rewrite each sentence with the adverb in the correct mid position.'),
+    WRITE(1)('I have been to Japan.  (never)','She is late for meetings.  (always)','They have finished the work.  (already)','He goes to the gym on Sundays.  (usually)','We were told about the change.  (never)','I can understand his accent.  (hardly)')]},
+  {n:'Order the end position',b:()=>[TASK('Put the phrases in order','Rewrite each sentence with the adverbials in the correct order.'),
+    B('anagram',{line:true,rows:[{c:'she sang / last night / beautifully / at the concert',a:'She sang beautifully at the concert last night.'},{c:'he worked / all weekend / hard / in the office',a:'He worked hard in the office all weekend.'},{c:'they arrived / this morning / at the airport / early',a:'They arrived early at the airport this morning.'}]})]},
+  {n:'Add a comment adverb',b:()=>[TASK('Add your attitude','Rewrite each sentence adding a comment adverb (frankly, apparently, fortunately, obviously, surprisingly).'),
+    WRITE(1)('The meeting was cancelled.','Nobody noticed the mistake.','I don\'t agree with the decision.','They arrived on time.','The results were better than expected.')]}
+]},
+{id:'c1-conditionals-adv',name:'Advanced conditionals',
+ theory:T({icon:'🔀',title:'Mixed & inverted conditionals',
+  form:[{s:'mixed',x:'If I <em>had studied</em> medicine, I <em>would be</em> a doctor now.'},{s:'inverted',x:'<em>Had I known</em>, I would have called. · <em>Were I</em> you, I\'d accept.'},{s:'were to',x:'If the company <em>were to</em> collapse, thousands would lose their jobs.'}],
+  uses:[{r:'Mixed: past condition → present result',x:'If she hadn\'t missed the flight, she\'d be here now.'},{r:'Mixed: present condition → past result',x:'If he weren\'t so shy, he would have spoken up.'},{r:'Inversion replaces if in formal English',x:'Should you need help, please call.'},{r:'were to = a remote or hypothetical future',x:'If I were to resign, who would replace me?'}],
+  words:['had I known','were I you','should you need','but for','otherwise','provided that','supposing'],
+  note:'<b>Inversion drops “if”:</b> <i>If I had known</i> → <i><b>Had</b> I known</i>. Never write <s>Had I would have known</s>.'}),
+ ex:[
+  {n:'Which conditional?',b:()=>[TASK('Identify the type','Decide whether each sentence mixes time frames.'),
+    B('truefalse',{tlabel:'mixed',flabel:'standard',rows:['If I had taken that job, I would be richer now.','If I had taken that job, I would have moved abroad.','If she were more confident, she would have applied.','If it rains tomorrow, we will stay in.'],correct:[true,false,true,false]})]},
+  {n:'Complete the mixed conditionals',b:()=>[TASK('Complete the sentences','Put the verbs into the correct form.'),
+    ...FIBS('1  If I [had learnt:learn] the piano as a child, I [would play:play] well now.',
+    '2  If she [weren\'t:not be] so disorganised, she [wouldn\'t have missed:not miss] the deadline.',
+    '3  If they [had left:leave] earlier, they [would be:be] here by now.',
+    '4  If he [spoke:speak] French, he [would have got:get] that job last year.')]},
+  {n:'Rewrite with inversion',b:()=>[TASK('Remove the “if”','Rewrite each sentence using inversion instead of if.'),
+    WRITE(1)('If I had known about the traffic, I would have left earlier.','If you should need anything, just ask.','If I were you, I would take the offer.','If the weather had been better, we would have walked.','If they were to refuse, what would we do?')]},
+  {n:'Complete with the linker',b:()=>[TASK('Complete the sentences','Write provided that, unless, otherwise, but for or supposing.'),
+    ...FIBS('1  You can borrow the car [provided that] you fill the tank.',
+    '2  Take an umbrella, [otherwise] you\'ll get soaked.',
+    '3  [But for] your help, I would have failed.',
+    '4  [Supposing] you lost your passport abroad, what would you do?',
+    '5  I won\'t go [unless] you come with me.')]},
+  {n:'Regrets and consequences',b:()=>[TASK('Write about your life','Write five mixed conditional sentences about how past choices affect your life now.'),B('lines',{count:6})]}
+]},
+{id:'c1-contrast',name:'Contrast & concession',
+ theory:T({icon:'⚔️',title:'although · whereas · much as',
+  form:[{s:'clause',x:'<em>Although</em> it rained, we enjoyed it. · <em>Whereas</em> he is quiet, she is loud.'},{s:'phrase',x:'<em>Despite</em> the rain… · <em>In spite of</em> being tired…'},{s:'formal',x:'<em>Much as</em> I like him, I can\'t agree. · <em>While</em> I accept that…'}],
+  uses:[{r:'although / though / even though + clause',x:'Even though he apologised, she stayed angry.'},{r:'whereas / while for direct contrast between two things',x:'Whereas the first draft was weak, the second was excellent.'},{r:'Much as / However + adjective for concession',x:'However hard I try, I can\'t remember names.'},{r:'though can go at the end in speech',x:'It\'s expensive. I\'ll buy it, though.'}],
+  words:['although','even though','whereas','whilst','much as','however','nevertheless','nonetheless','albeit'],
+  note:'<b>Structure check:</b> <i>despite / in spite of</i> take a <b>noun or -ing</b>; <i>although / though</i> take a <b>clause</b>.'}),
+ ex:[
+  {n:'Choose the linker',b:()=>[TASK('Choose the correct linker','Circle the correct word.'),
+    CIRCLE('1  ( Despite / Although ) the delay, everyone stayed calm.','2  ( Whereas / Despite ) my brother loves sport, I prefer books.','3  ( However / Although ) hard she tried, she couldn\'t open it.','4  ( In spite of / Even though ) being ill, he came to work.','5  The plan is risky; ( nevertheless / whereas ), it may work.','6  ( Much as / However ) I admire her, I disagree with this.')]},
+  {n:'Rewrite the sentences',b:()=>[TASK('Rewrite the sentences','Rewrite each sentence using the word in brackets, keeping the meaning.'),
+    WRITE(1)('Although he was exhausted, he finished the race.  (Despite)','Despite the high price, they bought it.  (Although)','She is very talented but rather lazy.  (whereas)','I tried very hard but I still failed.  (However)','I like the design, but the price is too high.  (though — at the end)','In spite of the warnings, they went ahead.  (Even though)')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write although, despite, whereas, however or nevertheless.'),
+    ...FIBS('1  [Despite] the traffic, we arrived on time.',
+    '2  [Although] the film was long, nobody left.',
+    '3  She earns very little; [nevertheless], she saves every month.',
+    '4  [However] carefully you plan, something always goes wrong.',
+    '5  My sister is an early riser, [whereas] I hate mornings.')]},
+  {n:'Argue both sides',b:()=>[TASK('Write a balanced paragraph','Choose a topic (social media, exams, city life) and write a paragraph presenting both sides. Use at least four contrast linkers.'),B('lines',{count:8})]}
+]},
+{id:'c1-relative-adv',name:'Advanced relative clauses',
+ theory:T({icon:'🔗',title:'Prepositions & non-defining clauses',
+  form:[{s:'formal',x:'the man <em>to whom</em> I spoke · the house <em>in which</em> she was born'},{s:'informal',x:'the man <em>who</em> I spoke <em>to</em> · the house <em>that</em> she was born <em>in</em>'},{s:'quantity',x:'twenty students, <em>most of whom</em> passed'}],
+  uses:[{r:'In formal writing the preposition moves before whom/which',x:'the report on which the decision was based'},{r:'Non-defining clauses add extra information, inside commas',x:'My brother, who lives in Rome, is a chef.'},{r:'which can refer to the whole previous clause',x:'He arrived late, which annoyed everyone.'},{r:'quantifier + of whom / of which',x:'She has three cars, none of which works.'}],
+  words:['to whom','in which','whereby','most of whom','none of which','at which point','by which time'],
+  note:'<b>Never</b> use <i>that</i> in a non-defining clause, and never put a comma before <i>that</i> — <s>My brother, that lives in Rome…</s>'}),
+ ex:[
+  {n:'Make it formal',b:()=>[TASK('Rewrite formally','Rewrite each sentence moving the preposition before whom or which.'),
+    WRITE(1)('That\'s the colleague who I work with.','This is the fund which the money comes from.','She is the person who I complained to.','Those are the results which we based our decision on.','He is the author who the prize was given to.')]},
+  {n:'Complete with a quantifier',b:()=>[TASK('Complete the sentences','Write most of whom, none of which, both of which, some of whom or all of which.'),
+    ...FIBS('1  There were fifty applicants, [most of whom] had no experience.',
+    '2  She owns three houses, [none of which] she actually lives in.',
+    '3  He gave two reasons, [both of which] were unconvincing.',
+    '4  We interviewed ten people, [some of whom] were excellent.')]},
+  {n:'Defining or non-defining?',b:()=>[TASK('Add commas where needed','Rewrite each sentence adding commas if the clause is non-defining.'),
+    WRITE(1)('My sister who lives in Canada is a nurse. (I have one sister)','The students who failed must retake the exam.','Our new office which opened last month is much bigger.','The book that you lent me was fascinating.','Mr Hall who has worked here for 30 years is retiring.')]},
+  {n:'Join with which',b:()=>[TASK('Comment with which','Join each pair using which to refer to the whole first clause.'),
+    WRITE(1)('He forgot my birthday. It upset me.','The train was cancelled. It meant we missed the concert.','She passed with distinction. It surprised nobody.','They raised the prices again. It made customers angry.')]}
+]},
+{id:'c1-ellipsis',name:'Substitution & ellipsis',
+ theory:T({icon:'✂️',title:'so · not · do so · one(s)',
+  form:[{s:'so',x:'“Will they come?” — “I think <em>so</em>.”'},{s:'not',x:'“Is it broken?” — “I hope <em>not</em>.”'},{s:'do so',x:'She asked me to sign, and I <em>did so</em>.'},{s:'one(s)',x:'I\'ll take the red <em>one</em>, not the blue <em>ones</em>.'}],
+  uses:[{r:'so / not replace a whole clause after think, hope, expect, suppose',x:'“Is he coming?” — “I suppose so.”'},{r:'do so / do it replaces a verb phrase (formal)',x:'You should apologise — and do so quickly.'},{r:'Leaving out repeated words after auxiliaries',x:'She can swim but I can\'t. / I would help if I could.'},{r:'Leaving out to after want, like, have to',x:'“Come with us.” — “I\'d love to.”'}],
+  words:['so','not','do so','one/ones','neither','either','too','so do I'],
+  note:'<b>Careful:</b> some verbs take <i>not</i> differently — <i>I don\'t think so</i> ✓ but <i>I hope not</i> ✓ (not <s>I don\'t hope so</s>).'}),
+ ex:[
+  {n:'so or not?',b:()=>[TASK('Complete the replies','Write so or not.'),
+    ...FIBS('1  “Will it rain?” — “I hope [not].”','2  “Is the shop open?” — “I think [so].”',
+    '3  “Has he been told?” — “I suppose [so].”','4  “Are we late?” — “I\'m afraid [so].”',
+    '5  “Did they cancel?” — “I hope [not].”','6  “Will she agree?” — “I expect [so].”')]},
+  {n:'Avoid the repetition',b:()=>[TASK('Shorten the sentences','Rewrite each sentence, leaving out the repeated words.'),
+    WRITE(1)('She can drive but I cannot drive.','I would have helped you if I had been able to help you.','He said he would call and he did call.','I don\'t want to go but I have to go.','They asked me to wait so I waited.')]},
+  {n:'one, ones or do so',b:()=>[TASK('Complete the sentences','Write one, ones, do so, did so or so.'),
+    ...FIBS('1  I don\'t like these shoes. I prefer the black [ones].',
+    '2  He was told to leave and he [did so] immediately.',
+    '3  Which cake would you like? — The chocolate [one], please.',
+    '4  “Are they still open?” — “I believe [so].”')]},
+  {n:'Natural dialogue',b:()=>[TASK('Write a dialogue','Write a 10-line dialogue between two friends. Use so, not, do so, one/ones and at least three ellipses.'),B('lines',{count:10})]}
+]},
+{id:'c1-articles-adv',name:'Articles: advanced use',
+ theory:T({icon:'📄',title:'Zero article & generic reference',
+  form:[{s:'general',x:'<em>—</em> Books are expensive. · <em>—</em> Life is short.'},{s:'specific',x:'<em>The</em> books on that shelf are mine.'},{s:'institution',x:'go to <em>—</em> school (as a pupil) vs go to <em>the</em> school (the building)'}],
+  uses:[{r:'No article for plural and uncountable nouns in general statements',x:'Children learn languages quickly.'},{r:'No article with institutions used for their purpose',x:'in hospital, at university, in prison, to bed'},{r:'the with superlatives, unique things and shared knowledge',x:'the best, the sun, the government'},{r:'the + adjective = a whole group',x:'the rich, the unemployed, the French'}],
+  words:['go to bed','in hospital','at sea','by car','the elderly','the Netherlands','the Alps'],
+  note:'<b>Compare:</b> <i>He\'s in <b>prison</b></i> (he is a prisoner) vs <i>He\'s at <b>the</b> prison</i> (visiting or working there).'}),
+ ex:[
+  {n:'Article or not?',b:()=>[TASK('Complete the sentences','Write a, an, the or — (no article).'),
+    ...FIBS('1  [—] Money can\'t buy happiness.','2  She went to [—] university in 2018.',
+    '3  We visited [the] university where my father studied.','4  [The] Alps are stunning in winter.',
+    '5  He\'s been in [—] hospital for a week.','6  [The] rich should pay more tax.',
+    '7  I usually travel by [—] train.','8  [The] sun was setting behind the hills.',
+    '9  [—] Life in a big city can be stressful.','10  Have you read [the] book I gave you?')]},
+  {n:'Institution or building?',b:()=>[TASK('Choose the correct form','Circle the correct option.'),
+    CIRCLE('1  My son starts ( school / the school ) in September.','2  We met the head teacher at ( school / the school ).','3  She spent two years in ( prison / the prison ).','4  He works as a guard at ( prison / the prison ).','5  I go to ( bed / the bed ) at eleven.','6  The cat is sleeping on ( bed / the bed ).')]},
+  {n:'Correct the mistakes',b:()=>[TASK('Find and correct the mistake','Each sentence has one article mistake. Rewrite it correctly.'),
+    WRITE(1)('The life is full of surprises.','She plays piano very well.','He is best student in the class.','I love the Italian food.','We travelled to the Japan last year.','The unemployment is rising.')]},
+  {n:'Write generally',b:()=>[TASK('General statements','Write six general statements about people, technology or education — watch your articles.'),B('lines',{count:6})]}
+]},
+{id:'c1-quantifiers-adv',name:'few · little · less · fewer',
+ theory:T({icon:'🔢',title:'Precise quantities',
+  form:[{s:'C',x:'<em>few</em> friends (not many, negative) · <em>a few</em> friends (some, positive)'},{s:'U',x:'<em>little</em> time (hardly any) · <em>a little</em> time (some)'},{s:'comp',x:'<em>fewer</em> cars (countable) · <em>less</em> traffic (uncountable)'}],
+  uses:[{r:'few / little = a negative idea (not enough)',x:'Few people understood. / There\'s little hope.'},{r:'a few / a little = a positive idea (some)',x:'A few people stayed. / We have a little time.'},{r:'fewer with countable, less with uncountable',x:'fewer mistakes, less noise'},{r:'quite a few = quite a lot',x:'Quite a few students failed.'}],
+  words:['few','a few','little','a little','fewer','less','hardly any','quite a few','the least'],
+  note:'<b>Meaning flip:</b> <i>He has <b>few</b> friends</i> = he\'s lonely · <i>He has <b>a few</b> friends</i> = that\'s fine.'}),
+ ex:[
+  {n:'Positive or negative?',b:()=>[TASK('True or False','Decide whether each sentence has a positive meaning.'),
+    B('truefalse',{tlabel:'+',flabel:'−',rows:['I have a few good friends.','Few people came to the party.','We still have a little time.','There is little chance of success.','Quite a few students passed.'],correct:[true,false,true,false,true]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write few, a few, little or a little.'),
+    ...FIBS('1  Don\'t worry, we still have [a little] time.',
+    '2  [Few] people can afford a house here these days.',
+    '3  I need [a few] more minutes to finish.',
+    '4  There is [little] point in arguing with him.',
+    '5  She speaks [a little] Japanese.',
+    '6  [Quite a few] of my classmates went abroad.')]},
+  {n:'less or fewer',b:()=>[TASK('Choose the correct word','Circle less or fewer.'),
+    CIRCLE('1  There were ( less / fewer ) people than last year.','2  We should use ( less / fewer ) plastic.','3  He makes ( less / fewer ) mistakes now.','4  I have ( less / fewer ) free time these days.','5  ( Less / Fewer ) than ten students applied.','6  Try to spend ( less / fewer ) money on coffee.')]},
+  {n:'Describe a change',b:()=>[TASK('What has changed?','Write six sentences comparing life now and twenty years ago using less, fewer, few and a few.'),B('lines',{count:6})]}
+]},
+{id:'c1-prepositions-adv',name:'Prepositions after verbs & nouns',
+ theory:T({icon:'🔗',title:'Dependent prepositions',
+  form:[{s:'verb',x:'result <em>in</em> · account <em>for</em> · comply <em>with</em> · refrain <em>from</em>'},{s:'noun',x:'a solution <em>to</em> · an increase <em>in</em> · the reason <em>for</em> · an effect <em>on</em>'},{s:'pairs',x:'depend <em>on</em> → dependent <em>on</em> → dependence <em>on</em>'}],
+  uses:[{r:'Many academic verbs have a fixed preposition',x:'The delay resulted in extra costs.'},{r:'Nouns keep their own preposition, not the verb\'s',x:'discuss something → a discussion about something'},{r:'Some verbs change meaning with the preposition',x:'result in (cause) vs result from (be caused by)'}],
+  words:['result in','result from','account for','comply with','contribute to','benefit from','a rise in','an impact on'],
+  note:'<b>Watch out for the switch:</b> <i>an increase <b>in</b> prices</i> but <i>an impact <b>on</b> prices</i>; <i>the reason <b>for</b></i> but <i>the solution <b>to</b></i>.'}),
+ ex:[
+  {n:'Complete with a preposition',b:()=>[TASK('Complete the sentences','Write the correct preposition.'),
+    ...FIBS('1  The strike resulted [in] serious delays.','2  These problems result [from] poor planning.',
+    '3  Bad weather accounts [for] the low attendance.','4  All staff must comply [with] the new rules.',
+    '5  Everyone contributed [to] the discussion.','6  We all benefit [from] regular exercise.',
+    '7  There has been a sharp rise [in] energy prices.','8  The decision had a big impact [on] our plans.',
+    '9  They are still looking for a solution [to] the problem.','10  What is the reason [for] the delay?')]},
+  {n:'Verb or noun form?',b:()=>[TASK('Complete the pairs','Complete each pair with the correct preposition.'),
+    ...FIBS('1a  We discussed [—] the results.  1b  We had a discussion [about] the results.',
+    '2a  She depends [on] her parents.  2b  Her dependence [on] them is total.',
+    '3a  They objected [to] the plan.  3b  Their objection [to] it was clear.')]},
+  {n:'Two- and three-word verbs',b:()=>[TASK('Put the words in order','Rearrange each set into a correct sentence.'),
+    B('anagram',{line:true,rows:[{c:'up / I / it / looked',a:'I looked it up.'},{c:'with / put / I / can\'t / it',a:'I can\'t put up with it.'},{c:'the / off / put / they / meeting',a:'They put off the meeting.'},{c:'out / ran / we / of / time',a:'We ran out of time.'}]})]},
+  {n:'Academic sentences',b:()=>[TASK('Write formally','Write six sentences about a trend or problem in your country using result in, account for, contribute to, an increase in, an impact on and a solution to.'),B('lines',{count:7})]}
+]},
+{id:'c1-passive-adv',name:'Advanced passive',
+ theory:T({icon:'🔄',title:'Impersonal & causative passive',
+  form:[{s:'imp',x:'<em>It is said that</em> he lives abroad.'},{s:'personal',x:'He <em>is said to</em> live abroad. · She <em>is thought to have</em> left.'},{s:'get',x:'He <em>got</em> promoted last month.'}],
+  uses:[{r:'It is said / believed / reported / thought that + clause',x:'It is believed that the painting is genuine.'},{r:'Subject + be + said/thought + to-infinitive',x:'The painting is believed to be genuine.'},{r:'For an earlier action use to have + past participle',x:'He is thought to have escaped during the night.'},{r:'get-passive is informal and often about problems',x:'My phone got stolen. / They got married.'}],
+  words:['it is said','is believed to','is reported to','is thought to have','get + past participle'],
+  note:'<b>Two transformations:</b> <i>People say he is rich</i> → <i>It is said that he is rich</i> → <i>He is said to be rich.</i>'}),
+ ex:[
+  {n:'Both transformations',b:()=>[TASK('Rewrite twice','Rewrite each sentence in two ways: with It is… and with a personal subject.'),
+    WRITE(2)('People say that she is the best candidate.','Experts believe that the virus started in animals.','They report that the company is losing money.','Everyone thinks that he stole the documents.')]},
+  {n:'Complete the passive',b:()=>[TASK('Complete the sentences','Put the verb into the correct passive form.'),
+    ...FIBS('1  The castle [is believed:believe] to be haunted.',
+    '2  It [is said:say] that the recipe is 300 years old.',
+    '3  He [is thought:think] to have left the country.',
+    '4  Several people [are reported:report] to have been injured.',
+    '5  My bag [got stolen:get steal] on the train.',
+    '6  The decision [is expected:expect] to be announced today.')]},
+  {n:'Causative or passive?',b:()=>[TASK('Choose the correct structure','Circle the correct option.'),
+    CIRCLE('1  I ( had my car repaired / was repaired my car ) yesterday.','2  She ( got promoted / got promote ) last week.','3  The house ( is said to be / says to be ) the oldest in town.','4  We ( are having / are had ) the kitchen painted.','5  He ( was thought to have / was thought to ) left already.')]},
+  {n:'Write the news',b:()=>[TASK('Write a news report','Write a short news item (six sentences) about an event, using impersonal passive structures.'),B('lines',{count:7})]}
+]},
+{id:'c1-future-adv',name:'Advanced future forms',
+ theory:T({icon:'🔮',title:'was to · is due to · will have been',
+  form:[{s:'plan',x:'The train <em>is due to</em> arrive at six. · She <em>is to</em> meet the minister.'},{s:'past fut',x:'He <em>was going to</em> call, but forgot. · They <em>were to</em> marry that summer.'},{s:'perfect',x:'By June I <em>will have been</em> working here for ten years.'}],
+  uses:[{r:'be to = an official arrangement or instruction',x:'The President is to visit Berlin next week.'},{r:'be due to / be about to / be on the point of',x:'The flight is due to land shortly.'},{r:'was going to / was to = the future seen from the past',x:'We were going to leave, but the storm started.'},{r:'Future Perfect Continuous for duration up to a future point',x:'By 2030 they will have been building it for a decade.'}],
+  words:['is to','is due to','is about to','was going to','on the verge of','will have been -ing'],
+  note:'<b>Register:</b> <i>be to</i> is formal and common in news — <i>The talks are to resume on Monday.</i>'}),
+ ex:[
+  {n:'Match form and meaning',b:()=>[TASK('Match the meanings','Match each structure with what it expresses.'),
+    B('match',{left:['is about to','is due to','was going to','will have finished','is to'],right:['a scheduled time','an official instruction','an intention that didn\'t happen','something imminent','completed before a future point']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Use the correct future form.'),
+    ...FIBS('1  The plane [is due to] land at 14:30.',
+    '2  We [were going to] visit them, but the car broke down.',
+    '3  By next summer I [will have been] living here for five years.',
+    '4  Hurry — the film [is about to] start.',
+    '5  The minister [is to] address parliament tomorrow.',
+    '6  By the time you arrive, they [will have left].')]},
+  {n:'Rewrite formally',b:()=>[TASK('Make it formal','Rewrite each sentence using be to or be due to.'),
+    WRITE(1)('The talks will start again on Monday.','The new law will come into force in April.','The results will be published next week.','The team will travel to Madrid on Thursday.')]},
+  {n:'Your next ten years',b:()=>[TASK('Look ahead','Write six sentences about your life using the future perfect and future perfect continuous.'),B('lines',{count:7})]}
+]},
+{id:'c1-hedging',name:'Hedging & tentative language',
+ theory:T({icon:'🪶',title:'Sounding cautious and academic',
+  form:[{s:'modal',x:'This <em>may</em> suggest that… · The results <em>would appear</em> to show…'},{s:'verb',x:'The data <em>tends to</em> support… · This <em>seems</em> to indicate…'},{s:'adverb',x:'<em>arguably</em>, <em>possibly</em>, <em>to some extent</em>, <em>broadly speaking</em>'}],
+  uses:[{r:'Softening a claim so it can\'t be disproved',x:'These findings may indicate a link.'},{r:'Distancing yourself from a source',x:'It has been suggested that…'},{r:'Quantity hedges',x:'a number of, the majority of, relatively few'},{r:'Polite disagreement',x:'I\'m not entirely convinced that…'}],
+  words:['appear to','tend to','arguably','somewhat','relatively','it would seem','not necessarily'],
+  note:'<b>Why hedge?</b> In academic and professional writing an absolute claim invites attack; a hedged claim is harder to refute and sounds more credible.'}),
+ ex:[
+  {n:'Soften the claim',b:()=>[TASK('Make it cautious','Rewrite each blunt statement so that it sounds academic and cautious.'),
+    WRITE(1)('Social media causes depression in teenagers.','Everyone agrees that exams are useless.','This proves that the theory is wrong.','Men are worse at multitasking than women.','The policy failed completely.','Nobody reads books any more.')]},
+  {n:'Choose the hedge',b:()=>[TASK('Choose the best option','Circle the more cautious option.'),
+    CIRCLE('1  The results ( prove / suggest ) a connection.','2  This is ( certainly / arguably ) the best approach.','3  Prices ( will / are likely to ) rise next year.','4  The method ( always works / tends to work ) well.','5  It ( is / would appear to be ) the main cause.')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write appear, tend, suggest, seem or indicate.'),
+    ...FIBS('1  The evidence would [appear] to support this view.',
+    '2  Younger users [tend] to prefer video content.',
+    '3  These findings [suggest] a possible link.',
+    '4  The data [seems] to contradict the earlier study.',
+    '5  Early results [indicate] a positive trend.')]},
+  {n:'Write an argument',b:()=>[TASK('Write cautiously','Write a short paragraph (six sentences) arguing a position on a topic you care about. Hedge every claim.'),B('lines',{count:8})]}
+]},
+{id:'c1-emphasis',name:'Emphasis & fronting',
+ theory:T({icon:'❗',title:'Adding emphasis',
+  form:[{s:'do',x:'I <em>do</em> like it! · She <em>did</em> warn you.'},{s:'front',x:'<em>Absolutely amazing</em> it was. · <em>This</em> I cannot accept.'},{s:'repeat',x:'It was <em>very, very</em> cold. · <em>Never ever</em> do that again.'}],
+  uses:[{r:'Auxiliary do for contradiction or insistence',x:'I did send the email — check your spam.'},{r:'Fronting a complement or object for contrast',x:'Her first novel I loved; the second I couldn\'t finish.'},{r:'Intensifiers: what a…, such a…, so…',x:'What a mess this is!'},{r:'Emphatic pronouns',x:'I made it myself. / The problem itself is simple.'}],
+  words:['do/does/did + verb','what a','such a','myself','indeed','by far','the very'],
+  note:'<b>Careful:</b> emphatic <i>do</i> only works in positive statements — <i>I do agree</i> ✓, but not <s>I do not do agree</s>.'}),
+ ex:[
+  {n:'Add emphatic do',b:()=>[TASK('Insist!','Rewrite each sentence with emphatic do, does or did.'),
+    WRITE(1)('I sent the message.  (but you say I didn\'t)','She warned you about the risk.','I like your new haircut.','They apologised in the end.','We tried our best.')]},
+  {n:'Front the phrase',b:()=>[TASK('Move it to the front','Rewrite each sentence, fronting the part in bold for contrast.'),
+    WRITE(1)('I really enjoyed <b>the first film</b>.','I can accept the delay, but I cannot accept <b>the rudeness</b>.','The view from the top was <b>absolutely breathtaking</b>.','She has never explained <b>that decision</b>.')]},
+  {n:'Complete the exclamations',b:()=>[TASK('Complete the sentences','Write what, what a, such, such a or so.'),
+    ...FIBS('1  [What a] beautiful day it is!','2  It was [such a] boring lecture.',
+    '3  [What] terrible news!','4  She was [so] kind to us.',
+    '5  They are [such] good friends.','6  [What a] mess you\'ve made!')]},
+  {n:'Speak with feeling',b:()=>[TASK('Make it emphatic','Write six emphatic sentences about something you feel strongly about, using do, fronting and exclamations.'),B('lines',{count:7})]}
+]},
+{id:'c1-connectors',name:'Connecting ideas in writing',
+ theory:T({icon:'🪢',title:'Cohesion across sentences',
+  form:[{s:'add',x:'<em>Moreover</em>, <em>Furthermore</em>, <em>In addition</em>'},{s:'contrast',x:'<em>However</em>, <em>Nevertheless</em>, <em>On the contrary</em>, <em>Conversely</em>'},{s:'result',x:'<em>Therefore</em>, <em>Consequently</em>, <em>As a result</em>, <em>Hence</em>'}],
+  uses:[{r:'Linking adverbials join sentences, not clauses',x:'The costs rose. However, sales also rose.'},{r:'Referencing back keeps writing cohesive',x:'This approach / such measures / the former / the latter'},{r:'Sequencing an argument',x:'Firstly … Secondly … Finally … In conclusion'},{r:'Giving examples and clarifying',x:'namely, that is to say, for instance, in other words'}],
+  words:['moreover','nevertheless','consequently','conversely','in contrast','the former','the latter','namely'],
+  note:'<b>Punctuation:</b> linking adverbials take a comma and can\'t join two clauses alone — <i>It rained<b>;</b> however, we went out.</i> not <s>It rained, however we went out.</s>'}),
+ ex:[
+  {n:'Sort the connectors',b:()=>[TASK('Sort the connectors','Write each connector in the correct column.'),
+    B('wordbank',{title:'Connectors',words:['moreover','however','therefore','in addition','nevertheless','consequently','furthermore','conversely','hence']}),
+    B('sortcols',{cols:[{title:'Adding'},{title:'Contrasting'},{title:'Result'}]})]},
+  {n:'Complete the paragraph',b:()=>[TASK('Complete the text','Write a suitable connector in each gap.'),
+    ...FIBS('1  Costs have risen sharply. [However], demand remains strong.',
+    '2  The plan is expensive. [Moreover], it would take years to implement.',
+    '3  Sales fell for six months. [Consequently], the shop closed.',
+    '4  City life is fast and exciting. [Conversely], village life is slow and quiet.',
+    '5  We interviewed two candidates: an engineer and a designer. The [former] had more experience.')]},
+  {n:'Fix the punctuation',b:()=>[TASK('Correct the sentences','Each sentence is punctuated wrongly. Rewrite it correctly.'),
+    WRITE(1)('It was raining however we decided to walk.','The plan is risky therefore we should wait.','She studied hard moreover she attended every class.','The costs are high nevertheless the benefits are greater.')]},
+  {n:'Write an argument',b:()=>[TASK('Write a paragraph','Write a well-connected paragraph (eight sentences) arguing for or against remote work. Use at least five connectors correctly.'),B('lines',{count:9})]}
+]}
+];
+
 const LIB_PRINCIPLE={
  vocab:{ic:'🎯',title:'One principle to keep in mind',text:'Recognition and form first, free use later. A word should travel from reception to production — otherwise it stays passive.'},
  grammar:{ic:'🎯',title:'The main principle',text:'From controlled practice to free practice. Drill the form in tight frames, then use the structure in meaningful context, and only then in free speech. Mechanical drills with no communication leave grammar dead.'},
+ c1:{ic:'🎓',title:'How each C1 worksheet is built',text:'Advanced topics follow the same path — a theory card, then noticing, controlled practice, transformation and free production — but the focus shifts to register, emphasis and precision: inversion, cleft sentences, participle clauses, hedging and cohesion. "Full worksheet" drops the whole sequence on a new page with the answer key switched on.'},
  b1:{ic:'📚',title:'How each B1 worksheet is built',text:'Every topic follows the same path: a theory card (form · use · signal words), then noticing, then controlled drills, then meaningful practice, and finally free production. “Full worksheet” drops the whole sequence on a new page and switches the answer key on automatically.'}
 };
 let libTab='b1';
 function buildLibTabs(){const t=$('#libTabs');t.innerHTML='';
-  [['b1','B1 Course'],['vocab','Vocabulary'],['grammar','Grammar']].forEach(([k,lbl])=>{const b=el('button','lib-tab'+(libTab===k?' on':''),lbl);b.onclick=()=>{libTab=k;buildLibTabs();buildLibBody($('#libSearch').value);};t.appendChild(b);});}
-function buildB1Body(q){
+  [['b1','B1 Course'],['c1','C1 Advanced'],['vocab','Vocabulary'],['grammar','Grammar']].forEach(([k,lbl])=>{const b=el('button','lib-tab'+(libTab===k?' on':''),lbl);b.onclick=()=>{libTab=k;buildLibTabs();buildLibBody($('#libSearch').value);};t.appendChild(b);});}
+function buildCourseBody(q,bank,level){
   const body=$('#libBody');
-  GRAMMAR_B1.forEach(topic=>{
+  bank.forEach(topic=>{
     const exs=topic.ex.filter(e=>!q||topic.name.toLowerCase().includes(q)||e.n.toLowerCase().includes(q));
     if(!exs.length&&!(q&&topic.name.toLowerCase().includes(q)))return;
     const g=el('div','lib-group');
-    g.innerHTML=`<div class="lib-group-h"><div class="gi"></div><b>${esc(topic.name)}</b><small>B1</small></div>`;
+    g.innerHTML=`<div class="lib-group-h"><div class="gi"></div><b>${esc(topic.name)}</b><small>${level}</small></div>`;
     const grid=el('div','lib-items');
     const full=el('button','lib-item',`<div class="li-ic">📄</div><div class="li-tx"><b>Full worksheet</b><span>Theory + all ${topic.ex.length} exercises + key</span></div><div class="li-add">${I.plus}</div>`);
     full.style.gridColumn='1/-1';
-    full.onclick=()=>insertTopic(topic);
+    full.onclick=()=>insertTopic(topic,level);
     grid.appendChild(full);
     const th=el('button','lib-item',`<div class="li-ic">📘</div><div class="li-tx"><b>Theory only</b><span>Rule card: form, use, signal words</span></div><div class="li-add">${I.plus}</div>`);
     th.onclick=()=>insertExercise({name:topic.name+' — theory',make:()=>[Object.assign(JSON.parse(JSON.stringify(topic.theory)),{id:uid()})]});
@@ -3854,12 +4333,12 @@ function buildB1Body(q){
     g.appendChild(grid);body.appendChild(g);
   });
 }
-function insertTopic(topic){
+function insertTopic(topic,level){
   snapshot();
   const blocks=[Object.assign(JSON.parse(JSON.stringify(topic.theory)),{id:uid()})];
   topic.ex.forEach(e=>blocks.push(...e.b()));
   const st=DOC.applyAll?{...DOC.pages[0].style}:defaultStyle('indigo');
-  const pg={id:uid(),style:st,blocks:[Object.assign(makeBlock('header'),{eyebrow:'GRAMMAR · B1',title:topic.name,sub:'English with Tad'}),makeBlock('namebar'),...blocks]};
+  const pg={id:uid(),style:st,blocks:[Object.assign(makeBlock('header'),{eyebrow:'GRAMMAR · '+(level||'B1'),title:topic.name,sub:DOC.brand||'English with Tad'}),makeBlock('namebar'),...blocks]};
   DOC.pages.push(pg);
   DOC.appendKey=true;
   selectedId=null;renderAll();closeModal('#libModal');
@@ -3868,9 +4347,10 @@ function insertTopic(topic){
 }
 function buildLibBody(filter){
   const body=$('#libBody');body.innerHTML='';const q=(filter||'').toLowerCase().trim();
-  if(libTab==='b1'){buildB1Body(q);
+  if(libTab==='b1'||libTab==='c1'){
+    buildCourseBody(q,libTab==='c1'?GRAMMAR_C1:GRAMMAR_B1,libTab==='c1'?'C1':'B1');
     if(!body.children.length)body.appendChild(el('div','hint','No topics match your search.'));
-    const pr=LIB_PRINCIPLE.b1;body.appendChild(el('div','lib-principle',`<div class="lp-ic">${pr.ic}</div><div><b>${pr.title}</b><p>${pr.text}</p></div>`));
+    const pr=LIB_PRINCIPLE[libTab];body.appendChild(el('div','lib-principle',`<div class="lp-ic">${pr.ic}</div><div><b>${pr.title}</b><p>${pr.text}</p></div>`));
     return;}
   LIBRARY[libTab].forEach(grp=>{
     const items=grp.items.filter(it=>!q||it.name.toLowerCase().includes(q)||it.desc.toLowerCase().includes(q)||grp.group.toLowerCase().includes(q));
