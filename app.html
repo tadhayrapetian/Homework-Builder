@@ -339,8 +339,8 @@ button{font-family:inherit;color:inherit}
 .hw .hwline .mid{position:absolute;top:22px;left:0;right:0;border-top:1.4px dashed color-mix(in srgb,var(--pa-line) 80%,transparent)}
 .hw .model{font-size:25px;opacity:.32;margin-bottom:5px}
 
-.answerbox{border:1.8px solid var(--pa-line);border-radius:13px;padding:15px;min-height:90px}
-.answerbox.lines{background:repeating-linear-gradient(to bottom,transparent 0 29px,var(--pa-line) 29px 30.5px);background-position:0 14px}
+.answerbox{border:1.8px solid var(--pa-line);border-radius:13px;padding:15px;min-height:90px;position:relative;overflow:hidden}
+.answerbox .ab-rule{position:absolute;left:15px;right:15px;border-top:1.3px solid var(--pa-line)}
 .answerbox .abq{font-size:13.5px;font-weight:650;margin-bottom:9px}
 
 .vtable{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;border:1.5px solid var(--pa-line);border-radius:11px;overflow:hidden}
@@ -354,9 +354,10 @@ button{font-family:inherit;color:inherit}
 .checklist .ci{display:flex;gap:12px;align-items:flex-start;padding:6px 0;font-size:13.5px}
 .checklist .ci .box{width:21px;height:21px;border-radius:6px;border:1.8px solid var(--pa-accent);flex:none;margin-top:1px}
 
-.grid-paper{border:1.8px solid var(--pa-line);border-radius:10px;background-size:24px 24px;
-  background-image:linear-gradient(to right,var(--pa-line) 1px,transparent 1px),linear-gradient(to bottom,var(--pa-line) 1px,transparent 1px)}
-.grid-paper.dots{background-image:radial-gradient(var(--pa-line) 1.4px,transparent 1.5px)}
+.grid-paper{border:1.8px solid var(--pa-line);border-radius:10px;position:relative;overflow:hidden}
+.grid-paper .gp-h{position:absolute;left:0;right:0;border-top:1px solid var(--pa-line)}
+.grid-paper .gp-v{position:absolute;top:0;bottom:0;border-left:1px solid var(--pa-line)}
+.grid-paper .gp-d{position:absolute;width:2.8px;height:2.8px;border-radius:50%;background:var(--pa-line)}
 
 .ws-img{text-align:center}
 .ws-img img{max-width:100%;border-radius:12px;box-shadow:var(--shadow-sm)}
@@ -557,6 +558,33 @@ button{font-family:inherit;color:inherit}
 .paper[data-deco="wave"]::after{content:"";position:absolute;left:0;right:0;bottom:0;height:26px;background:var(--pa-accent);opacity:.9;
   -webkit-mask:radial-gradient(circle at 13px -6px,transparent 13px,#000 14px) repeat-x 0 0/26px 26px;mask:radial-gradient(circle at 13px -6px,transparent 13px,#000 14px) repeat-x 0 0/26px 26px}
 .paper[data-deco="confetti"]{background-image:radial-gradient(circle,var(--pa-accent) 3px,transparent 4px),radial-gradient(circle,var(--pa-accent2) 3px,transparent 4px);background-size:120px 120px,90px 90px;background-position:12px 22px,64px 74px}
+
+/* ---------- FLOATING TEXT FORMAT BAR ---------- */
+.fmtbar{position:fixed;z-index:120;display:none;gap:3px;padding:5px;background:var(--panel);
+  border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow-lg)}
+.fmtbar.show{display:flex}
+.fmtbar button{width:30px;height:30px;border-radius:8px;border:0;background:transparent;cursor:pointer;
+  color:var(--ink2);font-size:14px;display:grid;place-items:center;transition:.12s}
+.fmtbar button:hover{background:var(--panel3);color:var(--brand)}
+.fmtbar button.hl{color:#b45309}
+.fmtbar .sep{width:1px;background:var(--line);margin:3px 2px}
+mark{background:#fde68a;color:inherit;padding:0 2px;border-radius:3px}
+
+/* ---------- FIND & REPLACE ---------- */
+.frbar{position:fixed;top:70px;right:18px;z-index:110;width:290px;background:var(--panel);
+  border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-lg);padding:14px;display:none}
+.frbar.show{display:block}
+.frbar h4{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);
+  display:flex;align-items:center}
+.frbar h4 button{margin-left:auto;border:0;background:none;cursor:pointer;color:var(--muted);font-size:17px;line-height:1}
+.frbar input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;
+  background:var(--panel2);color:var(--ink);font-size:13px;margin-bottom:8px}
+.frbar input:focus{outline:none;border-color:var(--brand)}
+.frbar .fr-act{display:flex;gap:7px}
+.frbar .fr-act button{flex:1;padding:8px;border-radius:9px;border:1px solid var(--line);
+  background:var(--panel2);font-size:12.5px;font-weight:600;cursor:pointer;color:var(--ink2)}
+.frbar .fr-act button.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
+.frbar .fr-res{font-size:11.5px;color:var(--muted);margin-top:9px;min-height:16px}
 
 /* ---------- LOCK SCREEN ---------- */
 .lock{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;padding:24px;
@@ -790,6 +818,11 @@ body.locked .app,body.locked .zoombar{display:none !important}
       <div class="plist" id="pageList"></div>
       <button class="ibtn" id="addPage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>New A4 page</button>
       <div class="toggle" id="keyTog" style="margin-top:11px"><div><b>Answer key page</b><small>Append a teacher key at the end</small></div><div class="sw-t"></div></div>
+      <div class="toggle" id="numTog"><div><b>Number tasks automatically</b><small>Tasks renumber 1, 2, 3…</small></div><div class="sw-t"></div></div>
+      <div class="row2" style="margin-top:2px">
+        <button class="ibtn" id="shuffleBtn" style="margin-top:0" title="Make a different version of the same worksheet">🔀 Shuffle</button>
+        <button class="ibtn" id="frBtn" style="margin-top:0">🔎 Find</button>
+      </div>
     </div>
     <div class="sec">
       <h3>Footer branding</h3>
@@ -887,6 +920,29 @@ body.locked .app,body.locked .zoombar{display:none !important}
     </div>
     <div class="modal-body"><div class="tmpl-grid" id="tmplGrid"></div></div>
   </div>
+</div>
+
+<!-- floating text format bar -->
+<div class="fmtbar" id="fmtbar">
+  <button data-cmd="bold" title="Bold"><b>B</b></button>
+  <button data-cmd="italic" title="Italic"><i>I</i></button>
+  <button data-cmd="underline" title="Underline"><u>U</u></button>
+  <button data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
+  <div class="sep"></div>
+  <button data-cmd="mark" class="hl" title="Highlight">▮</button>
+  <button data-cmd="removeFormat" title="Clear formatting">✕</button>
+</div>
+
+<!-- find & replace -->
+<div class="frbar" id="frbar">
+  <h4>Find &amp; replace <button id="frClose">×</button></h4>
+  <input type="text" id="frFind" placeholder="Find…" spellcheck="false">
+  <input type="text" id="frRepl" placeholder="Replace with…" spellcheck="false">
+  <div class="fr-act">
+    <button id="frCount">Count</button>
+    <button id="frDo" class="primary">Replace all</button>
+  </div>
+  <div class="fr-res" id="frRes"></div>
 </div>
 
 <input type="file" id="fileInput" accept=".wsp,.json,application/json" style="display:none">
@@ -1133,6 +1189,7 @@ function applyPageStyle(p,st){
 }
 function renderAll(){
   $('#docTitle').value=DOC.title;
+  taskNo=0;
   const wrap=$('#pages');wrap.innerHTML='';
   DOC.pages.forEach((pg,pi)=>{
     const p=el('div','paper');p.dataset.page=pg.id;applyPageStyle(p,pg.style);
@@ -1143,6 +1200,15 @@ function renderAll(){
     dup.onclick=e=>{e.stopPropagation();snapshot();const c=JSON.parse(JSON.stringify(pg));c.id=uid();c.blocks.forEach(b=>b.id=uid());DOC.pages.splice(pi+1,0,c);renderAll();};
     const del=el('button','pg-tool danger',I.pgdel);del.title='Delete page';
     del.onclick=e=>{e.stopPropagation();if(DOC.pages.length<2){toast("Can't delete the only page");return;}if(confirm('Delete this page?')){snapshot();DOC.pages.splice(pi,1);renderAll();}};
+    if(DOC.pages.length>1){
+      const up=el('button','pg-tool','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 15 6-6 6 6"/></svg>');
+      up.title='Move page up';up.disabled=(pi===0);up.style.opacity=pi===0?'.35':'1';
+      up.onclick=e=>{e.stopPropagation();movePage(pi,-1);};
+      const dn=el('button','pg-tool','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>');
+      dn.title='Move page down';dn.disabled=(pi===DOC.pages.length-1);dn.style.opacity=pi===DOC.pages.length-1?'.35':'1';
+      dn.onclick=e=>{e.stopPropagation();movePage(pi,1);};
+      tools.appendChild(up);tools.appendChild(dn);
+    }
     tools.appendChild(dup);tools.appendChild(del);p.appendChild(tools);
     const bl=el('div','blocks');bl.dataset.page=pg.id;
     pg.blocks.forEach(b=>bl.appendChild(renderBlock(b,pg)));
@@ -1212,7 +1278,10 @@ function renderContent(b){
      h.appendChild(ce('div','ws-title',b.title,'Title',v=>b.title=v));
      h.appendChild(ce('div','ws-sub',b.sub,'Subtitle',v=>b.sub=v));return h;}
    case'namebar':{const n=el('div','ws-namebar');b.fields.forEach((f,i)=>{const nb=el('div','nb');nb.appendChild(ce('b','',f,'',v=>b.fields[i]=v));nb.appendChild(el('div','ln'));n.appendChild(nb);});return n;}
-   case'instr':{const w=el('div','ws-instr');const num=el('div','num');num.contentEditable='true';num.textContent=b.num;num.addEventListener('input',()=>b.num=num.textContent);
+   case'instr':{const w=el('div','ws-instr');const num=el('div','num');
+     taskNo++;
+     if(DOC.autoNumber){num.textContent=String(taskNo);num.title='Numbered automatically';}
+     else{num.contentEditable='true';num.textContent=b.num;num.addEventListener('input',()=>b.num=num.textContent);}
      const tx=el('div','tx');tx.appendChild(ce('b','lead',b.lead,'What to do',v=>b.lead=v));tx.appendChild(ce('span','',b.text,'Task description…',v=>b.text=v));
      w.appendChild(num);w.appendChild(tx);return w;}
    case'text':return ce('div','ws-text'+(b.lead?' lead':'')+(b.reading?' reading':''),b.html,'Text…',v=>b.html=v);
@@ -1303,12 +1372,20 @@ function renderContent(b){
    case'lines':{const w=el('div','linelist'+(b.style==='dotted'?' dotted':''));for(let i=0;i<b.count;i++)w.appendChild(el('div','wl'));return w;}
    case'handwriting':{const w=el('div');if(b.model){const m=ce('div','model',b.model,'Aa Bb Cc',v=>b.model=v);m.style.fontFamily=FONTS.hand;w.appendChild(m);}
      const hw=el('div','hw');for(let i=0;i<b.count;i++){const l=el('div','hwline');l.appendChild(el('div','top'));l.appendChild(el('div','mid'));hw.appendChild(l);}w.appendChild(hw);return w;}
-   case'answerbox':{const w=el('div');w.appendChild(ce('div','abq',b.q,'Task…',v=>b.q=v));const box=el('div','answerbox'+(b.lined?' lines':''));box.style.minHeight=(b.h||110)+'px';w.appendChild(box);return w;}
+   case'answerbox':{const w=el('div');w.appendChild(ce('div','abq',b.q,'Task…',v=>b.q=v));
+     const box=el('div','answerbox');const H=b.h||110;box.style.minHeight=H+'px';box.style.height=H+'px';
+     if(b.lined){for(let y=30;y<H-6;y+=29){const r=el('div','ab-rule');r.style.top=y+'px';box.appendChild(r);}}
+     w.appendChild(box);return w;}
    case'table':{const t=el('table','vtable');for(let r=0;r<b.rowsN;r++){const tr=el('tr');for(let c=0;c<b.colsN;c++){const isH=b.head&&r===0;const cell=el(isH?'th':'td');
         cell.contentEditable='true';cell.spellcheck=false;cell.innerHTML=(b.data[r]&&b.data[r][c])||'';
         cell.addEventListener('input',()=>{if(!b.data[r])b.data[r]=[];b.data[r][c]=cell.innerHTML;});cell.addEventListener('blur',scheduleSnapshot);tr.appendChild(cell);}t.appendChild(tr);}return t;}
    case'checklist':{const w=el('div','checklist');b.items.forEach((it,i)=>{const ci=el('div','ci');ci.appendChild(el('div','box'));ci.appendChild(ce('div','',it,'Item…',v=>b.items[i]=v));w.appendChild(ci);});return w;}
-   case'gridpaper':{const g=el('div','grid-paper'+(b.style==='dots'?' dots':''));g.style.height=(b.h||200)+'px';return g;}
+   case'gridpaper':{const g=el('div','grid-paper');const H=b.h||200,C=24,W=700;
+     g.style.height=H+'px';
+     if(b.style==='dots'){for(let y=C;y<H;y+=C)for(let x=C;x<W;x+=C){const d=el('div','gp-d');d.style.top=(y-1.4)+'px';d.style.left=(x-1.4)+'px';g.appendChild(d);}}
+     else{for(let y=C;y<H;y+=C){const h=el('div','gp-h');h.style.top=y+'px';g.appendChild(h);}
+          for(let x=C;x<W;x+=C){const v=el('div','gp-v');v.style.left=x+'px';g.appendChild(v);}}
+     return g;}
    case'image':{const w=el('div','ws-img');if(b.src){const im=el('img');im.src=b.src;im.style.maxHeight=(b.h||170)+'px';w.appendChild(im);}
      else{const ph=el('div','ph','🖼️  Click to upload an image');ph.onclick=()=>{select(b.id);pickImage(b);};w.appendChild(ph);}
      w.appendChild(ce('div','cap',b.cap,'Caption…',v=>b.cap=v));return w;}
@@ -1585,6 +1662,7 @@ function refreshLeft(){
   DOC.pages.forEach((pg,i)=>{const row=el('div','prow');row.innerHTML=`<div class="pn">${i+1}</div><div class="pt"><b>Page ${i+1}</b><small>${pg.blocks.length} blocks · ${THEMES.find(t=>t.id===pg.style.theme)?.name||''}</small></div>`;
     row.onclick=()=>{const e=document.querySelectorAll('.paper')[i];if(e)e.scrollIntoView({behavior:'smooth',block:'start'});};pl.appendChild(row);});
   const kt=$('#keyTog');if(kt)kt.classList.toggle('on',!!DOC.appendKey);
+  const nt=$('#numTog');if(nt)nt.classList.toggle('on',!!DOC.autoNumber);
   refreshPdfQ();
   const bi=$('#brandInput');if(bi&&document.activeElement!==bi)bi.value=DOC.brand||'';
 }
@@ -1671,12 +1749,15 @@ function parseCol(c){
 }
 function gradCol(bg){
   if(!bg||bg==='none')return null;
+  // patterns (dots, grids, rules) must NOT become one solid slab
+  if(/repeating-|radial-gradient|conic-gradient/.test(bg))return null;
+  if(/rgba\([^)]*,\s*0(\.0+)?\)/.test(bg))return null;   // has a transparent stop
+  if((bg.match(/gradient/g)||[]).length>1)return null;    // layered = pattern
   const m=bg.match(/rgba?\([^)]+\)/g);
   if(!m||!m.length)return null;
   const cols=m.map(parseCol).filter(Boolean);
   if(!cols.length)return null;
-  const mid=cols[Math.floor(cols.length/2)];
-  return mid;
+  return cols[Math.floor(cols.length/2)];
 }
 /* collect drawing ops from a laid-out element tree */
 function collectOps(sheet,W,H){
@@ -1749,6 +1830,17 @@ function collectOps(sheet,W,H){
       if(/underline/.test(deco))pushRect(X(rc.left),Y(rc.top)+rc.height*0.78,rc.width,Math.max(0.7,size*0.05),col,0);
     }
   }
+  // page decoration patterns are CSS backgrounds — draw them as real vector marks
+  (function(){
+    const deco=sheet.getAttribute&&sheet.getAttribute('data-deco');
+    if(!deco||deco==='none')return;
+    const line=parseCol(getComputedStyle(sheet).getPropertyValue('--pa-line').trim()||'')||[.85,.86,.9,1];
+    if(deco==='dots'){for(let y=11;y<H;y+=22)for(let x=11;x<W;x+=22)ops.unshift({t:'rect',x:x,y:y,w:2.2,h:2.2,c:line,r:0});}
+    else if(deco==='grid'){for(let y=26;y<H;y+=26)ops.unshift({t:'rect',x:0,y:y,w:W,h:1,c:line,r:0});
+      for(let x=26;x<W;x+=26)ops.unshift({t:'rect',x:x,y:0,w:1,h:H,c:line,r:0});}
+    else if(deco==='notebook'){for(let y=30;y<H;y+=31)ops.unshift({t:'rect',x:0,y:y,w:W,h:1,c:[.88,.91,.96,1],r:0});
+      ops.unshift({t:'rect',x:52,y:0,w:2,h:H,c:[1,.835,.835,1],r:0});}
+  })();
   walk(sheet);
   // images
   sheet.querySelectorAll('img').forEach(im=>{
@@ -1791,16 +1883,25 @@ function roundRectPath(x,y,w,h,r,Hpt){
   ].join('\n');
 }
 function opsToStream(ops,Hpt,imgNames){
-  const out=[];let curFont=null,curSize=null,curCol=null;
-  ops.forEach(o=>{
+  const out=[];
+  const key=c=>c[0].toFixed(3)+' '+c[1].toFixed(3)+' '+c[2].toFixed(3)+' '+Math.round(c[3]*100);
+  for(let i=0;i<ops.length;i++){
+    const o=ops[i];
     if(o.t==='rect'){
-      const c=o.c;
+      // batch every consecutive rect of the same colour into one fill — keeps
+      // patterned backgrounds (dots, grids) from bloating the file
+      const c=o.c,k=key(c);let j=i;const paths=[];
+      while(j<ops.length&&ops[j].t==='rect'&&key(ops[j].c)===k){
+        paths.push(roundRectPath(ops[j].x,ops[j].y,ops[j].w,ops[j].h,ops[j].r,Hpt));j++;
+      }
       out.push('q');
       if(c[3]<1)out.push('/GS'+Math.round(c[3]*100)+' gs');
       out.push(c[0].toFixed(3)+' '+c[1].toFixed(3)+' '+c[2].toFixed(3)+' rg');
-      out.push(roundRectPath(o.x,o.y,o.w,o.h,o.r,Hpt));
+      out.push(paths.join('\n'));
       out.push('f');out.push('Q');
-    }else if(o.t==='text'){
+      i=j-1;continue;
+    }
+    if(o.t==='text'){
       const c=o.c;
       out.push('BT');
       out.push('/F'+o.f+' '+(o.s*K).toFixed(2)+' Tf');
@@ -1808,14 +1909,16 @@ function opsToStream(ops,Hpt,imgNames){
       out.push((o.x*K).toFixed(2)+' '+(Hpt-o.y*K).toFixed(2)+' Td');
       out.push('('+pdfEsc(o.str)+') Tj');
       out.push('ET');
-    }else if(o.t==='imgref'){
+      continue;
+    }
+    if(o.t==='imgref'){
       const yb=Hpt-(o.y+o.h)*K;
       out.push('q');
       out.push((o.w*K).toFixed(2)+' 0 0 '+(o.h*K).toFixed(2)+' '+(o.x*K).toFixed(2)+' '+yb.toFixed(2)+' cm');
       out.push('/'+o.name+' Do');
       out.push('Q');
     }
-  });
+  }
   return out.join('\n');
 }
 /* ---------- direct PDF export (no print dialog) ---------- */
@@ -2065,7 +2168,7 @@ async function exportRasterPDF(){
     setTimeout(()=>window.print(),400);
   }finally{btn.innerHTML=label;}
 }
-const exportPDF=exportVectorPDF;
+function exportPDF(){return (DOC&&DOC.pdfScale>0)?exportRasterPDF():exportVectorPDF();}
 
 /* ---------- build the PDF as a File (for sharing / e-mail) ---------- */
 async function buildPdfFile(){
@@ -4394,6 +4497,15 @@ $('#decoSel').onchange=e=>{snapshot();setStyle('deco',e.target.value);};
 $('#fontSel').onchange=e=>{snapshot();setStyle('font',e.target.value);};
 $('#applyAllTog').onclick=()=>{DOC.applyAll=!DOC.applyAll;refreshThemeUI();autosave();};
 $('#keyTog').onclick=()=>{snapshot();DOC.appendKey=!DOC.appendKey;renderAll();toast(DOC.appendKey?'Answer key page added':'Answer key page removed');};
+$('#numTog').onclick=()=>{snapshot();DOC.autoNumber=!DOC.autoNumber;renderAll();toast(DOC.autoNumber?'Tasks numbered automatically':'Manual task numbers');};
+$('#shuffleBtn').onclick=shuffleAll;
+$('#frBtn').onclick=()=>{$('#frbar').classList.add('show');$('#frFind').focus();};
+$('#frClose').onclick=()=>$('#frbar').classList.remove('show');
+$('#frCount').onclick=()=>{const q=$('#frFind').value;$('#frRes').textContent=q?(frCount(q)+' match'+(frCount(q)===1?'':'es')+' found'):'Type something to find';};
+$('#frDo').onclick=()=>{const q=$('#frFind').value,r=$('#frRepl').value;
+  if(!q){$('#frRes').textContent='Type something to find';return;}
+  const n=frReplace(q,r);$('#frRes').textContent=n?('Replaced '+n+' occurrence'+(n>1?'s':'')):'Nothing found';
+  if(n)toast('Replaced '+n+' occurrence'+(n>1?'s':''));};
 $('#brandInput').addEventListener('input',e=>{DOC.brand=e.target.value;autosave();document.querySelectorAll('.pg-foot .brand span:last-child').forEach(s=>{if(!s.isContentEditable)return;s.textContent=DOC.brand;});});
 $('#brandInput').addEventListener('blur',()=>{scheduleSnapshot();renderAll();});
 $('#uiThemeBtn').onclick=()=>{const cur=document.documentElement.getAttribute('data-ui');const nx=cur==='dark'?'':'dark';document.documentElement.setAttribute('data-ui',nx);try{localStorage.setItem('ws_ui',nx);}catch(e){}};
@@ -4486,6 +4598,112 @@ document.addEventListener('keydown',e=>{
   if(/^[0-9]$/.test(e.key)){e.preventDefault();pinPush(e.key);}
   else if(e.key==='Backspace'){e.preventDefault();pinPush('del');}
 });
+
+/* =====================================================================
+   NEW ✦ 1. Floating rich-text bar (bold / italic / underline / highlight)
+   ===================================================================== */
+(function(){
+  const bar=$('#fmtbar');
+  function place(){
+    const s=window.getSelection();
+    if(!s||s.isCollapsed||!s.rangeCount){bar.classList.remove('show');return;}
+    const node=s.anchorNode;const host=node&&(node.nodeType===1?node:node.parentElement);
+    if(!host||!host.closest||!host.closest('[contenteditable="true"]')||!host.closest('.paper')){bar.classList.remove('show');return;}
+    const r=s.getRangeAt(0).getBoundingClientRect();
+    if(!r.width&&!r.height){bar.classList.remove('show');return;}
+    bar.classList.add('show');
+    const bw=bar.offsetWidth||220;
+    bar.style.left=Math.max(8,Math.min(window.innerWidth-bw-8,r.left+r.width/2-bw/2))+'px';
+    bar.style.top=Math.max(8,r.top-bar.offsetHeight-9)+'px';
+  }
+  document.addEventListener('selectionchange',()=>setTimeout(place,10));
+  document.addEventListener('mousedown',e=>{if(!e.target.closest('#fmtbar'))setTimeout(place,10);});
+  bar.addEventListener('mousedown',e=>e.preventDefault());
+  bar.addEventListener('click',e=>{
+    const b=e.target.closest('button[data-cmd]');if(!b)return;
+    const cmd=b.dataset.cmd;
+    try{
+      if(cmd==='mark'){
+        const s=window.getSelection();if(!s.rangeCount||s.isCollapsed)return;
+        const inMark=s.anchorNode&&s.anchorNode.parentElement&&s.anchorNode.parentElement.closest('mark');
+        if(inMark){document.execCommand('removeFormat');}
+        else{const r=s.getRangeAt(0);const m=document.createElement('mark');
+          try{r.surroundContents(m);}catch(_){document.execCommand('backColor',false,'#fde68a');}}
+      }else document.execCommand(cmd,false,null);
+    }catch(_){ }
+    // persist the edit back into the model
+    const host=document.activeElement&&document.activeElement.closest?document.activeElement.closest('[contenteditable="true"]'):null;
+    if(host)host.dispatchEvent(new Event('input',{bubbles:true}));
+    scheduleSnapshot();setTimeout(place,10);
+  });
+})();
+
+/* =====================================================================
+   NEW ✦ 2. Shuffle — build a different version of the same test
+   ===================================================================== */
+function shuf(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t;}return a;}
+const SHUFFLERS={
+ mcq:b=>{const correct=b.opts[b.correct];shuf(b.opts);b.correct=b.opts.indexOf(correct);},
+ truefalse:b=>{const pairs=b.rows.map((r,i)=>({r:r,c:b.correct[i]}));shuf(pairs);
+   b.rows=pairs.map(p=>p.r);b.correct=pairs.map(p=>p.c);},
+ oddone:b=>{shuf(b.rows);b.rows.forEach(r=>shuf(r));},
+ anagram:b=>shuf(b.rows),
+ promptlines:b=>shuf(b.prompts),
+ wordbank:b=>shuf(b.words),
+ vocablist:b=>shuf(b.items),
+ checklist:b=>shuf(b.items),
+ cards:b=>shuf(b.items),
+ rating:b=>shuf(b.rows),
+ speaking:b=>shuf(b.prompts),
+ match:b=>shuf(b.right),
+ wordsearch:b=>{b.grid=null;},
+ crossword:b=>{b.grid=null;}
+};
+function shuffleAll(){
+  snapshot();let n=0;
+  DOC.pages.forEach(pg=>pg.blocks.forEach(b=>{if(SHUFFLERS[b.type]){SHUFFLERS[b.type](b);n++;}}));
+  renderAll();toast(n?('Shuffled '+n+' exercise'+(n>1?'s':'')+' — a new version'):'Nothing to shuffle');
+}
+
+/* =====================================================================
+   NEW ✦ 3. Automatic task numbering
+   ===================================================================== */
+let taskNo=0;
+
+/* =====================================================================
+   NEW ✦ 4. Move a page up or down
+   ===================================================================== */
+function movePage(i,dir){
+  const j=i+dir;if(j<0||j>=DOC.pages.length)return;
+  snapshot();const p=DOC.pages.splice(i,1)[0];DOC.pages.splice(j,0,p);renderAll();
+  setTimeout(()=>{const e=document.querySelectorAll('.paper')[j];if(e)e.scrollIntoView({behavior:'smooth',block:'start'});},60);
+}
+
+/* =====================================================================
+   NEW ✦ 5. Find & replace across the whole document
+   ===================================================================== */
+function walkStrings(fn){
+  const visit=o=>{
+    if(Array.isArray(o)){for(let i=0;i<o.length;i++){
+      if(typeof o[i]==='string')o[i]=fn(o[i]);else if(o[i]&&typeof o[i]==='object')visit(o[i]);}return;}
+    for(const k in o){
+      if(k==='id'||k==='type'||k==='src'||k==='grid')continue;
+      if(typeof o[k]==='string')o[k]=fn(o[k]);
+      else if(o[k]&&typeof o[k]==='object')visit(o[k]);
+    }
+  };
+  DOC.pages.forEach(pg=>pg.blocks.forEach(visit));
+}
+function frCount(q){
+  if(!q)return 0;let n=0;
+  walkStrings(s=>{const m=s.split(q).length-1;n+=m;return s;});
+  return n;
+}
+function frReplace(q,r){
+  if(!q)return 0;const n=frCount(q);
+  if(!n)return 0;
+  snapshot();walkStrings(s=>s.split(q).join(r));renderAll();return n;
+}
 
 /* BOOT */
 (function boot(){
