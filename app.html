@@ -806,6 +806,16 @@ body.locked .app,body.locked .zoombar{display:none !important}
   border-radius:10px 10px 0 0;position:relative}
 .lib-tab.on{color:var(--brand);background:var(--brand-soft)}
 .lib-search{padding:12px 24px 0}
+.lvlbar{display:flex;gap:7px;padding:14px 24px 0;flex-wrap:wrap;align-items:center}
+.lvlbar .lv{padding:7px 15px;border-radius:999px;border:1px solid var(--line);background:var(--panel2);
+  font-size:13px;font-weight:650;cursor:pointer;color:var(--muted);transition:.13s}
+.lvlbar .lv:hover{border-color:var(--brand);color:var(--brand)}
+.lvlbar .lv.on{background:linear-gradient(140deg,var(--brand),var(--brand2));color:#fff;border-color:transparent;
+  box-shadow:0 4px 12px rgba(91,91,240,.3)}
+.lvlbar .lv .n{opacity:.72;font-weight:600;margin-left:5px;font-size:11.5px}
+.lvl-note{padding:12px 24px 0;font-size:13px;color:var(--muted);line-height:1.5}
+.lib-group-h .lvtag{margin-left:auto;font-size:10.5px;font-weight:800;letter-spacing:.6px;
+  padding:2px 9px;border-radius:999px;background:var(--brand-soft);color:var(--brand)}
 .lib-group{margin-top:18px}
 .lib-group-h{display:flex;align-items:center;gap:9px;margin-bottom:11px}
 .lib-group-h .gi{width:8px;height:20px;border-radius:4px;background:linear-gradient(180deg,var(--brand),var(--brand2))}
@@ -1016,7 +1026,9 @@ body.locked .app,body.locked .zoombar{display:none !important}
       <button class="close" data-close>×</button>
     </div>
     <div class="lib-tabs" id="libTabs"></div>
-    <div class="lib-search"><div class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg><input id="libSearch" placeholder="Search exercises…" spellcheck="false"></div></div>
+    <div class="lvlbar" id="lvlBar"></div>
+    <div class="lvl-note" id="lvlNote"></div>
+    <div class="lib-search"><div class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg><input id="libSearch" placeholder="Search topics…" spellcheck="false"></div></div>
     <div class="modal-body" id="libBody"></div>
   </div>
 </div>
@@ -5329,6 +5341,268 @@ const GRAMMAR_ACADEMIC=[
 ]}
 ];
 
+/* =====================================================================
+   TOPIC VOCABULARY — original material, levelled A2 → B2
+   ===================================================================== */
+function VSET(title,words,mode){return VOC({title:title,items:words.map(w=>({w:w})),mode:mode||'en'});}
+const GRAMMAR_TOPICVOCAB=[
+{id:'v-home',name:'Home & everyday objects',
+ theory:T({icon:'🏠',title:'Around the home',
+  form:[{s:'rooms',x:'kitchen · bedroom · bathroom · hall · living room'},{s:'things',x:'furniture · cupboard · shelf · drawer · cushion'},{s:'verbs',x:'tidy up · put away · switch on · take out'}],
+  uses:[{r:'Prepositions go with places',x:'in the kitchen · on the shelf · at the door'},{r:'Furniture is uncountable',x:'a piece of furniture, not <s>a furniture</s>'},{r:'Common phrasal verbs at home',x:'tidy up your room · put the plates away'}],
+  words:['upstairs','downstairs','next door','tidy','messy','comfortable'],
+  note:'<b>Careful:</b> <i>furniture</i>, <i>equipment</i> and <i>rubbish</i> are uncountable — <i>some furniture</i>, never <s>furnitures</s>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right side and test yourself.'),
+    VSET('Home vocabulary',['kitchen','ceiling','wall','garden','apartment','neighbour'],'both')]},
+  {n:'Which room?',b:()=>[TASK('Sort the objects','Write each object in the room where you usually find it.'),
+    B('wordbank',{title:'Objects',words:['fridge','pillow','towel','sofa','oven','mirror','wardrobe','cushion']}),
+    B('sortcols',{cols:[{title:'Kitchen'},{title:'Bedroom'},{title:'Bathroom'},{title:'Living room'}]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  Please put your books on the [shelf].','2  We keep the plates in that [cupboard].',
+    '3  My bedroom is [upstairs], next to the bathroom.','4  Could you [tidy] your room, please?',
+    '5  Our [neighbours] are very friendly.','6  There is a beautiful [garden] behind the house.')]},
+  {n:'Odd one out',b:()=>[TASK('Odd one out','Cross out the word that does not belong.'),
+    B('oddone',{rows:[['sofa','armchair','cushion','oven'],['fridge','freezer','cooker','pillow'],['upstairs','downstairs','messy','next door'],['towel','shower','mirror','wardrobe']]})]},
+  {n:'Describe your home',b:()=>[TASK('Write about your home','Describe your home in six sentences. Use at least eight words from this page.'),B('lines',{count:7})]}
+]},
+{id:'v-food',name:'Food & drink',
+ theory:T({icon:'🍎',title:'Food, cooking and eating out',
+  form:[{s:'nouns',x:'vegetable · fruit · meal · recipe · flour · ingredient'},{s:'taste',x:'sweet · sour · salty · spicy · delicious · bland'},{s:'cooking',x:'boil · fry · bake · roast · chop · stir'}],
+  uses:[{r:'Countable and uncountable food words',x:'an apple / some bread / two slices of bread'},{r:'Meals take no article',x:'have breakfast, at lunch, before dinner'},{r:'Ordering in a restaurant',x:'Could I have…? / I\'ll go for the…'}],
+  words:['a slice of','a bottle of','a bar of','starter','main course','dessert','bill'],
+  note:'<b>Uncountable traps:</b> <i>bread, rice, cheese, fruit, food</i> — count them with <i>a piece of</i>, <i>a slice of</i>, <i>a bowl of</i>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings.'),
+    VSET('Food vocabulary',['delicious','recipe','fresh','spicy','vegetable','meal'],'both')]},
+  {n:'Match the cooking verbs',b:()=>[TASK('Match the verbs','Match each cooking verb with its meaning.'),
+    B('match',{left:['boil','fry','bake','chop','roast','stir'],
+      right:['cook in hot oil','cut into small pieces','cook in very hot water','mix with a spoon','cook in an oven with fat','cook in an oven, like bread']})]},
+  {n:'Countable or uncountable?',b:()=>[TASK('Sort the food words','Write each word in the correct column.'),
+    B('wordbank',{title:'Food',words:['bread','apple','rice','egg','cheese','sandwich','water','biscuit']}),
+    B('sortcols',{cols:[{title:'Countable'},{title:'Uncountable'}]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  This soup is too [salty] — I added too much salt.',
+    '2  Could I have a [slice] of cake, please?','3  Lemons taste very [sour].',
+    '4  She followed the [recipe] exactly.','5  Shall we ask for the [bill]?',
+    '6  I\'d like the chicken as my main [course].')]},
+  {n:'At the restaurant',b:()=>[B('speaking',{icon:'🍽️',title:'Role-play: ordering a meal',prompts:['Student A: you are the waiter. Greet the customer and take the order.','Student B: you are the customer. Ask about two dishes, then order a starter, a main course and a drink.','Swap roles. This time something is wrong with the food — complain politely.']})]}
+]},
+{id:'v-people',name:'People, family & appearance',
+ theory:T({icon:'👨‍👩‍👧',title:'Describing people',
+  form:[{s:'family',x:'cousin · nephew · niece · in-laws · only child'},{s:'looks',x:'tall · slim · curly hair · in his forties · good-looking'},{s:'order',x:'She\'s a <em>tall, slim young</em> woman with <em>short dark</em> hair.'}],
+  uses:[{r:'be for permanent features, have got for parts',x:'She is tall. / She has got green eyes.'},{r:'Approximate age',x:'in his twenties · around thirty · middle-aged'},{r:'Adjective order matters',x:'long straight brown hair'}],
+  words:['look like','take after','in her thirties','well-built','fair','bald'],
+  note:'<b>Don\'t confuse:</b> <i>What is she like?</i> (character) · <i>What does she look like?</i> (appearance).'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings.'),
+    VSET('People vocabulary',['neighbour','honest','generous','shy','brave','friendly'],'both')]},
+  {n:'Family relationships',b:()=>[TASK('Who is who?','Complete each definition.'),
+    ...FIBS('1  My brother\'s son is my [nephew].','2  My mother\'s sister is my [aunt].',
+    '3  My aunt\'s daughter is my [cousin].','4  My wife\'s mother is my [mother-in-law].',
+    '5  A child with no brothers or sisters is an [only child].','6  My sister\'s daughter is my [niece].')]},
+  {n:'Put the adjectives in order',b:()=>[TASK('Put the words in order','Rearrange each set into a natural description.'),
+    B('anagram',{line:true,rows:[{c:'hair / long / brown / straight',a:'long straight brown hair'},{c:'young / a / tall / man',a:'a tall young man'},{c:'blue / big / eyes',a:'big blue eyes'},{c:'woman / friendly / an / older',a:'a friendly older woman'}]})]},
+  {n:'look like or be like?',b:()=>[TASK('Choose the question','Circle the correct question for each answer.'),
+    CIRCLE('1  “She\'s very kind and patient.” — ( What is she like? / What does she look like? )','2  “He\'s tall with dark hair.” — ( What is he like? / What does he look like? )','3  “She takes after her mother.” — this is about ( character / both )','4  “They\'re in their fifties.” — this is about ( age / character )')]},
+  {n:'Describe someone',b:()=>[TASK('Write a description','Describe a member of your family in six sentences — appearance and character.'),B('lines',{count:7})]}
+]},
+{id:'v-travel',name:'Travel & holidays',
+ theory:T({icon:'✈️',title:'Getting around and going away',
+  form:[{s:'nouns',x:'journey · trip · flight · luggage · accommodation'},{s:'verbs',x:'check in · take off · land · set off · get around'},{s:'places',x:'departure lounge · platform · aisle seat · guesthouse'}],
+  uses:[{r:'journey = the travelling · trip = the whole visit',x:'a long journey / a business trip'},{r:'travel is normally a verb or uncountable noun',x:'I love travelling. / air travel'},{r:'Transport phrases take by, but on foot',x:'by train, by car, on foot'}],
+  words:['book in advance','delayed','cancelled','sightseeing','package holiday','off the beaten track'],
+  note:'<b>Three easy mistakes:</b> <i>luggage</i> is uncountable · <i>travel</i> is not usually a countable noun · say <i>a two-week trip</i>, not <s>a two-weeks trip</s>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings.'),
+    VSET('Travel vocabulary',['journey','airport','island','hotel','travel','beach'],'both')]},
+  {n:'journey, trip or travel?',b:()=>[TASK('Choose the correct word','Circle journey, trip or travel.'),
+    CIRCLE('1  The ( journey / trip ) from London to Edinburgh takes five hours.','2  We went on a business ( journey / trip ) to Berlin.','3  I love ( travel / trip ) — I\'ve been to twenty countries.','4  Did you have a good ( journey / travel )?','5  They took a day ( trip / journey ) to the coast.')]},
+  {n:'Airport phrasal verbs',b:()=>[TASK('Match the phrasal verbs','Match each phrasal verb with its meaning.'),
+    B('match',{left:['check in','take off','set off','pick up','get around','look around'],
+      right:['start a journey','leave the ground','explore a place','register at the airport or hotel','travel within a place','collect someone']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  Our flight was [delayed] by two hours.',
+    '2  You should [book] your tickets in advance.',
+    '3  We spent the morning [sightseeing] in the old town.',
+    '4  Put your [luggage] in the overhead locker.',
+    '5  The plane [took] off exactly on time.',
+    '6  We stayed in cheap [accommodation] near the station.')]},
+  {n:'Plan a trip',b:()=>[B('speaking',{icon:'🗺️',title:'Planning a trip together',prompts:['Agree on a destination and explain why.','Decide how you will travel and where you will stay.','What three things will you do there? What will you avoid?','Present your plan to another pair.']})]}
+]},
+{id:'v-work',name:'Work & jobs',
+ theory:T({icon:'💼',title:'The world of work',
+  form:[{s:'people',x:'employer · employee · colleague · client · manager'},{s:'money',x:'salary · wages · bonus · pension · a pay rise'},{s:'events',x:'apply for · be promoted · resign · be made redundant'}],
+  uses:[{r:'work is uncountable; job is countable',x:'I have a lot of work. / I have a good job.'},{r:'The stages of a career',x:'apply for → be interviewed → be offered → be promoted'},{r:'Losing a job — three different words',x:'resign (you choose) · be fired (your fault) · be made redundant (no job left)'}],
+  words:['full-time','part-time','shift work','deadline','overtime','self-employed'],
+  note:'<b>Key difference:</b> <i>I have a lot of <b>work</b></i> (uncountable) but <i>I have a good <b>job</b></i> (countable).'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings.'),
+    VSET('Work vocabulary',['career','colleague','salary','manager','interview','employee'],'both')]},
+  {n:'work or job?',b:()=>[TASK('Choose the correct word','Circle work or job.'),
+    CIRCLE('1  She\'s looking for a new ( work / job ).','2  I have too much ( work / job ) this week.','3  He starts ( work / job ) at eight every morning.','4  It\'s a difficult ( work / job ), but well paid.','5  She\'s out of ( work / job ) at the moment.')]},
+  {n:'Leaving a job',b:()=>[TASK('Choose the right verb','Circle the correct option.'),
+    CIRCLE('1  She ( resigned / was fired ) because she found a better job.','2  He ( resigned / was fired ) for stealing from the company.','3  Two hundred workers ( were made redundant / resigned ) when the factory closed.','4  After ten years she ( was promoted / applied ) to senior manager.')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  I\'d like to [apply] for the marketing position.',
+    '2  We have a tight [deadline] on this project.',
+    '3  She works [part-time], three days a week.',
+    '4  After the review he got a small pay [rise].',
+    '5  My [colleagues] are all very supportive.',
+    '6  He is [self-employed] and works from home.')]},
+  {n:'A job interview',b:()=>[B('speaking',{icon:'💼',title:'Role-play: the interview',prompts:['Student A: you are the interviewer. Ask about experience, strengths and why they want the job.','Student B: you are the candidate. Answer fully and ask two questions of your own.','Swap roles for a completely different job.']})]}
+]},
+{id:'v-health',name:'Health & the body',
+ theory:T({icon:'🩺',title:'Illness, treatment and staying well',
+  form:[{s:'symptoms',x:'a headache · a sore throat · a temperature · a rash'},{s:'verbs',x:'ache · hurt · feel sick · recover · put on weight'},{s:'treatment',x:'prescription · painkillers · surgery · appointment'}],
+  uses:[{r:'have + illness',x:'I have a cold / a headache / the flu.'},{r:'hurt vs ache vs pain',x:'My arm hurts. / I have backache. / a sharp pain'},{r:'At the doctor\'s',x:'make an appointment · get a prescription'}],
+  words:['sneeze','cough','dizzy','bruise','sprain','check-up','fit','out of breath'],
+  note:'<b>Article check:</b> <i>a</i> headache, <i>a</i> cold — but <i>the</i> flu, and no article with <i>toothache</i> in British English.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings.'),
+    VSET('Health vocabulary',['healthy','injury','hospital','tired','strong','pharmacy'],'both')]},
+  {n:'Match symptom and problem',b:()=>[TASK('Match the pairs','Match each symptom with the likely problem.'),
+    B('match',{left:['sneezing and a runny nose','a high temperature','a sore throat','feeling dizzy','a rash on the skin','swollen ankle'],
+      right:['an allergic reaction','a sprain','a cold','flu','low blood pressure','an infection']})]},
+  {n:'hurt, ache or pain?',b:()=>[TASK('Complete the sentences','Write hurt, hurts, ache or pain.'),
+    ...FIBS('1  My legs [hurt] after the run.','2  I have terrible tooth[ache].',
+    '3  She felt a sharp [pain] in her side.','4  Does your shoulder still [hurt]?',
+    '5  I\'ve had a head[ache] all morning.')]},
+  {n:'Giving advice',b:()=>[TASK('Give advice','Write advice for each problem using should, ought to or why don\'t you.'),
+    WRITE(1)('“I can\'t sleep at night.”','“I\'ve had a sore throat for a week.”','“I get out of breath climbing stairs.”','“I have a terrible headache.”','“I think I\'ve sprained my ankle.”')]},
+  {n:'At the doctor\'s',b:()=>[B('speaking',{icon:'🩺',title:'Role-play: the surgery',prompts:['Student A: you are the patient. Describe three symptoms and how long you have had them.','Student B: you are the doctor. Ask questions, then give a diagnosis and advice.','Swap roles with a different illness.']})]}
+]},
+{id:'v-environment',name:'Environment & climate',
+ theory:T({icon:'🌍',title:'The planet and its problems',
+  form:[{s:'problems',x:'pollution · deforestation · global warming · waste'},{s:'solutions',x:'recycle · renewable energy · reduce emissions · conserve'},{s:'collocations',x:'<em>climate</em> change · <em>carbon</em> footprint · <em>single-use</em> plastic'}],
+  uses:[{r:'Strong collocations are essential here',x:'tackle climate change · cut emissions · raise awareness'},{r:'Many nouns are uncountable',x:'pollution, waste, energy, research'},{r:'Useful for essays and speaking exams',x:'The government should invest in renewable energy.'}],
+  words:['sustainable','emissions','endangered','habitat','drought','flooding','carbon footprint'],
+  note:'<b>Collocations to memorise:</b> <i>tackle</i> a problem · <i>cut</i> emissions · <i>raise</i> awareness · <i>protect</i> the environment.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings.'),
+    VSET('Environment vocabulary',['pollution','climate','environment','forest','rubbish','weather'],'both')]},
+  {n:'Match the collocations',b:()=>[TASK('Match the collocations','Match each verb with the noun it goes with.'),
+    B('match',{left:['tackle','cut','raise','protect','conserve','generate'],
+      right:['awareness','the environment','climate change','energy','emissions','water']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  We must reduce our carbon [footprint].',
+    '2  Many species are now [endangered].',
+    '3  Solar and wind are [renewable] sources of energy.',
+    '4  Governments need to [tackle] climate change urgently.',
+    '5  Supermarkets are phasing out single-use [plastic].',
+    '6  The [drought] destroyed most of the harvest.')]},
+  {n:'Problem and solution',b:()=>[TASK('Write about the problems','For each problem, write one sentence describing it and one suggesting a solution.'),
+    WRITE(2)('plastic in the oceans','air pollution in cities','food waste')]},
+  {n:'Environment debate',b:()=>[B('speaking',{icon:'🌍',title:'Discussion',prompts:['Whose responsibility is climate change — governments, companies or individuals?','Should flying be taxed much more heavily?','What is the single most effective change an ordinary person can make?','Is it already too late to act?']})]}
+]},
+{id:'v-technology',name:'Technology & media',
+ theory:T({icon:'💻',title:'Devices, the internet and the news',
+  form:[{s:'devices',x:'device · screen · charger · battery life · software'},{s:'internet',x:'download · stream · browse · post · share · scroll'},{s:'media',x:'headline · source · coverage · broadcast · subscription'}],
+  uses:[{r:'Very productive phrasal verbs',x:'log in, sign up, back up, shut down, scroll through'},{r:'Talking about online life',x:'spend hours scrolling · go viral · block someone'},{r:'Evaluating information',x:'a reliable source · fake news · biased coverage'}],
+  words:['upload','wireless','app','update','password','privacy','algorithm','notification'],
+  note:'<b>Watch the preposition:</b> <i>log <b>in to</b> an account</i>, <i>sign <b>up for</b> a service</i>, <i>connect <b>to</b> wifi</i>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings.'),
+    VSET('Technology vocabulary',['device','download','screen','password','network','software'],'both')]},
+  {n:'Match the phrasal verbs',b:()=>[TASK('Match the phrasal verbs','Match each phrasal verb with its meaning.'),
+    B('match',{left:['log in','sign up','back up','shut down','scroll through','set up'],
+      right:['turn off completely','create an account','save a copy','install and configure','enter your password to access','move quickly through content']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  My phone\'s [battery] only lasts four hours.',
+    '2  Always [back] up your files before an update.',
+    '3  Her video went [viral] within a day.',
+    '4  Check the [source] before you believe a headline.',
+    '5  I get too many [notifications] on my phone.',
+    '6  You should change your [password] regularly.')]},
+  {n:'Reliable or not?',b:()=>[TASK('Evaluate the sources','For each source, write whether you would trust it and why.'),
+    WRITE(2)('a post shared by a friend with no link','an article in a national newspaper','a video with a dramatic headline and no author')]},
+  {n:'Technology debate',b:()=>[B('speaking',{icon:'💻',title:'Discussion',prompts:['Has social media done more harm than good?','Should children under 14 have smartphones?','Will AI take more jobs than it creates?','Could you live for a month without the internet?']})]}
+]},
+{id:'v-education',name:'Education & study',
+ theory:T({icon:'🎓',title:'School, university and learning',
+  form:[{s:'people',x:'pupil · student · tutor · lecturer · graduate'},{s:'process',x:'revise · take an exam · pass · fail · resit · graduate'},{s:'nouns',x:'degree · assignment · deadline · term · scholarship'}],
+  uses:[{r:'take, pass, fail and sit an exam',x:'She took the exam in June and passed.'},{r:'Learn vs study vs revise',x:'study medicine · learn a language · revise for a test'},{r:'British and American differences',x:'BrE revise / AmE review · BrE at university / AmE in college'}],
+  words:['coursework','lecture','seminar','tuition fees','undergraduate','distance learning'],
+  note:'<b>Classic error:</b> <i>pass</i> an exam means to succeed. To simply do it, say <i>take</i> or <i>sit</i> the exam.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings.'),
+    VSET('Education vocabulary',['university','degree','exam','subject','lesson','teacher'],'both')]},
+  {n:'take, pass or fail?',b:()=>[TASK('Choose the correct verb','Circle the correct option.'),
+    CIRCLE('1  She ( took / passed ) her driving test three times before she succeeded.','2  He ( passed / took ) all his exams with excellent marks.','3  I\'m going to ( sit / pass ) the exam next Tuesday.','4  If you ( fail / take ), you can resit in September.','5  She ( graduated / passed ) from Oxford in 2020.')]},
+  {n:'learn, study or revise?',b:()=>[TASK('Complete the sentences','Write learn, study or revise in the correct form.'),
+    ...FIBS('1  I need to [revise] for tomorrow\'s test.','2  She is [studying] law at university.',
+    '3  He wants to [learn] Japanese.','4  How long did you [study] last night?',
+    '5  Children [learn] very quickly at that age.')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  The [deadline] for the essay is Friday.','2  She won a [scholarship] to study abroad.',
+    '3  Tuition [fees] have risen sharply.','4  We have a [lecture] at nine and a seminar at eleven.',
+    '5  I have three [assignments] to hand in this week.')]},
+  {n:'Education debate',b:()=>[B('speaking',{icon:'🎓',title:'Discussion',prompts:['Should university be free for everyone?','Are exams a fair way to measure ability?','Is online learning as effective as classroom teaching?','What one thing would you change about the school you went to?']})]}
+]},
+{id:'v-shopping',name:'Shopping & money',
+ theory:T({icon:'🛒',title:'Buying, paying and value',
+  form:[{s:'places',x:'shopping centre · market · checkout · till · receipt'},{s:'money',x:'afford · refund · discount · bargain · deposit'},{s:'verbs',x:'try on · pay for · save up · run out of · take back'}],
+  uses:[{r:'afford always follows can/could',x:'I can\'t afford it. (not <s>I don\'t afford</s>)'},{r:'Talking about price',x:'It costs €30. / The price of it is €30.'},{r:'Returning things',x:'take it back · ask for a refund · exchange it'}],
+  words:['expensive','cheap','value for money','sale','half price','on offer','instalments'],
+  note:'<b>Verb pattern:</b> <i>spend money <b>on</b> something</i>, <i>pay <b>for</b> something</i>, <i>it <b>costs</b> €30</i> (no preposition).'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings.'),
+    VSET('Shopping vocabulary',['cheap','expensive','buy','sell','pay','money'],'both')]},
+  {n:'Complete with a preposition',b:()=>[TASK('Complete the sentences','Write the missing preposition or nothing (—).'),
+    ...FIBS('1  I spent forty euros [on] a new shirt.','2  Who paid [for] the meal?',
+    '3  This jacket costs [—] eighty pounds.','4  The shoes are [on] offer this week.',
+    '5  I\'m saving [up] for a holiday.','6  She took the dress back and asked [for] a refund.')]},
+  {n:'Match the shopping words',b:()=>[TASK('Match the words','Match each word with its meaning.'),
+    B('match',{left:['receipt','refund','bargain','discount','deposit','instalments'],
+      right:['money returned to you','proof of purchase','a reduction in price','something very good for the price','regular part-payments','money paid up front']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  I can\'t [afford] a new car this year.','2  Keep the [receipt] in case you want to return it.',
+    '3  Students get a ten per cent [discount].','4  At that price it\'s a real [bargain].',
+    '5  Can I [try] these on before I buy them?','6  The shop was closed, so we went to the [market].')]},
+  {n:'In the shop',b:()=>[B('speaking',{icon:'🛒',title:'Role-play: returning an item',prompts:['Student A: you bought something faulty. Explain the problem and ask for a refund.','Student B: you work in the shop. You need to see the receipt and offer an exchange first.','Swap roles: this time the item was a gift and there is no receipt.']})]}
+]}
+];
+
+/* =====================================================================
+   LEVELS — every topic is tagged A2 / B1 / B2 / C1 and grammar / vocab
+   ===================================================================== */
+const TOPIC_LEVEL={
+ // ---- A2 foundations ----
+ 'pres-simple':'A2','pres-cont':'A2','simple-vs-cont':'A2','past-simple':'A2','past-cont':'A2',
+ 'future-will':'A2','future-going':'A2','comparatives':'A2','articles':'A2','quantifiers':'A2',
+ 'there-is':'A2','prepositions':'A2','questions':'A2','modals-ability':'A2',
+ // ---- B2 (harder items that live in the B1 bank) ----
+ 'conditional-2':'B2','conditional-3':'B2','wish':'B2','deduction':'B2','causative':'B2',
+ 'indirect-q':'B2','modal-past':'B2','purpose':'B2','linkers':'B2','still-yet':'B2',
+ 'reported':'B2','future-cont-perf':'B2',
+ // ---- B2 (easier items that live in the C1 bank) ----
+ 'c1-a-one':'B2','c1-all-whole':'B2','c1-no-none':'B2','c1-quantifiers-adv':'B2',
+ 'c1-prep-place':'B2','c1-prep-time':'B2','c1-exceptions':'B2','c1-one-ones':'B2',
+ 'c1-relative-adv':'B2','c1-passive-adv':'B2','c1-comparative-adv':'B2','c1-adverbs-comment':'B2',
+ // ---- vocabulary ----
+ 'id-feelings':'B1','id-body':'B1','id-communication':'B2','id-work':'B2','id-time-money':'B2',
+ 'v-home':'A2','v-food':'A2','v-people':'A2','v-travel':'B1','v-work':'B1','v-health':'B1',
+ 'v-shopping':'B1','v-environment':'B2','v-technology':'B2','v-education':'B2'
+};
+function tagBank(bank,cat,fallback){bank.forEach(t=>{t.cat=cat;t.lvl=TOPIC_LEVEL[t.id]||fallback;});}
+tagBank(GRAMMAR_B1,'grammar','B1');
+tagBank(GRAMMAR_C1,'grammar','C1');
+tagBank(GRAMMAR_IDIOM,'vocab','B2');
+tagBank(GRAMMAR_ACADEMIC,'vocab','C1');
+tagBank(GRAMMAR_TOPICVOCAB,'vocab','B1');
+const ALL_TOPICS=[].concat(GRAMMAR_B1,GRAMMAR_C1,GRAMMAR_TOPICVOCAB,GRAMMAR_IDIOM,GRAMMAR_ACADEMIC);
+const LEVEL_ORDER=['A2','B1','B2','C1'];
+const LEVEL_BLURB={
+ A2:'The building blocks — the tenses, articles and question forms every learner needs before anything else.',
+ B1:'Core intermediate grammar: perfect tenses, conditionals, the passive, relative clauses and verb patterns.',
+ B2:'Upper-intermediate: mixed conditionals, reported speech, modals of deduction, linking and precision.',
+ C1:'Advanced: inversion, cleft sentences, participle clauses, the subjunctive, hedging and academic register.'
+};
+function topicsFor(cat,lvl,q){
+  return ALL_TOPICS.filter(t=>t.cat===cat&&(lvl==='all'||t.lvl===lvl)&&
+    (!q||t.name.toLowerCase().includes(q)||t.ex.some(e=>e.n.toLowerCase().includes(q))));
+}
+
 const LIB_PRINCIPLE={
  vocab:{ic:'🎯',title:'One principle to keep in mind',text:'Recognition and form first, free use later. A word should travel from reception to production — otherwise it stays passive.'},
  grammar:{ic:'🎯',title:'The main principle',text:'From controlled practice to free practice. Drill the form in tight frames, then use the structure in meaningful context, and only then in free speech. Mechanical drills with no communication leave grammar dead.'},
@@ -5337,28 +5611,55 @@ const LIB_PRINCIPLE={
  c1:{ic:'🎓',title:'How each C1 worksheet is built',text:'Advanced topics follow the same path — a theory card, then noticing, controlled practice, transformation and free production — but the focus shifts to register, emphasis and precision: inversion, cleft sentences, participle clauses, hedging and cohesion. "Full worksheet" drops the whole sequence on a new page with the answer key switched on.'},
  b1:{ic:'📚',title:'How each B1 worksheet is built',text:'Every topic follows the same path: a theory card (form · use · signal words), then noticing, then controlled drills, then meaningful practice, and finally free production. “Full worksheet” drops the whole sequence on a new page and switches the answer key on automatically.'}
 };
-let libTab='b1';
-function buildLibTabs(){const t=$('#libTabs');t.innerHTML='';
-  [['b1','B1 Course'],['c1','C1 Advanced'],['idiom','Idioms'],['academic','Academic'],['vocab','Vocabulary'],['grammar','Grammar']].forEach(([k,lbl])=>{const b=el('button','lib-tab'+(libTab===k?' on':''),lbl);b.onclick=()=>{libTab=k;buildLibTabs();buildLibBody($('#libSearch').value);};t.appendChild(b);});}
-function buildCourseBody(q,bank,level){
-  const body=$('#libBody');
-  bank.forEach(topic=>{
-    const exs=topic.ex.filter(e=>!q||topic.name.toLowerCase().includes(q)||e.n.toLowerCase().includes(q));
-    if(!exs.length&&!(q&&topic.name.toLowerCase().includes(q)))return;
-    const g=el('div','lib-group');
-    g.innerHTML=`<div class="lib-group-h"><div class="gi"></div><b>${esc(topic.name)}</b><small>${level}</small></div>`;
-    const grid=el('div','lib-items');
-    const full=el('button','lib-item',`<div class="li-ic">📄</div><div class="li-tx"><b>Full worksheet</b><span>Theory + all ${topic.ex.length} exercises + key</span></div><div class="li-add">${I.plus}</div>`);
-    full.style.gridColumn='1/-1';
-    full.onclick=()=>insertTopic(topic,level);
-    grid.appendChild(full);
-    const th=el('button','lib-item',`<div class="li-ic">📘</div><div class="li-tx"><b>Theory only</b><span>Rule card: form, use, signal words</span></div><div class="li-add">${I.plus}</div>`);
-    th.onclick=()=>insertExercise({name:topic.name+' — theory',make:()=>[Object.assign(JSON.parse(JSON.stringify(topic.theory)),{id:uid()})]});
-    grid.appendChild(th);
-    exs.forEach(e=>{const c=el('button','lib-item',`<div class="li-ic">✏️</div><div class="li-tx"><b>${esc(e.n)}</b><span>${esc(topic.name)}</span></div><div class="li-add">${I.plus}</div>`);
-      c.onclick=()=>insertExercise({name:e.n,make:e.b});grid.appendChild(c);});
-    g.appendChild(grid);body.appendChild(g);
-  });
+let libTab='gr';
+let libLevel='all',libTypes='vocab';
+function buildLibTabs(){
+  const t=$('#libTabs');t.innerHTML='';
+  [['gr','📘 Grammar'],['vo','💬 Vocabulary'],['types','🧩 Exercise types']].forEach(([k,lbl])=>{
+    const b=el('button','lib-tab'+(libTab===k?' on':''),lbl);
+    b.onclick=()=>{libTab=k;buildLibTabs();buildLevelBar();buildLibBody($('#libSearch').value);};
+    t.appendChild(b);});
+  buildLevelBar();
+}
+function buildLevelBar(){
+  const bar=$('#lvlBar'),note=$('#lvlNote');
+  if(libTab==='types'){
+    bar.innerHTML='';note.textContent='';
+    [['vocab','Vocabulary exercises'],['grammar','Grammar exercises']].forEach(([k,lbl])=>{
+      const b=el('button','lv'+(libTypes===k?' on':''),lbl);
+      b.onclick=()=>{libTypes=k;buildLevelBar();buildLibBody($('#libSearch').value);};bar.appendChild(b);});
+    return;
+  }
+  const cat=libTab==='vo'?'vocab':'grammar';
+  bar.innerHTML='';
+  const mk=(k,lbl)=>{
+    const n=topicsFor(cat,k,'').length;
+    const b=el('button','lv'+(libLevel===k?' on':''),lbl+'<span class="n">'+n+'</span>');
+    b.onclick=()=>{libLevel=k;buildLevelBar();buildLibBody($('#libSearch').value);};
+    if(!n&&k!=='all')b.style.opacity='.4';
+    bar.appendChild(b);
+  };
+  mk('all','All levels');
+  LEVEL_ORDER.forEach(l=>mk(l,l));
+  note.textContent=libLevel==='all'
+    ? (cat==='grammar'?'Every grammar topic, from the first tenses to advanced register.':'Idioms and academic English, grouped by level.')
+    : (LEVEL_BLURB[libLevel]||'');
+}
+function topicCard(topic){
+  const level=topic.lvl||'B1';
+  const g=el('div','lib-group');
+  g.innerHTML=`<div class="lib-group-h"><div class="gi"></div><b>${esc(topic.name)}</b><span class="lvtag">${level}</span></div>`;
+  const grid=el('div','lib-items');
+  const full=el('button','lib-item',`<div class="li-ic">📄</div><div class="li-tx"><b>Full worksheet</b><span>Theory + all ${topic.ex.length} exercises + key</span></div><div class="li-add">${I.plus}</div>`);
+  full.style.gridColumn='1/-1';
+  full.onclick=()=>insertTopic(topic,level);
+  grid.appendChild(full);
+  const th=el('button','lib-item',`<div class="li-ic">📘</div><div class="li-tx"><b>Theory only</b><span>Rule card: form, use, signal words</span></div><div class="li-add">${I.plus}</div>`);
+  th.onclick=()=>insertExercise({name:topic.name+' — theory',make:()=>[Object.assign(JSON.parse(JSON.stringify(topic.theory)),{id:uid()})]});
+  grid.appendChild(th);
+  topic.ex.forEach(e=>{const c=el('button','lib-item',`<div class="li-ic">✏️</div><div class="li-tx"><b>${esc(e.n)}</b><span>${esc(topic.name)}</span></div><div class="li-add">${I.plus}</div>`);
+    c.onclick=()=>insertExercise({name:e.n,make:e.b});grid.appendChild(c);});
+  g.appendChild(grid);return g;
 }
 function insertTopic(topic,level){
   snapshot();
@@ -5374,13 +5675,26 @@ function insertTopic(topic,level){
 }
 function buildLibBody(filter){
   const body=$('#libBody');body.innerHTML='';const q=(filter||'').toLowerCase().trim();
-  const COURSES={b1:[GRAMMAR_B1,'B1'],c1:[GRAMMAR_C1,'C1'],idiom:[GRAMMAR_IDIOM,'IDIOMS'],academic:[GRAMMAR_ACADEMIC,'ACADEMIC']};
-  if(COURSES[libTab]){
-    buildCourseBody(q,COURSES[libTab][0],COURSES[libTab][1]);
+  if(libTab==='gr'||libTab==='vo'){
+    const cat=libTab==='vo'?'vocab':'grammar';
+    const list=topicsFor(cat,libLevel,q);
+    if(libLevel==='all'){
+      LEVEL_ORDER.forEach(lv=>{
+        const inLv=list.filter(t=>t.lvl===lv);
+        if(!inLv.length)return;
+        const h=el('div','lib-group');
+        h.innerHTML=`<div class="lib-group-h"><div class="gi"></div><b>Level ${lv}</b><small>${inLv.length} topics</small></div>`;
+        body.appendChild(h);
+        inLv.forEach(t=>body.appendChild(topicCard(t)));
+      });
+    }else{
+      list.forEach(t=>body.appendChild(topicCard(t)));
+    }
     if(!body.children.length)body.appendChild(el('div','hint','No topics match your search.'));
-    const pr=LIB_PRINCIPLE[libTab];body.appendChild(el('div','lib-principle',`<div class="lp-ic">${pr.ic}</div><div><b>${pr.title}</b><p>${pr.text}</p></div>`));
+    const pr=LIB_PRINCIPLE[libTab==='vo'?'idiom':'b1'];
+    body.appendChild(el('div','lib-principle',`<div class="lp-ic">${pr.ic}</div><div><b>${pr.title}</b><p>${pr.text}</p></div>`));
     return;}
-  LIBRARY[libTab].forEach(grp=>{
+  LIBRARY[libTypes].forEach(grp=>{
     const items=grp.items.filter(it=>!q||it.name.toLowerCase().includes(q)||it.desc.toLowerCase().includes(q)||grp.group.toLowerCase().includes(q));
     if(!items.length)return;
     const g=el('div','lib-group');g.innerHTML=`<div class="lib-group-h"><div class="gi"></div><b>${grp.group}</b></div>`;
@@ -5390,7 +5704,7 @@ function buildLibBody(filter){
     g.appendChild(grid);body.appendChild(g);
   });
   if(!body.children.length)body.appendChild(el('div','hint','No exercises match your search.'));
-  const pr=LIB_PRINCIPLE[libTab];const p=el('div','lib-principle',`<div class="lp-ic">${pr.ic}</div><div><b>${pr.title}</b><p>${pr.text}</p></div>`);body.appendChild(p);
+  const pr=LIB_PRINCIPLE[libTypes];const p=el('div','lib-principle',`<div class="lp-ic">${pr.ic}</div><div><b>${pr.title}</b><p>${pr.text}</p></div>`);body.appendChild(p);
 }
 function insertExercise(it){
   snapshot();
