@@ -484,6 +484,117 @@ button{font-family:inherit;color:inherit}
 .th-words{display:flex;flex-wrap:wrap;gap:6px}
 .th-words span{background:var(--pa-soft);color:var(--pa-accent);border-radius:7px;padding:3px 10px;font-size:12px;font-weight:650}
 
+/* ===== NEW BLOCK TYPES ===== */
+/* dialogue */
+.dlg{display:flex;flex-direction:column;gap:9px}
+.dlg .dl{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;line-height:1.5}
+.dlg .dl .sp{flex:none;min-width:26px;height:24px;padding:0 7px;border-radius:7px;display:grid;place-items:center;
+  font-weight:800;font-size:12px;background:var(--pa-soft);color:var(--pa-accent)}
+.dlg .dl.b .sp{background:var(--pa-soft2);color:var(--pa-accent2)}
+.dlg .dl .dt{flex:1;padding-top:2px}
+
+/* key-word transformation */
+.trans{display:flex;flex-direction:column;gap:14px}
+.trans .tr{display:flex;gap:11px;align-items:flex-start}
+.trans .tr .trn{flex:none;width:23px;height:23px;border-radius:7px;background:var(--pa-soft);color:var(--pa-accent);
+  font-weight:800;font-size:12px;display:grid;place-items:center;margin-top:1px}
+.trans .tr .trb{flex:1}
+.trans .tr .tq{font-size:13.5px;line-height:1.45}
+.trans .tr .kw{display:inline-block;margin:6px 0;font-weight:800;font-size:12.5px;letter-spacing:1.2px;
+  text-transform:uppercase;background:var(--pa-soft);color:var(--pa-accent);padding:3px 12px;border-radius:6px}
+.trans .tr .ta{font-size:13.5px;line-height:1.9}
+.trans .tr .ta .gap{display:inline-block;min-width:150px;border-bottom:1.6px solid var(--pa-line);
+  text-align:center;color:var(--pa-accent);font-weight:650;margin:0 4px}
+.answers-off .trans .ta .gap{color:transparent}
+
+/* cloze */
+.cloze{font-size:14px;line-height:2.15}
+.cloze .cg{display:inline-block;min-width:96px;border-bottom:1.7px solid var(--pa-accent);text-align:center;margin:0 3px;position:relative}
+.cloze .cg .cn{font-size:9.5px;font-weight:800;color:var(--pa-accent);vertical-align:super;margin-right:3px}
+.cloze .cg .ca{color:var(--pa-accent);font-weight:650}
+.answers-off .cloze .cg .ca{color:transparent}
+
+/* error correction */
+.errfix{display:flex;flex-direction:column;gap:13px}
+.errfix .ef{display:flex;gap:11px;align-items:flex-start}
+.errfix .ef .efn{flex:none;width:23px;height:23px;border-radius:7px;background:var(--pa-soft);color:var(--pa-accent);
+  font-weight:800;font-size:12px;display:grid;place-items:center;margin-top:1px}
+.errfix .ef .efb{flex:1}
+.errfix .ef .eq{font-size:13.5px;line-height:1.45}
+.errfix .ef .el{border-bottom:1.6px solid var(--pa-line);min-height:24px;margin-top:5px;
+  color:var(--pa-accent);font-weight:600;font-size:13.5px}
+.answers-off .errfix .el{color:transparent}
+
+/* timeline */
+.tline{padding:8px 0 4px}
+.tline .tl-bar{position:relative;height:3px;background:var(--pa-line);border-radius:3px;margin:52px 8px 8px}
+.tline .tl-bar::after{content:"";position:absolute;right:-9px;top:-5px;border-left:11px solid var(--pa-line);
+  border-top:6px solid transparent;border-bottom:6px solid transparent}
+.tline .tk{position:absolute;top:-8px;transform:translateX(-50%);text-align:center}
+.tline .tk .dot{width:13px;height:13px;border-radius:50%;background:var(--pa-accent);margin:0 auto;
+  border:2.5px solid var(--pa-paper);box-shadow:0 0 0 2px var(--pa-accent)}
+.tline .tk .lb{font-size:11px;font-weight:700;color:var(--pa-ink);margin-top:7px;white-space:nowrap}
+.tline .tk .lb.up{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);margin:0;color:var(--pa-accent)}
+.tline .tl-now{position:absolute;top:-42px;transform:translateX(-50%);font-size:10px;font-weight:800;
+  letter-spacing:.8px;color:var(--pa-accent2);text-transform:uppercase;
+  border-bottom:2px solid var(--pa-accent2);padding-bottom:2px}
+
+/* verb table */
+.vtab{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;border:1.5px solid var(--pa-line);
+  border-radius:11px;overflow:hidden}
+.vtab th{background:linear-gradient(120deg,var(--pa-accent),var(--pa-accent2));color:#fff;font-weight:750;
+  padding:9px 11px;text-align:left;font-size:12px;letter-spacing:.4px;text-transform:uppercase}
+.vtab td{border-top:1px solid var(--pa-line);border-right:1px solid var(--pa-line);padding:9px 11px}
+.vtab td:last-child{border-right:0}
+.vtab tr:nth-child(even) td{background:color-mix(in srgb,var(--pa-line) 12%,transparent)}
+.vtab td.given{font-weight:700}
+
+/* pronunciation */
+.pron{display:flex;flex-direction:column;gap:2px}
+.pron .pr{display:flex;align-items:center;gap:14px;padding:8px 0;border-bottom:1px dashed var(--pa-line);font-size:13.5px}
+.pron .pr:last-child{border-bottom:0}
+.pron .pr .pw{font-weight:700;min-width:110px}
+.pron .pr .pstress{display:flex;gap:5px;align-items:center;min-width:74px}
+.pron .pr .pstress i{width:9px;height:9px;border-radius:50%;background:var(--pa-line);display:block}
+.pron .pr .pstress i.on{width:15px;height:15px;background:var(--pa-accent)}
+.answers-off .pron .pstress i.on{background:var(--pa-line);width:9px;height:9px}
+.pron .pr .pline{flex:1;border-bottom:1.5px solid var(--pa-line);min-height:20px;
+  font-family:'Courier New',monospace;color:var(--pa-muted)}
+
+/* info gap (pair work) */
+.infogap{display:flex;flex-direction:column;gap:0}
+.infogap .ig{border:2px solid var(--pa-line);border-radius:12px;padding:13px 15px}
+.infogap .ig .igh{font-size:11px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;
+  color:var(--pa-accent);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.infogap .ig .igh::before{content:"";width:16px;height:16px;border-radius:5px;background:var(--pa-accent)}
+.infogap .ig .igc{font-size:13.5px;line-height:1.6}
+.infogap .cut{display:flex;align-items:center;gap:9px;color:var(--pa-muted);font-size:11px;
+  padding:9px 0;letter-spacing:.5px}
+.infogap .cut .cl{flex:1;border-top:2px dashed var(--pa-line)}
+
+/* rubric */
+.rub{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;border:1.5px solid var(--pa-line);
+  border-radius:11px;overflow:hidden}
+.rub th{background:var(--pa-soft);color:var(--pa-accent);font-weight:750;padding:8px 10px;
+  font-size:11px;text-transform:uppercase;letter-spacing:.5px;text-align:center;border-right:1px solid var(--pa-line)}
+.rub th:first-child{text-align:left;width:38%}
+.rub th:last-child{border-right:0}
+.rub td{border-top:1px solid var(--pa-line);border-right:1px solid var(--pa-line);padding:10px;vertical-align:middle}
+.rub td:last-child{border-right:0}
+.rub td.crit{font-weight:650}
+.rub td.box{text-align:center}
+.rub td.box i{display:inline-block;width:17px;height:17px;border:1.7px solid var(--pa-accent);border-radius:4px}
+
+/* tip / warning callout */
+.tipbox{display:flex;gap:12px;align-items:flex-start;border-radius:12px;padding:12px 15px;
+  background:var(--pa-soft2);border-left:5px solid var(--pa-accent2)}
+.tipbox.warn{background:color-mix(in srgb,#f59e0b 12%,var(--pa-paper));border-left-color:#d97706}
+.tipbox.ok{background:color-mix(in srgb,#10b981 12%,var(--pa-paper));border-left-color:#059669}
+.tipbox .ti{font-size:19px;flex:none;line-height:1.2}
+.tipbox .tb{flex:1}
+.tipbox .tb b{display:block;font-size:13px;font-weight:750;margin-bottom:2px}
+.tipbox .tb span{font-size:13px;line-height:1.55}
+
 /* points badge */
 .pts-badge{position:absolute;top:6px;right:8px;font-size:11px;font-weight:800;color:var(--pa-accent);
   background:var(--pa-soft);border:1.5px solid color-mix(in srgb,var(--pa-accent) 30%,var(--pa-line));
@@ -1006,6 +1117,9 @@ const BLOCK_DEFS=[
  {t:'divider',g:'Layout',icon:I.div,name:'Divider',hint:'Line / scissors'},
 
  {t:'mcq',g:'Questions',icon:I.mcq,name:'Multiple choice',hint:'A / B / C / D'},
+ {t:'transform',g:'Questions',icon:I.ana,name:'Key-word transform',hint:'Exam-style rewrite'},
+ {t:'cloze',g:'Questions',icon:I.fib,name:'Cloze text',hint:'Numbered gaps in a text'},
+ {t:'errorfix',g:'Questions',icon:I.search,name:'Error correction',hint:'Find and fix the mistake'},
  {t:'truefalse',g:'Questions',icon:I.tf,name:'True / False',hint:'Statements'},
  {t:'fillblank',g:'Questions',icon:I.fib,name:'Gap-fill',hint:'Blanks in a sentence'},
  {t:'oddone',g:'Questions',icon:I.odd,name:'Odd one out',hint:'Cross out the word'},
@@ -1024,6 +1138,9 @@ const BLOCK_DEFS=[
  {t:'crossword',g:'Vocabulary',icon:I.grid,name:'Crossword',hint:'Clues → auto grid'},
 
  {t:'speaking',g:'Speaking & writing',icon:I.speak,name:'Speaking',hint:'Discussion / role-play'},
+ {t:'dialogue',g:'Speaking & writing',icon:I.speak,name:'Dialogue',hint:'A / B conversation'},
+ {t:'infogap',g:'Speaking & writing',icon:I.cards,name:'Info gap',hint:'Student A / Student B'},
+ {t:'pronounce',g:'Speaking & writing',icon:I.rate,name:'Pronunciation',hint:'Word stress patterns'},
  {t:'steps',g:'Speaking & writing',icon:I.steps,name:'Lesson steps',hint:'Numbered stages'},
  {t:'lines',g:'Speaking & writing',icon:I.lines,name:'Writing lines',hint:'Ruled space'},
  {t:'handwriting',g:'Speaking & writing',icon:I.hw,name:'Handwriting',hint:'Tracing lines'},
@@ -1031,6 +1148,10 @@ const BLOCK_DEFS=[
  {t:'rating',g:'Speaking & writing',icon:I.rate,name:'Self-assessment',hint:'Stars / reflection'},
 
  {t:'table',g:'Structure',icon:I.table,name:'Table',hint:'Grid N×M'},
+ {t:'verbtable',g:'Structure',icon:I.table,name:'Verb forms',hint:'Infinitive · past · participle'},
+ {t:'timeline',g:'Structure',icon:I.steps,name:'Timeline',hint:'Visualise a tense'},
+ {t:'rubric',g:'Structure',icon:I.check,name:'Marking rubric',hint:'Criteria × levels'},
+ {t:'tipbox',g:'Structure',icon:I.instr,name:'Tip / warning',hint:'Highlighted note'},
  {t:'checklist',g:'Structure',icon:I.check,name:'Checklist',hint:'List with boxes'},
  {t:'gridpaper',g:'Structure',icon:I.grid,name:'Grid paper',hint:'Squared area'},
  {t:'image',g:'Structure',icon:I.img,name:'Image',hint:'Upload a picture'}
@@ -1149,6 +1270,28 @@ function makeBlock(type){
    case'steps':b.items=[{t:'Warm-up',d:'What we do at the start.'},{t:'Main task',d:'The core activity.'},{t:'Wrap-up',d:'Check and discuss.'}];break;
    case'rating':b.rows=['I understood the topic','I tried my best','I want to review this'];b.max=5;break;
    case'speaking':b.title='Discussion';b.icon='💬';b.prompts=['First question to discuss…','Second question…','Third question…'];break;
+   case'dialogue':b.rows=[{s:'A',t:'Hi! How was your weekend?'},{s:'B',t:'It was great, thanks. I went hiking.'},{s:'A',t:'Really? Where did you go?'},{s:'B',t:'To the mountains near my hometown.'}];break;
+   case'transform':b.rows=[{q:'I haven\'t seen her for years.',k:'ages',a:'It is ages since I last saw her.'},
+     {q:'They cancelled the meeting because of the storm.',k:'called',a:'The meeting was called off because of the storm.'},
+     {q:'Somebody has stolen my bicycle.',k:'been',a:'My bicycle has been stolen.'}];break;
+   case'cloze':b.intro='Complete the text with the words in the box.';b.words=['although','finally','however','because','instead'];
+     b.parts=[{tx:'We wanted to travel by train, but the tickets were sold out. '},{blank:'Instead'},
+     {tx:', we took the bus. It was slower, '},{blank:'however'},{tx:' it was much cheaper. '},
+     {blank:'Finally'},{tx:', we arrived just before midnight.'}];break;
+   case'errorfix':b.rows=[{q:'She don\'t like spicy food.',a:'She doesn\'t like spicy food.'},
+     {q:'I have seen him yesterday.',a:'I saw him yesterday.'},
+     {q:'He is knowing the answer.',a:'He knows the answer.'},
+     {q:'There is many people outside.',a:'There are many people outside.'}];break;
+   case'timeline':b.title='Present Perfect';b.now=62;
+     b.marks=[{p:14,l:'2019',u:'started'},{p:62,l:'now',u:'still true'}];break;
+   case'verbtable':b.cols=['Infinitive','Past Simple','Past Participle'];
+     b.rows=[['go','',''],['write','',''],['take','',''],['break','',''],['speak','','']];break;
+   case'pronounce':b.rows=[{w:'photograph',n:3,s:0},{w:'photographer',n:4,s:1},{w:'photographic',n:4,s:2},{w:'develop',n:3,s:1}];break;
+   case'infogap':b.a='You have the timetable for Monday and Tuesday. Ask your partner about Wednesday and Thursday.';
+     b.b='You have the timetable for Wednesday and Thursday. Ask your partner about Monday and Tuesday.';break;
+   case'rubric':b.levels=['1','2','3','4'];
+     b.crit=['Task achievement','Grammar range & accuracy','Vocabulary','Fluency / coherence','Pronunciation'];break;
+   case'tipbox':b.style='tip';b.icon='💡';b.title='Remember';b.text='After <b>did</b> always use the base form of the verb.';break;
    case'divider':b.style='line';b.ic='✦';break;
   }
   return b;
@@ -1241,7 +1384,15 @@ const ADDERS={
  short:{a:b=>b.lines++,r:b=>{if(b.lines>1)b.lines--;}},
  handwriting:{a:b=>b.count++,r:b=>{if(b.count>1)b.count--;}},
  table:{a:b=>{b.rowsN++;resizeTable(b,b.rowsN,b.colsN);},r:b=>{if(b.rowsN>1){b.rowsN--;resizeTable(b,b.rowsN,b.colsN);}}},
- theory:{a:b=>b.uses.push({r:'New rule',x:'Example sentence.'}),r:b=>{if(b.uses.length>1)b.uses.pop();}}
+ theory:{a:b=>b.uses.push({r:'New rule',x:'Example sentence.'}),r:b=>{if(b.uses.length>1)b.uses.pop();}},
+ dialogue:{a:b=>b.rows.push({s:b.rows.length%2?'A':'B',t:'New line…'}),r:b=>{if(b.rows.length>1)b.rows.pop();}},
+ transform:{a:b=>b.rows.push({q:'New sentence.',k:'WORD',a:'answer'}),r:b=>{if(b.rows.length>1)b.rows.pop();}},
+ errorfix:{a:b=>b.rows.push({q:'Sentence with a mistake.',a:'Corrected sentence.'}),r:b=>{if(b.rows.length>1)b.rows.pop();}},
+ cloze:{a:b=>b.parts.push({tx:' '},{blank:'answer'}),r:b=>{if(b.parts.length>1)b.parts.pop();}},
+ pronounce:{a:b=>b.rows.push({w:'word',n:2,s:0}),r:b=>{if(b.rows.length>1)b.rows.pop();}},
+ verbtable:{a:b=>b.rows.push(new Array(b.cols.length).fill('')),r:b=>{if(b.rows.length>1)b.rows.pop();}},
+ rubric:{a:b=>b.crit.push('New criterion'),r:b=>{if(b.crit.length>1)b.crit.pop();}},
+ timeline:{a:b=>b.marks.push({p:Math.min(92,(b.marks[b.marks.length-1]?.p||40)+20),l:'label',u:''}),r:b=>{if(b.marks.length>1)b.marks.pop();}}
 };
 function blockToolbar(b,pg){
   const bar=el('div','bbar');
@@ -1410,6 +1561,92 @@ function renderContent(b){
        const st=el('div','stars');for(let k=0;k<b.max;k++)st.appendChild(el('span','','☆'));rr.appendChild(st);w.appendChild(rr);});return w;}
    case'speaking':{const w=el('div','speaking');const h=el('div','sp-h');h.appendChild(el('span','spi',b.icon||'💬'));h.appendChild(ce('b','',b.title,'Title',v=>b.title=v));w.appendChild(h);
      const bd=el('div','sp-body');b.prompts.forEach((p,i)=>{const sp=el('div','sp-p');sp.appendChild(el('span','spb','›'));sp.appendChild(ce('div','',p,'Prompt…',v=>b.prompts[i]=v));bd.appendChild(sp);});w.appendChild(bd);return w;}
+   case'dialogue':{const w=el('div','dlg');
+     b.rows.forEach((r,i)=>{const d=el('div','dl'+(r.s==='B'?' b':''));
+       d.appendChild(ce('div','sp',r.s,'A',v=>b.rows[i].s=stripHtml(v)));
+       d.appendChild(ce('div','dt',r.t,'Line…',v=>b.rows[i].t=v));w.appendChild(d);});
+     return w;}
+   case'transform':{const w=el('div','trans');
+     b.rows.forEach((r,i)=>{const t=el('div','tr');t.appendChild(el('div','trn',String(i+1)));
+       const bd=el('div','trb');
+       bd.appendChild(ce('div','tq',r.q,'Original sentence',v=>b.rows[i].q=v));
+       bd.appendChild(ce('div','kw',r.k,'KEY WORD',v=>b.rows[i].k=stripHtml(v)));
+       const a=el('div','ta');a.appendChild(ce('span','gap',r.a,'answer',v=>b.rows[i].a=v));
+       bd.appendChild(a);t.appendChild(bd);w.appendChild(t);});
+     return w;}
+   case'cloze':{const w=el('div');
+     if(b.intro)w.appendChild(ce('div','qtext',b.intro,'Instruction…',v=>b.intro=v));
+     if(b.words&&b.words.length){const wb=el('div','wordbank');wb.style.margin='9px 0 12px';
+       wb.appendChild(el('div','wb-t','Word bank'));
+       const ws=el('div','wb-ws');b.words.forEach((x,i)=>ws.appendChild(ce('span','wb-w',x,'word',v=>b.words[i]=stripHtml(v))));
+       wb.appendChild(ws);w.appendChild(wb);}
+     const c=el('div','cloze');let n=0;
+     b.parts.forEach((p,i)=>{
+       if(p.blank!==undefined){n++;const g=el('span','cg');
+         g.appendChild(el('span','cn',String(n)));
+         g.appendChild(ce('span','ca',p.blank,'____',v=>b.parts[i].blank=v));c.appendChild(g);}
+       else c.appendChild(ce('span','',p.tx,'',v=>b.parts[i].tx=v));});
+     w.appendChild(c);return w;}
+   case'errorfix':{const w=el('div','errfix');
+     b.rows.forEach((r,i)=>{const e=el('div','ef');e.appendChild(el('div','efn',String(i+1)));
+       const bd=el('div','efb');
+       bd.appendChild(ce('div','eq',r.q,'Sentence with a mistake',v=>b.rows[i].q=v));
+       bd.appendChild(ce('div','el',r.a,'',v=>b.rows[i].a=v));
+       e.appendChild(bd);w.appendChild(e);});
+     return w;}
+   case'timeline':{const w=el('div','tline');
+     if(b.title)w.appendChild(ce('div','qtext',b.title,'Title',v=>b.title=v));
+     const bar=el('div','tl-bar');
+     const now=el('div','tl-now','NOW');now.style.left=(b.now||60)+'%';bar.appendChild(now);
+     b.marks.forEach((m,i)=>{const tk=el('div','tk');tk.style.left=m.p+'%';
+       if(m.u){const up=ce('div','lb up',m.u,'',v=>b.marks[i].u=stripHtml(v));tk.appendChild(up);}
+       tk.appendChild(el('div','dot'));
+       tk.appendChild(ce('div','lb',m.l,'label',v=>b.marks[i].l=stripHtml(v)));
+       bar.appendChild(tk);});
+     w.appendChild(bar);return w;}
+   case'verbtable':{const t=el('table','vtab');
+     const hr=el('tr');b.cols.forEach((c,i)=>{const th=el('th');th.contentEditable='true';th.spellcheck=false;th.textContent=c;
+       th.addEventListener('input',()=>b.cols[i]=th.textContent);th.addEventListener('blur',scheduleSnapshot);hr.appendChild(th);});
+     t.appendChild(hr);
+     b.rows.forEach((row,r)=>{const tr=el('tr');
+       for(let c=0;c<b.cols.length;c++){const td=el('td',c===0?'given':'');
+         td.contentEditable='true';td.spellcheck=false;td.innerHTML=(row[c]||'');
+         td.addEventListener('input',()=>{b.rows[r][c]=td.innerHTML;});
+         td.addEventListener('blur',scheduleSnapshot);tr.appendChild(td);}
+       t.appendChild(tr);});
+     return t;}
+   case'pronounce':{const w=el('div','pron');
+     b.rows.forEach((r,i)=>{const p=el('div','pr');
+       p.appendChild(ce('div','pw',r.w,'word',v=>b.rows[i].w=stripHtml(v)));
+       const st=el('div','pstress');
+       for(let k=0;k<(r.n||3);k++){const dot=el('i',k===r.s?'on':'');dot.style.cursor='pointer';
+         dot.onclick=e=>{e.stopPropagation();b.rows[i].s=k;renderAll();};st.appendChild(dot);}
+       p.appendChild(st);p.appendChild(el('div','pline'));w.appendChild(p);});
+     return w;}
+   case'infogap':{const w=el('div','infogap');
+     const A=el('div','ig');A.appendChild(el('div','igh','Student A'));
+     A.appendChild(ce('div','igc',b.a,'What student A knows…',v=>b.a=v));
+     const cut=el('div','cut');cut.appendChild(el('div','cl'));cut.appendChild(el('span','','✂ cut here'));cut.appendChild(el('div','cl'));
+     const B2=el('div','ig');B2.appendChild(el('div','igh','Student B'));
+     B2.appendChild(ce('div','igc',b.b,'What student B knows…',v=>b.b=v));
+     w.appendChild(A);w.appendChild(cut);w.appendChild(B2);return w;}
+   case'rubric':{const t=el('table','rub');
+     const hr=el('tr');const th0=el('th');th0.textContent='Criteria';hr.appendChild(th0);
+     b.levels.forEach((l,i)=>{const th=el('th');th.contentEditable='true';th.spellcheck=false;th.textContent=l;
+       th.addEventListener('input',()=>b.levels[i]=th.textContent);th.addEventListener('blur',scheduleSnapshot);hr.appendChild(th);});
+     t.appendChild(hr);
+     b.crit.forEach((c,i)=>{const tr=el('tr');const td=el('td','crit');
+       td.contentEditable='true';td.spellcheck=false;td.innerHTML=c;
+       td.addEventListener('input',()=>b.crit[i]=td.innerHTML);td.addEventListener('blur',scheduleSnapshot);tr.appendChild(td);
+       b.levels.forEach(()=>{const b2=el('td','box');b2.appendChild(el('i'));tr.appendChild(b2);});
+       t.appendChild(tr);});
+     return t;}
+   case'tipbox':{const w=el('div','tipbox'+(b.style==='warn'?' warn':b.style==='ok'?' ok':''));
+     w.appendChild(ce('div','ti',b.icon,'💡',v=>b.icon=stripHtml(v)));
+     const bd=el('div','tb');
+     bd.appendChild(ce('b','',b.title,'Title',v=>b.title=v));
+     bd.appendChild(ce('span','',b.text,'Text…',v=>b.text=v));
+     w.appendChild(bd);return w;}
    case'divider':{if(b.style==='scissors')return el('div','divider scissors','cut here');const d=el('div','divider'+(b.style==='dots'?' dots':''));
      d.appendChild(el('div','ln'));if(b.style!=='dots')d.appendChild(el('div','ic',b.ic||'✦'));d.appendChild(el('div','ln'));return d;}
   }
@@ -1613,6 +1850,67 @@ function refreshInspector(){
     if(b.style==='line'){const w=el('div','field');w.innerHTML='<label>Centre symbol</label>';const s=el('div','seg');['✦','★','❀','♦','✿','➜','—','♥'].forEach(ic=>{const x=el('button',b.ic===ic?'on':'',ic);x.onclick=()=>{b.ic=ic;renderAll();};s.appendChild(x);});w.appendChild(s);box.appendChild(w);}}
   else if(b.type==='text'){box.appendChild(seg('Size',[{l:'Normal',v:false},{l:'Large',v:true}],b.lead,v=>b.lead=v));box.appendChild(seg('Reading box',[{l:'Off',v:false},{l:'On',v:true}],b.reading,v=>b.reading=v));}
   else if(b.type==='namebar'){const{w,ta}=list('Fields (one per line)',b.fields);ta.addEventListener('input',()=>{b.fields=ta.value.split('\n').filter(Boolean);renderAll();});box.appendChild(w);}
+  else if(b.type==='dialogue'){
+    const w=el('div','field');w.innerHTML='<label>Lines — "A | text", one per line</label>';const ta=el('textarea');ta.rows=6;
+    ta.value=b.rows.map(r=>r.s+' | '+stripHtml(r.t)).join('\n');
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(Boolean).map(l=>{const i=l.indexOf('|');
+      return i<0?{s:'A',t:l.trim()}:{s:l.slice(0,i).trim(),t:l.slice(i+1).trim()};});renderAll();});
+    w.appendChild(ta);box.appendChild(w);}
+  else if(b.type==='transform'){
+    const w=el('div','field');w.innerHTML='<label>Items — "sentence | KEY WORD | answer", one per line</label>';const ta=el('textarea');ta.rows=6;
+    ta.value=b.rows.map(r=>stripHtml(r.q)+' | '+r.k+' | '+stripHtml(r.a)).join('\n');
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(Boolean).map(l=>{const p=l.split('|');
+      return{q:(p[0]||'').trim(),k:(p[1]||'').trim(),a:(p[2]||'').trim()};});renderAll();});
+    w.appendChild(ta);box.appendChild(w);
+    box.appendChild(el('div','hint','Classic exam task: rewrite the sentence using the key word without changing the meaning.'));}
+  else if(b.type==='errorfix'){
+    const w=el('div','field');w.innerHTML='<label>Items — "wrong sentence | correction", one per line</label>';const ta=el('textarea');ta.rows=6;
+    ta.value=b.rows.map(r=>stripHtml(r.q)+' | '+stripHtml(r.a)).join('\n');
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(Boolean).map(l=>{const i=l.indexOf('|');
+      return i<0?{q:l.trim(),a:''}:{q:l.slice(0,i).trim(),a:l.slice(i+1).trim()};});renderAll();});
+    w.appendChild(ta);box.appendChild(w);}
+  else if(b.type==='cloze'){
+    const w=el('div','field');w.innerHTML='<label>Text — words in [brackets] become numbered gaps</label>';const ta=el('textarea');ta.rows=6;
+    ta.value=b.parts.map(p=>p.blank!==undefined?('['+stripHtml(p.blank)+']'):p.tx).join('');
+    ta.addEventListener('input',()=>{b.parts=parseFib(ta.value);renderAll();});
+    w.appendChild(ta);box.appendChild(w);
+    const{w:w2,ta:t2}=list('Word bank (one per line, leave empty for none)',b.words||[]);
+    t2.addEventListener('input',()=>{b.words=t2.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w2);}
+  else if(b.type==='pronounce'){
+    const w=el('div','field');w.innerHTML='<label>Words — "word | syllables", one per line</label>';const ta=el('textarea');ta.rows=6;
+    ta.value=b.rows.map(r=>r.w+' | '+r.n).join('\n');
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(Boolean).map((l,i)=>{const p=l.split('|');
+      return{w:(p[0]||'').trim(),n:parseInt(p[1])||2,s:(b.rows[i]&&b.rows[i].s)||0};});renderAll();});
+    w.appendChild(ta);box.appendChild(w);
+    box.appendChild(el('div','hint','Click a circle on the page to mark the stressed syllable. It is hidden from students unless Answers is on.'));}
+  else if(b.type==='verbtable'){
+    const{w:wc,ta:tc}=list('Column headings',b.cols);
+    tc.addEventListener('input',()=>{b.cols=tc.value.split('\n').filter(Boolean);
+      b.rows.forEach(r=>{while(r.length<b.cols.length)r.push('');});renderAll();});box.appendChild(wc);
+    const w=el('div','field');w.innerHTML='<label>Rows — cells separated by |</label>';const ta=el('textarea');ta.rows=6;
+    ta.value=b.rows.map(r=>r.map(c=>stripHtml(c)).join(' | ')).join('\n');
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(Boolean).map(l=>{
+      const cells=l.split('|').map(c=>c.trim());while(cells.length<b.cols.length)cells.push('');return cells;});renderAll();});
+    w.appendChild(ta);box.appendChild(w);}
+  else if(b.type==='rubric'){
+    const{w:wl,ta:tl}=list('Level headings',b.levels);
+    tl.addEventListener('input',()=>{b.levels=tl.value.split('\n').filter(Boolean);renderAll();});box.appendChild(wl);
+    const{w:wc,ta:tc}=list('Criteria (one per line)',b.crit);
+    tc.addEventListener('input',()=>{b.crit=tc.value.split('\n').filter(Boolean);renderAll();});box.appendChild(wc);}
+  else if(b.type==='timeline'){
+    const w=el('div','field');w.innerHTML='<label>Marks — "position% | label | note above"</label>';const ta=el('textarea');ta.rows=5;
+    ta.value=b.marks.map(m=>m.p+' | '+m.l+' | '+(m.u||'')).join('\n');
+    ta.addEventListener('input',()=>{b.marks=ta.value.split('\n').filter(Boolean).map(l=>{const p=l.split('|');
+      return{p:Math.max(2,Math.min(96,parseInt(p[0])||10)),l:(p[1]||'').trim(),u:(p[2]||'').trim()};});renderAll();});
+    w.appendChild(ta);box.appendChild(w);
+    box.appendChild(num('“NOW” position, %',b.now,2,96,v=>b.now=v));}
+  else if(b.type==='infogap'){
+    box.appendChild(el('div','hint','Edit both halves on the page, then print and cut along the dashed line so each student sees only their own part.'));}
+  else if(b.type==='tipbox'){
+    box.appendChild(seg('Style',[{l:'Tip',v:'tip'},{l:'Warning',v:'warn'},{l:'Good',v:'ok'}],b.style,v=>b.style=v));
+    const w=el('div','field');w.innerHTML='<label>Icon</label>';const s=el('div','seg');
+    ['💡','⚠️','✅','📌','🔑','❗'].forEach(ic=>{const x=el('button',b.icon===ic?'on':'',ic);x.onclick=()=>{b.icon=ic;renderAll();};s.appendChild(x);});
+    w.appendChild(s);box.appendChild(w);}
   else if(b.type==='theory'){
     const wi=el('div','field');wi.innerHTML='<label>Icon</label>';const si=el('div','seg');
     ['📘','📗','⏱️','🔮','🔁','💬','❓','⚡'].forEach(ic=>{const x=el('button',b.icon===ic?'on':'',ic);x.onclick=()=>{b.icon=ic;renderAll();};si.appendChild(x);});
@@ -4792,15 +5090,256 @@ const GRAMMAR_C1=[
 ]}
 ];
 
+/* =====================================================================
+   IDIOMS & ACADEMIC VOCABULARY — original material (English with Tad)
+   ===================================================================== */
+function VOC(o){return Object.assign(makeBlock('vocablist'),o,{id:uid()});}
+const GRAMMAR_IDIOM=[
+{id:'id-feelings',name:'Idioms: feelings & moods',
+ theory:T({icon:'😊',title:'Talking about how people feel',
+  form:[{s:'happy',x:'<em>over the moon</em> · <em>on cloud nine</em> · <em>on top of the world</em>'},{s:'sad',x:'<em>down in the dumps</em> · <em>feeling blue</em> · <em>at a low ebb</em>'},{s:'angry',x:'<em>see red</em> · <em>hit the roof</em> · <em>fly off the handle</em>'}],
+  uses:[{r:'Idioms are fixed — changing one word breaks them',x:'over the moon ✓ / <s>above the moon</s> ✗'},{r:'Most are informal — perfect for speaking, rare in academic writing',x:'She was over the moon about the news.'},{r:'Many need a specific verb',x:'be over the moon · hit the roof · feel blue'}],
+  words:['over the moon','down in the dumps','hit the roof','see red','on edge','shaken up'],
+  note:'<b>Register warning:</b> these belong in conversation and informal writing. In an essay use <i>delighted</i>, <i>despondent</i>, <i>furious</i> instead.'}),
+ ex:[
+  {n:'Match idiom and meaning',b:()=>[TASK('Match the idioms','Match each idiom with its meaning.'),
+    B('match',{left:['over the moon','down in the dumps','hit the roof','on edge','see red','a bundle of nerves'],
+      right:['extremely nervous','suddenly very angry','delighted','anxious and tense','miserable','become furious']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word to complete each idiom.'),
+    ...FIBS('1  She was over the [moon] when she got the job.',
+    '2  He hit the [roof] when he saw the damage.',
+    '3  I\'ve been down in the [dumps] since the holidays ended.',
+    '4  Waiting for results always puts me on [edge].',
+    '5  His rudeness made me see [red].',
+    '6  Before the interview she was a bundle of [nerves].',
+    '7  Don\'t fly off the [handle] — let\'s talk calmly.',
+    '8  After the accident he was badly shaken [up].')]},
+  {n:'Formal or informal?',b:()=>[TASK('Choose the right register','Circle the option that suits the context.'),
+    CIRCLE('1  (essay) The participants were ( over the moon / delighted ) with the outcome.','2  (chat) I was ( despondent / down in the dumps ) all week.','3  (report) The manager was ( furious / hit the roof ).','4  (message) Mum will ( hit the roof / express disapproval ) when she finds out.')]},
+  {n:'Rewrite with an idiom',b:()=>[TASK('Make it idiomatic','Rewrite each sentence using an idiom from this page.'),
+    WRITE(1)('She was extremely happy about the news.','He became furious when he heard.','I have been feeling miserable lately.','Everyone was very nervous before the exam.','My father lost his temper suddenly.')]},
+  {n:'Talk about a week',b:()=>[TASK('Your week in idioms','Describe a recent week using at least five idioms of feeling.'),B('lines',{count:7})]}
+]},
+{id:'id-work',name:'Idioms: work & success',
+ theory:T({icon:'💼',title:'Work, effort and results',
+  form:[{s:'effort',x:'<em>pull your weight</em> · <em>go the extra mile</em> · <em>burn the midnight oil</em>'},{s:'success',x:'<em>get off the ground</em> · <em>pay off</em> · <em>go from strength to strength</em>'},{s:'failure',x:'<em>fall through</em> · <em>go pear-shaped</em> · <em>back to the drawing board</em>'}],
+  uses:[{r:'Describing how hard someone works',x:'Everyone must pull their weight on this project.'},{r:'Describing progress or collapse',x:'The deal fell through at the last minute.'},{r:'Common in business English and interviews',x:'Our investment finally paid off.'}],
+  words:['pull your weight','go the extra mile','pay off','fall through','get off the ground','red tape'],
+  note:'<b>Useful in interviews:</b> <i>go the extra mile</i>, <i>think outside the box</i> and <i>hit the ground running</i> are safe, positive idioms.'}),
+ ex:[
+  {n:'Match idiom and meaning',b:()=>[TASK('Match the idioms','Match each idiom with its meaning.'),
+    B('match',{left:['pull your weight','burn the midnight oil','fall through','get off the ground','red tape','hit the ground running'],
+      right:['start successfully','fail to happen','do your fair share','excessive bureaucracy','work very late','start energetically']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  The project never got off the [ground] because of funding.',
+    '2  All that studying finally paid [off].',
+    '3  She always goes the extra [mile] for her students.',
+    '4  The sale fell [through] at the last moment.',
+    '5  We had to go back to the drawing [board].',
+    '6  There is far too much red [tape] in this process.',
+    '7  He was burning the midnight [oil] to meet the deadline.',
+    '8  The new manager hit the ground [running].')]},
+  {n:'Choose the idiom',b:()=>[TASK('Choose the correct idiom','Circle the idiom that fits.'),
+    CIRCLE('1  Our plans ( fell through / paid off ) when the venue cancelled.','2  Years of practice finally ( fell through / paid off ).','3  Some team members aren\'t ( pulling their weight / going pear-shaped ).','4  The company has gone from ( strength to strength / pillar to post ).','5  The whole plan went ( pear-shaped / the extra mile ) on day one.')]},
+  {n:'Job interview answers',b:()=>[TASK('Answer with an idiom','Answer each interview question in two sentences, using an idiom.'),
+    WRITE(2)('Tell me about a time you worked very hard.','Describe a project that did not go to plan.','How do you handle a slow, bureaucratic process?')]},
+  {n:'Describe your work',b:()=>[TASK('Write about your work or studies','Write six sentences about your work or studies using work idioms.'),B('lines',{count:6})]}
+]},
+{id:'id-communication',name:'Idioms: talking & relationships',
+ theory:T({icon:'🗣️',title:'How people talk to each other',
+  form:[{s:'talk',x:'<em>beat about the bush</em> · <em>get to the point</em> · <em>talk shop</em>'},{s:'agree',x:'<em>see eye to eye</em> · <em>on the same page</em> · <em>meet halfway</em>'},{s:'conflict',x:'<em>rub someone up the wrong way</em> · <em>clear the air</em> · <em>bury the hatchet</em>'}],
+  uses:[{r:'Describing a style of speaking',x:'Stop beating about the bush and tell me.'},{r:'Describing agreement or conflict',x:'We don\'t see eye to eye on this.'},{r:'Repairing a relationship',x:'They finally buried the hatchet.'}],
+  words:['beat about the bush','see eye to eye','clear the air','get on like a house on fire','break the ice'],
+  note:'<b>British vs American:</b> <i>beat about the bush</i> (UK) = <i>beat around the bush</i> (US). Both are correct in their variety.'}),
+ ex:[
+  {n:'Match idiom and meaning',b:()=>[TASK('Match the idioms','Match each idiom with its meaning.'),
+    B('match',{left:['beat about the bush','see eye to eye','break the ice','clear the air','get on like a house on fire','bury the hatchet'],
+      right:['make peace after a quarrel','avoid the main point','agree completely','become friends very quickly','start a conversation comfortably','discuss a problem openly']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  Stop beating about the [bush] and tell me what happened.',
+    '2  My sister and I have never seen eye to [eye] about politics.',
+    '3  A silly game helped break the [ice] at the start.',
+    '4  We need to sit down and clear the [air].',
+    '5  They met last week and got on like a house on [fire].',
+    '6  After ten years they finally buried the [hatchet].',
+    '7  He always gets straight to the [point].',
+    '8  She rubbed everyone up the wrong [way] on her first day.')]},
+  {n:'Which idiom fits?',b:()=>[TASK('Choose the idiom','Circle the idiom that suits the situation.'),
+    CIRCLE('1  Two colleagues finally apologise: they ( bury the hatchet / talk shop ).','2  A speaker avoids the real issue: they ( beat about the bush / meet halfway ).','3  Strangers become instant friends: they ( get on like a house on fire / see red ).','4  A team agrees on a plan: they are ( on the same page / at odds ).')]},
+  {n:'Rewrite with an idiom',b:()=>[TASK('Make it idiomatic','Rewrite each sentence using an idiom.'),
+    WRITE(1)('Please say directly what you mean.','My brother and I never agree about music.','They became friends immediately.','We should discuss the problem honestly and openly.','Both sides made a compromise.')]},
+  {n:'Describe a relationship',b:()=>[TASK('Write about people you know','Write six sentences about friends, family or colleagues using communication idioms.'),B('lines',{count:6})]}
+]},
+{id:'id-time-money',name:'Idioms: time & money',
+ theory:T({icon:'⏰',title:'Time, money and value',
+  form:[{s:'time',x:'<em>in the nick of time</em> · <em>against the clock</em> · <em>call it a day</em>'},{s:'money',x:'<em>cost an arm and a leg</em> · <em>a rip-off</em> · <em>tighten your belt</em>'},{s:'value',x:'<em>a bargain</em> · <em>worth every penny</em> · <em>make ends meet</em>'}],
+  uses:[{r:'Talking about deadlines and rushing',x:'We finished the report against the clock.'},{r:'Talking about cost',x:'That jacket cost an arm and a leg.'},{r:'Talking about managing on little money',x:'They struggle to make ends meet.'}],
+  words:['in the nick of time','against the clock','cost a fortune','a rip-off','make ends meet','save for a rainy day'],
+  note:'<b>Careful with articles:</b> <i>a rip-off</i>, <i>a bargain</i>, but <i>cost an arm and a leg</i> takes no article on “cost”.'}),
+ ex:[
+  {n:'Match idiom and meaning',b:()=>[TASK('Match the idioms','Match each idiom with its meaning.'),
+    B('match',{left:['in the nick of time','cost an arm and a leg','make ends meet','call it a day','a rip-off','save for a rainy day'],
+      right:['put money aside for the future','stop working for today','just in time','be very expensive','far too expensive for what it is','have just enough money to live']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  We arrived just in the [nick] of time.',
+    '2  That repair cost an arm and a [leg].',
+    '3  Since prices rose we\'ve had to tighten our [belt].',
+    '4  Twenty euros for a coffee is a complete [rip-off].',
+    '5  It\'s late — let\'s call it a [day].',
+    '6  They can barely make ends [meet].',
+    '7  The team was working against the [clock].',
+    '8  It was expensive but worth every [penny].')]},
+  {n:'Time or money?',b:()=>[TASK('Sort the idioms','Write each idiom in the correct column.'),
+    B('wordbank',{title:'Idioms',words:['against the clock','a rip-off','in the nick of time','tighten your belt','call it a day','worth every penny']}),
+    B('sortcols',{cols:[{title:'About time'},{title:'About money'}]})]},
+  {n:'Rewrite with an idiom',b:()=>[TASK('Make it idiomatic','Rewrite each sentence using an idiom.'),
+    WRITE(1)('The tickets were extremely expensive.','We arrived at the very last moment.','They have only just enough money to survive.','Let\'s stop working now.','The price was far too high for the quality.')]},
+  {n:'Your spending habits',b:()=>[TASK('Write about money','Write six sentences about how you handle time and money, using idioms.'),B('lines',{count:6})]}
+]},
+{id:'id-body',name:'Idioms with body parts',
+ theory:T({icon:'✋',title:'Head, hand, eye and heart',
+  form:[{s:'head',x:'<em>keep your head</em> · <em>off the top of my head</em> · <em>head over heels</em>'},{s:'hand',x:'<em>give someone a hand</em> · <em>out of hand</em> · <em>have your hands full</em>'},{s:'heart/eye',x:'<em>learn by heart</em> · <em>keep an eye on</em> · <em>turn a blind eye</em>'}],
+  uses:[{r:'Very frequent in everyday speech',x:'Could you give me a hand with this?'},{r:'Often the only natural way to say it',x:'I know it by heart.'},{r:'Some have a fixed preposition',x:'keep an eye on · turn a blind eye to'}],
+  words:['give a hand','by heart','keep an eye on','off the top of my head','head over heels','pull someone\'s leg'],
+  note:'<b>Watch the preposition:</b> <i>keep an eye <b>on</b> the children</i>, <i>turn a blind eye <b>to</b> the problem</i>.'}),
+ ex:[
+  {n:'Match idiom and meaning',b:()=>[TASK('Match the idioms','Match each idiom with its meaning.'),
+    B('match',{left:['give someone a hand','learn by heart','keep an eye on','turn a blind eye','pull someone\'s leg','have your hands full'],
+      right:['deliberately ignore','memorise','joke with someone','be very busy','help','watch carefully']})]},
+  {n:'Complete with a body part',b:()=>[TASK('Complete the sentences','Write head, hand, eye, heart, leg or foot.'),
+    ...FIBS('1  Could you give me a [hand] with these boxes?',
+    '2  She learnt the whole poem by [heart].',
+    '3  Please keep an [eye] on my bag.',
+    '4  I can\'t remember the figure off the top of my [head].',
+    '5  Are you serious, or are you pulling my [leg]?',
+    '6  The manager turned a blind [eye] to the problem.',
+    '7  With three small children she has her [hands] full.',
+    '8  He fell [head] over heels in love.')]},
+  {n:'Choose the idiom',b:()=>[TASK('Choose the correct idiom','Circle the idiom that fits.'),
+    CIRCLE('1  The situation is getting ( out of hand / by heart ).','2  I ( know it by heart / keep an eye on it ) — I don\'t need the notes.','3  She ( put her foot in it / gave a hand ) by mentioning his ex-wife.','4  Please ( keep an eye on / turn a blind eye to ) the soup while I answer the door.')]},
+  {n:'Rewrite with an idiom',b:()=>[TASK('Make it idiomatic','Rewrite each sentence using a body-part idiom.'),
+    WRITE(1)('Can you help me for a minute?','I memorised all the vocabulary.','Please watch my luggage.','The teacher ignored the cheating deliberately.','He said something very embarrassing by mistake.')]},
+  {n:'A day in idioms',b:()=>[TASK('Tell your day','Describe a busy day using at least six body-part idioms.'),B('lines',{count:7})]}
+]}
+];
+const GRAMMAR_ACADEMIC=[
+{id:'ac-verbs',name:'Academic verbs',
+ theory:T({icon:'🎓',title:'Verbs that carry an argument',
+  form:[{s:'claim',x:'<em>argue</em> · <em>suggest</em> · <em>propose</em> · <em>maintain</em> · <em>assert</em>'},{s:'evidence',x:'<em>demonstrate</em> · <em>indicate</em> · <em>reveal</em> · <em>confirm</em> · <em>illustrate</em>'},{s:'analysis',x:'<em>examine</em> · <em>investigate</em> · <em>assess</em> · <em>evaluate</em> · <em>compare</em>'}],
+  uses:[{r:'Reporting what a source says',x:'Smith (2020) argues that the data are unreliable.'},{r:'Describing what evidence shows',x:'The results indicate a strong correlation.'},{r:'Describing what your paper does',x:'This study examines the effect of sleep on memory.'},{r:'Strength matters — choose carefully',x:'suggest (weak) → indicate → demonstrate → prove (strongest)'}],
+  words:['argue','suggest','indicate','demonstrate','examine','assess','establish','highlight'],
+  note:'<b>Avoid weak verbs:</b> replace <i>says</i>, <i>shows</i>, <i>talks about</i> with <i>argues</i>, <i>demonstrates</i>, <i>examines</i>.'}),
+ ex:[
+  {n:'How strong is the claim?',b:()=>[TASK('Order by strength','Put the verbs in order from the weakest claim to the strongest.'),
+    B('anagram',{line:true,rows:[{c:'prove / suggest / indicate / demonstrate',a:'suggest → indicate → demonstrate → prove'},{c:'confirm / imply / hint at / establish',a:'hint at → imply → confirm → establish'}]})]},
+  {n:'Upgrade the verb',b:()=>[TASK('Make it academic','Replace the underlined verb with a more academic one.'),
+    WRITE(1)('The author <u>says</u> that the method is flawed.','The graph <u>shows</u> a sharp increase.','This essay <u>talks about</u> three main causes.','The study <u>looks at</u> teenage sleep patterns.','The findings <u>go against</u> earlier research.','The results <u>back up</u> the hypothesis.')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write argue, indicate, examine, assess, reveal or highlight.'),
+    ...FIBS('1  This paper will [examine] the causes of urban migration.',
+    '2  The data [indicate] a gradual decline since 2015.',
+    '3  Several researchers [argue] that the model is outdated.',
+    '4  The survey [revealed] an unexpected pattern.',
+    '5  The report [highlights] three areas of concern.',
+    '6  It is difficult to [assess] the long-term impact.')]},
+  {n:'Write an abstract',b:()=>[TASK('Write about your research','Write six sentences describing a study (real or imagined) using academic verbs.'),B('lines',{count:7})]}
+]},
+{id:'ac-nouns',name:'Academic nouns & noun phrases',
+ theory:T({icon:'📚',title:'The language of ideas',
+  form:[{s:'concepts',x:'<em>approach</em> · <em>factor</em> · <em>issue</em> · <em>framework</em> · <em>criterion</em>'},{s:'process',x:'<em>analysis</em> · <em>assessment</em> · <em>development</em> · <em>implementation</em>'},{s:'plurals',x:'analys<em>is</em>→analys<em>es</em> · criteri<em>on</em>→criteri<em>a</em> · phenomen<em>on</em>→phenomen<em>a</em>'}],
+  uses:[{r:'Nominalisation makes writing denser and more formal',x:'They analysed the data → Their analysis of the data…'},{r:'Common academic nouns to know well',x:'evidence, approach, factor, extent, tendency, implication'},{r:'Irregular plurals are frequently tested',x:'criteria, phenomena, hypotheses, data'}],
+  words:['approach','factor','criterion','analysis','implication','extent','tendency','framework'],
+  note:'<b>Singular or plural?</b> <i>criteria</i>, <i>phenomena</i> and <i>data</i> are plural forms — <i>These criteria <b>are</b>…</i>, <i>one criterion</i>.'}),
+ ex:[
+  {n:'Singular and plural',b:()=>[TASK('Write the other form','Write the singular or plural of each noun.'),
+    B('anagram',{line:true,rows:[{c:'analysis',a:'analyses'},{c:'criteria',a:'criterion'},{c:'phenomenon',a:'phenomena'},{c:'hypothesis',a:'hypotheses'},{c:'thesis',a:'theses'},{c:'index',a:'indices'}]})]},
+  {n:'Nominalise the sentence',b:()=>[TASK('Turn the verb into a noun','Rewrite each sentence using a noun instead of the verb.'),
+    WRITE(1)('They analysed the results carefully.  → Their careful …','The company implemented the policy in 2020.  → The …','Researchers assessed the risk.  → The …','Scientists discovered a new species.  → The …','The government decided to reduce taxes.  → The …')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write approach, factor, extent, implications, criteria or tendency.'),
+    ...FIBS('1  Cost is the most important [factor] in this decision.',
+    '2  The study adopts a qualitative [approach].',
+    '3  To what [extent] do you agree with this view?',
+    '4  Candidates must meet all three [criteria].',
+    '5  There is a growing [tendency] to work from home.',
+    '6  The findings have serious [implications] for policy.')]},
+  {n:'Rewrite formally',b:()=>[TASK('Make it academic','Rewrite each informal sentence in academic style.'),
+    WRITE(1)('Lots of people think this is a big problem.','The results were really surprising.','We looked at what happened next.','A lot of things affect the outcome.')]}
+]},
+{id:'ac-describing',name:'Describing trends & data',
+ theory:T({icon:'📈',title:'Reporting numbers',
+  form:[{s:'rise',x:'<em>increase</em> · <em>rise</em> · <em>grow</em> · <em>surge</em> · <em>peak at</em>'},{s:'fall',x:'<em>decrease</em> · <em>decline</em> · <em>drop</em> · <em>plummet</em> · <em>bottom out</em>'},{s:'degree',x:'a <em>slight</em> rise · a <em>sharp</em> fall · <em>remain stable</em> · <em>fluctuate</em>'}],
+  uses:[{r:'Verb + adverb, or adjective + noun',x:'rose sharply = a sharp rise'},{r:'Prepositions matter',x:'rise from 10 to 25 · rise by 15 · a rise of 15%'},{r:'Approximating',x:'roughly, approximately, just under, well over'},{r:'Comparing',x:'twice as many, a threefold increase, the highest figure'}],
+  words:['increase by','decline from … to','peak at','level off','fluctuate','account for','roughly'],
+  note:'<b>from / to / by:</b> <i>rose <b>from</b> 20 <b>to</b> 30</i> (the two values) but <i>rose <b>by</b> 10</i> (the difference).'}),
+ ex:[
+  {n:'Choose the preposition',b:()=>[TASK('Complete the sentences','Write from, to, by, of, at or in.'),
+    ...FIBS('1  Sales rose [from] 200 [to] 350 units.',
+    '2  Prices increased [by] 12% last year.',
+    '3  There was a sharp rise [in] unemployment.',
+    '4  Numbers peaked [at] just over 5,000.',
+    '5  The figure fell [by] a third.',
+    '6  We saw an increase [of] almost 20%.')]},
+  {n:'Verb or noun phrase?',b:()=>[TASK('Rewrite the sentences','Rewrite each sentence using the other structure.'),
+    WRITE(1)('Sales rose sharply in June.  → There was …','There was a gradual decline in attendance.  → Attendance …','Prices fell dramatically.  → There was …','There was a slight increase in demand.  → Demand …')]},
+  {n:'Match the movement',b:()=>[TASK('Match the verbs','Match each verb with the movement it describes.'),
+    B('match',{left:['plummet','level off','fluctuate','peak','stagnate','surge'],
+      right:['rise suddenly and steeply','go up and down irregularly','fall very sharply','stop changing and stay flat','reach the highest point','show no growth at all']})]},
+  {n:'Describe a chart',b:()=>[TASK('Describe the data','Look at the chart and write six sentences describing the trend.'),B('image'),B('lines',{count:6})]},
+  {n:'Your country\'s data',b:()=>[TASK('Report a trend','Write six sentences about a real trend in your country (prices, population, technology) using trend language.'),B('lines',{count:6})]}
+]},
+{id:'ac-linking',name:'Academic linking & signposting',
+ theory:T({icon:'🔗',title:'Guiding the reader',
+  form:[{s:'add',x:'<em>furthermore</em> · <em>moreover</em> · <em>in addition</em> · <em>what is more</em>'},{s:'contrast',x:'<em>nevertheless</em> · <em>conversely</em> · <em>by contrast</em> · <em>whereas</em>'},{s:'signpost',x:'<em>This essay will…</em> · <em>Firstly…</em> · <em>To conclude…</em>'}],
+  uses:[{r:'Signposting tells the reader where you are going',x:'This paper first outlines… and then evaluates…'},{r:'Concession before rebuttal',x:'Admittedly, the sample was small; nevertheless, the pattern is clear.'},{r:'Referring back',x:'the former / the latter / such measures / this approach'},{r:'Hedging with linkers',x:'It could therefore be argued that…'}],
+  words:['furthermore','nevertheless','conversely','admittedly','consequently','notably','in this respect'],
+  note:'<b>Don\'t overload:</b> one linker per idea. A paragraph stuffed with <i>moreover</i> and <i>furthermore</i> reads worse, not better.'}),
+ ex:[
+  {n:'Sort the linkers',b:()=>[TASK('Sort the linkers','Write each linker in the correct column.'),
+    B('wordbank',{title:'Linkers',words:['furthermore','nevertheless','consequently','conversely','moreover','therefore','admittedly','by contrast']}),
+    B('sortcols',{cols:[{title:'Adding'},{title:'Contrasting'},{title:'Concluding'}]})]},
+  {n:'Complete the paragraph',b:()=>[TASK('Complete the text','Write a suitable academic linker in each gap.'),
+    ...FIBS('1  The method is inexpensive. [Furthermore], it requires no special training.',
+    '2  [Admittedly], the sample was small; nevertheless, the results are suggestive.',
+    '3  Costs rose steadily. [Consequently], the project was abandoned.',
+    '4  Urban rates fell. [By contrast], rural rates continued to rise.',
+    '5  Two options were considered; the [latter] proved more effective.')]},
+  {n:'Signpost the essay',b:()=>[TASK('Write the signposts','Write one sentence for each stage of an essay on a topic you choose.'),
+    WRITE(1)('Introduce the topic and your aim:','Introduce your first argument:','Introduce a counter-argument:','Concede a limitation:','Conclude:')]},
+  {n:'Improve the paragraph',b:()=>[TASK('Rewrite the paragraph','Rewrite this weak paragraph with proper academic linking.'),
+    B('text',{reading:true,html:'Online learning is cheap. It is flexible. Some students feel isolated. Motivation drops. Universities should use both online and face-to-face teaching.'}),
+    B('lines',{count:7})]}
+]},
+{id:'ac-hedging-cert',name:'Academic caution & certainty',
+ theory:T({icon:'🪶',title:'Saying how sure you are',
+  form:[{s:'strong',x:'<em>clearly</em> · <em>undoubtedly</em> · <em>the evidence establishes</em>'},{s:'medium',x:'<em>probably</em> · <em>it is likely that</em> · <em>the data suggest</em>'},{s:'weak',x:'<em>possibly</em> · <em>it may be that</em> · <em>there is some evidence that</em>'}],
+  uses:[{r:'Match the strength of your claim to your evidence',x:'The data suggest (not prove) a link.'},{r:'Limiting the scope of a claim',x:'in most cases · to some extent · under certain conditions'},{r:'Attributing rather than asserting',x:'It has been argued that…'},{r:'Avoiding absolutes',x:'Replace always/never with tends to / rarely.'}],
+  words:['appear to','tend to','arguably','to some extent','in general','it is widely accepted'],
+  note:'<b>Golden rule of academic style:</b> never claim more than your evidence supports. Overstatement is the most common weakness in student writing.'}),
+ ex:[
+  {n:'How certain?',b:()=>[TASK('Order by certainty','Put each set in order from least to most certain.'),
+    B('anagram',{line:true,rows:[{c:'certainly / possibly / probably',a:'possibly → probably → certainly'},{c:'proves / suggests / indicates',a:'suggests → indicates → proves'},{c:'always / often / sometimes',a:'sometimes → often → always'}]})]},
+  {n:'Soften the claims',b:()=>[TASK('Make it cautious','Rewrite each overstated sentence in cautious academic style.'),
+    WRITE(1)('Social media destroys concentration.','This proves that the theory is correct.','Everybody agrees that exams are unfair.','Immigration always benefits the economy.','Students never read the whole reading list.','Technology has completely changed education.')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write appear, tend, likely, arguably or extent.'),
+    ...FIBS('1  These findings would [appear] to support the hypothesis.',
+    '2  Younger participants [tend] to respond more quickly.',
+    '3  It is [likely] that other factors are involved.',
+    '4  This is [arguably] the most significant development of the decade.',
+    '5  The policy succeeded, at least to some [extent].')]},
+  {n:'Write a cautious argument',b:()=>[TASK('Argue carefully','Write a paragraph (seven sentences) arguing a position, hedging every claim appropriately.'),B('lines',{count:8})]}
+]}
+];
+
 const LIB_PRINCIPLE={
  vocab:{ic:'🎯',title:'One principle to keep in mind',text:'Recognition and form first, free use later. A word should travel from reception to production — otherwise it stays passive.'},
  grammar:{ic:'🎯',title:'The main principle',text:'From controlled practice to free practice. Drill the form in tight frames, then use the structure in meaningful context, and only then in free speech. Mechanical drills with no communication leave grammar dead.'},
+ idiom:{ic:'💬',title:'Teaching idioms that stick',text:'Idioms are fixed and mostly informal, so they need a different route from grammar: meet the idiom in context, match it to a meaning, notice the fixed words that cannot change, then use it about your own life. Every set here ends with a personal-use task, because an idiom you have never said about yourself is an idiom you will forget.'},
+ academic:{ic:'🎓',title:'Academic English',text:'Academic writing rewards precision and caution: the right reporting verb, a noun phrase instead of a loose clause, and a claim no stronger than the evidence behind it. These worksheets move from recognising the register to producing it — verbs, noun phrases, describing data, signposting and hedging.'},
  c1:{ic:'🎓',title:'How each C1 worksheet is built',text:'Advanced topics follow the same path — a theory card, then noticing, controlled practice, transformation and free production — but the focus shifts to register, emphasis and precision: inversion, cleft sentences, participle clauses, hedging and cohesion. "Full worksheet" drops the whole sequence on a new page with the answer key switched on.'},
  b1:{ic:'📚',title:'How each B1 worksheet is built',text:'Every topic follows the same path: a theory card (form · use · signal words), then noticing, then controlled drills, then meaningful practice, and finally free production. “Full worksheet” drops the whole sequence on a new page and switches the answer key on automatically.'}
 };
 let libTab='b1';
 function buildLibTabs(){const t=$('#libTabs');t.innerHTML='';
-  [['b1','B1 Course'],['c1','C1 Advanced'],['vocab','Vocabulary'],['grammar','Grammar']].forEach(([k,lbl])=>{const b=el('button','lib-tab'+(libTab===k?' on':''),lbl);b.onclick=()=>{libTab=k;buildLibTabs();buildLibBody($('#libSearch').value);};t.appendChild(b);});}
+  [['b1','B1 Course'],['c1','C1 Advanced'],['idiom','Idioms'],['academic','Academic'],['vocab','Vocabulary'],['grammar','Grammar']].forEach(([k,lbl])=>{const b=el('button','lib-tab'+(libTab===k?' on':''),lbl);b.onclick=()=>{libTab=k;buildLibTabs();buildLibBody($('#libSearch').value);};t.appendChild(b);});}
 function buildCourseBody(q,bank,level){
   const body=$('#libBody');
   bank.forEach(topic=>{
@@ -4835,8 +5374,9 @@ function insertTopic(topic,level){
 }
 function buildLibBody(filter){
   const body=$('#libBody');body.innerHTML='';const q=(filter||'').toLowerCase().trim();
-  if(libTab==='b1'||libTab==='c1'){
-    buildCourseBody(q,libTab==='c1'?GRAMMAR_C1:GRAMMAR_B1,libTab==='c1'?'C1':'B1');
+  const COURSES={b1:[GRAMMAR_B1,'B1'],c1:[GRAMMAR_C1,'C1'],idiom:[GRAMMAR_IDIOM,'IDIOMS'],academic:[GRAMMAR_ACADEMIC,'ACADEMIC']};
+  if(COURSES[libTab]){
+    buildCourseBody(q,COURSES[libTab][0],COURSES[libTab][1]);
     if(!body.children.length)body.appendChild(el('div','hint','No topics match your search.'));
     const pr=LIB_PRINCIPLE[libTab];body.appendChild(el('div','lib-principle',`<div class="lp-ic">${pr.ic}</div><div><b>${pr.title}</b><p>${pr.text}</p></div>`));
     return;}
@@ -5042,7 +5582,12 @@ const SHUFFLERS={
  speaking:b=>shuf(b.prompts),
  match:b=>shuf(b.right),
  wordsearch:b=>{b.grid=null;},
- crossword:b=>{b.grid=null;}
+ crossword:b=>{b.grid=null;},
+ transform:b=>shuf(b.rows),
+ errorfix:b=>shuf(b.rows),
+ pronounce:b=>shuf(b.rows),
+ verbtable:b=>shuf(b.rows),
+ rubric:b=>shuf(b.crit)
 };
 function shuffleAll(){
   snapshot();let n=0;
