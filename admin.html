@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Worksheet Studio — заказы</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#5b5bf0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='26' fill='%235b5bf0'/%3E%3Cpath d='M25 50h50M25 32h50M25 68h30' stroke='white' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --brand:#5b5bf0; --brand-deep:#4344d6;
+  --ok:#12a672; --warn:#d98207; --bad:#d64545; --info:#3b82f6;
+  --bg:#f7f8fc; --raise:#ffffff; --soft:#eef0ff; --ink:#12151f; --muted:#5b6478; --line:#e6e9f2;
+  --r:12px;
+  --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0a0c14;--raise:#101422;--soft:#171c30;--ink:#eef1f8;--muted:#98a2b8;--line:#222a3c}
+}
+:root[data-theme="dark"]{--bg:#0a0c14;--raise:#101422;--soft:#171c30;--ink:#eef1f8;--muted:#98a2b8;--line:#222a3c}
+:root[data-theme="light"]{--bg:#f7f8fc;--raise:#ffffff;--soft:#eef0ff;--ink:#12151f;--muted:#5b6478;--line:#e6e9f2}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;letter-spacing:-.02em;line-height:1.2}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--brand);outline-offset:2px;border-radius:6px}
+.wrap{width:min(1180px,calc(100% - 32px));margin-inline:auto}
+
+/* gate */
+#gate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--bg);padding:20px}
+.gate-card{width:min(400px,100%);background:var(--raise);border:1px solid var(--line);
+  border-radius:20px;padding:32px 28px;text-align:center}
+.gate-card h1{font-size:21px;margin-bottom:6px}
+.gate-card p{color:var(--muted);font-size:14px;margin:0 0 20px}
+.gate-card input{width:100%;padding:12px 14px;border-radius:11px;border:1px solid var(--line);
+  background:var(--bg);text-align:center;letter-spacing:.16em;margin-bottom:12px}
+#gateErr{color:var(--bad);font-size:13px;min-height:19px;margin:0 0 8px}
+
+/* header */
+header{background:var(--raise);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.bar{display:flex;align-items:center;gap:12px;height:60px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:9px;font-weight:750;letter-spacing:-.02em}
+.brand i{width:26px;height:26px;border-radius:8px;background:var(--brand);display:block;flex:none}
+.bar .sp{flex:1}
+
+.btn{display:inline-flex;align-items:center;gap:7px;font-weight:600;font-size:14px;cursor:pointer;
+  padding:9px 15px;border-radius:10px;border:1px solid var(--line);background:var(--raise);
+  transition:background .13s,border-color .13s}
+.btn:hover{background:var(--soft);border-color:var(--brand)}
+.btn-p{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn-p:hover{background:var(--brand-deep);border-color:var(--brand-deep)}
+.btn-d{color:var(--bad)}
+.btn-sm{padding:6px 11px;font-size:13px;border-radius:8px}
+
+/* stats */
+.stats{display:grid;gap:12px;grid-template-columns:repeat(2,1fr);margin:22px 0}
+@media(min-width:780px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--raise);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+.stat b{display:block;font-size:26px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat span{display:block;margin-top:5px;font-size:13px;color:var(--muted)}
+.stat.alert b{color:var(--warn)}
+
+/* toolbar */
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.tools input[type=search],.tools select{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--raise)}
+.tools input[type=search]{min-width:210px;flex:1}
+
+/* table */
+.tablewrap{background:var(--raise);border:1px solid var(--line);border-radius:var(--r);overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;
+  background:var(--soft);position:sticky;top:0}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--soft)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.who b{display:block}
+.who span{color:var(--muted);font-size:13px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:650;
+  padding:3px 10px;border-radius:20px;white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.p-paid{color:var(--ok);background:color-mix(in srgb,var(--ok) 13%,transparent)}
+.p-trial{color:var(--info);background:color-mix(in srgb,var(--info) 13%,transparent)}
+.p-soon{color:var(--warn);background:color-mix(in srgb,var(--warn) 15%,transparent)}
+.p-exp{color:var(--bad);background:color-mix(in srgb,var(--bad) 13%,transparent)}
+.p-ref{color:var(--muted);background:color-mix(in srgb,var(--muted) 13%,transparent)}
+.sent{cursor:pointer;border:0;background:none;padding:4px;border-radius:7px}
+.sent:hover{background:var(--line)}
+.sent svg{width:19px;height:19px;display:block}
+.empty{padding:48px 20px;text-align:center;color:var(--muted)}
+
+/* modal */
+.mb{position:fixed;inset:0;background:rgba(8,10,18,.5);backdrop-filter:blur(4px);z-index:60;
+  display:none;align-items:center;justify-content:center;padding:18px}
+.mb.on{display:flex}
+.modal{background:var(--raise);border:1px solid var(--line);border-radius:18px;
+  width:min(520px,100%);max-height:88vh;overflow-y:auto}
+.mh{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;
+  position:sticky;top:0;background:var(--raise)}
+.mh h3{font-size:17px}
+.mh button{margin-left:auto;border:0;background:none;font-size:22px;cursor:pointer;color:var(--muted);
+  width:32px;height:32px;border-radius:8px}
+.mh button:hover{background:var(--soft);color:var(--ink)}
+.mbody{padding:20px 22px;display:grid;gap:14px}
+.f label{display:block;font-size:12.5px;font-weight:650;color:var(--muted);margin-bottom:5px}
+.f input,.f select,.f textarea{width:100%;padding:10px 12px;border-radius:10px;
+  border:1px solid var(--line);background:var(--bg)}
+.f textarea{resize:vertical;min-height:64px}
+.two{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+.mf{padding:14px 22px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;
+  position:sticky;bottom:0;background:var(--raise)}
+.hint{font-size:12.5px;color:var(--muted)}
+footer{padding:26px 0 40px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+
+<!-- ── access gate ────────────────────────────────────────────────── -->
+<div id="gate">
+  <div class="gate-card">
+    <h1>Заказы</h1>
+    <p>Введите пароль администратора</p>
+    <input id="gatePin" type="password" autocomplete="current-password" placeholder="••••••" inputmode="numeric">
+    <p id="gateErr"></p>
+    <button class="btn btn-p" id="gateBtn" style="width:100%;justify-content:center">Войти</button>
+  </div>
+</div>
+
+<header>
+  <div class="wrap bar">
+    <span class="brand"><i></i> Worksheet Studio · заказы</span>
+    <span class="sp"></span>
+    <button class="btn" id="expCsv">Выгрузить CSV</button>
+    <button class="btn" id="expJson">Бэкап</button>
+    <button class="btn" id="impBtn">Восстановить</button>
+    <input type="file" id="impFile" accept=".json" hidden>
+    <button class="btn btn-p" id="addBtn">＋ Заказ</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="stats">
+    <div class="stat"><b id="sRev">0</b><span>всего получено</span></div>
+    <div class="stat"><b id="sActive">0</b><span>активных подписок</span></div>
+    <div class="stat"><b id="sMonth">0</b><span>оплат в этом месяце</span></div>
+    <div class="stat alert"><b id="sTodo">0</b><span>ждут отправки доступа</span></div>
+  </div>
+
+  <div class="tools">
+    <input type="search" id="q" placeholder="Поиск по имени, почте или заметке…">
+    <select id="fStatus">
+      <option value="">Все статусы</option>
+      <option value="paid">Оплачено</option>
+      <option value="trial">Пробный период</option>
+      <option value="expired">Истекло</option>
+      <option value="refunded">Возврат</option>
+    </select>
+    <select id="fSent">
+      <option value="">Доступ: любой</option>
+      <option value="no">Не отправлен</option>
+      <option value="yes">Отправлен</option>
+    </select>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>Покупатель</th><th>Тариф</th><th>Сумма</th><th>Оплачено</th>
+        <th>Действует до</th><th>Статус</th><th>Доступ</th><th>Заметка</th><th></th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty" id="empty" hidden>Пока ни одного заказа. Нажмите «＋ Заказ», когда придёт первая оплата.</div>
+  </div>
+
+  <footer>
+    Данные хранятся только в этом браузере. Делайте «Бэкап» регулярно — при очистке данных сайта список пропадёт.
+  </footer>
+</main>
+
+<!-- ── order modal ────────────────────────────────────────────────── -->
+<div class="mb" id="mb">
+  <div class="modal">
+    <div class="mh"><h3 id="mTitle">Новый заказ</h3><button id="mClose" aria-label="Закрыть">×</button></div>
+    <div class="mbody">
+      <div class="f"><label for="fName">Имя</label><input id="fName" placeholder="Анна Петросян"></div>
+      <div class="f"><label for="fMail">Почта</label><input id="fMail" type="email" placeholder="anna@example.com"></div>
+      <div class="two">
+        <div class="f"><label for="fPlan">Тариф</label>
+          <select id="fPlan">
+            <option value="monthly">Месяц</option>
+            <option value="yearly">Год</option>
+            <option value="trial">Пробный период</option>
+          </select></div>
+        <div class="f"><label for="fLang">Язык</label>
+          <select id="fLang"><option value="hy">Հայերեն</option><option value="en">English</option><option value="ru">Русский</option></select></div>
+      </div>
+      <div class="two">
+        <div class="f"><label for="fSum">Сумма</label><input id="fSum" type="number" step="0.01" min="0" placeholder="6"></div>
+        <div class="f"><label for="fCur">Валюта</label>
+          <select id="fCur"><option>GBP</option><option>EUR</option><option>USD</option><option>AMD</option><option>RUB</option></select></div>
+      </div>
+      <div class="two">
+        <div class="f"><label for="fPaid">Дата оплаты</label><input id="fPaid" type="date"></div>
+        <div class="f"><label for="fUntil">Действует до</label><input id="fUntil" type="date"></div>
+      </div>
+      <div class="two">
+        <div class="f"><label for="fStat">Статус</label>
+          <select id="fStat">
+            <option value="paid">Оплачено</option>
+            <option value="trial">Пробный период</option>
+            <option value="expired">Истекло</option>
+            <option value="refunded">Возврат</option>
+          </select></div>
+        <div class="f"><label for="fSentIn">Доступ отправлен</label>
+          <select id="fSentIn"><option value="no">Нет</option><option value="yes">Да</option></select></div>
+      </div>
+      <div class="f"><label for="fNote">Заметка — что именно отправлено</label>
+        <textarea id="fNote" placeholder="Ссылка + код доступа отправлены в Telegram"></textarea></div>
+      <p class="hint">«Действует до» подставляется само, когда выбираете тариф и дату оплаты.</p>
+    </div>
+    <div class="mf">
+      <button class="btn btn-d" id="mDel" hidden>Удалить</button>
+      <button class="btn" id="mCancel">Отмена</button>
+      <button class="btn btn-p" id="mSave">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══ Пароль администратора. Смените здесь. ═══════════════════════════ */
+var ADMIN_PIN = '2468';
+
+(function(){
+  var KEY='ws_orders_v1', UNLOCK='ws_admin_ok';
+  var orders=[], editing=null;
+  var $=function(s){return document.querySelector(s)};
+
+  /* ── gate ── */
+  function unlock(){ $('#gate').style.display='none'; render(); }
+  try{ if(sessionStorage.getItem(UNLOCK)==='1') unlock(); }catch(e){}
+  function tryPin(){
+    if($('#gatePin').value===ADMIN_PIN){
+      try{sessionStorage.setItem(UNLOCK,'1')}catch(e){}
+      unlock();
+    } else { $('#gateErr').textContent='Неверный пароль'; $('#gatePin').value=''; $('#gatePin').focus(); }
+  }
+  $('#gateBtn').addEventListener('click',tryPin);
+  $('#gatePin').addEventListener('keydown',function(e){ if(e.key==='Enter') tryPin(); });
+
+  /* ── storage ── */
+  function load(){ try{ orders=JSON.parse(localStorage.getItem(KEY))||[] }catch(e){ orders=[] } }
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(orders)) }catch(e){ alert('Не удалось сохранить: хранилище браузера переполнено.') } }
+  load();
+
+  /* ── helpers ── */
+  var SYM={GBP:'£',EUR:'€',USD:'$',AMD:'֏',RUB:'₽'};
+  function money(v,c){ return (SYM[c]||'')+Number(v||0).toLocaleString('ru-RU',{maximumFractionDigits:2}); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function today(){ return new Date().toISOString().slice(0,10); }
+  function addDays(d,n){ var x=new Date(d+'T00:00:00'); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); }
+  function daysLeft(u){ if(!u) return null;
+    return Math.ceil((new Date(u+'T00:00:00')-new Date(today()+'T00:00:00'))/86400000); }
+
+  /* status shown in the table, derived from the date so it is never stale */
+  function state(o){
+    var left=daysLeft(o.until);
+    if(o.status==='refunded') return {k:'ref',t:'Возврат'};
+    if(left!==null && left<0)  return {k:'exp',t:'Истекло'};
+    if(o.status==='trial')     return {k:'trial',t:left!==null?'Пробный, '+left+' дн.':'Пробный'};
+    if(left!==null && left<=7) return {k:'soon',t:'Осталось '+left+' дн.'};
+    return {k:'paid',t:'Оплачено'};
+  }
+
+  /* ── render ── */
+  function render(){
+    var q=($('#q').value||'').toLowerCase().trim(),
+        fs=$('#fStatus').value, fx=$('#fSent').value;
+
+    var list=orders.filter(function(o){
+      if(fs && o.status!==fs) return false;
+      if(fx && (o.sent?'yes':'no')!==fx) return false;
+      if(!q) return true;
+      return (o.name+' '+o.mail+' '+(o.note||'')).toLowerCase().indexOf(q)>-1;
+    }).sort(function(a,b){ return (b.paid||'').localeCompare(a.paid||''); });
+
+    var tb=$('#rows'); tb.innerHTML='';
+    list.forEach(function(o){
+      var st=state(o), tr=document.createElement('tr');
+      tr.innerHTML=
+        '<td class="who"><b>'+esc(o.name||'—')+'</b><span>'+esc(o.mail||'')+'</span></td>'+
+        '<td>'+({monthly:'Месяц',yearly:'Год',trial:'Пробный'}[o.plan]||'—')+'</td>'+
+        '<td class="num">'+(o.sum?money(o.sum,o.cur):'—')+'</td>'+
+        '<td class="num">'+(o.paid||'—')+'</td>'+
+        '<td class="num">'+(o.until||'—')+'</td>'+
+        '<td><span class="pill p-'+st.k+'">'+st.t+'</span></td>'+
+        '<td><button class="sent" data-sent="'+o.id+'" title="'+(o.sent?'Отправлено':'Не отправлено')+'">'+
+          (o.sent
+            ? '<svg viewBox="0 0 24 24" fill="none" stroke="#12a672" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg>'
+            : '<svg viewBox="0 0 24 24" fill="none" stroke="#98a2b8" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/></svg>')+
+          '</button></td>'+
+        '<td style="color:var(--muted);font-size:13.4px;max-width:230px">'+esc(o.note||'')+'</td>'+
+        '<td><button class="btn btn-sm" data-edit="'+o.id+'">Открыть</button></td>';
+      tb.appendChild(tr);
+    });
+    $('#empty').hidden = list.length>0;
+
+    /* summary */
+    var rev={}, active=0, month=0, todo=0, m=today().slice(0,7);
+    orders.forEach(function(o){
+      var st=state(o);
+      if(o.status==='paid' && o.sum){ rev[o.cur]=(rev[o.cur]||0)+Number(o.sum); }
+      if(st.k==='paid'||st.k==='soon'||st.k==='trial') active++;
+      if((o.paid||'').slice(0,7)===m && o.status==='paid') month++;
+      if(!o.sent && o.status!=='refunded') todo++;
+    });
+    var parts=Object.keys(rev).map(function(c){ return money(rev[c],c) });
+    $('#sRev').textContent = parts.length?parts.join(' · '):'0';
+    $('#sActive').textContent=active; $('#sMonth').textContent=month; $('#sTodo').textContent=todo;
+  }
+
+  /* ── modal ── */
+  function openModal(o){
+    editing=o||null;
+    $('#mTitle').textContent = o?'Заказ':'Новый заказ';
+    $('#mDel').hidden = !o;
+    $('#fName').value=o?o.name:''; $('#fMail').value=o?o.mail:'';
+    $('#fPlan').value=o?o.plan:'monthly'; $('#fLang').value=o?o.lang:'hy';
+    $('#fSum').value=o?o.sum:''; $('#fCur').value=o?o.cur:'GBP';
+    $('#fPaid').value=o?o.paid:today(); $('#fUntil').value=o?o.until:'';
+    $('#fStat').value=o?o.status:'paid'; $('#fSentIn').value=o&&o.sent?'yes':'no';
+    $('#fNote').value=o?(o.note||''):'';
+    if(!o) autoUntil();
+    $('#mb').classList.add('on'); $('#fName').focus();
+  }
+  function closeModal(){ $('#mb').classList.remove('on'); editing=null; }
+
+  function autoUntil(){
+    var p=$('#fPlan').value, d=$('#fPaid').value||today();
+    $('#fUntil').value = p==='yearly'?addDays(d,365) : p==='trial'?addDays(d,7) : addDays(d,30);
+    $('#fStat').value = p==='trial'?'trial':'paid';
+  }
+  $('#fPlan').addEventListener('change',autoUntil);
+  $('#fPaid').addEventListener('change',autoUntil);
+
+  $('#mSave').addEventListener('click',function(){
+    var name=$('#fName').value.trim(), mail=$('#fMail').value.trim();
+    if(!name && !mail){ alert('Укажите хотя бы имя или почту.'); return; }
+    var data={ name:name, mail:mail, plan:$('#fPlan').value, lang:$('#fLang').value,
+      sum:$('#fSum').value, cur:$('#fCur').value, paid:$('#fPaid').value, until:$('#fUntil').value,
+      status:$('#fStat').value, sent:$('#fSentIn').value==='yes', note:$('#fNote').value.trim() };
+    if(editing){ Object.assign(editing,data); }
+    else{ data.id='o'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); orders.push(data); }
+    save(); closeModal(); render();
+  });
+  $('#mDel').addEventListener('click',function(){
+    if(!editing) return;
+    if(!confirm('Удалить заказ безвозвратно?')) return;
+    orders=orders.filter(function(x){ return x.id!==editing.id });
+    save(); closeModal(); render();
+  });
+  $('#mClose').addEventListener('click',closeModal);
+  $('#mCancel').addEventListener('click',closeModal);
+  $('#mb').addEventListener('click',function(e){ if(e.target.id==='mb') closeModal(); });
+
+  /* ── table actions ── */
+  $('#rows').addEventListener('click',function(e){
+    var ed=e.target.closest('[data-edit]'), sn=e.target.closest('[data-sent]');
+    if(ed){ var o=orders.find(function(x){return x.id===ed.getAttribute('data-edit')}); if(o) openModal(o); }
+    if(sn){ var s=orders.find(function(x){return x.id===sn.getAttribute('data-sent')});
+      if(s){ s.sent=!s.sent; save(); render(); } }
+  });
+  $('#addBtn').addEventListener('click',function(){ openModal(null) });
+  ['q','fStatus','fSent'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',render);
+    document.getElementById(id).addEventListener('change',render);
+  });
+
+  /* ── export / backup ── */
+  function download(name,text,type){
+    var b=new Blob([text],{type:type}), a=document.createElement('a');
+    a.href=URL.createObjectURL(b); a.download=name; a.click(); URL.revokeObjectURL(a.href);
+  }
+  $('#expCsv').addEventListener('click',function(){
+    var head=['Имя','Почта','Тариф','Сумма','Валюта','Оплачено','Действует до','Статус','Доступ отправлен','Заметка'];
+    var rows=orders.map(function(o){
+      return [o.name,o.mail,o.plan,o.sum,o.cur,o.paid,o.until,o.status,o.sent?'да':'нет',o.note||''];
+    });
+    var csv=[head].concat(rows).map(function(r){
+      return r.map(function(c){ return '"'+String(c==null?'':c).replace(/"/g,'""')+'"' }).join(',');
+    }).join('\r\n');
+    download('orders-'+today()+'.csv','﻿'+csv,'text/csv;charset=utf-8');
+  });
+  $('#expJson').addEventListener('click',function(){
+    download('orders-backup-'+today()+'.json',JSON.stringify(orders,null,2),'application/json');
+  });
+  $('#impBtn').addEventListener('click',function(){ $('#impFile').click() });
+  $('#impFile').addEventListener('change',function(e){
+    var f=e.target.files[0]; if(!f) return;
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        var d=JSON.parse(r.result);
+        if(!Array.isArray(d)) throw 0;
+        if(!confirm('Заменить текущий список на '+d.length+' записей из файла?')) return;
+        orders=d; save(); render();
+      }catch(err){ alert('Файл не читается. Нужен JSON, созданный кнопкой «Бэкап».'); }
+    };
+    r.readAsText(f); e.target.value='';
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
