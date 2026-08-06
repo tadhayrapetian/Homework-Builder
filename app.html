@@ -783,6 +783,35 @@ body.locked .app,body.locked .zoombar{display:none !important}
 #pinField{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
 @media (max-width:400px){.keypad button{height:50px;font-size:19px}}
 
+/* ---------- licence key field ---------- */
+.keyfield{width:100%;height:54px;border-radius:16px;border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);color:#fff;font-size:18px;font-weight:700;text-align:center;
+  letter-spacing:.14em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  animation:fadeUp .6s .44s both}
+.keyfield::placeholder{color:rgba(255,255,255,.3);letter-spacing:.1em;font-weight:600}
+.keyfield:focus{outline:none;border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.14)}
+.lock.err .keyfield{border-color:rgba(239,68,68,.8);animation:shake .4s}
+.lock.ok .keyfield{border-color:#34d399;box-shadow:0 0 18px rgba(52,211,153,.5)}
+.keygo{width:100%;height:50px;margin-top:12px;border-radius:16px;border:0;cursor:pointer;
+  background:#fff;color:#191b2e;font-size:15px;font-weight:750;animation:fadeUp .6s .5s both;transition:.15s}
+.keygo:hover{transform:translateY(-1px)}
+.keygo:active{transform:scale(.98)}
+.lock-hint a,.linky{color:rgba(255,255,255,.7);text-decoration:underline;background:none;border:0;
+  padding:0;font:inherit;cursor:pointer}
+.lock-hint a:hover,.linky:hover{color:#fff}
+
+/* ---------- plan badge + locked features ---------- */
+.tierpill{display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:999px;
+  background:var(--brand-soft);color:var(--brand);font-size:10.5px;font-weight:800;letter-spacing:.5px;
+  text-transform:uppercase;flex:none;cursor:pointer;border:0}
+.tierpill.trial{background:#fef3c7;color:#92400e}
+.tierpill.over{background:#fee2e2;color:#b91c1c}
+.pchip.lockx,.lib-item.lockx,.tcard.lockx{opacity:.55}
+.pchip.lockx .ic,.lib-item.lockx .li-ic{filter:grayscale(1)}
+.lvlbar .lv.lockx{opacity:.55}
+.lockmini{margin-left:auto;font-size:11.5px;opacity:.8;flex:none;align-self:center}
+.tcard.lockx::before{content:"🔒";position:absolute;z-index:2;top:6px;left:6px;font-size:11px}
+
 /* ---------- TOAST + MODAL ---------- */
 .toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;
   background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:12px;font-size:13px;z-index:200;
@@ -892,18 +921,14 @@ body.locked .app,body.locked .zoombar{display:none !important}
   <div class="lock-card">
     <div class="lock-mark"><svg viewBox="0 0 100 100" fill="none"><path d="M27 31h46M50 31v42" stroke="#fff" stroke-width="11" stroke-linecap="round"/><circle cx="74" cy="72" r="9" fill="#fbbf24"/></svg></div>
     <h1>Worksheet Studio</h1>
-    <p>Enter your access code</p>
-    <div class="pin-dots" id="pinDots"><i></i><i></i><i></i><i></i></div>
-    <div class="keypad" id="keypad">
-      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
-      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
-      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
-      <button class="ghost" disabled></button><button data-k="0">0</button><button class="wide" data-k="del">⌫</button>
-    </div>
+    <p>Enter your licence key</p>
+    <input class="keyfield" id="keyField" placeholder="WS-XXXX-XXXX" autocomplete="off"
+           autocapitalize="characters" autocorrect="off" spellcheck="false" maxlength="14">
+    <button class="keygo" id="keyGo">Unlock</button>
     <div class="lock-msg" id="lockMsg"></div>
-    <div class="lock-hint">You can also type the code on your keyboard.</div>
+    <div class="lock-hint">No key yet? <a href="index.html#pricing">See the plans</a>
+      — or <button class="linky" id="trialBtn">start a 7-day trial</button>.</div>
   </div>
-  <input id="pinField" inputmode="numeric" autocomplete="off">
 </div>
 
 <div class="app" id="app">
@@ -969,7 +994,12 @@ body.locked .app,body.locked .zoombar{display:none !important}
         </div>
         <div class="hint" style="margin-top:6px">Vector keeps text sharp at any zoom and selectable.</div></div>
       <button class="ibtn" id="printBtn">🖨️ Browser print</button>
-      <button class="ibtn" id="lockBtn">🔒 Lock</button>
+      <div class="field" style="margin-top:12px"><label>Your plan</label>
+        <div style="display:flex;align-items:center;gap:9px">
+          <button class="tierpill" id="planPill" title="Your plan">Basic</button>
+          <a href="index.html#pricing" class="hint" style="text-decoration:underline">Compare plans</a>
+        </div></div>
+      <button class="ibtn" id="lockBtn">🔒 Sign out / change key</button>
     </div>
   </aside>
 
@@ -1775,8 +1805,10 @@ function renderAnswerKey(){
 function pageFooter(pi){
   const f=el('div','pg-foot');
   const brand=el('div','brand');brand.appendChild(el('span','fmark','✎'));
-  const bt=el('span');bt.contentEditable='true';bt.spellcheck=false;bt.dataset.ph='Your brand';bt.textContent=DOC.brand||'Worksheet Studio';
-  bt.title='Click to edit your brand';
+  const bt=el('span');bt.contentEditable=can('brand')?'true':'false';bt.spellcheck=false;bt.dataset.ph='Your brand';
+  bt.textContent=can('brand')?(DOC.brand||'Worksheet Studio'):'Worksheet Studio';
+  bt.title=can('brand')?'Click to edit your brand':'Your own footer is on Pro and Max';
+  if(!can('brand'))bt.addEventListener('click',()=>nudge('Your own name or school on the page footer is on Pro and Max.'));
   bt.addEventListener('input',()=>{DOC.brand=bt.textContent;const bi=$('#brandInput');if(bi)bi.value=bt.textContent;autosave();});
   bt.addEventListener('blur',()=>{scheduleSnapshot();renderAll();});
   brand.appendChild(bt);
@@ -1968,11 +2000,17 @@ function buildPalette(filter){
   let lastG=null;
   BLOCK_DEFS.filter(d=>!q||d.name.toLowerCase().includes(q)||d.hint.toLowerCase().includes(q)||d.g.toLowerCase().includes(q)).forEach(d=>{
     if(d.g!==lastG&&!q){p.appendChild(el('div','pgroup-label',d.g));lastG=d.g;}
-    const c=el('button','pchip',`<div class="ic">${d.icon}</div><div class="pm"><b>${d.name}</b><span>${d.hint}</span></div>`);
+    const locked=GEN_BLOCKS.indexOf(d.t)>=0&&!can('gen');
+    const c=el('button','pchip'+(locked?' lockx':''),
+      `<div class="ic">${d.icon}</div><div class="pm"><b>${d.name}</b><span>${locked?'Pro and Max':d.hint}</span></div>`
+      +(locked?'<span class="lockmini">🔒</span>':''));
     c.onclick=()=>addBlock(d.t);p.appendChild(c);});
   if(!p.children.length)p.appendChild(el('div','hint','No blocks match your search.'));
 }
-function addBlock(type,quiet){snapshot();let pg=DOC.pages[DOC.pages.length-1],idx=pg.blocks.length;
+function addBlock(type,quiet){
+  if(GEN_BLOCKS.indexOf(type)>=0&&!can('gen')){
+    nudge('The crossword and word search generators are on Pro and Max.');return null;}
+  snapshot();let pg=DOC.pages[DOC.pages.length-1],idx=pg.blocks.length;
   if(selectedId){const f=findBlock(selectedId);if(f){pg=f.pg;idx=pg.blocks.indexOf(f.b)+1;}}
   const nb=makeBlock(type);pg.blocks.splice(idx,0,nb);selectedId=nb.id;renderAll();
   setTimeout(()=>{const e=document.querySelector(`.block[data-id="${nb.id}"]`);if(e)e.scrollIntoView({behavior:'smooth',block:'center'});},60);
@@ -1988,11 +2026,14 @@ function refreshLeft(){
   const bi=$('#brandInput');if(bi&&document.activeElement!==bi)bi.value=DOC.brand||'';
 }
 function buildThemeGallery(){const g=$('#themeGallery');g.innerHTML='';
-  const tc=$('#themeCount');if(tc)tc.textContent=THEMES.length;
-  THEMES.forEach(t=>{const c=el('div','tcard');c.dataset.id=t.id;
+  const tc=$('#themeCount');if(tc)tc.textContent=Math.min(THEMES.length,PLAN.themes);
+  THEMES.forEach((t,i)=>{const c=el('div','tcard'+(i>=PLAN.themes?' lockx':''));c.dataset.id=t.id;
     c.innerHTML=`<div class="badge">✓</div><div class="tprev" style="background:${t.paper}"><div class="th" style="background:${t.accent}"></div><div><div class="tl s" style="background:${mix(t.ink,t.paper,.7)}"></div><div class="tl m" style="background:${mix(t.ink,t.paper,.8)}"></div></div></div><div class="tname">${t.name}</div>`;
     c.onclick=()=>applyTheme(t.id);g.appendChild(c);});}
-function applyTheme(id){snapshot();const st=defaultStyle(id);if(DOC.applyAll)DOC.pages.forEach(p=>p.style={...st});else currentPage().style={...st};renderAll();}
+function applyTheme(id){
+  if(THEMES.findIndex(t=>t.id===id)>=PLAN.themes){
+    nudge('Basic includes the first '+PLAN.themes+' designs. Pro and Max open all '+THEMES.length+'.');return;}
+  snapshot();const st=defaultStyle(id);if(DOC.applyAll)DOC.pages.forEach(p=>p.style={...st});else currentPage().style={...st};renderAll();}
 function refreshThemeUI(){const st=currentPage().style;
   document.querySelectorAll('.tcard').forEach(c=>c.classList.toggle('on',c.dataset.id===st.theme));
   $('#headerSel').value=st.header;$('#decoSel').value=st.deco;$('#fontSel').value=st.font;
@@ -12277,9 +12318,15 @@ function buildLevelBar(){
   const cat=libTab==='vo'?'vocab':'grammar';
   bar.innerHTML='';
   const mk=(k,lbl)=>{
-    const n=topicsFor(cat,k,'').length;
-    const b=el('button','lv'+(libLevel===k?' on':''),lbl+'<span class="n">'+n+'</span>');
-    b.onclick=()=>{libLevel=k;buildLevelBar();buildLibBody($('#libSearch').value);};
+    const n=k==='all'
+      ? topicsFor(cat,'all','').filter(t=>levelAllowed(t.lvl)).length
+      : topicsFor(cat,k,'').length;
+    const locked=k!=='all'&&!levelAllowed(k);
+    const b=el('button','lv'+(libLevel===k?' on':'')+(locked?' lockx':''),
+      (locked?'🔒 ':'')+lbl+'<span class="n">'+n+'</span>');
+    b.onclick=locked
+      ? ()=>nudge('Level '+k+' is on Pro and Max — Basic covers A2 and B1.')
+      : ()=>{libLevel=k;buildLevelBar();buildLibBody($('#libSearch').value);};
     if(!n&&k!=='all')b.style.opacity='.4';
     bar.appendChild(b);
   };
@@ -12306,6 +12353,7 @@ function topicCard(topic){
   g.appendChild(grid);return g;
 }
 function insertTopic(topic,level){
+  if(DOC.pages.length>=PLAN.pages)return nudge('Basic documents go up to '+PLAN.pages+' pages. Pro and Max are unlimited.');
   snapshot();
   const blocks=[Object.assign(JSON.parse(JSON.stringify(topic.theory)),{id:uid()})];
   topic.ex.forEach(e=>blocks.push(...e.b()));
@@ -12321,9 +12369,11 @@ function buildLibBody(filter){
   const body=$('#libBody');body.innerHTML='';const q=(filter||'').toLowerCase().trim();
   if(libTab==='gr'||libTab==='vo'){
     const cat=libTab==='vo'?'vocab':'grammar';
-    const list=topicsFor(cat,libLevel,q);
+    const all=topicsFor(cat,libLevel,q);
+    const list=all.filter(t=>levelAllowed(t.lvl));
+    const hidden=all.length-list.length;
     if(libLevel==='all'){
-      LEVEL_ORDER.forEach(lv=>{
+      LEVEL_ORDER.filter(levelAllowed).forEach(lv=>{
         const inLv=list.filter(t=>t.lvl===lv);
         if(!inLv.length)return;
         const h=el('div','lib-group');
@@ -12335,6 +12385,12 @@ function buildLibBody(filter){
       list.forEach(t=>body.appendChild(topicCard(t)));
     }
     if(!body.children.length)body.appendChild(el('div','hint','No topics match your search.'));
+    if(hidden>0){
+      const u=el('div','lib-principle',
+        `<div class="lp-ic">🔒</div><div><b>${hidden} more topic${hidden===1?'':'s'} at B2 and C1</b>`
+        +`<p>Basic covers A2 and B1. Pro and Max open the whole library — all 235 topics, including the complete <i>Advanced Grammar in Use</i> syllabus. <a href="index.html#pricing">Compare the plans</a>.</p></div>`);
+      body.appendChild(u);
+    }
     const pr=LIB_PRINCIPLE[libTab==='vo'?'idiom':'b1'];
     body.appendChild(el('div','lib-principle',`<div class="lp-ic">${pr.ic}</div><div><b>${pr.title}</b><p>${pr.text}</p></div>`));
     return;}
@@ -12351,8 +12407,10 @@ function buildLibBody(filter){
   const pr=LIB_PRINCIPLE[libTypes];const p=el('div','lib-principle',`<div class="lp-ic">${pr.ic}</div><div><b>${pr.title}</b><p>${pr.text}</p></div>`);body.appendChild(p);
 }
 function insertExercise(it){
-  snapshot();
   const blocks=it.make();
+  if(blocks.some(b=>GEN_BLOCKS.indexOf(b.type)>=0)&&!can('gen')){
+    nudge('The crossword and word search generators are on Pro and Max.');return;}
+  snapshot();
   let pg=DOC.pages[DOC.pages.length-1],idx=pg.blocks.length;
   if(selectedId){const f=findBlock(selectedId);if(f){pg=f.pg;idx=pg.blocks.indexOf(f.b)+1;}}
   blocks.forEach((bk,i)=>pg.blocks.splice(idx+i,0,bk));
@@ -12368,7 +12426,9 @@ function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');cl
 $('#docTitle').addEventListener('input',e=>{DOC.title=e.target.value;autosave();});
 $('#docTitle').addEventListener('blur',scheduleSnapshot);
 $('#blkSearch').addEventListener('input',e=>buildPalette(e.target.value));
-$('#addPage').onclick=()=>{snapshot();const st=DOC.applyAll?{...DOC.pages[0].style}:defaultStyle('indigo');DOC.pages.push({id:uid(),style:st,blocks:[]});renderAll();setTimeout(()=>document.querySelectorAll('.paper')[DOC.pages.length-1].scrollIntoView({behavior:'smooth'}),60);};
+$('#addPage').onclick=()=>{
+  if(DOC.pages.length>=PLAN.pages)return nudge('Basic documents go up to '+PLAN.pages+' pages. Pro and Max are unlimited.');
+  snapshot();const st=DOC.applyAll?{...DOC.pages[0].style}:defaultStyle('indigo');DOC.pages.push({id:uid(),style:st,blocks:[]});renderAll();setTimeout(()=>document.querySelectorAll('.paper')[DOC.pages.length-1].scrollIntoView({behavior:'smooth'}),60);};
 $('#pdfBtn').onclick=exportPDF;
 $('#shareBtn').onclick=sharePDF;
 $('#saveBtn2').onclick=saveProject;$('#openBtn2').onclick=openProject;
@@ -12389,7 +12449,8 @@ $('#frDo').onclick=()=>{const q=$('#frFind').value,r=$('#frRepl').value;
   if(!q){$('#frRes').textContent='Type something to find';return;}
   const n=frReplace(q,r);$('#frRes').textContent=n?('Replaced '+n+' occurrence'+(n>1?'s':'')):'Nothing found';
   if(n)toast('Replaced '+n+' occurrence'+(n>1?'s':''));};
-$('#brandInput').addEventListener('input',e=>{DOC.brand=e.target.value;autosave();document.querySelectorAll('.pg-foot .brand span:last-child').forEach(s=>{if(!s.isContentEditable)return;s.textContent=DOC.brand;});});
+$('#brandInput').addEventListener('focus',()=>{if(!can('brand'))nudge('Your own name or school on the page footer is on Pro and Max.');});
+$('#brandInput').addEventListener('input',e=>{if(!can('brand')){e.target.value=DOC.brand||'';return;}DOC.brand=e.target.value;autosave();document.querySelectorAll('.pg-foot .brand span:last-child').forEach(s=>{if(!s.isContentEditable)return;s.textContent=DOC.brand;});});
 $('#brandInput').addEventListener('blur',()=>{scheduleSnapshot();renderAll();});
 $('#uiThemeBtn').onclick=()=>{const cur=document.documentElement.getAttribute('data-ui');const nx=cur==='dark'?'':'dark';document.documentElement.setAttribute('data-ui',nx);try{localStorage.setItem('ws_ui',nx);}catch(e){}};
 
@@ -12400,7 +12461,7 @@ $('#zFit').onclick=()=>{const cw=$('#canvas').clientWidth-60;setZoom(Math.min(1,
 
 // templates + library modals
 function buildTemplates(){const g=$('#tmplGrid');g.innerHTML='';TEMPLATES.forEach(t=>{const c=el('div','tmpl',`<div class="em">${t.em}</div><b>${t.name}</b><small>${t.desc}</small>`);
-  c.onclick=()=>{history.push(JSON.stringify(DOC));DOC={title:t.name,showAnswers:false,applyAll:true,pages:[{id:uid(),style:defaultStyle(t.theme),blocks:t.blocks.map(makeBlock)}]};selectedId=null;renderAll();closeModal('#tmplModal');toast('Template loaded');};g.appendChild(c);});}
+  c.onclick=()=>{history.push(JSON.stringify(DOC));DOC={title:t.name,showAnswers:false,applyAll:true,pages:[{id:uid(),style:defaultStyle(t.theme),blocks:t.blocks.filter(b=>can('gen')||GEN_BLOCKS.indexOf(b)<0).map(makeBlock)}]};selectedId=null;renderAll();closeModal('#tmplModal');toast('Template loaded');};g.appendChild(c);});}
 function openModal(sel){$(sel).classList.add('show');}
 function closeModal(sel){$(sel).classList.remove('show');}
 $('#tmplBtn').onclick=()=>openModal('#tmplModal');
@@ -12428,12 +12489,86 @@ document.addEventListener('keydown',e=>{const m=e.metaKey||e.ctrlKey;
 $('#canvas').addEventListener('mousedown',e=>{if(e.target.closest('.paper'))return;selectedId=null;document.querySelectorAll('.block.sel').forEach(x=>x.classList.remove('sel'));refreshInspector();});
 
 /* =====================================================================
-   ACCESS CODE (soft lock — deters casual visitors only, not real security:
-   this file is public, so the code below is readable in the page source)
+   LICENCE KEYS AND PLANS
+
+   A key is eight characters, shown as WS-XXXX-XXXX. It carries the plan,
+   the expiry date and a checksum, so the app can verify it offline —
+   no server, no account. Keys are issued from admin.html.
+
+   Soft lock, not real security: this file is public, so the checksum
+   below is readable in the page source. It stops casual sharing, not a
+   determined reader. Real enforcement needs a server-side check.
    ===================================================================== */
-const ACCESS_CODE='3105';
-let pinBuf='';
-function paintDots(){document.querySelectorAll('#pinDots i').forEach((d,i)=>d.classList.toggle('on',i<pinBuf.length));}
+const KA='23456789ABCDEFGHJKMNPQRSTUVWXYZ';        /* 31 chars, no 0/O/1/I/L */
+const KSALT='worksheet-studio-key-v1';
+const KEPOCH=Date.UTC(2024,0,1);
+function kEnc(n,len){let s='';for(let i=0;i<len;i++){s=KA[n%31]+s;n=Math.floor(n/31);}return s;}
+function kDec(s){let n=0;for(const c of s){const i=KA.indexOf(c);if(i<0)return -1;n=n*31+i;}return n;}
+function kSum(p){
+  let h=7;
+  for(let i=0;i<p.length;i++)h=(h*31+p.charCodeAt(i))%99991;
+  for(let i=0;i<KSALT.length;i++)h=(h*17+KSALT.charCodeAt(i))%99991;
+  return KA[h%31]+KA[Math.floor(h/31)%31];
+}
+function makeKey(tier,days){
+  const exp=Math.floor((Date.now()+days*864e5-KEPOCH)/864e5);
+  const p=tier+kEnc(exp,3)+KA[Math.floor(Math.random()*31)]+KA[Math.floor(Math.random()*31)];
+  const s=p+kSum(p);
+  return 'WS-'+s.slice(0,4)+'-'+s.slice(4);
+}
+function readKey(raw){
+  let s=(raw||'').toUpperCase().replace(/[^0-9A-Z]/g,'');
+  if(s.slice(0,2)==='WS')s=s.slice(2);
+  if(s.length!==8)return null;
+  const p=s.slice(0,6);
+  if(kSum(p)!==s.slice(6))return null;
+  if('BPM'.indexOf(p[0])<0)return null;
+  const d=kDec(p.slice(1,4));if(d<0)return null;
+  return {tier:p[0],expires:KEPOCH+d*864e5,key:'WS-'+s.slice(0,4)+'-'+s.slice(4)};
+}
+
+/* What each plan may do. `levels` are the library levels, `themes` the
+   number of A4 designs, `pages` the page limit for one document. */
+const PLANS={
+  trial:{id:'trial',name:'Trial',   levels:['A2','B1','B2','C1'],themes:99,pages:99,gen:true, brand:true},
+  B:    {id:'B',    name:'Basic',   levels:['A2','B1'],          themes:8, pages:3, gen:false,brand:false},
+  P:    {id:'P',    name:'Pro',     levels:['A2','B1','B2','C1'],themes:99,pages:99,gen:true, brand:true},
+  M:    {id:'M',    name:'Max',     levels:['A2','B1','B2','C1'],themes:99,pages:99,gen:true, brand:true}
+};
+const GEN_BLOCKS=['crossword','wordsearch'];
+let PLAN=PLANS.B, LIC=null;
+
+function daysLeft(ms){return Math.max(0,Math.ceil((ms-Date.now())/864e5));}
+function trialEnds(){
+  let s=0;try{s=parseInt(localStorage.getItem('ws_trial')||'0',10)||0;}catch(e){}
+  return s?s+7*864e5:0;
+}
+function loadLicence(){
+  let raw='';try{raw=localStorage.getItem('ws_key')||'';}catch(e){}
+  const k=readKey(raw);
+  if(k&&k.expires>Date.now()){LIC=k;PLAN=PLANS[k.tier];return true;}
+  const te=trialEnds();
+  if(te>Date.now()){LIC={tier:'trial',expires:te,key:''};PLAN=PLANS.trial;return true;}
+  LIC=null;PLAN=PLANS.B;return false;
+}
+/* True when the current plan allows `what`; otherwise nudges and returns false. */
+function can(what){
+  if(what==='gen')return PLAN.gen;
+  if(what==='brand')return PLAN.brand;
+  return true;
+}
+function nudge(msg){toast('🔒 '+msg);}
+function levelAllowed(lv){return PLAN.levels.indexOf(lv)>=0;}
+
+function refreshPlanBadge(){
+  const b=$('#planPill');if(!b)return;
+  const left=LIC?daysLeft(LIC.expires):0;
+  b.className='tierpill'+(LIC&&LIC.tier==='trial'?' trial':'')+(left<=5?' over':'');
+  b.textContent=(LIC?PLAN.name:'Basic')+(LIC&&left<=14?' · '+left+'d':'');
+  b.title=LIC
+    ? PLAN.name+' — '+left+' day'+(left===1?'':'s')+' left'+(LIC.key?' ('+LIC.key+')':'')
+    : 'No licence key';
+}
 function makeSparkles(){
   const box=$('#sparkles');if(!box||box.children.length)return;
   for(let i=0;i<18;i++){const s=document.createElement('span');
@@ -12443,44 +12578,67 @@ function makeSparkles(){
     const sz=2+Math.random()*4;s.style.width=s.style.height=sz+'px';
     s.style.opacity=(.3+Math.random()*.5);box.appendChild(s);}
 }
-function pinPush(k){
-  const lock=$('#lock');lock.classList.remove('err');$('#lockMsg').textContent='';
-  const btn=document.querySelector(`.keypad button[data-k="${k}"]`);
-  if(btn){btn.classList.remove('tap');void btn.offsetWidth;btn.classList.add('tap');}
-  if(k==='del'){pinBuf=pinBuf.slice(0,-1);paintDots();return;}
-  if(pinBuf.length>=ACCESS_CODE.length)return;
-  pinBuf+=k;paintDots();
-  if(pinBuf.length===ACCESS_CODE.length){
-    if(pinBuf===ACCESS_CODE){lock.classList.add('ok','closing');setTimeout(unlock,620);}
-    else{lock.classList.add('err');$('#lockMsg').textContent='Wrong code — try again';
-      setTimeout(()=>{pinBuf='';paintDots();lock.classList.remove('err');},600);}
-  }
+function keyFail(msg){
+  const lock=$('#lock');lock.classList.add('err');$('#lockMsg').textContent=msg;
+  setTimeout(()=>lock.classList.remove('err'),600);
+}
+function submitKey(){
+  const f=$('#keyField'),raw=f.value.trim();
+  if(!raw)return keyFail('Enter the key you were sent');
+  const k=readKey(raw);
+  if(!k)return keyFail('That key is not valid — check the letters and try again');
+  if(k.expires<=Date.now())return keyFail('That key expired on '+new Date(k.expires).toLocaleDateString());
+  try{localStorage.setItem('ws_key',k.key);}catch(e){}
+  loadLicence();
+  const lock=$('#lock');lock.classList.remove('err');lock.classList.add('ok','closing');
+  setTimeout(unlock,620);
+}
+function startTrial(){
+  let s=0;try{s=parseInt(localStorage.getItem('ws_trial')||'0',10)||0;}catch(e){}
+  if(s&&trialEnds()<=Date.now())return keyFail('Your trial has ended — a licence key is needed now');
+  if(!s){try{localStorage.setItem('ws_trial',String(Date.now()));}catch(e){}}
+  loadLicence();
+  const lock=$('#lock');lock.classList.remove('err');lock.classList.add('ok','closing');
+  setTimeout(unlock,620);
 }
 function unlock(){
   document.body.classList.remove('locked');
   const lock=$('#lock');lock.classList.remove('show','ok','closing');
-  try{localStorage.setItem('ws_unlocked','1');}catch(e){}
-  pinBuf='';paintDots();
+  $('#keyField').value='';$('#lockMsg').textContent='';
+  applyPlan();
 }
 function lockNow(){
-  try{localStorage.removeItem('ws_unlocked');}catch(e){}
-  pinBuf='';paintDots();$('#lockMsg').textContent='';
+  try{localStorage.removeItem('ws_key');}catch(e){}
+  loadLicence();
+  $('#keyField').value='';$('#lockMsg').textContent='';
   const lock=$('#lock');lock.classList.remove('ok','closing','err');
   document.body.classList.add('locked');lock.classList.add('show');
   makeSparkles();
 }
-$('#keypad').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(b)pinPush(b.dataset.k);});
+/* Re-paints everything that depends on the plan. */
+function applyPlan(){
+  refreshPlanBadge();
+  buildPalette($('#blkSearch')?$('#blkSearch').value:'');
+  buildThemeGallery();refreshThemeUI();
+  const bi=$('#brandInput');
+  if(bi){bi.disabled=!can('brand');bi.placeholder=can('brand')?'Your name or school':'Pro and Max only';}
+}
+$('#keyGo').onclick=submitKey;
+$('#trialBtn').onclick=startTrial;
+$('#keyField').addEventListener('input',e=>{
+  $('#lockMsg').textContent='';
+  let v=e.target.value.toUpperCase().replace(/[^0-9A-Z]/g,'');
+  if(v.slice(0,2)==='WS')v=v.slice(2);
+  v=v.slice(0,8);
+  e.target.value=v?'WS-'+v.slice(0,4)+(v.length>4?'-'+v.slice(4):''):'';
+});
+$('#keyField').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitKey();}});
 $('#lockBtn').onclick=lockNow;
 $('#printBtn').onclick=printPDF;
 $('#pdfQ').addEventListener('click',e=>{const b=e.target.closest('button[data-s]');if(!b)return;
   DOC.pdfScale=parseInt(b.dataset.s);autosave();refreshPdfQ();
   toast(DOC.pdfScale===2?'Fast — smaller file':DOC.pdfScale===3?'High — recommended':'Max — sharpest, large file');});
 function refreshPdfQ(){const s=DOC.pdfScale||3;document.querySelectorAll('#pdfQ button').forEach(b=>b.classList.toggle('on',parseInt(b.dataset.s)===s));}
-document.addEventListener('keydown',e=>{
-  if(!document.body.classList.contains('locked'))return;
-  if(/^[0-9]$/.test(e.key)){e.preventDefault();pinPush(e.key);}
-  else if(e.key==='Backspace'){e.preventDefault();pinPush('del');}
-});
 
 /* =====================================================================
    NEW ✦ 1. Floating rich-text bar (bold / italic / underline / highlight)
@@ -12595,13 +12753,13 @@ function frReplace(q,r){
 
 /* BOOT */
 (function boot(){
-  try{if(localStorage.getItem('ws_unlocked')==='1'){document.body.classList.remove('locked');$('#lock').classList.remove('show');}}catch(e){}
-  if(document.body.classList.contains('locked'))makeSparkles();
+  if(loadLicence()){document.body.classList.remove('locked');$('#lock').classList.remove('show');}
+  else makeSparkles();
   try{const u=localStorage.getItem('ws_ui');if(u)document.documentElement.setAttribute('data-ui',u);}catch(e){}
   buildPalette();buildThemeGallery();buildTemplates();
   const saved=loadAutosave();DOC=(saved&&saved.pages)?saved:newDoc('indigo');
   if(DOC.brand==null)DOC.brand='Worksheet Studio';
-  renderAll();
+  renderAll();applyPlan();
 })();
 </script>
 </body>

@@ -51,7 +51,7 @@ a{color:inherit}
 :focus-visible{outline:2.5px solid var(--brand);outline-offset:3px;border-radius:6px}
 
 .wrap{width:min(1080px,calc(100% - 40px));margin-inline:auto}
-section{padding-block:clamp(56px,8vw,104px)}
+section{padding-block:clamp(56px,8vw,104px);scroll-margin-top:76px}
 .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
   color:var(--brand);margin:0 0 14px}
 h1,h2,h3{text-wrap:balance;margin:0;letter-spacing:-.022em;line-height:1.14}
@@ -160,10 +160,18 @@ nav a:hover{color:var(--ink);background:var(--soft)}
 .toggle button{font:inherit;font-size:14px;font-weight:650;border:0;cursor:pointer;
   padding:8px 17px;border-radius:9px;background:transparent;color:var(--muted)}
 .toggle button[aria-pressed="true"]{background:var(--raise);color:var(--ink);box-shadow:0 1px 3px rgba(18,21,31,.14)}
-.plans{display:grid;gap:18px;grid-template-columns:1fr;align-items:start}
-@media(min-width:820px){.plans{grid-template-columns:1fr 1.08fr}}
-.plan{background:var(--raise);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px 26px}
+.plans{display:grid;gap:18px;grid-template-columns:1fr;align-items:stretch}
+@media(min-width:760px){.plans{grid-template-columns:1fr 1fr}}
+@media(min-width:1040px){.plans{grid-template-columns:1fr 1.06fr 1fr}}
+.plan{background:var(--raise);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px 26px;
+  display:flex;flex-direction:column}
+.plan ul{flex:1}
+@media(min-width:760px){.plan>p.sub{min-height:2.9em}}
 .plan.pro{border-color:var(--brand);box-shadow:0 0 0 1px var(--brand)}
+.plan li.no{opacity:.6}
+.plan li.no svg{color:var(--muted)}
+.trialnote{margin-top:22px;padding:16px 18px;border:1px dashed var(--line);border-radius:14px;
+  color:var(--muted);font-size:14.4px;text-align:center}
 .plan-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
 .tag{font-size:11px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;
   background:var(--amber);color:#3d2c00;padding:3px 9px;border-radius:20px}
@@ -362,34 +370,54 @@ footer a:hover{color:var(--ink)}
       <button id="yBtn" aria-pressed="false" data-i="price.yearly">Yearly</button>
     </div>
     <div class="plans">
+
       <div class="plan">
-        <div class="plan-top"><h3 data-i="price.free.h">Free trial</h3></div>
-        <p class="sub" data-i="price.free.sub">Try the whole thing before you decide.</p>
-        <div class="price"><b>7</b><span data-i="price.free.unit">days, no card</span></div>
-        <p class="save">&nbsp;</p>
+        <div class="plan-top"><h3 data-i="p.b.h">Basic</h3></div>
+        <p class="sub" data-i="p.b.sub">For the teacher with a handful of groups.</p>
+        <div class="price"><b id="bVal">£5</b><span class="pUnit" data-i="price.permonth">per month</span></div>
+        <p class="save" id="bSave">&nbsp;</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="price.free.1">The full library, all four levels</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="price.free.2">Every block type and design</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="price.free.3">PDF export with answer keys</span></li>
+          <li><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.b.1">The A2 and B1 library — 58 topics</span></li>
+          <li><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.b.2">All 42 exercise block types</span></li>
+          <li><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.b.3">Vector PDF with the answer key</span></li>
+          <li><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.b.4">8 A4 designs · up to 3 pages per worksheet</span></li>
+          <li class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span data-i="p.b.5">No B2 or C1, no generators, no own footer</span></li>
         </ul>
-        <a class="btn btn-ghost" href="app.html" data-i="price.free.cta">Start the trial</a>
+        <a class="btn btn-ghost pBtn" href="app.html" data-i="p.cta.b">Choose Basic</a>
       </div>
+
       <div class="plan pro">
-        <div class="plan-top"><h3 data-i="price.pro.h">Pro</h3><span class="tag" data-i="price.pro.tag">Full access</span></div>
-        <p class="sub" data-i="price.pro.sub">For teachers who make worksheets every week.</p>
-        <div class="price"><b id="priceVal">£6</b><span id="priceUnit" data-i="price.permonth">per month</span></div>
-        <p class="save" id="saveNote">&nbsp;</p>
+        <div class="plan-top"><h3 data-i="p.p.h">Pro</h3><span class="tag" data-i="p.p.tag">Most teachers</span></div>
+        <p class="sub" data-i="p.p.sub">The whole library and the whole builder.</p>
+        <div class="price"><b id="pVal">£9</b><span class="pUnit" data-i="price.permonth">per month</span></div>
+        <p class="save" id="pSave">&nbsp;</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="price.pro.1">All 235 topics, updated as new ones are written</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="price.pro.2">Unlimited worksheets and PDF exports</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="price.pro.3">Crossword and word search generators</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="price.pro.4">Your own branding on every printed page</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="price.pro.5">Cancel any time, from the payment receipt</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.p.1">Everything in Basic, plus:</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.p.2">All 235 topics — B2 and C1 included, with the complete Advanced Grammar in Use syllabus</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.p.3">All 40 designs, unlimited pages</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.p.4">Crossword and word search generators</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.p.5">Your own name or school on every printed page</span></li>
         </ul>
-        <a class="btn btn-solid" id="buyBtn" href="app.html" data-i="price.pro.cta">Subscribe</a>
-        <p class="fineprint" data-i="price.fine">Secure checkout. Cancel whenever you like.</p>
+        <a class="btn btn-solid pBtn" href="app.html" data-i="p.cta.p">Choose Pro</a>
+      </div>
+
+      <div class="plan">
+        <div class="plan-top"><h3 data-i="p.m.h">Max</h3><span class="tag" data-i="p.m.tag">Schools</span></div>
+        <p class="sub" data-i="p.m.sub">For a language school or a teaching team.</p>
+        <div class="price"><b id="mVal">£19</b><span class="pUnit" data-i="price.permonth">per month</span></div>
+        <p class="save" id="mSave">&nbsp;</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.m.1">Everything in Pro, plus:</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.m.2">Five licence keys — one for each teacher</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.m.3">The school name and logo on every worksheet</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.m.4">New topics and features first</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.m.5">Help by e-mail within a day</span></li>
+        </ul>
+        <a class="btn btn-ghost pBtn" href="app.html" data-i="p.cta.m">Choose Max</a>
       </div>
     </div>
+
+    <p class="trialnote" data-i="price.trial">Every plan starts with a free 7-day trial — no card, no account. Open the builder, work through a week of lessons, and decide afterwards.</p>
   </div>
 </section>
 
@@ -428,9 +456,20 @@ footer a:hover{color:var(--ink)}
 </footer>
 
 <script>
-/* ══ Prices and payment links — edit these five lines ══════════════════ */
-var PRICE_MONTHLY = '£6',  PRICE_YEARLY = '£60';
-var PAY_MONTHLY   = '',    PAY_YEARLY   = '';   /* paste checkout URLs here */
+/* ══ Prices ═══════════════════════════════════════════════════════════
+   Yearly is ten months' money for twelve, so two months come free.
+   Checkout links stay empty while access is granted by hand: the buttons
+   then open the builder, where the licence key is entered.            */
+var PRICES = {
+  basic: { m:'£5',  y:'£50'  },
+  pro:   { m:'£9',  y:'£90'  },
+  max:   { m:'£19', y:'£190' }
+};
+var PAY = {                       /* paste checkout URLs here when ready */
+  basic:{ m:'', y:'' },
+  pro:  { m:'', y:'' },
+  max:  { m:'', y:'' }
+};
 
 /* ══ Translations ═════════════════════════════════════════════════════ */
 var I18N = {
@@ -462,21 +501,28 @@ en:{
  's1.h':'Choose a topic','s1.p':'Open the exercise library, filter by level, and pick the grammar point or vocabulary set you are teaching this week.',
  's2.h':'Drop what you need','s2.p':'Click a single exercise onto the page, or take the whole worksheet — theory card, full sequence and key. Rearrange, edit and add your own blocks.',
  's3.h':'Export and print','s3.p':'Apply one of forty A4 designs, switch on the answer key and download the PDF. Or e-mail it straight from the browser.',
- 'price.eyebrow':'Pricing','price.h2':'One plan. Everything included.',
- 'price.lede':'No feature tiers and no per-worksheet limits — every teacher gets the whole library and the whole builder.',
+ 'price.eyebrow':'Pricing','price.h2':'Three plans. Pick the one that matches your week.',
+ 'price.lede':'Every plan is the same builder — what changes is how much of the library you open and how far the printing goes.',
  'price.monthly':'Monthly','price.yearly':'Yearly','price.permonth':'per month','price.peryear':'per year','price.save':'Two months free',
- 'price.free.h':'Free trial','price.free.sub':'Try the whole thing before you decide.','price.free.unit':'days, no card',
- 'price.free.1':'The full library, all four levels','price.free.2':'Every block type and design','price.free.3':'PDF export with answer keys','price.free.cta':'Start the trial',
- 'price.pro.h':'Pro','price.pro.tag':'Full access','price.pro.sub':'For teachers who make worksheets every week.',
- 'price.pro.1':'All 235 topics, updated as new ones are written','price.pro.2':'Unlimited worksheets and PDF exports','price.pro.3':'Crossword and word search generators','price.pro.4':'Your own branding on every printed page','price.pro.5':'Cancel any time, from the payment receipt',
- 'price.pro.cta':'Subscribe','price.pro.cta2':'Open the builder','price.fine':'Secure checkout. Cancel whenever you like.',
+ 'price.open':'Open the builder',
+ 'price.trial':'Every plan starts with a free 7-day trial — no card, no account. Open the builder, work through a week of lessons, and decide afterwards.',
+ 'p.b.h':'Basic','p.b.sub':'For the teacher with a handful of groups.',
+ 'p.b.1':'The A2 and B1 library — 58 topics','p.b.2':'All 42 exercise block types','p.b.3':'Vector PDF with the answer key',
+ 'p.b.4':'8 A4 designs · up to 3 pages per worksheet','p.b.5':'No B2 or C1, no generators, no own footer',
+ 'p.p.h':'Pro','p.p.tag':'Most teachers','p.p.sub':'The whole library and the whole builder.',
+ 'p.p.1':'Everything in Basic, plus:','p.p.2':'All 235 topics — B2 and C1 included, with the complete Advanced Grammar in Use syllabus',
+ 'p.p.3':'All 40 designs, unlimited pages','p.p.4':'Crossword and word search generators','p.p.5':'Your own name or school on every printed page',
+ 'p.m.h':'Max','p.m.tag':'Schools','p.m.sub':'For a language school or a teaching team.',
+ 'p.m.1':'Everything in Pro, plus:','p.m.2':'Five licence keys — one for each teacher','p.m.3':'The school name and logo on every worksheet',
+ 'p.m.4':'New topics and features first','p.m.5':'Help by e-mail within a day',
+ 'p.cta.b':'Choose Basic','p.cta.p':'Choose Pro','p.cta.m':'Choose Max',
  'faq.eyebrow':'Good to know','faq.h2':'Questions teachers ask first.',
  'q1':'Do I need to install anything?','a1':'No. Worksheet Studio opens in your browser on a Mac, a PC or an iPad. On an iPad you can add it to your home screen and it behaves like an app.',
  'q2':'Where are my worksheets stored?','a2':'On your own device. Nothing is uploaded to a server. Your work is saved automatically in the browser, and you can also save project files and open them again later.',
  'q3':'Does it work without internet?','a3':'Yes. Once the page has loaded, everything — the library, the editor and the PDF export — runs locally. Useful in a classroom with unreliable Wi-Fi.',
  'q4':'Can I edit the ready-made exercises?','a4':'Every block you drop on the page is fully editable: change the sentences, add your own items, delete what you do not need, and reorder anything.',
  'q5':'Is the answer key automatic?','a5':'Yes. Switch it on and the key is generated from the exercises on your page and added as a final sheet, with marks totalled if you have set them.',
- 'q6':'Can I put my school’s name on the worksheets?','a6':'Yes. Set a footer once in the settings and it appears at the bottom of every page you print.',
+ 'q6':'Can I put my school’s name on the worksheets?','a6':'Yes, on Pro and Max. Set a footer once in the settings and it appears at the bottom of every page you print. Basic prints the Worksheet Studio footer.',
  'close.h2':'Stop making worksheets by hand.','close.p':'Open the builder, pick tomorrow’s grammar point, and print. The first week is free.','close.cta':'Open the builder'
 },
 ru:{
@@ -507,21 +553,28 @@ ru:{
  's1.h':'Выберите тему','s1.p':'Откройте библиотеку, отфильтруйте по уровню и возьмите ту грамматику или лексику, которую проходите на этой неделе.',
  's2.h':'Положите нужное','s2.p':'Добавьте одно упражнение или весь лист сразу — правило, цепочка заданий и ключ. Переставляйте, редактируйте, добавляйте своё.',
  's3.h':'Выгрузите и печатайте','s3.p':'Выберите один из сорока дизайнов А4, включите ключ и скачайте PDF. Или отправьте его почтой прямо из браузера.',
- 'price.eyebrow':'Тарифы','price.h2':'Один тариф. Всё включено.',
- 'price.lede':'Никаких урезанных версий и лимитов на количество листов — каждый учитель получает всю библиотеку и весь конструктор.',
+ 'price.eyebrow':'Тарифы','price.h2':'Три тарифа. Выберите тот, что под вашу неделю.',
+ 'price.lede':'Конструктор во всех тарифах один и тот же — отличается то, сколько библиотеки открыто и как далеко можно зайти в печати.',
  'price.monthly':'Помесячно','price.yearly':'На год','price.permonth':'в месяц','price.peryear':'в год','price.save':'Два месяца в подарок',
- 'price.free.h':'Пробный период','price.free.sub':'Попробуйте всё, прежде чем решать.','price.free.unit':'дней, без карты',
- 'price.free.1':'Вся библиотека, все четыре уровня','price.free.2':'Все типы заданий и дизайны','price.free.3':'Выгрузка в PDF с ключами','price.free.cta':'Начать бесплатно',
- 'price.pro.h':'Pro','price.pro.tag':'Полный доступ','price.pro.sub':'Для тех, кто готовит листы каждую неделю.',
- 'price.pro.1':'Все 235 тем и новые по мере появления','price.pro.2':'Сколько угодно листов и выгрузок','price.pro.3':'Генераторы кроссвордов и филвордов','price.pro.4':'Ваш бренд на каждой странице','price.pro.5':'Отмена в любой момент из письма об оплате',
- 'price.pro.cta':'Оформить подписку','price.pro.cta2':'Открыть конструктор','price.fine':'Безопасная оплата. Отменить можно когда угодно.',
+ 'price.open':'Открыть конструктор',
+ 'price.trial':'Любой тариф начинается с бесплатных 7 дней — без карты и без регистрации. Откройте конструктор, проведите на нём неделю уроков и решайте потом.',
+ 'p.b.h':'Basic','p.b.sub':'Для преподавателя с несколькими группами.',
+ 'p.b.1':'Библиотека A2 и B1 — 58 тем','p.b.2':'Все 42 типа заданий','p.b.3':'Векторный PDF с ключом ответов',
+ 'p.b.4':'8 дизайнов A4 · до 3 страниц в листе','p.b.5':'Без B2 и C1, без генераторов, без своей подписи',
+ 'p.p.h':'Pro','p.p.tag':'Выбор большинства','p.p.sub':'Вся библиотека и весь конструктор.',
+ 'p.p.1':'Всё из Basic, а также:','p.p.2':'Все 235 тем — B2 и C1 включены, вместе с полным курсом Advanced Grammar in Use',
+ 'p.p.3':'Все 40 дизайнов, страниц сколько угодно','p.p.4':'Генераторы кроссвордов и филвордов','p.p.5':'Ваше имя или школа на каждой странице',
+ 'p.m.h':'Max','p.m.tag':'Школам','p.m.sub':'Для языковой школы или команды преподавателей.',
+ 'p.m.1':'Всё из Pro, а также:','p.m.2':'Пять ключей — по одному на преподавателя','p.m.3':'Название и логотип школы на каждом листе',
+ 'p.m.4':'Новые темы и функции первыми','p.m.5':'Ответ на письмо в течение суток',
+ 'p.cta.b':'Выбрать Basic','p.cta.p':'Выбрать Pro','p.cta.m':'Выбрать Max',
  'faq.eyebrow':'Полезно знать','faq.h2':'О чём спрашивают в первую очередь.',
  'q1':'Нужно ли что-то устанавливать?','a1':'Нет. Worksheet Studio открывается в браузере на Mac, ПК и iPad. На iPad его можно добавить на домашний экран, и он будет вести себя как приложение.',
  'q2':'Где хранятся мои листы?','a2':'На вашем устройстве. На сервер ничего не отправляется. Работа сохраняется в браузере автоматически, а ещё её можно сохранить в файл проекта и открыть позже.',
  'q3':'Работает ли без интернета?','a3':'Да. После загрузки страницы всё — библиотека, редактор и выгрузка PDF — работает локально. Удобно в классе со слабым Wi-Fi.',
  'q4':'Можно ли править готовые упражнения?','a4':'Любой блок на странице полностью редактируется: меняйте предложения, добавляйте свои пункты, удаляйте лишнее и переставляйте что угодно.',
  'q5':'Ключ формируется сам?','a5':'Да. Включите его — ключ соберётся из упражнений на вашей странице и добавится отдельным листом, с итоговыми баллами, если вы их проставили.',
- 'q6':'Можно ли поставить название своей школы?','a6':'Да. Один раз укажите подпись в настройках, и она появится внизу каждой печатной страницы.',
+ 'q6':'Можно ли поставить название своей школы?','a6':'Да, на Pro и Max. Один раз укажите подпись в настройках, и она появится внизу каждой печатной страницы. На Basic внизу стоит подпись Worksheet Studio.',
  'close.h2':'Хватит верстать листы вручную.','close.p':'Откройте конструктор, выберите грамматику на завтра и печатайте. Первая неделя бесплатно.','close.cta':'Открыть конструктор'
 },
 hy:{
@@ -552,21 +605,28 @@ hy:{
  's1.h':'Ընտրեք թեման','s1.p':'Բացեք վարժությունների գրադարանը, զտեք ըստ մակարդակի և վերցրեք այն քերականությունը կամ բառապաշարը, որն անցնում եք այս շաբաթ։',
  's2.h':'Դրեք անհրաժեշտը','s2.p':'Ավելացրեք մեկ վարժություն կամ ամբողջ թերթը՝ կանոնով, վարժությունների շղթայով և բանալիով։ Տեղափոխեք, խմբագրեք և ավելացրեք ձերը։',
  's3.h':'Ներբեռնեք և տպեք','s3.p':'Ընտրեք քառասուն A4 ձևավորումներից մեկը, միացրեք բանալին և ներբեռնեք PDF-ը։ Կամ ուղարկեք փոստով անմիջապես բրաուզերից։',
- 'price.eyebrow':'Սակագներ','price.h2':'Մեկ սակագին։ Ամեն ինչ ներառված է։',
- 'price.lede':'Ոչ կրճատված տարբերակներ, ոչ սահմանափակումներ թերթերի քանակի վրա — յուրաքանչյուր ուսուցիչ ստանում է ամբողջ գրադարանն ու ամբողջ կառուցիչը։',
+ 'price.eyebrow':'Սակագներ','price.h2':'Երեք փաթեթ։ Ընտրեք ձեր շաբաթվան համապատասխանը։',
+ 'price.lede':'Կառուցիչը բոլոր փաթեթներում նույնն է — տարբերվում է այն, թե գրադարանից որքանն է բացված և որքան հեռու է գնում տպագրությունը։',
  'price.monthly':'Ամսական','price.yearly':'Տարեկան','price.permonth':'ամսական','price.peryear':'տարեկան','price.save':'Երկու ամիս նվեր',
- 'price.free.h':'Փորձնական շրջան','price.free.sub':'Փորձեք ամեն ինչ՝ նախքան որոշելը։','price.free.unit':'օր, առանց քարտի',
- 'price.free.1':'Ամբողջ գրադարանը՝ բոլոր չորս մակարդակները','price.free.2':'Բոլոր տեսակի առաջադրանքներն ու ձևավորումները','price.free.3':'PDF՝ պատասխանների բանալիներով','price.free.cta':'Սկսել անվճար',
- 'price.pro.h':'Pro','price.pro.tag':'Լիարժեք մուտք','price.pro.sub':'Նրանց համար, ովքեր թերթեր են պատրաստում ամեն շաբաթ։',
- 'price.pro.1':'Բոլոր 235 թեմաները և նորերը՝ ի հայտ գալուն պես','price.pro.2':'Անսահմանափակ թերթեր և ներբեռնումներ','price.pro.3':'Խաչբառերի և բառախաղերի գեներատորներ','price.pro.4':'Ձեր անվանումը յուրաքանչյուր էջին','price.pro.5':'Չեղարկում ցանկացած պահի՝ վճարման նամակից',
- 'price.pro.cta':'Ձեռք բերել բաժանորդագրություն','price.pro.cta2':'Բացել կառուցիչը','price.fine':'Անվտանգ վճարում։ Չեղարկեք ցանկացած պահի։',
+ 'price.open':'Բացել կառուցիչը',
+ 'price.trial':'Ցանկացած փաթեթ սկսվում է անվճար 7 օրով՝ առանց քարտի և գրանցման։ Բացեք կառուցիչը, անցկացրեք մեկ շաբաթ դասեր և որոշեք հետո։',
+ 'p.b.h':'Basic','p.b.sub':'Մի քանի խումբ ունեցող ուսուցչի համար։',
+ 'p.b.1':'A2 և B1 գրադարանը՝ 58 թեմա','p.b.2':'Բոլոր 42 տեսակի առաջադրանքները','p.b.3':'Վեկտորային PDF՝ պատասխանների բանալիով',
+ 'p.b.4':'8 A4 ձևավորում · մինչև 3 էջ մեկ թերթում','p.b.5':'Առանց B2 և C1, առանց գեներատորների, առանց սեփական ստորագրության',
+ 'p.p.h':'Pro','p.p.tag':'Մեծամասնության ընտրությունը','p.p.sub':'Ամբողջ գրադարանն ու ամբողջ կառուցիչը։',
+ 'p.p.1':'Ամեն ինչ Basic-ից, նաև՝','p.p.2':'Բոլոր 235 թեմաները՝ B2 և C1 ներառյալ, ամբողջական Advanced Grammar in Use դասընթացով',
+ 'p.p.3':'Բոլոր 40 ձևավորումները, էջերն անսահմանափակ','p.p.4':'Խաչբառերի և բառախաղերի գեներատորներ','p.p.5':'Ձեր անունը կամ դպրոցը յուրաքանչյուր էջին',
+ 'p.m.h':'Max','p.m.tag':'Դպրոցներին','p.m.sub':'Լեզվի դպրոցի կամ ուսուցիչների թիմի համար։',
+ 'p.m.1':'Ամեն ինչ Pro-ից, նաև՝','p.m.2':'Հինգ բանալի՝ մեկը յուրաքանչյուր ուսուցչի','p.m.3':'Դպրոցի անվանումն ու լոգոն յուրաքանչյուր թերթին',
+ 'p.m.4':'Նոր թեմաներն ու հնարավորությունները՝ առաջինը','p.m.5':'Պատասխան նամակին մեկ օրվա ընթացքում',
+ 'p.cta.b':'Ընտրել Basic','p.cta.p':'Ընտրել Pro','p.cta.m':'Ընտրել Max',
  'faq.eyebrow':'Օգտակար է իմանալ','faq.h2':'Ինչ են հարցնում առաջին հերթին։',
  'q1':'Պե՞տք է ինչ-որ բան տեղադրել։','a1':'Ոչ։ Worksheet Studio-ն բացվում է բրաուզերում՝ Mac-ի, համակարգչի կամ iPad-ի վրա։ iPad-ում կարող եք ավելացնել այն հիմնական էկրանին, և այն կաշխատի ինչպես հավելված։',
  'q2':'Որտե՞ղ են պահվում իմ թերթերը։','a2':'Ձեր սարքում։ Սերվեր ոչինչ չի ուղարկվում։ Աշխատանքը պահվում է բրաուզերում ինքնաբերաբար, և կարող եք նաև պահել այն նախագծի ֆայլում ու բացել ավելի ուշ։',
  'q3':'Աշխատու՞մ է առանց ինտերնետի։','a3':'Այո։ Էջը բեռնվելուց հետո ամեն ինչ՝ գրադարանը, խմբագիրը և PDF-ի ներբեռնումը, աշխատում է տեղում։ Հարմար է դասարանում՝ թույլ Wi-Fi-ի պայմաններում։',
  'q4':'Կարելի՞ է խմբագրել պատրաստի վարժությունները։','a4':'Էջի ցանկացած բլոկ լիովին խմբագրելի է՝ փոխեք նախադասությունները, ավելացրեք ձեր կետերը, ջնջեք ավելորդը և տեղափոխեք ինչ ուզեք։',
  'q5':'Բանալին ինքնաբե՞ր է կազմվում։','a5':'Այո։ Միացրեք այն, և բանալին կկազմվի ձեր էջի վարժություններից ու կավելացվի առանձին թերթով՝ միավորների գումարով, եթե դրանք նշել եք։',
- 'q6':'Կարո՞ղ եմ դնել իմ դպրոցի անվանումը։','a6':'Այո։ Մեկ անգամ նշեք ստորագրությունը կարգավորումներում, և այն կհայտնվի յուրաքանչյուր տպվող էջի ներքևում։',
+ 'q6':'Կարո՞ղ եմ դնել իմ դպրոցի անվանումը։','a6':'Այո՝ Pro-ում և Max-ում։ Մեկ անգամ նշեք ստորագրությունը կարգավորումներում, և այն կհայտնվի յուրաքանչյուր տպվող էջի ներքևում։ Basic-ում ներքևում մնում է Worksheet Studio-ի ստորագրությունը։',
  'close.h2':'Վերջ տվեք թերթերը ձեռքով ձևավորելուն։','close.p':'Բացեք կառուցիչը, ընտրեք վաղվա քերականությունը և տպեք։ Առաջին շաբաթն անվճար է։','close.cta':'Բացել կառուցիչը'
 }
 };
@@ -600,13 +660,19 @@ hy:{
 
   function paintPrice(){
     var dict = I18N[lang] || I18N.en;
-    var link = yearly ? PAY_YEARLY : PAY_MONTHLY;
-    document.getElementById('priceVal').textContent = yearly ? PRICE_YEARLY : PRICE_MONTHLY;
-    document.getElementById('priceUnit').textContent = yearly ? dict['price.peryear'] : dict['price.permonth'];
-    document.getElementById('saveNote').innerHTML = yearly ? dict['price.save'] : '&nbsp;';
-    var buy = document.getElementById('buyBtn');
-    buy.setAttribute('href', link || 'app.html');
-    buy.textContent = link ? dict['price.pro.cta'] : dict['price.pro.cta2'];
+    var per  = yearly ? dict['price.peryear'] : dict['price.permonth'];
+    [['basic','bVal','bSave','p.cta.b'],
+     ['pro',  'pVal','pSave','p.cta.p'],
+     ['max',  'mVal','mSave','p.cta.m']].forEach(function(row, i){
+      var plan = row[0];
+      document.getElementById(row[1]).textContent = yearly ? PRICES[plan].y : PRICES[plan].m;
+      document.getElementById(row[2]).innerHTML   = yearly ? dict['price.save'] : '&nbsp;';
+      var btn  = document.querySelectorAll('.pBtn')[i];
+      var link = yearly ? PAY[plan].y : PAY[plan].m;
+      btn.setAttribute('href', link || 'app.html');
+      btn.textContent = link ? dict[row[3]] : dict['price.open'];
+    });
+    document.querySelectorAll('.pUnit').forEach(function(u){ u.textContent = per; });
     document.getElementById('mBtn').setAttribute('aria-pressed', String(!yearly));
     document.getElementById('yBtn').setAttribute('aria-pressed', String(yearly));
   }
