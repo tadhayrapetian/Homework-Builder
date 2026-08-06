@@ -52,6 +52,7 @@ a{color:inherit}
 
 .wrap{width:min(1080px,calc(100% - 40px));margin-inline:auto}
 section{padding-block:clamp(56px,8vw,104px);scroll-margin-top:76px}
+h1,h2,h3,p,summary,li{overflow-wrap:break-word}
 .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
   color:var(--brand);margin:0 0 14px}
 h1,h2,h3{text-wrap:balance;margin:0;letter-spacing:-.022em;line-height:1.14}
@@ -64,7 +65,8 @@ p{margin:0}
 header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);
   backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .bar{display:flex;align-items:center;gap:12px;height:62px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:750;letter-spacing:-.02em;text-decoration:none}
+.logo{display:flex;align-items:center;gap:10px;font-weight:750;letter-spacing:-.02em;text-decoration:none;
+  white-space:nowrap}
 .mark{width:30px;height:30px;border-radius:9px;flex:none;
   background:linear-gradient(135deg,var(--brand),#8b5cf6);display:grid;place-items:center}
 .mark svg{width:19px;height:19px;display:block}
@@ -72,6 +74,17 @@ nav{margin-left:auto;display:flex;align-items:center;gap:6px}
 nav a{text-decoration:none;color:var(--muted);font-size:14.5px;font-weight:550;padding:8px 11px;border-radius:9px}
 nav a:hover{color:var(--ink);background:var(--soft)}
 @media(max-width:860px){nav .hide-sm{display:none}}
+nav .btn{white-space:nowrap}
+@media(max-width:520px){
+  .bar{gap:8px}
+  .logo{font-size:15px}
+  .logo .mark{width:26px;height:26px}
+  nav{gap:3px}
+  nav .btn{padding:8px 11px;font-size:13px}
+  .lang{margin-right:2px;padding:2px}
+  .lang button{padding:5px 6px;font-size:11.5px}
+}
+@media(max-width:560px){ .logo .txt{display:none} }
 
 .lang{display:inline-flex;gap:2px;padding:3px;background:var(--soft);border-radius:9px;margin-right:4px}
 .lang button{font:inherit;font-size:12.5px;font-weight:700;letter-spacing:.03em;border:0;cursor:pointer;
@@ -138,13 +151,14 @@ nav a:hover{color:var(--ink);background:var(--soft)}
   display:grid;place-items:center;margin-bottom:5px}
 .ic svg{width:19px;height:19px;display:block}
 
-.levels{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
-@media(min-width:820px){.levels{grid-template-columns:repeat(4,1fr)}}
+.levels{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:420px){.levels{grid-template-columns:1fr}}
+@media(min-width:820px){.levels{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .level{border:1px solid var(--line);border-radius:var(--r);padding:18px;background:var(--raise)}
 .level b{display:flex;align-items:baseline;gap:8px;font-size:20px;letter-spacing:-.02em}
 .level b i{font-style:normal;font-size:13px;font-weight:600;color:var(--brand);
   background:var(--soft);padding:2px 8px;border-radius:20px;font-variant-numeric:tabular-nums}
-.level p{margin-top:8px;font-size:13.6px;color:var(--muted)}
+.level p{margin-top:8px;font-size:13.6px;color:var(--muted);overflow-wrap:break-word}
 .topics{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px}
 .chip{border:1px solid var(--line);border-radius:20px;padding:6px 13px;font-size:13.4px;
   color:var(--muted);background:var(--raise)}
@@ -172,6 +186,34 @@ nav a:hover{color:var(--ink);background:var(--soft)}
 .plan li.no svg{color:var(--muted)}
 .trialnote{margin-top:22px;padding:16px 18px;border:1px dashed var(--line);border-radius:14px;
   color:var(--muted);font-size:14.4px;text-align:center}
+
+/* ---------- sign up ---------- */
+.join{display:grid;gap:34px;grid-template-columns:1fr;align-items:start}
+@media(min-width:900px){.join{grid-template-columns:1fr 1.05fr;gap:56px}}
+.howto{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:20px;counter-reset:h}
+.howto li{counter-increment:h;display:grid;grid-template-columns:32px 1fr;gap:14px;align-items:start}
+.howto li::before{content:counter(h);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;
+  background:var(--brand);color:#fff;font-size:14px;font-weight:750}
+.howto b{display:block;font-size:15.6px;margin-bottom:3px}
+.howto span{color:var(--muted);font-size:14.6px;line-height:1.55}
+.card-form{background:var(--raise);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px 26px}
+.frm{display:grid;gap:15px}
+.frm .row{display:grid;gap:15px}
+@media(min-width:560px){.frm .row{grid-template-columns:1fr 1fr}}
+.frm label{display:block;font-size:13px;font-weight:650;margin-bottom:6px}
+.frm input,.frm select,.frm textarea{width:100%;font:inherit;font-size:15px;color:var(--ink);
+  background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+.frm textarea{min-height:84px;resize:vertical}
+.frm input:focus,.frm select:focus,.frm textarea:focus{outline:none;border-color:var(--brand);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 16%,transparent)}
+.frm .hp{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.frm .btn{width:100%;margin-top:4px}
+.frm .note{font-size:12.8px;color:var(--muted);text-align:center;margin-top:-2px}
+.formmsg{display:none;padding:14px 16px;border-radius:12px;font-size:14.4px;line-height:1.5}
+.formmsg.ok{display:block;background:color-mix(in srgb,var(--ok) 12%,transparent);color:var(--ok)}
+.formmsg.bad{display:block;background:#fee2e2;color:#b91c1c}
+:root[data-theme="dark"] .formmsg.bad{background:#3b1414;color:#fca5a5}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .formmsg.bad{background:#3b1414;color:#fca5a5}}
 .plan-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
 .tag{font-size:11px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;
   background:var(--amber);color:#3d2c00;padding:3px 9px;border-radius:20px}
@@ -189,7 +231,7 @@ nav a:hover{color:var(--ink);background:var(--soft)}
 .faq{display:grid;border-top:1px solid var(--line)}
 details{border-bottom:1px solid var(--line)}
 summary{cursor:pointer;list-style:none;padding:19px 4px;font-weight:650;font-size:16.5px;
-  display:flex;align-items:center;justify-content:space-between;gap:16px}
+  display:flex;align-items:center;justify-content:space-between;gap:16px;overflow-wrap:anywhere}
 summary::-webkit-details-marker{display:none}
 summary::after{content:"+";color:var(--brand);font-size:22px;font-weight:400;line-height:1}
 details[open] summary::after{content:"−"}
@@ -210,7 +252,7 @@ footer a:hover{color:var(--ink)}
   <div class="wrap bar">
     <a class="logo" href="#top">
       <span class="mark" aria-hidden="true"><svg viewBox="0 0 100 100" fill="none"><path d="M27 31h46M50 31v42" stroke="#fff" stroke-width="11" stroke-linecap="round"/><circle cx="74" cy="72" r="9" fill="#fbbf24"/></svg></span>
-      Worksheet Studio
+      <span class="txt">Worksheet Studio</span>
     </a>
     <nav>
       <a class="hide-sm" href="#features" data-i="nav.features">Features</a>
@@ -221,7 +263,8 @@ footer a:hover{color:var(--ink)}
         <button data-lang="en">EN</button>
         <button data-lang="ru">РУС</button>
       </span>
-      <a class="btn btn-solid btn-sm" href="app.html" data-i="nav.open">Open the builder</a>
+      <a class="hide-sm" href="app.html" data-i="nav.login">Log in</a>
+      <a class="btn btn-solid btn-sm" href="#join" data-i="nav.join">Get a key</a>
     </nav>
   </div>
 </header>
@@ -421,7 +464,60 @@ footer a:hover{color:var(--ink)}
   </div>
 </section>
 
-<section id="faq">
+<section id="join">
+  <div class="wrap" style="display:block">
+    <div class="join">
+      <div>
+        <p class="eyebrow" data-i="join.eyebrow">Getting started</p>
+        <h2 data-i="join.h2">No account to create. A key, and you are in.</h2>
+        <p class="lede" data-i="join.lede">There is no password to invent and no profile to fill in. You ask for a key, it arrives by e-mail, and you type it once — on every device you teach from.</p>
+        <ol class="howto">
+          <li><div><b data-i="join.s1.h">Send the form</b><span data-i="join.s1.p">Tell us your name, your e-mail and which plan suits you. It takes half a minute.</span></div></li>
+          <li><div><b data-i="join.s2.h">Get your key</b><span data-i="join.s2.p">A licence key comes back to that e-mail, usually the same day, together with the link to the builder.</span></div></li>
+          <li><div><b data-i="join.s3.h">Type it once</b><span data-i="join.s3.p">The builder remembers it. Come back tomorrow and it opens straight onto your worksheets — no login screen, no password.</span></div></li>
+        </ol>
+        <p class="trialnote" style="text-align:left" data-i="join.trial">In a hurry? Open the builder and press <b>start a 7-day trial</b> — full access at once, no form and no card. Ask for the key later.</p>
+      </div>
+
+      <div class="card-form">
+        <form class="frm" id="joinForm" name="signup" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="signup">
+          <p class="hp"><label>Leave this empty <input name="bot-field"></label></p>
+          <div class="row">
+            <div><label for="jName" data-i="join.f.name">Your name</label>
+              <input id="jName" name="name" required autocomplete="name" data-ph="join.ph.name" placeholder="Anna Petrosyan"></div>
+            <div><label for="jMail" data-i="join.f.mail">E-mail</label>
+              <input id="jMail" name="email" type="email" required autocomplete="email" placeholder="anna@example.com"></div>
+          </div>
+          <div class="row">
+            <div><label for="jPlan" data-i="join.f.plan">Plan</label>
+              <select id="jPlan" name="plan">
+                <option value="trial" data-i="join.o.trial">7-day trial</option>
+                <option value="basic" data-i="join.o.basic">Basic</option>
+                <option value="pro" selected data-i="join.o.pro">Pro</option>
+                <option value="max" data-i="join.o.max">Max — school</option>
+              </select></div>
+            <div><label for="jLang" data-i="join.f.lang">Write to me in</label>
+              <select id="jLang" name="language">
+                <option value="hy" lang="hy">Հայերեն</option>
+                <option value="en">English</option>
+                <option value="ru">Русский</option>
+              </select></div>
+          </div>
+          <div><label for="jSchool"><span data-i="join.f.school">School or where you teach</span> <span style="font-weight:400;color:var(--muted)" data-i="join.f.opt">— optional</span></label>
+            <input id="jSchool" name="school" autocomplete="organization"></div>
+          <div><label for="jNote"><span data-i="join.f.note">Anything you want to ask</span> <span style="font-weight:400;color:var(--muted)" data-i="join.f.opt2">— optional</span></label>
+            <textarea id="jNote" name="message"></textarea></div>
+          <button class="btn btn-solid" type="submit" id="joinSend" data-i="join.f.send">Ask for a key</button>
+          <p class="note" data-i="join.f.fine">Your address is used to send the key and nothing else.</p>
+        </form>
+        <div class="formmsg" id="joinMsg"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="band">
   <div class="wrap">
     <div class="head">
       <p class="eyebrow" data-i="faq.eyebrow">Good to know</p>
@@ -471,6 +567,9 @@ var PAY = {                       /* paste checkout URLs here when ready */
   max:  { m:'', y:'' }
 };
 
+/* Where a key request goes if the form cannot reach Netlify. */
+var CONTACT_EMAIL = 'tadhayrapetian8@gmail.com';
+
 /* ══ Translations ═════════════════════════════════════════════════════ */
 var I18N = {
 en:{
@@ -501,6 +600,19 @@ en:{
  's1.h':'Choose a topic','s1.p':'Open the exercise library, filter by level, and pick the grammar point or vocabulary set you are teaching this week.',
  's2.h':'Drop what you need','s2.p':'Click a single exercise onto the page, or take the whole worksheet — theory card, full sequence and key. Rearrange, edit and add your own blocks.',
  's3.h':'Export and print','s3.p':'Apply one of forty A4 designs, switch on the answer key and download the PDF. Or e-mail it straight from the browser.',
+ 'nav.login':'Log in','nav.join':'Get a key',
+ 'join.eyebrow':'Getting started','join.h2':'No account to create. A key, and you are in.',
+ 'join.lede':'There is no password to invent and no profile to fill in. You ask for a key, it arrives by e-mail, and you type it once — on every device you teach from.',
+ 'join.s1.h':'Send the form','join.s1.p':'Tell us your name, your e-mail and which plan suits you. It takes half a minute.',
+ 'join.s2.h':'Get your key','join.s2.p':'A licence key comes back to that e-mail, usually the same day, together with the link to the builder.',
+ 'join.s3.h':'Type it once','join.s3.p':'The builder remembers it. Come back tomorrow and it opens straight onto your worksheets — no login screen, no password.',
+ 'join.trial':'In a hurry? Open the builder and press start a 7-day trial — full access at once, no form and no card. Ask for the key later.',
+ 'join.ph.name':'Anna Petrosyan','join.f.name':'Your name','join.f.mail':'E-mail','join.f.plan':'Plan','join.f.lang':'Write to me in',
+ 'join.o.trial':'7-day trial','join.o.basic':'Basic','join.o.pro':'Pro','join.o.max':'Max — school',
+ 'join.f.school':'School or where you teach','join.f.opt':'— optional','join.f.note':'Anything you want to ask','join.f.opt2':'— optional',
+ 'join.f.send':'Ask for a key','join.f.sending':'Sending…','join.f.fine':'Your address is used to send the key and nothing else.',
+ 'join.f.ok':'Thank you — the request is in. Your key will come to that e-mail, usually the same day. Meanwhile the 7-day trial is open in the builder.',
+ 'join.f.bad':'The form could not be sent from here.','join.f.bad2':'Send it by e-mail instead →',
  'price.eyebrow':'Pricing','price.h2':'Three plans. Pick the one that matches your week.',
  'price.lede':'Every plan is the same builder — what changes is how much of the library you open and how far the printing goes.',
  'price.monthly':'Monthly','price.yearly':'Yearly','price.permonth':'per month','price.peryear':'per year','price.save':'Two months free',
@@ -553,6 +665,19 @@ ru:{
  's1.h':'Выберите тему','s1.p':'Откройте библиотеку, отфильтруйте по уровню и возьмите ту грамматику или лексику, которую проходите на этой неделе.',
  's2.h':'Положите нужное','s2.p':'Добавьте одно упражнение или весь лист сразу — правило, цепочка заданий и ключ. Переставляйте, редактируйте, добавляйте своё.',
  's3.h':'Выгрузите и печатайте','s3.p':'Выберите один из сорока дизайнов А4, включите ключ и скачайте PDF. Или отправьте его почтой прямо из браузера.',
+ 'nav.login':'Войти','nav.join':'Получить ключ',
+ 'join.eyebrow':'С чего начать','join.h2':'Регистрироваться не нужно. Ключ — и вы внутри.',
+ 'join.lede':'Не надо придумывать пароль и заполнять профиль. Вы оставляете заявку, ключ приходит на почту, и вы вводите его один раз — на каждом устройстве, с которого ведёте уроки.',
+ 'join.s1.h':'Оставьте заявку','join.s1.p':'Имя, почта и подходящий тариф. Полминуты.',
+ 'join.s2.h':'Получите ключ','join.s2.p':'Лицензионный ключ придёт на эту почту, обычно в тот же день, вместе со ссылкой на конструктор.',
+ 'join.s3.h':'Введите его один раз','join.s3.p':'Конструктор его запомнит. Завтра он откроется сразу на ваших листах — без экрана входа и без пароля.',
+ 'join.trial':'Некогда ждать? Откройте конструктор и нажмите «начать 7 дней бесплатно» — полный доступ сразу, без заявки и без карты. За ключом придёте позже.',
+ 'join.ph.name':'Анна Петросян','join.f.name':'Ваше имя','join.f.mail':'Почта','join.f.plan':'Тариф','join.f.lang':'Писать мне на',
+ 'join.o.trial':'7 дней бесплатно','join.o.basic':'Basic','join.o.pro':'Pro','join.o.max':'Max — школа',
+ 'join.f.school':'Школа или где преподаёте','join.f.opt':'— необязательно','join.f.note':'Что хотите спросить','join.f.opt2':'— необязательно',
+ 'join.f.send':'Запросить ключ','join.f.sending':'Отправляем…','join.f.fine':'Адрес нужен только чтобы прислать ключ.',
+ 'join.f.ok':'Спасибо — заявка принята. Ключ придёт на эту почту, обычно в тот же день. А пока в конструкторе открыты 7 бесплатных дней.',
+ 'join.f.bad':'Отсюда форма не отправилась.','join.f.bad2':'Отправить почтой →',
  'price.eyebrow':'Тарифы','price.h2':'Три тарифа. Выберите тот, что под вашу неделю.',
  'price.lede':'Конструктор во всех тарифах один и тот же — отличается то, сколько библиотеки открыто и как далеко можно зайти в печати.',
  'price.monthly':'Помесячно','price.yearly':'На год','price.permonth':'в месяц','price.peryear':'в год','price.save':'Два месяца в подарок',
@@ -605,6 +730,19 @@ hy:{
  's1.h':'Ընտրեք թեման','s1.p':'Բացեք վարժությունների գրադարանը, զտեք ըստ մակարդակի և վերցրեք այն քերականությունը կամ բառապաշարը, որն անցնում եք այս շաբաթ։',
  's2.h':'Դրեք անհրաժեշտը','s2.p':'Ավելացրեք մեկ վարժություն կամ ամբողջ թերթը՝ կանոնով, վարժությունների շղթայով և բանալիով։ Տեղափոխեք, խմբագրեք և ավելացրեք ձերը։',
  's3.h':'Ներբեռնեք և տպեք','s3.p':'Ընտրեք քառասուն A4 ձևավորումներից մեկը, միացրեք բանալին և ներբեռնեք PDF-ը։ Կամ ուղարկեք փոստով անմիջապես բրաուզերից։',
+ 'nav.login':'Մուտք','nav.join':'Ստանալ բանալի',
+ 'join.eyebrow':'Որտեղից սկսել','join.h2':'Գրանցվել պետք չէ։ Բանալի — և դուք ներսում եք։',
+ 'join.lede':'Գաղտնաբառ հորինել և պրոֆիլ լրացնել պետք չէ։ Դուք հայտ եք թողնում, բանալին գալիս է փոստին, և մուտքագրում եք այն մեկ անգամ՝ ամեն սարքի վրա, որտեղից դասավանդում եք։',
+ 'join.s1.h':'Թողեք հայտը','join.s1.p':'Անուն, փոստ և ձեզ հարմար փաթեթ։ Կես րոպե։',
+ 'join.s2.h':'Ստացեք բանալին','join.s2.p':'Լիցենզիոն բանալին կգա այդ փոստին, սովորաբար նույն օրը, կառուցիչի հղումի հետ միասին։',
+ 'join.s3.h':'Մուտքագրեք մեկ անգամ','join.s3.p':'Կառուցիչը կհիշի այն։ Վաղը այն կբացվի ուղիղ ձեր թերթերի վրա՝ առանց մուտքի էկրանի և գաղտնաբառի։',
+ 'join.trial':'Շտապո՞ւմ եք։ Բացեք կառուցիչը և սեղմեք «սկսել 7 անվճար օրը» — լիարժեք մուտք անմիջապես, առանց հայտի և քարտի։ Բանալու համար կգաք ավելի ուշ։',
+ 'join.ph.name':'Աննա Հակոբյան','join.f.name':'Ձեր անունը','join.f.mail':'Փոստ','join.f.plan':'Փաթեթ','join.f.lang':'Գրել ինձ',
+ 'join.o.trial':'7 օր անվճար','join.o.basic':'Basic','join.o.pro':'Pro','join.o.max':'Max — դպրոց',
+ 'join.f.school':'Դպրոց կամ որտեղ եք դասավանդում','join.f.opt':'— ըստ ցանկության','join.f.note':'Ինչ ուզում եք հարցնել','join.f.opt2':'— ըստ ցանկության',
+ 'join.f.send':'Հայցել բանալի','join.f.sending':'Ուղարկվում է…','join.f.fine':'Հասցեն պետք է միայն բանալին ուղարկելու համար։',
+ 'join.f.ok':'Շնորհակալություն — հայտն ընդունված է։ Բանալին կգա այդ փոստին, սովորաբար նույն օրը։ Իսկ առայժմ կառուցիչում բաց են 7 անվճար օրերը։',
+ 'join.f.bad':'Այստեղից ձևը չուղարկվեց։','join.f.bad2':'Ուղարկել փոստով →',
  'price.eyebrow':'Սակագներ','price.h2':'Երեք փաթեթ։ Ընտրեք ձեր շաբաթվան համապատասխանը։',
  'price.lede':'Կառուցիչը բոլոր փաթեթներում նույնն է — տարբերվում է այն, թե գրադարանից որքանն է բացված և որքան հեռու է գնում տպագրությունը։',
  'price.monthly':'Ամսական','price.yearly':'Տարեկան','price.permonth':'ամսական','price.peryear':'տարեկան','price.save':'Երկու ամիս նվեր',
@@ -651,10 +789,17 @@ hy:{
       var v = dict[el.getAttribute('data-i')];
       if(v != null) el.textContent = v;
     });
+    document.querySelectorAll('[data-ph]').forEach(function(el){
+      var v = dict[el.getAttribute('data-ph')];
+      if(v != null) el.setAttribute('placeholder', v);
+    });
     document.querySelectorAll('.lang button').forEach(function(b){
       b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang));
     });
     try{ localStorage.setItem(KEY, lang); }catch(e){}
+    /* "Write to me in" follows the page until the visitor picks for themselves */
+    var jl = document.getElementById('jLang');
+    if(jl && !jl.dataset.touched) jl.value = lang;
     paintPrice();
   }
 
@@ -669,8 +814,9 @@ hy:{
       document.getElementById(row[2]).innerHTML   = yearly ? dict['price.save'] : '&nbsp;';
       var btn  = document.querySelectorAll('.pBtn')[i];
       var link = yearly ? PAY[plan].y : PAY[plan].m;
-      btn.setAttribute('href', link || 'app.html');
-      btn.textContent = link ? dict[row[3]] : dict['price.open'];
+      btn.setAttribute('href', link || '#join');
+      btn.setAttribute('data-plan', plan);
+      btn.textContent = dict[row[3]];
     });
     document.querySelectorAll('.pUnit').forEach(function(u){ u.textContent = per; });
     document.getElementById('mBtn').setAttribute('aria-pressed', String(!yearly));
@@ -682,6 +828,63 @@ hy:{
   });
   document.getElementById('mBtn').addEventListener('click', function(){ yearly = false; paintPrice(); });
   document.getElementById('yBtn').addEventListener('click', function(){ yearly = true;  paintPrice(); });
+
+  document.getElementById('jLang').addEventListener('change', function(){ this.dataset.touched = '1'; });
+
+  /* A plan button carries its plan into the form below. */
+  document.querySelectorAll('.pBtn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var p = b.getAttribute('data-plan');
+      if(b.getAttribute('href') === '#join' && p) document.getElementById('jPlan').value = p;
+    });
+  });
+
+  /* ── the sign-up form ──────────────────────────────────────────────
+     Netlify collects it: the submission lands in the site's Forms tab
+     and is e-mailed on. If the POST cannot go through — the page opened
+     from a file, the site not on Netlify — the details are handed to the
+     mail client instead, so a request is never simply lost. */
+  var form = document.getElementById('joinForm'),
+      msg  = document.getElementById('joinMsg'),
+      send = document.getElementById('joinSend');
+
+  function mailtoFallback(data){
+    var body = Object.keys(data).filter(function(k){ return k !== 'form-name' && k !== 'bot-field'; })
+      .map(function(k){ return k + ': ' + data[k]; }).join('\n');
+    return 'mailto:' + CONTACT_EMAIL + '?subject=' +
+      encodeURIComponent('Worksheet Studio — licence key request') +
+      '&body=' + encodeURIComponent(body);
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var dict = I18N[lang] || I18N.en;
+    var fd = new FormData(form), data = {};
+    fd.forEach(function(v, k){ data[k] = v; });
+    if(data['bot-field']) return;                       /* a bot filled the honeypot */
+
+    msg.className = 'formmsg';
+    send.disabled = true;
+    send.textContent = dict['join.f.sending'];
+
+    fetch('/', {
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:new URLSearchParams(fd).toString()
+    }).then(function(r){
+      if(!r.ok) throw new Error(r.status);
+      form.style.display = 'none';
+      msg.className = 'formmsg ok';
+      msg.textContent = dict['join.f.ok'];
+    }).catch(function(){
+      msg.className = 'formmsg bad';
+      msg.innerHTML = dict['join.f.bad'] +
+        ' <a href="' + mailtoFallback(data) + '" style="color:inherit;font-weight:700">' +
+        dict['join.f.bad2'] + '</a>';
+      send.disabled = false;
+      send.textContent = dict['join.f.send'];
+    });
+  });
 
   document.getElementById('yr').textContent = new Date().getFullYear();
   applyLang(pickInitial());

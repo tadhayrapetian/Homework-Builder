@@ -64,6 +64,24 @@ var PAY    = { basic:{m:'',y:''},     pro:{m:'',y:''},      max:{m:'',y:''} };
 
 While the `PAY` links are empty the plan buttons simply open the builder, where the licence key is entered. Paste checkout URLs into `PAY` when a payment provider is connected.
 
+## Signing in and signing up
+
+There are no accounts and no passwords. Two doors lead into the builder:
+
+- **Sign in** — the teacher types their licence key on the lock screen of `app.html`. It is remembered in that browser, so they only ever type it once per device.
+- **Get a key** — a short form (name, e-mail, plan), on the landing page under **#join** and repeated as the second tab of the lock screen. Both post to the same place.
+- **The trial** — a button on the lock screen opens seven days at Pro level immediately, with no form at all.
+
+The form is a Netlify form called `signup`. Submissions appear under **Site configuration → Forms** in the Netlify dashboard. **They are not e-mailed to anyone until you add a notification**: Netlify → your site → *Forms* → *Form notifications* → *Add notification* → *Email notification*, and put your address in. Do that once, or requests will sit in the dashboard unseen.
+
+If the POST cannot get through — the page was opened from a file, or the site is not on Netlify — the form falls back to a `mailto:` link holding the same details, so a request is never silently lost. The fallback address is one constant near the foot of `index.html` and another in `app.html`:
+
+```js
+var CONTACT_EMAIL = 'tadhayrapetian8@gmail.com';
+```
+
+The name a teacher signs up with is kept in their browser and becomes the default page footer, so their worksheets carry their name from the first print.
+
 ## Licence keys
 
 Access is granted by hand: you issue a key from `admin.html` and send it to the teacher.
