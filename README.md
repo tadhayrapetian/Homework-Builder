@@ -1,37 +1,54 @@
 # Worksheet Studio
 
-A free, offline **worksheet & lesson builder** for A4 printables. Build worksheets block by block, apply one of 40 designs, and export a clean PDF. Works on Mac and iPad — no install, no account, no internet required.
+A worksheet and lesson builder for English teachers — A4 printables, built block by block, exported as a clean vector PDF. Runs in the browser on a Mac, a PC or an iPad. No install, no account, no internet required once the page has loaded.
 
-**▶️ Website: https://tadhayrapetian.github.io/Homework-Builder/**
-**🛠 Builder: https://tadhayrapetian.github.io/Homework-Builder/app.html**
+**Site:** https://sunny-figolla-4c9069.netlify.app
+**Builder:** https://sunny-figolla-4c9069.netlify.app/app.html
+
+## What is in the repository
+
+| File | What it is |
+| --- | --- |
+| `index.html` | The landing page — Armenian, English and Russian, with pricing |
+| `app.html` | The builder itself: editor, exercise library, PDF export |
+| `admin.html` | Private order ledger (`/admin.html`, password in the script) |
+| `netlify.toml` | Caching, security headers and the `/app` short URL |
+| `robots.txt` | Keeps the admin page out of search engines |
+
+Everything is plain HTML, CSS and JavaScript in single self-contained files. There is no build step and no external dependency: upload the files and they are live.
 
 ## Features
 
-- **Drag-and-build editor** — 42 block types: headers, instructions, reading text, multiple choice, true/false, gap-fill, matching, odd-one-out, unscramble, tables, writing lines, handwriting practice, images, and more.
-- **Exercise Library** — ready-made, pre-filled exercises for **vocabulary** and **grammar**, ordered from recognition to free production (receptive → productive / PPP). One click drops a complete exercise onto the page.
-- **B1 + C1 grammar courses** — 116 topics with theory cards (form · use · signal words) and 1100 exercises; "Full worksheet" builds a whole printable page with an answer key.
-- **Built-in dictionary** — type words into a vocabulary list and English definitions / Russian translations fill in automatically (offline).
-- **40 A4 designs** — plus adjustable accent colour, 11 header styles, page backgrounds, and fonts.
-- **Crossword generator** — type words + clues and it auto-interlocks the grid with numbered Across/Down lists.
-- **Word search generator** — hides your words in a grid automatically.
-- **Answer key** — toggle an auto-generated answer-key page appended at the end.
-- **Points / scoring** — add marks per exercise; totals appear on the answer key.
-- **Custom footer branding** on every page.
-- **Multi-page**, undo/redo, autosave, and save/open project files (`.wsp`).
-- **Vector PDF export** — one click downloads a true vector PDF (selectable text, sharp at any zoom, no print dialog, no white margins). Long pages are split across A4 sheets at block boundaries.
-- **Send by e-mail** — shares the PDF straight to Mail / AirDrop on Mac and iPad.
+- **Drag-and-build editor** — 42 block types: headers, instructions, reading texts, multiple choice, true/false, gap-fill, matching, odd-one-out, unscramble, key word transformation, error correction, tables, writing lines, handwriting practice and images.
+- **Exercise library — 235 ready-made topics.** Grammar from A2 to C1 plus topic vocabulary, idioms and academic English. Every topic carries a theory card (form · use · signal words) and a full sequence of exercises, ordered from recognition to free production. "Full worksheet" drops the whole sequence on a page with the answer key switched on.
+  - A2 · 14 topics — core tenses, articles, question forms
+  - B1 · 35 topics — perfect tenses, conditionals, the passive, verb patterns
+  - B2 · 36 topics — mixed conditionals, reported speech, modals of deduction
+  - C1 · 130 topics — the complete *Advanced Grammar in Use* syllabus, units 1–100, plus the studio's own advanced set
+- **Built-in dictionary** — type words into a vocabulary list and definitions and translations fill in automatically, offline.
+- **40 A4 designs**, adjustable accent colour, 11 header styles, page backgrounds and fonts.
+- **Crossword and word search generators** that build the grid for you.
+- **Answer key** generated from the exercises and appended as a final page, with marks totalled.
+- **Vector PDF export** — selectable text, sharp at any zoom, no print dialog, no white margins. Long pages split across A4 sheets at block boundaries.
+- Multi-page documents, undo/redo, autosave, and project files (`.wsp`) you can save and reopen.
 
-## How to use
+## Publishing
 
-### On a computer
-Open the live link above, or download `index.html` and double-click it. Everything runs locally in your browser.
+The site is deployed by Netlify, which watches the `main` branch: any commit is live within seconds. To update, replace a file through **Add file → Upload files** on GitHub, or push to `main`.
 
-### On iPad
-Open the live link in Safari, then **Share → Add to Home Screen** to use it like a full-screen app. (Or save `index.html` to Files and open it.)
+HTML is served with `must-revalidate`, so a new version appears immediately instead of being masked by the browser cache.
 
-### Export to PDF
-Click **PDF** in the top bar, then choose **Save as PDF** in the print dialog.
+## Pricing and payment links
 
-## Tech
+Prices and checkout URLs are five constants at the foot of `index.html`:
 
-A single self-contained `index.html` — plain HTML, CSS and JavaScript, no build step and no external dependencies. Your work is stored locally in your browser and never leaves your device.
+```js
+var PRICE_MONTHLY = '£6',  PRICE_YEARLY = '£60';
+var PAY_MONTHLY   = '',    PAY_YEARLY   = '';
+```
+
+While the payment links are empty the subscribe button simply opens the builder.
+
+## A note on access control
+
+The access code in `app.html` and the password in `admin.html` live in the page source, so anyone who opens the developer tools can read them. They are a convenience, not security. Real subscription enforcement needs a server-side check — a licence-key API or serverless function — which is not part of this repository yet.

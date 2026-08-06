@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="English with Tad">
+<meta name="apple-mobile-web-app-title" content="Worksheet Studio">
 <meta name="theme-color" content="#5b5bf0">
-<title>English with Tad — Worksheet Builder</title>
+<title>Worksheet Studio — Worksheet Builder for English Teachers</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b5bf0'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='26' fill='url(%23g)'/%3E%3Cpath d='M27 31h46M50 31v42' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3Ccircle cx='73' cy='71' r='9' fill='%23fbbf24'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b5bf0'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23g)'/%3E%3Cpath d='M27 31h46M50 31v42' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3Ccircle cx='73' cy='71' r='9' fill='%23fbbf24'/%3E%3C/svg%3E">
 <style>
@@ -891,7 +891,7 @@ body.locked .app,body.locked .zoombar{display:none !important}
   <div class="sparkles" id="sparkles"></div>
   <div class="lock-card">
     <div class="lock-mark"><svg viewBox="0 0 100 100" fill="none"><path d="M27 31h46M50 31v42" stroke="#fff" stroke-width="11" stroke-linecap="round"/><circle cx="74" cy="72" r="9" fill="#fbbf24"/></svg></div>
-    <h1>English with Tad</h1>
+    <h1>Worksheet Studio</h1>
     <p>Enter your access code</p>
     <div class="pin-dots" id="pinDots"><i></i><i></i><i></i><i></i></div>
     <div class="keypad" id="keypad">
@@ -913,7 +913,7 @@ body.locked .app,body.locked .zoombar{display:none !important}
     <button class="tb icon mob" id="mobLeft" aria-label="Blocks">☰</button>
     <a class="brand hide-mob" id="homeLink" href="index.html" title="Back to the website" style="text-decoration:none;color:inherit">
       <div class="mark"><svg viewBox="0 0 100 100" fill="none"><path d="M27 31h46M50 31v42" stroke="currentColor" stroke-width="11" stroke-linecap="round"/><circle cx="74" cy="72" r="9" fill="#fbbf24"/></svg></div>
-      <div class="txt"><b>English with Tad</b><small>Worksheet Builder</small></div>
+      <div class="txt"><b>Worksheet Studio</b><small>Worksheet Builder</small></div>
     </a>
     <div class="divx hide-mob"></div>
     <input class="tb-title" id="docTitle" value="Untitled worksheet" spellcheck="false">
@@ -950,7 +950,7 @@ body.locked .app,body.locked .zoombar{display:none !important}
     </div>
     <div class="sec">
       <h3>Footer branding</h3>
-      <div class="field"><label>Brand shown at the bottom of every page</label><input type="text" id="brandInput" spellcheck="false" placeholder="English with Tad"></div>
+      <div class="field"><label>Brand shown at the bottom of every page</label><input type="text" id="brandInput" spellcheck="false" placeholder="Your name or school"></div>
       <div class="hint">Prints on every worksheet page and the answer key.</div>
     </div>
     <div class="sec">
@@ -1313,7 +1313,7 @@ function makeBlock(type){
 }
 let DOC=null,selectedId=null,history=[],future=[],zoom=1;
 
-function newDoc(id='indigo'){return{title:'Untitled worksheet',brand:'English with Tad',showAnswers:false,appendKey:false,applyAll:true,pdfScale:3,
+function newDoc(id='indigo'){return{title:'Untitled worksheet',brand:'',showAnswers:false,appendKey:false,applyAll:true,pdfScale:3,
   pages:[{id:uid(),style:defaultStyle(id),blocks:[makeBlock('header'),makeBlock('namebar')]}]};}
 
 /* history */
@@ -1775,7 +1775,7 @@ function renderAnswerKey(){
 function pageFooter(pi){
   const f=el('div','pg-foot');
   const brand=el('div','brand');brand.appendChild(el('span','fmark','✎'));
-  const bt=el('span');bt.contentEditable='true';bt.spellcheck=false;bt.dataset.ph='Your brand';bt.textContent=DOC.brand||'English with Tad';
+  const bt=el('span');bt.contentEditable='true';bt.spellcheck=false;bt.dataset.ph='Your brand';bt.textContent=DOC.brand||'Worksheet Studio';
   bt.title='Click to edit your brand';
   bt.addEventListener('input',()=>{DOC.brand=bt.textContent;const bi=$('#brandInput');if(bi)bi.value=bt.textContent;autosave();});
   bt.addEventListener('blur',()=>{scheduleSnapshot();renderAll();});
@@ -2547,7 +2547,7 @@ async function sharePDF(){
     const title=DOC.title||'Worksheet';
     if(navigator.canShare&&navigator.canShare({files:[file]})){
       await navigator.share({files:[file],title:title,
-        text:'Worksheet: '+title+'\n\n— '+(DOC.brand||'English with Tad')});
+        text:'Worksheet: '+title+'\n\n— '+(DOC.brand||'Worksheet Studio')});
       toast('Shared');
     }else{
       // fallback: download the PDF, then open the mail client with the text ready
@@ -2555,7 +2555,7 @@ async function sharePDF(){
       document.body.appendChild(a);a.click();a.remove();
       setTimeout(()=>URL.revokeObjectURL(a.href),3000);
       const subj=encodeURIComponent(title);
-      const body=encodeURIComponent('Hi,\n\nPlease find the worksheet "'+title+'" attached.\n\nBest regards,\n'+(DOC.brand||'English with Tad'));
+      const body=encodeURIComponent('Hi,\n\nPlease find the worksheet "'+title+'" attached.\n\nBest regards,\n'+(DOC.brand||'Worksheet Studio'));
       setTimeout(()=>{window.location.href='mailto:?subject='+subj+'&body='+body;},600);
       toast('PDF saved — attach it to the e-mail that opens');
     }
@@ -3068,7 +3068,7 @@ function lookup(word){
 }
 
 /* =====================================================================
-   B1 GRAMMAR COURSE — original theory + exercises (English with Tad)
+   B1 GRAMMAR COURSE — original theory + exercises (Worksheet Studio)
    ===================================================================== */
 function T(o){return Object.assign(makeBlock('theory'),o,{id:uid()});}
 function FIB(s){return B('fillblank',{parts:parseFib(s)});}
@@ -5289,7 +5289,7 @@ const GRAMMAR_B1=[
 ];
 
 /* =====================================================================
-   C1 ADVANCED GRAMMAR — original theory + exercises (English with Tad)
+   C1 ADVANCED GRAMMAR — original theory + exercises (Worksheet Studio)
    ===================================================================== */
 const GRAMMAR_C1=[
 {id:'c1-inversion',name:'Inversion after negative adverbials',
@@ -10702,11 +10702,731 @@ const GRAMMAR_C1=[
     '9  Only by working together [can] we succeed.',
     '10  Round the corner [came] (come) a police car.')]},
   {n:'Your own sentences',b:()=>[TASK('Write your own sentences','Write eight formal or literary sentences using inverted conditionals and place inversion.'),B('lines',{count:7})]}
+]},
+/* ---- English Grammar in Use (intermediate): units missing from the banks ---- */
+{id:'eg-for-since',name:'for and since · how long …?',
+ theory:T({icon:'📏',title:'Measuring time up to now',
+  form:[{s:'for + period',x:'<em>for</em> three years · <em>for</em> ten minutes'},{s:'since + point',x:'<em>since</em> 2018 · <em>since</em> Monday'},{s:'question',x:'<em>How long</em> have you been waiting?'}],
+  uses:[{r:'for + a length of time',x:'She has worked here for five years.'},{r:'since + when the period started',x:'She has worked here since 2018.'},{r:'How long …? asks about duration, When …? about a point',x:'How long have you known him? / When did you meet?'},{r:'ago counts back from now, with the past simple',x:'We met five years ago.'}],
+  words:['for','since','how long','when','ago','all day','the whole time'],
+  note:'<b>Watch the tense:</b> <em>How long have you been here?</em> (still here) but <em>When did you arrive?</em> (finished action). <em>Ago</em> never goes with the present perfect: <s>I have arrived two hours ago</s>.'}),
+ ex:[
+  {n:'Spot for and since',b:()=>[TASK('Underline for and since','Read the text and underline every time expression. Decide why each one was chosen.'),
+    B('text',{reading:true,html:'I have lived in this flat <b>for</b> eleven years — <b>since</b> the summer I finished university. My neighbour moved in <b>two years ago</b> and we have been friends <b>ever since</b>. <b>How long</b> have you lived here? We haven’t seen the landlord <b>for</b> months, not <b>since</b> the roof was repaired.'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write for or since.'),
+    ...FIBS('1  She has worked here [for] five years.','2  She has worked here [since] 2018.',
+    '3  I haven’t seen him [since] Tuesday.','4  We waited [for] over an hour.',
+    '5  They have been married [since] they left university.','6  It hasn’t rained [for] weeks.',
+    '7  I have known her [since] we were children.','8  He has been asleep [for] ten minutes.',
+    '9  Nothing has changed [since] my last visit.','10  The shop has been closed [for] three days.')]},
+  {n:'Choose the correct form',b:()=>[TASK('Circle the correct option','Circle the option that fits.'),
+    CHOOSE(['1  ( How long / When ) have you been waiting?','How long'],
+    ['2  ( How long / When ) did you arrive?','When'],
+    ['3  We met three years ( ago / since ).','ago'],
+    ['4  I have had this car ( for / since ) 2019.','since'],
+    ['5  She left ( for / — ) two hours ago.','—'],
+    ['6  They have been here ( for / since ) a fortnight.','for'],
+    ['7  I haven’t eaten ( since / for ) breakfast.','since'],
+    ['8  ( How long ago / How long ) did they move?','How long ago'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('I have been learning Spanish ____ six months.',['for','since','ago','during'],0),
+    MC('We haven’t spoken ____ the summer.',['since','for','ago','from'],0),
+    MC('____ have you had that jacket?',['How long','How much','How far','How often'],0),
+    MC('He phoned about an hour ____ .',['ago','since','before','for'],0),
+    MC('She has been ill ____ Christmas.',['since','for','during','from'],0),
+    MC('“How long ____ here?” “Since March.”',['have you lived','do you live','did you live','are you living'],0),
+    MC('They lived in Rome ____ ten years and then moved.',['for','since','ago','during'],0),
+    MC('It is three weeks ____ I last saw her.',['since','for','ago','that'],0)]},
+  {n:'Write about yourself',b:()=>[TASK('Write about yourself','Write eight sentences about things you have done for a long time, using for, since, how long and ago.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-have-got',name:'have and have got',
+ theory:T({icon:'🤲',title:'Two verbs in one',
+  form:[{s:'possession',x:'I <em>have</em> a car. = I<em>’ve got</em> a car.'},{s:'action',x:'I <em>have</em> breakfast at seven. (not <s>have got</s>)'},{s:'?',x:'<em>Have you got</em> …? · <em>Do you have</em> …?'}],
+  uses:[{r:'Possession, relationships, illnesses → have or have got',x:'She has got two brothers. / She has two brothers.'},{r:'Actions and experiences → have only',x:'We had a wonderful time.'},{r:'In the past, have got is not normally used',x:'I had a bike when I was ten.'},{r:'Questions and negatives: do you have …? / have you got …?',x:'Do you have a ticket? · Haven’t you got a ticket?'}],
+  words:['have','has','have got','has got','had','do you have','have you got','I’ve got'],
+  note:'<b>Have got</b> is common in British speech and only for states. With actions (<em>have lunch, have a shower, have a look, have a baby</em>) you must use plain <em>have</em>, and it can be continuous: <em>I’m having lunch</em>.'}),
+ ex:[
+  {n:'Spot the two uses',b:()=>[TASK('Sort the examples','Underline every form of have. Mark S for state (possession) and A for action.'),
+    B('text',{reading:true,html:'I <b>’ve got</b> a small flat near the park, but it <b>has</b> no balcony. Most mornings I <b>have</b> coffee on the steps instead. My sister <b>has got</b> three children, so when they visit we <b>have</b> a very noisy weekend. Yesterday we <b>had</b> lunch outside and the youngest <b>had</b> a headache all afternoon.'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the correct form of have or have got.'),
+    ...FIBS('1  She [has got] two brothers and a sister.','2  We [had] a wonderful holiday last year.',
+    '3  [Have] you [got] a pen I could borrow?','4  I usually [have] a shower before breakfast.',
+    '5  He [has got] a terrible cold.','6  They [had] a long conversation about it.',
+    '7  [Do] you [have] any brothers or sisters?','8  I [am having] lunch — can I call you back?',
+    '9  When I was a child we [had] a dog.','10  She hasn’t [got] any money on her.')]},
+  {n:'Choose the correct form',b:()=>[TASK('Circle the correct option','Circle the natural option.'),
+    CHOOSE(['1  I ( have got / am having ) a shower at the moment.','am having'],
+    ['2  She ( has got / is having ) blue eyes.','has got'],
+    ['3  We ( had / had got ) a great time in Prague.','had'],
+    ['4  ( Have you got / Do you have got ) a minute?','Have you got'],
+    ['5  He ( has / has got ) a bath every evening.','has'],
+    ['6  They ( hadn’t got / didn’t have ) enough money at the time.','didn’t have'],
+    ['7  I ( have got / have ) a look at it later.','have'],
+    ['8  She ( has got / is having ) a baby in March.','is having'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('____ any idea where he is?',['Have you got','Are you having','Do you got','Have you'],0),
+    MC('We ____ dinner when the phone rang.',['were having','had got','were having got','have got'],0),
+    MC('I ____ a headache all morning.',['have had','have got had','am having got','had got'],0),
+    MC('____ a car when you lived in London?',['Did you have','Had you got','Have you got','Were you having'],0),
+    MC('She ____ a look at the report and then signed it.',['had','had got','was having got','has got'],0),
+    MC('He ____ very little free time these days.',['has','has got to','is having','have'],0),
+    MC('____ trouble finding the house?',['Did you have','Had you got','Have you got had','Were you have'],0),
+    MC('They ____ a party next Saturday.',['are having','have got','have got to','are having got'],0)]},
+  {n:'Write about your family',b:()=>[TASK('Write about your family','Write eight sentences about what your family has and what you do together, using both have and have got.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-better-time',name:'I’d better … · it’s time …',
+ theory:T({icon:'⏰',title:'Urgent advice and overdue actions',
+  form:[{s:'had better',x:'You <em>had better</em> hurry. (’d better)'},{s:'negative',x:'You <em>had better not</em> tell her.'},{s:'it’s time',x:'It’s time we <em>went</em> home.'}],
+  uses:[{r:'had better = do this now, or something bad will happen',x:'We’d better leave, or we’ll miss the train.'},{r:'Only about now or the near future, never the past',x:'You’d better see a doctor tomorrow.'},{r:'it’s time + past tense = it should already have happened',x:'It’s time you found a proper job.'},{r:'it’s time (for somebody) to + infinitive',x:'It’s time to go. · It’s time for us to go.'}],
+  words:['had better','’d better','had better not','it’s time','it’s about time','it’s high time'],
+  note:'<b>Two traps:</b> <em>had better</em> has no <em>to</em> (<s>you’d better to go</s>) and is not past. After <em>it’s time</em> the past tense is not past at all — <em>it’s time we went</em> means <em>we should go now</em>.'}),
+ ex:[
+  {n:'Spot the structures',b:()=>[TASK('Underline the structures','Underline every had better and it’s time in the dialogue.'),
+    B('text',{reading:true,html:'“<b>It’s time</b> we talked about the rent.” — “<b>I’d better</b> sit down, then.” — “<b>It’s high time</b> you found a cheaper flat, honestly.” — “<b>I’d better not</b> say what I think of that.” — “Well, <b>it’s time to</b> be practical. You <b>’d better</b> start looking this week.”'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word or form.'),
+    ...FIBS('1  We [had] better hurry or we’ll be late.','2  You’d better [not] leave your bag there.',
+    '3  It’s time we [went] home.','4  It’s time [to] leave.',
+    '5  It’s about time you [learned] to drive.','6  I’d better [call] her before she goes out.',
+    '7  It’s high time somebody [told] him the truth.','8  You’d better [take] an umbrella.',
+    '9  It’s time [for] us to make a decision.','10  He’d better [apologise] tomorrow.')]},
+  {n:'Choose the correct form',b:()=>[TASK('Circle the correct option','Circle the correct form.'),
+    CHOOSE(['1  You’d better ( go / to go ) now.','go'],
+    ['2  It’s time we ( leave / left ).','left'],
+    ['3  We’d ( better not / not better ) wait any longer.','better not'],
+    ['4  It’s time ( to start / we start ) work.','to start'],
+    ['5  You ( had better / would better ) see a dentist.','had better'],
+    ['6  It’s about time she ( gets / got ) a proper job.','got'],
+    ['7  I’d better ( to phone / phone ) the office.','phone'],
+    ['8  It’s time for him ( to decide / deciding ).','to decide'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('You ____ take a coat — it looks like rain.',['had better','would better','have better','are better'],0),
+    MC('It’s time we ____ about the future.',['thought','think','are thinking','will think'],0),
+    MC('We ____ be late for the interview.',['had better not','hadn’t better','had not better to','better not had'],0),
+    MC('It’s high time this ____ .',['stopped','stops','will stop','is stopping'],0),
+    MC('____ time to go home.',['It’s','There’s','Its','Is'],0),
+    MC('You’d better ____ anything to him about it.',['not say','not to say','don’t say','no say'],0),
+    MC('It’s about time you ____ your own decisions.',['made','make','are making','will make'],0),
+    MC('I think we ____ ask for help.',['had better','better had','have better','are better to'],0)]},
+  {n:'Give urgent advice',b:()=>[TASK('Give advice','Write eight pieces of urgent advice for a friend who is disorganised, using had better and it’s time.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-would',name:'would · all its uses',
+ theory:T({icon:'🌀',title:'The many jobs of would',
+  form:[{s:'unreal',x:'If I had time, I <em>would</em> help you.'},{s:'past habit',x:'Every summer we <em>would</em> go to the sea.'},{s:'refusal',x:'The car <em>wouldn’t</em> start.'}],
+  uses:[{r:'Imaginary situations',x:'I would love to live by the sea.'},{r:'Repeated actions in the past (not states)',x:'He would sit for hours in the garden.'},{r:'Refusal in the past → wouldn’t',x:'She wouldn’t listen to any advice.'},{r:'The future seen from the past, in reported speech',x:'He said he would call me back.'},{r:'Polite requests and offers',x:'Would you mind waiting a moment?'}],
+  words:['would','wouldn’t','would like','would rather','would mind','I’d','used to'],
+  note:'<b>Would ≠ used to.</b> Both work for repeated past actions, but only <em>used to</em> works for past states: <em>There used to be a cinema here</em>, never <s>there would be</s>.'}),
+ ex:[
+  {n:'Spot the uses',b:()=>[TASK('Label the uses','Underline every would and mark it: U (unreal), H (past habit), R (refusal), F (future in the past) or P (polite).'),
+    B('text',{reading:true,html:'When we were children, my grandfather <b>would</b> tell us stories every evening. He said he <b>would</b> write them down one day, but he never did — the old typewriter <b>wouldn’t</b> work and he <b>wouldn’t</b> buy a new one. I <b>would</b> give anything to hear those stories again. <b>Would</b> you mind if I told you one?'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write would, wouldn’t, or the correct verb form.'),
+    ...FIBS('1  If I had the money, I [would] buy it.','2  Every Sunday my father [would] cook a huge lunch.',
+    '3  The engine [wouldn’t] start yesterday morning.','4  He said he [would] be here by six.',
+    '5  [Would] you mind opening the window?','6  I [would] rather stay at home tonight.',
+    '7  She [wouldn’t] tell me what was wrong.','8  I [would] love to see you again.',
+    '9  We [would] often walk home together after school.','10  They promised they [would] write.')]},
+  {n:'would or used to?',b:()=>[TASK('Circle the correct option','Circle would or used to. Sometimes both are possible — choose the one that must be right.'),
+    CHOOSE(['1  There ( would / used to ) be a bakery on this corner.','used to'],
+    ['2  On Sundays we ( would / used to ) walk in the park.','would'],
+    ['3  I ( wouldn’t / didn’t use to ) like olives as a child.','didn’t use to'],
+    ['4  My car ( wouldn’t / didn’t use to ) start this morning.','wouldn’t'],
+    ['5  She ( would / used to ) have very long hair.','used to'],
+    ['6  He ( would / used to ) always arrive late.','would'],
+    ['7  We ( would / used to ) know each other quite well.','used to'],
+    ['8  Whenever I asked, he ( would / used to ) refuse.','would'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('If I were you, I ____ accept the offer.',['would','will','am going to','shall'],0),
+    MC('The door ____ open, however hard we pushed.',['wouldn’t','didn’t use to','won’t','hadn’t'],0),
+    MC('____ you like some more coffee?',['Would','Will','Should','Do'],0),
+    MC('He told me he ____ think about it.',['would','will','would have','is going to'],0),
+    MC('I ____ rather not talk about it.',['would','will','should','had'],0),
+    MC('As a boy he ____ spend hours by the river.',['would','used','will','would have'],0),
+    MC('There ____ be a school here before the war.',['used to','would','would have','will'],0),
+    MC('She ____ mind if you were a little late.',['wouldn’t','won’t have','isn’t','doesn’t'],0)]},
+  {n:'Write about your childhood',b:()=>[TASK('Write about your childhood','Write eight sentences about what you and your family would do when you were younger, and what you would do differently now.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-requests',name:'Requests, offers, permission & invitations',
+ theory:T({icon:'🙏',title:'Asking, offering and inviting',
+  form:[{s:'request',x:'<em>Could you</em> open the window?'},{s:'permission',x:'<em>May I</em> use your phone?'},{s:'offer',x:'<em>Shall I</em> carry that for you?'}],
+  uses:[{r:'Asking somebody to do something: can / could / would you …?',x:'Would you pass me the salt, please?'},{r:'Asking for permission: can / could / may I …?',x:'Could I borrow your car this evening?'},{r:'Offering: shall I …? · would you like …?',x:'Shall I make you a cup of tea?'},{r:'Inviting: would you like to …?',x:'Would you like to join us for dinner?'},{r:'Do you mind …? needs the opposite answer',x:'“Do you mind if I smoke?” “No, not at all.”'}],
+  words:['can you','could you','would you','may I','shall I','would you like','do you mind','would you mind'],
+  note:'<b>Careful with mind:</b> <em>Would you mind waiting?</em> = is it a problem for you? So <em>No, not at all</em> means <u>yes, I will wait</u>. After <em>would you mind</em> use <em>-ing</em>; after <em>would you mind if</em> use the past tense.'}),
+ ex:[
+  {n:'Spot the function',b:()=>[TASK('Label each question','Underline each polite question and mark it R (request), P (permission), O (offer) or I (invitation).'),
+    B('text',{reading:true,html:'“<b>Could I</b> ask you something?” — “Of course. <b>Shall I</b> close the door first?” — “Please. <b>Would you mind</b> keeping this to yourself?” — “Not at all. <b>Would you like</b> a coffee while we talk?” — “Yes, thanks. And <b>could you</b> pass me a pen?”'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  [Could] you help me with this, please?','2  [May] I ask you a personal question?',
+    '3  [Shall] I carry your bag?','4  Would you [like] to come to dinner on Friday?',
+    '5  Would you [mind] waiting a few minutes?','6  Do you [mind] if I open the window?',
+    '7  [Can] I have the bill, please?','8  Would you mind [if] I left early today?',
+    '9  [Would] you pass me the salt?','10  [Let] me help you with that.')]},
+  {n:'Choose the correct form',b:()=>[TASK('Circle the correct option','Circle the appropriate reply or form.'),
+    CHOOSE(['1  “Do you mind if I sit here?” — “( No, not at all / Yes, of course ).”','No, not at all'],
+    ['2  Would you mind ( waiting / to wait ) a moment?','waiting'],
+    ['3  Would you mind if I ( borrowed / borrow ) your pen?','borrowed'],
+    ['4  ( Shall I / Will I ) open the window for you?','Shall I'],
+    ['5  Would you like ( to come / coming ) with us?','to come'],
+    ['6  ( Could / Should ) you tell me the time, please?','Could'],
+    ['7  “Can I help you?” — “( Yes, please / Yes, I can ).”','Yes, please'],
+    ['8  ( May / Must ) I leave a message?','May'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('____ I take your coat?',['Shall','Will','Do','Am'],0),
+    MC('____ you mind turning the music down?',['Would','Should','May','Are'],0),
+    MC('____ you like another slice of cake?',['Would','Will','Do','Are'],0),
+    MC('____ I borrow your dictionary for a moment?',['Could','Should','Shall','Must'],0),
+    MC('Would you mind ____ me a hand?',['giving','to give','give','given'],0),
+    MC('“Would you mind if I smoked?” “____ .”',['Not at all','Yes, of course','I would','Please do mind'],0),
+    MC('____ we meet at seven instead?',['Shall','Will','Do','Are'],0),
+    MC('I wonder if you ____ help me.',['could','can to','would to','shall'],0)]},
+  {n:'Write a dialogue',b:()=>[TASK('Write a dialogue','Write a dialogue of eight lines at a hotel reception, using a different polite structure in each line.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-used-to-ing',name:'be / get used to …',
+ theory:T({icon:'🔁',title:'Familiar, not habitual',
+  form:[{s:'be used to',x:'I <em>am used to</em> getting up early.'},{s:'get used to',x:'You will <em>get used to</em> the noise.'},{s:'compare',x:'I <em>used to</em> get up early. (past habit)'}],
+  uses:[{r:'be used to + noun or -ing = it is familiar, not strange',x:'She is used to working under pressure.'},{r:'get used to = the process of becoming familiar',x:'It took me a month to get used to the climate.'},{r:'Any tense is possible',x:'I wasn’t used to the food at first.'},{r:'used to + infinitive is something completely different',x:'I used to live in Rome. (but not any more)'}],
+  words:['be used to','get used to','am used to','wasn’t used to','used to','be accustomed to'],
+  note:'<b>The classic trap:</b> after <em>be/get used to</em> the word <em>to</em> is a preposition, so a verb takes <em>-ing</em>: <em>I’m used to driv<u>ing</u></em>. After <em>used to</em> (past habit) it is an infinitive: <em>I used to driv<u>e</u></em>.'}),
+ ex:[
+  {n:'Spot the difference',b:()=>[TASK('Sort the examples','Underline each structure and mark it H (past habit) or F (familiar).'),
+    B('text',{reading:true,html:'I <b>used to</b> hate early mornings. Now I <b>am used to</b> getting up at five, though it took a year to <b>get used to</b> it. My colleagues still aren’t <b>used to</b> the new schedule — they <b>used to</b> start at nine and they say they will never <b>get used to</b> starting in the dark.'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the correct form of the verb in brackets.'),
+    ...FIBS('1  I am used to [getting] up early. (get)','2  I used to [get] up late when I was a student. (get)',
+    '3  She isn’t used to [driving] on the left. (drive)','4  You will soon get used to [living] here. (live)',
+    '5  He used to [smoke] twenty a day. (smoke)','6  We are not used to [being] treated like this. (be)',
+    '7  It took me weeks to get used to the [noise].','8  They used to [live] in a village. (live)',
+    '9  I’m still not used to [working] at night. (work)','10  Did you get used to the [food]?')]},
+  {n:'Choose the correct form',b:()=>[TASK('Circle the correct option','Circle the correct structure.'),
+    CHOOSE(['1  I ( used to / am used to ) live in Paris, but not now.','used to'],
+    ['2  She ( used to / is used to ) working long hours.','is used to'],
+    ['3  You’ll soon ( get used to / used to ) the weather.','get used to'],
+    ['4  He ( used to have / is used to have ) a beard.','used to have'],
+    ['5  I’m not used to ( speak / speaking ) in public.','speaking'],
+    ['6  We ( didn’t use to / weren’t used to ) go abroad much.','didn’t use to'],
+    ['7  It took her a while to get used to ( live / living ) alone.','living'],
+    ['8  Are you ( used to / use to ) the traffic here yet?','used to'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('I can’t get used to ____ so early.',['getting up','get up','got up','to get up'],0),
+    MC('She ____ work in a bank, but she left years ago.',['used to','is used to','was used to','uses to'],0),
+    MC('After a month he ____ the noise.',['got used to','used to','was using to','got use to'],0),
+    MC('We aren’t used to ____ this much rain.',['having','have','had','to have'],0),
+    MC('____ you use to play the piano?',['Did','Were','Have','Do'],0),
+    MC('It was strange at first, but now I ____ .',['am used to it','use to it','used to it','am using to it'],0),
+    MC('He ____ being criticised — it upsets him.',['isn’t used to','didn’t use to','wasn’t use to','doesn’t used to'],0),
+    MC('I ____ smoke, but I gave up.',['used to','am used to','was used to','get used to'],0)]},
+  {n:'Write about a change',b:()=>[TASK('Write about a change','Write eight sentences about a move, a new job or a new city: what you used to do, and what you are still getting used to.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-worth-point',name:'there’s no point in -ing · it’s worth -ing',
+ theory:T({icon:'⚖️',title:'Judging whether something is worth doing',
+  form:[{s:'no point',x:'There’s <em>no point in</em> arguing.'},{s:'worth',x:'The film is <em>worth seeing</em>.'},{s:'no use',x:'It’s <em>no use</em> complaining.'}],
+  uses:[{r:'there’s no point in + -ing = it is pointless',x:'There’s no point in waiting any longer.'},{r:'it’s (not) worth + -ing',x:'It isn’t worth repairing that old computer.'},{r:'The subject can also be the thing itself',x:'This book is worth reading twice.'},{r:'it’s no use / no good + -ing',x:'It’s no good asking him — he never knows.'},{r:'have difficulty / trouble (in) + -ing',x:'I had difficulty finding the address.'}],
+  words:['there’s no point in','it’s worth','it’s not worth','it’s no use','it’s no good','have difficulty','waste time'],
+  note:'All of these are followed by <em>-ing</em>, never an infinitive: <s>it’s no use to complain</s>. Note that <em>worth</em> takes the <em>-ing</em> form directly, without a preposition.',
+  }),
+ ex:[
+  {n:'Spot the structures',b:()=>[TASK('Underline the structures','Underline every expression that is followed by an -ing form.'),
+    B('text',{reading:true,html:'<b>There’s no point in</b> arriving early — the doors don’t open until eight. It <b>isn’t worth</b> paying for a taxi either; the walk takes ten minutes. And it’s <b>no use</b> phoning the box office, because nobody answers. I had <b>great difficulty</b> booking online, but the concert is definitely <b>worth seeing</b>.'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the correct form of the verb in brackets.'),
+    ...FIBS('1  There’s no point in [arguing] with him. (argue)','2  The museum is worth [visiting]. (visit)',
+    '3  It’s no use [complaining] now. (complain)','4  It isn’t worth [repairing] that old radio. (repair)',
+    '5  I had difficulty [finding] the address. (find)','6  There’s no point in [waiting] any longer. (wait)',
+    '7  It’s no good [asking] me — I don’t know. (ask)','8  This book is worth [reading] twice. (read)',
+    '9  We wasted an hour [looking] for a parking space. (look)','10  Is it worth [going] all that way? (go)')]},
+  {n:'Choose the correct form',b:()=>[TASK('Circle the correct option','Circle the correct form.'),
+    CHOOSE(['1  There’s no point ( in waiting / to wait ).','in waiting'],
+    ['2  It’s worth ( to see / seeing ) the exhibition.','seeing'],
+    ['3  It’s no use ( to worry / worrying ) about it.','worrying'],
+    ['4  I had trouble ( to start / starting ) the car.','starting'],
+    ['5  That film isn’t worth ( the money / to the money ).','the money'],
+    ['6  There’s no point ( in / of ) getting angry.','in'],
+    ['7  It’s no good ( pretend / pretending ) you didn’t know.','pretending'],
+    ['8  Don’t waste time ( to look / looking ) for it.','looking'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('There’s no point ____ him again.',['in phoning','to phone','phone','of phoning'],0),
+    MC('The castle is well worth ____ .',['a visit','to visit','visit','of visiting'],0),
+    MC('It’s no use ____ — the shop is closed.',['hurrying','to hurry','hurry','hurried'],0),
+    MC('I had great difficulty ____ him.',['understanding','to understand','understand','of understanding'],0),
+    MC('It isn’t worth ____ so early.',['leaving','to leave','leave','of leaving'],0),
+    MC('It’s no good ____ about the weather.',['complaining','to complain','complain','complained'],0),
+    MC('We spent all afternoon ____ the flat.',['cleaning','to clean','clean','of cleaning'],0),
+    MC('Is there any point ____ ?',['in trying','to try','try','of try'],0)]},
+  {n:'Give your verdict',b:()=>[TASK('Write your opinions','Write eight sentences about places, books and habits: which are worth it and which are pointless.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-of-mine',name:'a friend of mine · my own · on my own',
+ theory:T({icon:'👤',title:'Possession, emphasis and being alone',
+  form:[{s:'of mine',x:'a friend <em>of mine</em> · a cousin <em>of hers</em>'},{s:'my own',x:'my <em>own</em> house · her <em>own</em> car'},{s:'on my own',x:'I live <em>on my own</em>. = <em>by myself</em>'}],
+  uses:[{r:'a/some/this + noun + of mine/yours/his',x:'I met an old colleague of yours yesterday.'},{r:'my own = belonging only to me, nobody else’s',x:'I’d love to have my own office.'},{r:'own can be emphasised with very',x:'She made it with her very own hands.'},{r:'on my own / by myself = alone, or without help',x:'He built the shed on his own.'}],
+  words:['of mine','of yours','of his','of hers','of ours','of theirs','my own','on my own','by myself','all alone'],
+  note:'Say <em>a friend of mine</em>, not <s>a my friend</s>. And <em>own</em> always needs a possessive in front of it: <em>my own room</em>, never <s>an own room</s>.'}),
+ ex:[
+  {n:'Spot the structures',b:()=>[TASK('Underline the structures','Underline every possessive structure in the text.'),
+    B('text',{reading:true,html:'A colleague <b>of mine</b> has just bought a flat <b>of her own</b> after ten years of renting. She did most of the decorating <b>on her own</b>, with a little help from a cousin <b>of hers</b> who is a carpenter. Now she has <b>her own</b> studio and works <b>by herself</b> at home.'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the missing word.'),
+    ...FIBS('1  I met an old friend [of] yours yesterday.','2  She has a flat of her [own].',
+    '3  He lives on his [own] in the countryside.','4  Is this book [of] yours?',
+    '5  I did the whole thing by [myself].','6  They have their [own] business now.',
+    '7  A cousin of [mine] works there.','8  She wants a room of her [own].',
+    '9  We travelled around Europe on our [own].','10  That car of [theirs] is always breaking down.')]},
+  {n:'Choose the correct form',b:()=>[TASK('Circle the correct option','Circle the correct form.'),
+    CHOOSE(['1  I met ( a friend of mine / a my friend ).','a friend of mine'],
+    ['2  She has ( her own / an own ) office.','her own'],
+    ['3  He did it ( on his own / on him own ).','on his own'],
+    ['4  Is that ( a book of you / a book of yours )?','a book of yours'],
+    ['5  They live ( by themselves / by themself ).','by themselves'],
+    ['6  I’d like ( my own / mine own ) room.','my own'],
+    ['7  A colleague ( of her / of hers ) called.','of hers'],
+    ['8  We managed ( on our own / on ourselves ).','on our own'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('I borrowed it from a neighbour ____ .',['of mine','of me','of my','mine'],0),
+    MC('She cooked the whole meal ____ .',['on her own','on herself','of her own','by her own'],0),
+    MC('He wants a business of his ____ .',['own','owns','one','self'],0),
+    MC('Some friends ____ are coming tonight.',['of ours','of us','of our','ours of'],0),
+    MC('The children walked to school ____ .',['by themselves','by themself','on themselves','of their own'],0),
+    MC('That temper ____ will get you into trouble.',['of yours','of you','of your','yours of'],0),
+    MC('I have never had ____ car.',['my own','an own','the own','mine own'],0),
+    MC('She lives ____ in a small village.',['alone','on herself','of her own','by her own self'],0)]},
+  {n:'Write about your things',b:()=>[TASK('Write about yourself','Write eight sentences about your possessions, your friends and things you do alone.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-in-case',name:'in case',
+ theory:T({icon:'🧯',title:'Precautions, not conditions',
+  form:[{s:'precaution',x:'Take an umbrella <em>in case</em> it rains.'},{s:'past',x:'I wrote it down <em>in case</em> I forgot.'},{s:'in case of',x:'<em>In case of</em> fire, break the glass.'}],
+  uses:[{r:'in case = because something might happen later',x:'I’ll take some money in case I need a taxi.'},{r:'No will after in case — use the present',x:'Phone me in case there is a problem.'},{r:'In the past, use the past simple',x:'He locked the door in case somebody came in.'},{r:'in case of + noun = if there is (formal notices)',x:'In case of emergency, dial 999.'}],
+  words:['in case','just in case','in case of','if','unless','in the event of'],
+  note:'<b>in case ≠ if.</b> <em>I’ll take an umbrella in case it rains</em> = I take it now, before I know. <em>I’ll take an umbrella if it rains</em> = only after it starts raining.'}),
+ ex:[
+  {n:'Spot the precautions',b:()=>[TASK('Underline in case','Underline every in case and explain what precaution is being taken.'),
+    B('text',{reading:true,html:'I always keep a spare key at my sister’s <b>in case</b> I lock myself out. Before a long drive I check the tyres <b>in case</b> one of them is soft, and I take a blanket <b>just in case</b> the car breaks down at night. The label says: “<b>In case of</b> breakdown, call this number.”'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the correct form of the verb in brackets.'),
+    ...FIBS('1  Take an umbrella in case it [rains]. (rain)','2  I wrote the number down in case I [forgot] it. (forget)',
+    '3  Phone me in case there [is] a problem. (be)','4  He took a map in case they [got] lost. (get)',
+    '5  I’ll bring some cash in case they [don’t] take cards. (not take)','6  She left early in case the traffic [was] bad. (be)',
+    '7  In case [of] fire, use the stairs.','8  Keep the receipt in case you [need] to return it. (need)',
+    '9  We booked in case the hotel [was] full. (be)','10  Take my number just in [case].')]},
+  {n:'in case or if?',b:()=>[TASK('Circle the correct option','Circle in case or if.'),
+    CHOOSE(['1  I’ll take an umbrella ( in case / if ) it rains — the sky looks grey.','in case'],
+    ['2  I’ll open the umbrella ( in case / if ) it starts raining.','if'],
+    ['3  Take some sandwiches ( in case / if ) you get hungry.','in case'],
+    ['4  Call an ambulance ( in case / if ) he loses consciousness.','if'],
+    ['5  Insure the parcel ( in case / if ) it gets lost.','in case'],
+    ['6  ( In case of / If of ) emergency, press the red button.','In case of'],
+    ['7  I’ll wait here ( in case / if ) she comes back.','in case'],
+    ['8  We’ll cancel ( in case / if ) nobody signs up.','if'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('Take a coat in case it ____ cold later.',['gets','will get','would get','is getting'],0),
+    MC('He wrote it down in case he ____ .',['forgot','will forget','forgets','would forget'],0),
+    MC('____ of fire, do not use the lift.',['In case','In the case','On case','At case'],0),
+    MC('I’ll take my laptop just in ____ .',['case','the case','case of','a case'],0),
+    MC('Lock the door in case somebody ____ in.',['comes','will come','would come','is coming'],0),
+    MC('We took a spare tyre in case we ____ a puncture.',['had','would have','will have','have'],0),
+    MC('Keep the receipt in case there ____ a problem.',['is','will be','would be','be'],0),
+    MC('Bring some money in case the machine ____ working.',['stops','will stop','stopped','would stop'],0)]},
+  {n:'Write your precautions',b:()=>[TASK('Write about precautions','Write eight sentences about precautions you take before a journey, an exam or bad weather.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-like-as',name:'like and as',
+ theory:T({icon:'🔍',title:'Similar to, or in the role of?',
+  form:[{s:'like + noun',x:'She sings <em>like</em> a professional.'},{s:'as + role',x:'She works <em>as</em> a translator.'},{s:'as + clause',x:'Do <em>as</em> I say, not <em>as</em> I do.'}],
+  uses:[{r:'like = similar to (but not the same thing)',x:'He looks like his father.'},{r:'as = in the role or function of (it really is)',x:'He worked as a waiter for a year.'},{r:'as + subject + verb, in comparisons of manner',x:'Nobody understands her as I do.'},{r:'as usual, as expected, as I said — fixed phrases',x:'As usual, the train was late.'}],
+  words:['like','as','as usual','as expected','as if','such as','the same as'],
+  note:'Compare: <em>As your teacher, I advise you …</em> (I am your teacher) with <em>Like your teacher, I advise you …</em> (I am not, but I do the same). In everyday speech <em>like</em> is often used before a clause, but in writing prefer <em>as</em>.'}),
+ ex:[
+  {n:'Spot the difference',b:()=>[TASK('Underline like and as','Underline each one and decide whether it means "similar to" or "in the role of".'),
+    B('text',{reading:true,html:'He worked <b>as</b> a guide for two summers and, <b>like</b> most guides, learnt to talk to anybody. He told stories <b>as</b> his grandfather had told them, and tourists said he sounded <b>like</b> an actor. <b>As</b> usual, he refused to take any credit.'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write like or as.'),
+    ...FIBS('1  She sings [like] a professional.','2  She works [as] a translator.',
+    '3  He looks [like] his father.','4  Do [as] I say, not [as] I do.',
+    '5  [As] usual, the train was late.','6  This coat feels [like] silk.',
+    '7  He used the box [as] a table.','8  Nobody knows her [as] I do.',
+    '9  Cities [like] Rome attract millions.','10  [As] I said earlier, the deadline is Friday.')]},
+  {n:'Choose the correct word',b:()=>[TASK('Circle the correct option','Circle like or as.'),
+    CHOOSE(['1  He treats me ( like / as ) a child.','like'],
+    ['2  She got a job ( like / as ) a nurse.','as'],
+    ['3  It happened exactly ( like / as ) I expected.','as'],
+    ['4  Your perfume smells ( like / as ) roses.','like'],
+    ['5  ( Like / As ) your friend, I must be honest with you.','As'],
+    ['6  He runs ( like / as ) the wind.','like'],
+    ['7  We use this room ( like / as ) an office.','as'],
+    ['8  Nothing tastes ( like / as ) home cooking.','like'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('He speaks English ____ a native speaker.',['like','as','so','such'],0),
+    MC('She has worked ____ a doctor for ten years.',['as','like','so as','such as'],0),
+    MC('____ I told you, the meeting is cancelled.',['As','Like','So','Such'],0),
+    MC('The house looked ____ a castle.',['like','as','so','such as'],0),
+    MC('____ expected, prices went up again.',['As','Like','So','How'],0),
+    MC('He used his coat ____ a pillow.',['as','like','so','for like'],0),
+    MC('Sports ____ tennis need good reflexes.',['like','as','so as','as like'],0),
+    MC('Do it ____ the instructions say.',['as','like of','so','such'],0)]},
+  {n:'Write comparisons',b:()=>[TASK('Write comparisons','Write eight sentences comparing people you know and describing their jobs, using both like and as.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-as-if',name:'as if · as though · like',
+ theory:T({icon:'🎭',title:'Describing an impression',
+  form:[{s:'real',x:'It looks <em>as if</em> it is going to rain.'},{s:'unreal',x:'He talks <em>as if</em> he <em>knew</em> everything.'},{s:'informal',x:'It looks <em>like</em> it’s going to rain.'}],
+  uses:[{r:'as if / as though + present = a likely impression',x:'She looks as if she is enjoying herself.'},{r:'as if + past = imaginary or untrue',x:'He behaves as if he owned the place.'},{r:'After look, sound, feel, smell, seem',x:'It sounds as though they have already left.'},{r:'like is common in informal speech, as if in writing',x:'You look like you need a rest.'}],
+  words:['as if','as though','like','look','sound','feel','seem','smell'],
+  note:'The past tense after <em>as if</em> shows the idea is <u>not true</u>: <em>He acts as if he <u>were</u> the boss</em> (he isn’t). A present tense means you think it probably is true.'}),
+ ex:[
+  {n:'Spot the impressions',b:()=>[TASK('Underline the structures','Underline every as if, as though and like. Decide which describe something untrue.'),
+    B('text',{reading:true,html:'She came in looking <b>as though</b> she hadn’t slept for days. It smelt <b>as if</b> something was burning, and the kitchen looked <b>like</b> a battlefield. “Don’t look at me <b>as if</b> I were mad,” she said. “It feels <b>as though</b> this week will never end.”'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write the correct form of the verb in brackets.'),
+    ...FIBS('1  It looks as if it [is] going to rain. (be)','2  He talks as if he [knew] everything. (know)',
+    '3  She behaves as though she [owned] the place. (own)','4  It sounds as if they [have] already left. (have)',
+    '5  You look as if you [need] a rest. (need)','6  He spoke to me as if I [were] a child. (be)',
+    '7  It smells as though something [is] burning. (be)','8  They act as if nothing [had] happened. (happen)',
+    '9  She looks as if she [has] been crying. (be)','10  He walked in as if he [owned] the building. (own)')]},
+  {n:'Real or unreal?',b:()=>[TASK('Circle the correct option','Circle the form that fits the meaning in brackets.'),
+    CHOOSE(['1  It looks as if it ( is / were ) going to snow.  (probably true)','is'],
+    ['2  He behaves as if he ( is / were ) my boss.  (he isn’t)','were'],
+    ['3  She sounds as though she ( has / had ) a cold.  (probably true)','has'],
+    ['4  They talk as if they ( know / knew ) everything.  (they don’t)','knew'],
+    ['5  You look as if you ( have / had ) seen a ghost.  (probably true)','have'],
+    ['6  He spends money as if he ( is / were ) a millionaire.  (he isn’t)','were'],
+    ['7  It feels as though the summer ( is / were ) over.  (probably true)','is'],
+    ['8  She treats me as if I ( am / were ) invisible.  (she shouldn’t)','were'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('It looks ____ they have finished.',['as if','as','like of','such as'],0),
+    MC('He acts as if he ____ everything.',['owned','owns','own','has owned'],0),
+    MC('You sound ____ you have a cold.',['as though','as of','like that','so'],0),
+    MC('She looked at me as if I ____ mad.',['were','am','be','have been'],0),
+    MC('It smells as if something ____ .',['is burning','were burning','burn','burnt'],0),
+    MC('They behaved as though nothing ____ .',['had happened','has happened','happens','happen'],0),
+    MC('It feels ____ winter has arrived early.',['as if','as of','like of','such'],0),
+    MC('He talks to her as if she ____ a child.',['were','is being','be','has been'],0)]},
+  {n:'Describe impressions',b:()=>[TASK('Describe impressions','Write eight sentences describing how people looked, sounded or behaved, using as if and as though.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-during-while',name:'during · for · while',
+ theory:T({icon:'⌛',title:'Three ways to place an event in time',
+  form:[{s:'during + noun',x:'<em>during</em> the film · <em>during</em> the night'},{s:'for + period',x:'<em>for</em> two hours · <em>for</em> a week'},{s:'while + clause',x:'<em>while</em> I was watching the film'}],
+  uses:[{r:'during answers when? — it needs a noun',x:'He fell asleep during the lecture.'},{r:'for answers how long? — it needs a length of time',x:'We waited for twenty minutes.'},{r:'while needs a subject and a verb',x:'While we were waiting, we had a coffee.'},{r:'when + short action, while + longer action',x:'While I was cooking, the phone rang.'}],
+  words:['during','for','while','when','as','throughout','in the course of'],
+  note:'The most common mistake is <em>during</em> + a length of time: <s>during two hours</s> → <em>for two hours</em>. And <em>during</em> can never be followed by a clause: <s>during I was there</s> → <em>while I was there</em>.'}),
+ ex:[
+  {n:'Spot the three words',b:()=>[TASK('Underline the time words','Underline during, for and while, and note what follows each one.'),
+    B('text',{reading:true,html:'It rained <b>for</b> three days without stopping. <b>During</b> the storm we lost power twice, and <b>while</b> we were sitting in the dark my brother told ghost stories. <b>During</b> the night the wind dropped, and <b>while</b> everyone else slept I read <b>for</b> hours by candlelight.'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write during, for or while.'),
+    ...FIBS('1  He fell asleep [during] the lecture.','2  We waited [for] twenty minutes.',
+    '3  [While] we were waiting, we had a coffee.','4  It rained [during] the night.',
+    '5  She lived in Japan [for] three years.','6  [While] I was cooking, the phone rang.',
+    '7  Nobody spoke [during] the meal.','8  I read the report [while] I was on the train.',
+    '9  They talked [for] hours.','10  [During] my stay in Rome I visited every museum.')]},
+  {n:'Choose the correct word',b:()=>[TASK('Circle the correct option','Circle the correct word.'),
+    CHOOSE(['1  We were there ( during / for ) two weeks.','for'],
+    ['2  ( During / While ) the concert, someone’s phone rang.','During'],
+    ['3  ( During / While ) I was reading, I fell asleep.','While'],
+    ['4  It snowed ( during / for ) the whole weekend.','during'],
+    ['5  He waited ( during / for ) an hour.','for'],
+    ['6  ( While / During ) my illness, friends visited every day.','During'],
+    ['7  She learnt Italian ( while / during ) she lived in Milan.','while'],
+    ['8  Nothing happened ( during / for ) the first half.','during'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('I fell asleep ____ the film.',['during','for','while','since'],0),
+    MC('We talked ____ three hours.',['for','during','while','since'],0),
+    MC('____ she was speaking, nobody moved.',['While','During','For','Since'],0),
+    MC('It was very cold ____ the winter.',['during','for','while','by'],0),
+    MC('He worked there ____ six months.',['for','during','while','since'],0),
+    MC('____ the interview I felt very nervous.',['During','While','For','By'],0),
+    MC('The lights went out ____ we were eating.',['while','during','for','by'],0),
+    MC('Nobody spoke ____ the whole journey.',['during','for','while','since'],0)]},
+  {n:'Write about an event',b:()=>[TASK('Write about an event','Describe a journey, a concert or a holiday in eight sentences, using during, for and while at least twice each.'),B('lines',{count:9})]}
+]},
+{id:'eg-by-until',name:'by and until · by the time …',
+ theory:T({icon:'⏳',title:'A deadline or a whole period?',
+  form:[{s:'by = deadline',x:'Finish it <em>by</em> Friday.'},{s:'until = continuously',x:'Wait <em>until</em> Friday.'},{s:'by the time',x:'<em>By the time</em> we arrived, it had started.'}],
+  uses:[{r:'by = at or before that moment, not later',x:'The report must be ready by six.'},{r:'until / till = right up to that moment',x:'The shop stays open until nine.'},{r:'by the time + present or past, never will',x:'By the time you read this, I will have left.'},{r:'not … until = only at that moment',x:'He didn’t arrive until midnight.'}],
+  words:['by','until','till','by the time','not until','by then','up to'],
+  note:'Compare: <em>I must finish by Friday</em> (some time before Friday) with <em>I must stay until Friday</em> (the whole time). With verbs like <em>wait, stay, continue</em> use <em>until</em>, never <em>by</em>.'}),
+ ex:[
+  {n:'Spot the deadlines',b:()=>[TASK('Underline by and until','Underline each one and decide whether it marks a deadline or a whole period.'),
+    B('text',{reading:true,html:'The builders promised to finish <b>by</b> the end of March, so we stayed with my parents <b>until</b> the flat was ready. <b>By the time</b> we moved in, it was already May. We didn’t get the keys <b>until</b> the very last day, and even then the kitchen wasn’t done <b>by</b> any stretch.'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write by or until.'),
+    ...FIBS('1  Finish the report [by] Friday at the latest.','2  Please wait here [until] I come back.',
+    '3  The shop is open [until] nine in the evening.','4  I’ll have finished [by] then.',
+    '5  He didn’t arrive [until] midnight.','6  Can you let me know [by] tomorrow?',
+    '7  We stayed at the party [until] two in the morning.','8  The tickets must be booked [by] Monday.',
+    '9  Nothing happened [until] the police arrived.','10  [By] the time we got there, it was over.')]},
+  {n:'Choose the correct word',b:()=>[TASK('Circle the correct option','Circle by or until.'),
+    CHOOSE(['1  I’ll be back ( by / until ) six o’clock.','by'],
+    ['2  Wait here ( by / until ) I get back.','until'],
+    ['3  The work must be done ( by / until ) the weekend.','by'],
+    ['4  She lived in Spain ( by / until ) last year.','until'],
+    ['5  ( By / Until ) the time she called, I had gone out.','By'],
+    ['6  We can’t start ( by / until ) everyone is here.','until'],
+    ['7  Let me know ( by / until ) Thursday.','by'],
+    ['8  He didn’t speak ( by / until ) the very end.','until'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('The parcel should arrive ____ Wednesday.',['by','until','till','during'],0),
+    MC('We waited ____ the rain stopped.',['until','by','for','during'],0),
+    MC('____ the time I woke up, everyone had left.',['By','Until','On','At'],0),
+    MC('I need your answer ____ tonight.',['by','until','till','during'],0),
+    MC('The museum is closed ____ further notice.',['until','by','for','on'],0),
+    MC('She didn’t tell anyone ____ the following week.',['until','by','for','at'],0),
+    MC('Will you have finished ____ then?',['by','until','till','during'],0),
+    MC('Stay on the line ____ an operator answers.',['until','by','for','since'],0)]},
+  {n:'Write your deadlines',b:()=>[TASK('Write about deadlines','Write eight sentences about things you must finish by a certain time and things you will continue until a certain time.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-on-time',name:'on time / in time · at the end / in the end',
+ theory:T({icon:'🎯',title:'Four expressions that are easily confused',
+  form:[{s:'on time',x:'The train left <em>on time</em>. (punctually)'},{s:'in time',x:'We arrived <em>in time</em> to catch it. (early enough)'},{s:'at / in the end',x:'<em>at the end</em> of the film · <em>in the end</em> we stayed'}],
+  uses:[{r:'on time = at the scheduled moment, not late',x:'The meeting started on time.'},{r:'in time (for / to) = with enough time to spare',x:'I got home in time for dinner.'},{r:'at the end (of) = at the final point of something',x:'At the end of the street, turn left.'},{r:'in the end = finally, after everything',x:'In the end we decided not to go.'}],
+  words:['on time','in time','just in time','at the end of','in the end','at last','finally'],
+  note:'<em>At the end</em> almost always needs <em>of something</em>; <em>in the end</em> stands alone and means <em>eventually</em>. And <em>in the end</em> ≠ <em>at last</em>, which adds relief after a long wait.'}),
+ ex:[
+  {n:'Spot the expressions',b:()=>[TASK('Underline the expressions','Underline each expression and note its meaning.'),
+    B('text',{reading:true,html:'The train did not leave <b>on time</b>, but we still reached the theatre <b>in time</b> for the first act. <b>At the end</b> of the play the audience stood up, and <b>in the end</b> the curtain call lasted longer than the last scene. We got home <b>just in time</b> to catch the late news.'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write on time, in time, at the end or in the end.'),
+    ...FIBS('1  The train left exactly [on time].','2  We arrived [in time] to see the opening.',
+    '3  [At the end] of the street there is a chemist.','4  [In the end] we decided not to go.',
+    '5  He is never [on time] for meetings.','6  She got to the airport just [in time].',
+    '7  [At the end] of the year the results were published.','8  [In the end] everything worked out well.',
+    '9  Please be [on time] tomorrow.','10  I got home [in time] for dinner.')]},
+  {n:'Choose the correct phrase',b:()=>[TASK('Circle the correct option','Circle the correct expression.'),
+    CHOOSE(['1  The plane landed ( on time / in time ).','on time'],
+    ['2  We got there ( on time / in time ) to say goodbye.','in time'],
+    ['3  ( At the end / In the end ) of the concert, everyone clapped.','At the end'],
+    ['4  ( At the end / In the end ) they sold the house.','In the end'],
+    ['5  Buses here are rarely ( on time / in time ).','on time'],
+    ['6  I finished the essay just ( on time / in time ).','in time'],
+    ['7  ( At the end / In the end ) of the day I was exhausted.','At the end'],
+    ['8  ( At the end / In the end ) we took a taxi.','In the end'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('The ceremony began ____ .',['on time','in time','at time','by time'],0),
+    MC('We arrived ____ for the start of the film.',['in time','on time','at time','by the time'],0),
+    MC('____ of the book there is an index.',['At the end','In the end','On the end','By the end'],0),
+    MC('____ , he apologised to everybody.',['In the end','At the end','On the end','By end'],0),
+    MC('Will the work be finished ____ ?',['on time','in time of','at the time','in the end of'],0),
+    MC('The ambulance got there just ____ .',['in time','on time','at time','by time'],0),
+    MC('____ of the meeting we agreed a date.',['At the end','In the end','On end','By end'],0),
+    MC('It rained all week, but ____ the match went ahead.',['in the end','at the end','on the end','by the end'],0)]},
+  {n:'Tell a story',b:()=>[TASK('Tell a story','Write about a journey or a project in eight sentences, using all four expressions at least once.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-in-on-at-other',name:'in / on / at — other uses',
+ theory:T({icon:'🧩',title:'Fixed phrases with in, on and at',
+  form:[{s:'in',x:'<em>in</em> the rain · <em>in</em> pencil · <em>in</em> my opinion'},{s:'on',x:'<em>on</em> holiday · <em>on</em> the phone · <em>on</em> purpose'},{s:'at',x:'<em>at</em> the age of · <em>at</em> 100 km an hour · <em>at</em> last'}],
+  uses:[{r:'in: weather, writing, languages, opinions, states',x:'She wrote it in ink. · in a hurry · in love'},{r:'on: media, transport, holiday, purpose',x:'I heard it on the radio. · on the bus · on business'},{r:'at: age, speed, temperature, prices',x:'He retired at the age of sixty.'},{r:'Many are simply fixed — learn them as whole phrases',x:'at least · on time · in fact'}],
+  words:['in the rain','in pen','in my opinion','in a hurry','on the phone','on television','on purpose','on business','at the age of','at least','at last'],
+  note:'These phrases rarely translate word for word. Collect them as fixed chunks: you are <em>in</em> a photo but <em>on</em> a list; you travel <em>on</em> a bus but <em>in</em> a car.'}),
+ ex:[
+  {n:'Spot the phrases',b:()=>[TASK('Underline the phrases','Underline every phrase with in, on or at that you would learn as a whole.'),
+    B('text',{reading:true,html:'I heard about it <b>on the radio</b> while I was <b>on the bus</b>. <b>In my opinion</b> the report was written <b>in a hurry</b> — half of it seems to have been done <b>on purpose</b> to confuse. <b>At least</b> the figures were clear. She retired <b>at the age of</b> fifty-eight and now travels <b>on business</b> twice a year.'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write in, on or at.'),
+    ...FIBS('1  We got soaked walking [in] the rain.','2  Please write your answers [in] pen.',
+    '3  I heard the news [on] the radio.','4  She is [on] holiday until Monday.',
+    '5  He learnt to read [at] the age of four.','6  They were driving [at] 120 kilometres an hour.',
+    '7  Did he do it [on] purpose?','8  [In] my opinion, the plan will fail.',
+    '9  He is [on] the phone at the moment.','10  We were [in] a hurry, so we took a taxi.')]},
+  {n:'Choose the correct preposition',b:()=>[TASK('Circle the correct option','Circle in, on or at.'),
+    CHOOSE(['1  I saw it ( in / on ) television.','on'],
+    ['2  She travels ( in / on ) business twice a year.','on'],
+    ['3  We came ( in / by ) car.','by'],
+    ['4  He is ( in / at ) a bad mood today.','in'],
+    ['5  Your name is ( in / on ) the list.','on'],
+    ['6  You are ( in / on ) the photo, aren’t you?','in'],
+    ['7  ( At / In ) least twenty people came.','At'],
+    ['8  They fell ( in / on ) love in Venice.','in'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('The whole family was ____ holiday.',['on','in','at','to'],0),
+    MC('He answered ____ a whisper.',['in','on','at','by'],0),
+    MC('She broke the window ____ purpose.',['on','in','at','by'],0),
+    MC('The car was doing ninety ____ the motorway.',['on','in','at','by'],0),
+    MC('____ fact, I had already read it.',['In','On','At','By'],0),
+    MC('Water boils ____ 100 degrees.',['at','in','on','by'],0),
+    MC('He is ____ his way home.',['on','in','at','to'],0),
+    MC('Fill in the form ____ capital letters.',['in','on','at','by'],0)]},
+  {n:'Use the phrases',b:()=>[TASK('Write your own sentences','Write eight sentences about your week, using at least eight different fixed phrases with in, on or at.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-by',name:'by',
+ theory:T({icon:'🔑',title:'The many meanings of by',
+  form:[{s:'agent',x:'The novel was written <em>by</em> Orwell.'},{s:'method',x:'I paid <em>by</em> card. · We travelled <em>by</em> train.'},{s:'beside',x:'a house <em>by</em> the sea'}],
+  uses:[{r:'Who did it, in passive sentences',x:'The bridge was designed by Brunel.'},{r:'How: by car, by post, by credit card, by mistake',x:'She sent it by email.'},{r:'by + -ing = how you achieve something',x:'You learn by making mistakes.'},{r:'Next to, or a deadline',x:'We sat by the window. · Finish it by Friday.'},{r:'Amounts and differences',x:'Prices rose by ten per cent.'}],
+  words:['by car','by post','by mistake','by chance','by hand','by heart','by far','by myself','by the way'],
+  note:'Note the pairs: <em>by car</em> but <em>in my car</em>; <em>by hand</em> but <em>with my hands</em>. Use <em>with</em> for the instrument you hold: <em>He opened it with a knife</em>, not <s>by a knife</s>.'}),
+ ex:[
+  {n:'Spot the uses',b:()=>[TASK('Label each by','Underline every by and mark it A (agent), M (method), P (place) or D (deadline).'),
+    B('text',{reading:true,html:'The painting <b>by</b> the door was done <b>by</b> a local artist. She sold it <b>by</b> accident to a tourist who paid <b>by</b> card and promised to collect it <b>by</b> Friday. He never came back, and <b>by</b> the end of the month the gallery had sold it again.'})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write by or with.'),
+    ...FIBS('1  The novel was written [by] Orwell.','2  He opened the tin [with] a knife.',
+    '3  I paid [by] credit card.','4  She cut the paper [with] scissors.',
+    '5  We travelled [by] train.','6  He wrote it [with] a pencil.',
+    '7  The letter was sent [by] post.','8  I did it [by] mistake.',
+    '9  She learnt the poem [by] heart.','10  The table was made [by] hand.')]},
+  {n:'Choose the correct form',b:()=>[TASK('Circle the correct option','Circle the correct preposition.'),
+    CHOOSE(['1  We went ( by / in ) car.','by'],
+    ['2  We went ( by / in ) my car.','in'],
+    ['3  He was hit ( by / with ) a stone.','by'],
+    ['4  He broke the window ( by / with ) a stone.','with'],
+    ['5  I met her ( by / in ) chance.','by'],
+    ['6  Sit ( by / at ) the window — the view is better.','by'],
+    ['7  You improve ( by / with ) practising.','by'],
+    ['8  Prices went up ( by / of ) five per cent.','by'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('The parcel was delivered ____ courier.',['by','with','from','on'],0),
+    MC('She cut her finger ____ the bread knife.',['with','by','from','on'],0),
+    MC('He learnt the whole speech ____ heart.',['by','with','on','in'],0),
+    MC('The house was designed ____ a famous architect.',['by','from','with','of'],0),
+    MC('You can save money ____ booking early.',['by','with','for','through of'],0),
+    MC('They live ____ the river.',['by','on to','at of','with'],0),
+    MC('This is ____ far the best option.',['by','of','at','in'],0),
+    MC('I sent the photos ____ email.',['by','with','on','from'],0)]},
+  {n:'Explain how',b:()=>[TASK('Explain how','Write eight sentences explaining how you travel, pay, communicate and learn, using by and with correctly.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-pv-in-out',name:'Phrasal verbs: in and out',
+ theory:T({icon:'🚪',title:'Movement in and out',
+  form:[{s:'in',x:'come <em>in</em> · move <em>in</em> · fill <em>in</em> a form'},{s:'out',x:'go <em>out</em> · take <em>out</em> · find <em>out</em>'},{s:'out of',x:'get <em>out of</em> the car'}],
+  uses:[{r:'in = entering, or joining something',x:'They moved in last week. · Fill in the form.'},{r:'out = leaving, or removing',x:'She took out her phone. · The fire went out.'},{r:'out = discovering, becoming known',x:'I found out the truth. · The news came out.'},{r:'out of + noun for leaving an enclosed space',x:'He got out of bed at noon.'}],
+  words:['come in','move in','fill in','join in','check in','go out','take out','find out','turn out','get out of','run out of','eat out'],
+  note:'With people and vehicles: you get <em>in / out of</em> a car but <em>on / off</em> a bus or train. And note <em>run out of</em> — three words, never split: <em>We ran out of petrol.</em>'}),
+ ex:[
+  {n:'Spot the phrasal verbs',b:()=>[TASK('Underline the phrasal verbs','Underline every phrasal verb with in or out.'),
+    B('text',{reading:true,html:'We <b>moved in</b> on a Friday and immediately <b>ran out of</b> boxes. I <b>filled in</b> the change-of-address forms while my brother <b>took out</b> the rubbish. Later we <b>found out</b> that the heating didn’t work, so we <b>ate out</b> and <b>came in</b> very late.'})]},
+  {n:'Complete the phrasal verbs',b:()=>[TASK('Complete the sentences','Write in or out.'),
+    ...FIBS('1  Please fill [in] this form.','2  We ran [out] of milk this morning.',
+    '3  They moved [in] next door last month.','4  I need to find [out] the times of the trains.',
+    '5  Take your hands [out] of your pockets.','6  Come [in] and sit down!',
+    '7  The fire went [out] during the night.','8  She took [out] her passport at the desk.',
+    '9  Why don’t you join [in] the game?','10  It turned [out] that he was right all along.')]},
+  {n:'Choose the correct verb',b:()=>[TASK('Circle the correct option','Circle the phrasal verb that fits.'),
+    CHOOSE(['1  I must ( find out / fill out ) when the shop opens.','find out'],
+    ['2  We ( ran out of / went out of ) petrol on the motorway.','ran out of'],
+    ['3  Please ( fill in / find in ) your name and address.','fill in'],
+    ['4  They ( moved in / moved out ) after the divorce and now live apart.','moved out'],
+    ['5  Let’s ( eat out / eat in ) tonight — I don’t want to cook.','eat out'],
+    ['6  He ( got out of / got off ) the car and locked it.','got out of'],
+    ['7  The truth finally ( came out / came in ).','came out'],
+    ['8  We ( checked in / checked out ) at the hotel at three.','checked in'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('Could you fill ____ this application?',['in','out of','off','over'],0),
+    MC('We have run ____ coffee.',['out of','out','off','away'],0),
+    MC('I want to find ____ what happened.',['out','in','off','over'],0),
+    MC('She took her keys ____ her bag.',['out of','out','off','from out'],0),
+    MC('The candle went ____ in the wind.',['out','in','off','away'],0),
+    MC('New neighbours are moving ____ tomorrow.',['in','out of','on','over'],0),
+    MC('It turned ____ to be a misunderstanding.',['out','in','off','over'],0),
+    MC('Why don’t you join ____ ?',['in','out','on','over'],0)]},
+  {n:'Write about moving',b:()=>[TASK('Write about a move','Describe moving house or starting a new job in eight sentences, using at least six phrasal verbs with in or out.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-pv-off-on',name:'Phrasal verbs: on and off',
+ theory:T({icon:'🔌',title:'Starting, stopping and continuing',
+  form:[{s:'on',x:'turn <em>on</em> · put <em>on</em> · carry <em>on</em>'},{s:'off',x:'turn <em>off</em> · take <em>off</em> · put <em>off</em>'},{s:'set off',x:'We <em>set off</em> at dawn.'}],
+  uses:[{r:'on = switching on, wearing, continuing',x:'Turn on the light. · Carry on working.'},{r:'off = switching off, removing, leaving',x:'Take off your coat. · The plane took off.'},{r:'off = cancelling or postponing',x:'They called off the match. · Don’t put it off.'},{r:'on = boarding transport',x:'We got on the train at York.'}],
+  words:['turn on','put on','carry on','go on','get on','turn off','take off','put off','call off','set off','see off','be off'],
+  note:'Watch the opposites: <em>put on / take off</em> (clothes), <em>turn on / turn off</em> (machines), <em>get on / get off</em> (buses and trains). But <em>put off</em> means <em>postpone</em>, not the opposite of <em>put on</em>.'}),
+ ex:[
+  {n:'Spot the phrasal verbs',b:()=>[TASK('Underline the phrasal verbs','Underline every phrasal verb with on or off.'),
+    B('text',{reading:true,html:'We <b>set off</b> at six, but the match was <b>called off</b> because of the weather. I <b>took off</b> my wet coat, <b>turned on</b> the heating and <b>carried on</b> reading. My sister <b>put off</b> her journey until Sunday and <b>got on</b> a later train.'})]},
+  {n:'Complete the phrasal verbs',b:()=>[TASK('Complete the sentences','Write on or off.'),
+    ...FIBS('1  Could you turn [off] the radio? It’s too loud.','2  Put [on] your coat — it’s freezing.',
+    '3  They put [off] the meeting until Friday.','4  The plane took [off] on time.',
+    '5  Carry [on] with what you were doing.','6  We set [off] very early in the morning.',
+    '7  She got [on] the bus at the station.','8  The match was called [off] because of rain.',
+    '9  Please switch [on] the lights.','10  Take [off] your shoes before you come in.')]},
+  {n:'Choose the correct verb',b:()=>[TASK('Circle the correct option','Circle the phrasal verb that fits.'),
+    CHOOSE(['1  Don’t ( put off / put on ) your homework until midnight.','put off'],
+    ['2  She ( took off / took on ) her coat and sat down.','took off'],
+    ['3  We ( set off / set on ) before sunrise.','set off'],
+    ['4  The concert was ( called off / called on ) at the last minute.','called off'],
+    ['5  Please ( carry on / carry off ) — I’m listening.','carry on'],
+    ['6  He ( got on / got off ) the train at the wrong stop.','got off'],
+    ['7  Could you ( turn on / turn off ) the light? It’s dark.','turn on'],
+    ['8  We went to the airport to ( see off / see on ) my cousin.','see off'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('Please turn ____ your phone during the exam.',['off','on','out','away'],0),
+    MC('Don’t put ____ what you can do today.',['off','on','out','up'],0),
+    MC('The plane took ____ two hours late.',['off','on','out','up'],0),
+    MC('We ____ at five in the morning.',['set off','set on','set out of','set up of'],0),
+    MC('Just carry ____ as if nothing had happened.',['on','off','out','up'],0),
+    MC('She got ____ the bus at the last stop.',['off','on of','out','away'],0),
+    MC('They called the wedding ____ .',['off','on','out','away'],0),
+    MC('It’s cold — put your gloves ____ .',['on','off','out','up'],0)]},
+  {n:'Describe your morning',b:()=>[TASK('Describe your morning','Write eight sentences about a typical morning, using at least six phrasal verbs with on or off.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-pv-up-down',name:'Phrasal verbs: up and down',
+ theory:T({icon:'↕️',title:'Increasing, finishing and reducing',
+  form:[{s:'up = completely',x:'eat <em>up</em> · use <em>up</em> · fill <em>up</em>'},{s:'up = increase',x:'speak <em>up</em> · turn <em>up</em> the volume'},{s:'down = reduce',x:'cut <em>down</em> · turn <em>down</em>'}],
+  uses:[{r:'up often means completely or to the end',x:'Drink up — we’re leaving. · I used up all the paper.'},{r:'up = increasing or improving',x:'Could you speak up? I can’t hear you.'},{r:'down = reducing',x:'The doctor told him to cut down on salt.'},{r:'down = writing, or breaking',x:'Write it down. · The car broke down.'}],
+  words:['eat up','use up','fill up','speak up','grow up','turn up','give up','cut down','turn down','write down','break down','calm down','let down'],
+  note:'<em>Turn up</em> and <em>turn down</em> are two different pairs: for volume they are opposites, but <em>turn up</em> also means <em>arrive unexpectedly</em> and <em>turn down</em> also means <em>refuse</em>.'}),
+ ex:[
+  {n:'Spot the phrasal verbs',b:()=>[TASK('Underline the phrasal verbs','Underline every phrasal verb with up or down.'),
+    B('text',{reading:true,html:'He <b>grew up</b> in a small town and <b>gave up</b> smoking at thirty. The doctor told him to <b>cut down</b> on coffee too, so he <b>wrote down</b> everything he drank. One morning the car <b>broke down</b>, he <b>turned up</b> late for work, and his boss told him to <b>calm down</b>.'})]},
+  {n:'Complete the phrasal verbs',b:()=>[TASK('Complete the sentences','Write up or down.'),
+    ...FIBS('1  Could you speak [up]? I can’t hear you.','2  He gave [up] smoking last year.',
+    '3  The doctor told her to cut [down] on sugar.','4  Write the number [down] before you forget.',
+    '5  Our car broke [down] on the motorway.','6  She grew [up] in the countryside.',
+    '7  Please turn the music [down] — the baby is asleep.','8  He turned [up] an hour late.',
+    '9  We used [up] all the milk.','10  Calm [down] and tell me what happened.')]},
+  {n:'Choose the correct verb',b:()=>[TASK('Circle the correct option','Circle the phrasal verb that fits.'),
+    CHOOSE(['1  I can’t hear you — could you ( speak up / speak down )?','speak up'],
+    ['2  He ( turned down / turned up ) the job because the salary was too low.','turned down'],
+    ['3  She ( gave up / gave down ) trying to explain.','gave up'],
+    ['4  The engine ( broke down / broke up ) again.','broke down'],
+    ['5  Let me ( write down / write up ) your address.','write down'],
+    ['6  He ( grew up / grew down ) in Manchester.','grew up'],
+    ['7  We’ve ( used up / used down ) all the paper.','used up'],
+    ['8  You should ( cut down / cut up ) on fatty food.','cut down'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('He ____ smoking after twenty years.',['gave up','gave down','gave in of','gave away of'],0),
+    MC('Could you turn the television ____ ? It’s very loud.',['down','up','off of','out'],0),
+    MC('She ____ at the party without an invitation.',['turned up','turned down','turned off','turned in'],0),
+    MC('I need to ____ on sugar.',['cut down','cut up','cut off','cut in'],0),
+    MC('The lift has ____ again.',['broken down','broken up','broken off','broken in'],0),
+    MC('Please ____ your name and number.',['write down','write up','write off','write in of'],0),
+    MC('They ____ all the money in a week.',['used up','used down','used off','used in'],0),
+    MC('Where did you ____ ?',['grow up','grow down','grow on','grow in'],0)]},
+  {n:'Write about habits',b:()=>[TASK('Write about habits','Write eight sentences about habits you have given up, cut down on, or want to take up, using phrasal verbs with up and down.'),B('lines',{count:9})]}
+]},
+
+{id:'eg-pv-away-back',name:'Phrasal verbs: away and back',
+ theory:T({icon:'↩️',title:'Going away and coming back',
+  form:[{s:'away',x:'throw <em>away</em> · run <em>away</em> · give <em>away</em>'},{s:'back',x:'come <em>back</em> · call <em>back</em> · pay <em>back</em>'},{s:'back = returning',x:'Put the book <em>back</em> on the shelf.'}],
+  uses:[{r:'away = removing, disappearing, leaving',x:'Throw away the old newspapers.'},{r:'away = giving with no return',x:'She gave away most of her books.'},{r:'back = returning to a place, person or state',x:'I’ll call you back in five minutes.'},{r:'back = returning something you owe',x:'He paid me back on Friday.'}],
+  words:['throw away','give away','run away','put away','get away','take back','call back','pay back','come back','go back','look back','answer back'],
+  note:'<em>Away</em> and <em>back</em> often make a natural pair: you <em>take</em> something <em>away</em> and later <em>bring</em> it <em>back</em>; you <em>put</em> things <em>away</em> and then <em>get</em> them <em>back</em> out.'}),
+ ex:[
+  {n:'Spot the phrasal verbs',b:()=>[TASK('Underline the phrasal verbs','Underline every phrasal verb with away or back.'),
+    B('text',{reading:true,html:'Before we moved I <b>threw away</b> three bags of paper and <b>gave away</b> half my books. I <b>put away</b> everything else in boxes. Two weeks later I wanted them <b>back</b>, of course. When I <b>looked back</b> at that week I realised I should have <b>taken back</b> nothing and kept the lot.'})]},
+  {n:'Complete the phrasal verbs',b:()=>[TASK('Complete the sentences','Write away or back.'),
+    ...FIBS('1  Please throw [away] those old magazines.','2  I’ll call you [back] in ten minutes.',
+    '3  She gave [away] most of her clothes to charity.','4  He paid me [back] the money on Friday.',
+    '5  Put your toys [away] before dinner.','6  When are you coming [back] from Rome?',
+    '7  The dog ran [away] during the storm.','8  I took the shirt [back] because it didn’t fit.',
+    '9  We need to get [away] for a few days.','10  Looking [back], I should have said nothing.')]},
+  {n:'Choose the correct verb',b:()=>[TASK('Circle the correct option','Circle the phrasal verb that fits.'),
+    CHOOSE(['1  Don’t ( throw away / throw back ) the receipt — you may need it.','throw away'],
+    ['2  I’ll ( call away / call back ) as soon as I can.','call back'],
+    ['3  She ( gave away / gave back ) all her old furniture to a charity shop.','gave away'],
+    ['4  He borrowed my bike and never ( gave it away / gave it back ).','gave it back'],
+    ['5  Please ( put away / put back ) your things in the cupboard.','put away'],
+    ['6  The children ( ran away / ran back ) from home for a whole night.','ran away'],
+    ['7  We ( took away / took back ) the faulty kettle to the shop.','took back'],
+    ['8  Let’s ( get away / get back ) for the weekend somewhere quiet.','get away'])]},
+  {n:'Multiple choice',b:()=>[TASK('Choose the correct answer','Circle A, B, C or D.'),
+    MC('Don’t throw that ____ — I can use it.',['away','back','out of','off'],0),
+    MC('He promised to pay me ____ next week.',['back','away','off of','in'],0),
+    MC('She gave ____ her secret without meaning to.',['away','back','off','in of'],0),
+    MC('I’ll ring you ____ this evening.',['back','away','off','in'],0),
+    MC('Put your books ____ , please.',['away','back of','off of','in of'],0),
+    MC('When did they get ____ from holiday?',['back','away of','off of','in of'],0),
+    MC('The thief ran ____ before the police arrived.',['away','back','off of','in'],0),
+    MC('Looking ____ , it was the right decision.',['back','away','off','out'],0)]},
+  {n:'Write about tidying up',b:()=>[TASK('Write about tidying up','Write eight sentences about clearing out a room or returning from a trip, using phrasal verbs with away and back.'),B('lines',{count:9})]}
 ]}
 ];
 
 /* =====================================================================
-   IDIOMS & ACADEMIC VOCABULARY — original material (English with Tad)
+   IDIOMS & ACADEMIC VOCABULARY — original material (Worksheet Studio)
    ===================================================================== */
 function VOC(o){return Object.assign(makeBlock('vocablist'),o,{id:uid()});}
 const GRAMMAR_IDIOM=[
@@ -11471,6 +12191,26 @@ const GRAMMAR_TOPICVOCAB=[
    LEVELS — every topic is tagged A2 / B1 / B2 / C1 and grammar / vocab
    ===================================================================== */
 const TOPIC_LEVEL={
+ 'eg-by-until':'B1',
+ 'eg-on-time':'B2',
+ 'eg-in-on-at-other':'B2',
+ 'eg-by':'B1',
+ 'eg-pv-in-out':'B1',
+ 'eg-pv-off-on':'B1',
+ 'eg-pv-up-down':'B2',
+ 'eg-pv-away-back':'B2',
+ 'eg-for-since':'B1',
+ 'eg-have-got':'B1',
+ 'eg-better-time':'B2',
+ 'eg-would':'B2',
+ 'eg-requests':'B1',
+ 'eg-used-to-ing':'B2',
+ 'eg-worth-point':'B2',
+ 'eg-of-mine':'B2',
+ 'eg-in-case':'B2',
+ 'eg-like-as':'B2',
+ 'eg-as-if':'B2',
+ 'eg-during-while':'B1',
  // ---- A2 foundations ----
  'pres-simple':'A2','pres-cont':'A2','simple-vs-cont':'A2','past-simple':'A2','past-cont':'A2',
  'future-will':'A2','future-going':'A2','comparatives':'A2','articles':'A2','quantifiers':'A2',
@@ -11570,7 +12310,7 @@ function insertTopic(topic,level){
   const blocks=[Object.assign(JSON.parse(JSON.stringify(topic.theory)),{id:uid()})];
   topic.ex.forEach(e=>blocks.push(...e.b()));
   const st=DOC.applyAll?{...DOC.pages[0].style}:defaultStyle('indigo');
-  const pg={id:uid(),style:st,blocks:[Object.assign(makeBlock('header'),{eyebrow:'GRAMMAR · '+(level||'B1'),title:topic.name,sub:DOC.brand||'English with Tad'}),makeBlock('namebar'),...blocks]};
+  const pg={id:uid(),style:st,blocks:[Object.assign(makeBlock('header'),{eyebrow:'GRAMMAR · '+(level||'B1'),title:topic.name,sub:DOC.brand||'Worksheet Studio'}),makeBlock('namebar'),...blocks]};
   DOC.pages.push(pg);
   DOC.appendKey=true;
   selectedId=null;renderAll();closeModal('#libModal');
@@ -11860,7 +12600,7 @@ function frReplace(q,r){
   try{const u=localStorage.getItem('ws_ui');if(u)document.documentElement.setAttribute('data-ui',u);}catch(e){}
   buildPalette();buildThemeGallery();buildTemplates();
   const saved=loadAutosave();DOC=(saved&&saved.pages)?saved:newDoc('indigo');
-  if(DOC.brand==null)DOC.brand='English with Tad';
+  if(DOC.brand==null)DOC.brand='Worksheet Studio';
   renderAll();
 })();
 </script>
