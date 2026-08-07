@@ -1,0 +1,9 @@
+{
+  "name": "worksheet-studio",
+  "private": true,
+  "type": "module",
+  "description": "The site is static HTML; this file exists only so Netlify installs the one dependency the accounts function needs.",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

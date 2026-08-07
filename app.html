@@ -814,7 +814,15 @@ body.locked .app,body.locked .zoombar{display:none !important}
 .regfield::placeholder{color:rgba(255,255,255,.34)}
 .regfield:focus{outline:none;border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.14)}
 select.regfield option{background:#20233b;color:#fff}
-.lock.err .regfield.bad{border-color:rgba(239,68,68,.8)}
+.regfield.bad{border-color:rgba(239,68,68,.8)}
+.pw{position:relative}
+.pw .regfield{padding-right:46px}
+.eye{position:absolute;top:0;right:0;width:44px;height:46px;border:0;background:none;cursor:pointer;
+  display:grid;place-items:center;color:rgba(255,255,255,.42);padding:0}
+.eye:hover{color:rgba(255,255,255,.85)}
+.eye svg{width:19px;height:19px;display:block}
+.pwmeter{height:3px;border-radius:2px;background:rgba(255,255,255,.12);margin:-4px 0 9px;overflow:hidden}
+.pwmeter i{display:block;height:100%;width:0;border-radius:2px;transition:width .2s,background .2s}
 .lock-ok-msg{min-height:18px;margin-top:15px;font-size:13px;color:#6ee7b7;font-weight:600;line-height:1.5}
 
 /* ---------- plan badge + locked features ---------- */
@@ -938,37 +946,39 @@ select.regfield option{background:#20233b;color:#fff}
   <div class="lock-card">
     <div class="lock-mark"><svg viewBox="0 0 100 100" fill="none"><path d="M27 31h46M50 31v42" stroke="#fff" stroke-width="11" stroke-linecap="round"/><circle cx="74" cy="72" r="9" fill="#fbbf24"/></svg></div>
     <h1>Worksheet Studio</h1>
-    <p id="lockSub">Enter your licence key</p>
+    <p id="lockSub">Sign in to your account</p>
 
     <div class="authtabs" id="authTabs">
       <button data-p="in" class="on">Sign in</button>
-      <button data-p="up">Get a key</button>
+      <button data-p="up">Create an account</button>
     </div>
 
-    <div class="pane" id="paneIn">
-      <input class="keyfield" id="keyField" placeholder="WS-XXXX-XXXX" autocomplete="off"
-             autocapitalize="characters" autocorrect="off" spellcheck="false" maxlength="14">
-      <button class="keygo" id="keyGo">Unlock</button>
-      <div class="lock-hint">No key yet? <button class="linky" data-go="up">ask for one</button>
-        — or <button class="linky trialBtn">start a 7-day trial</button>.</div>
-    </div>
+    <form class="pane" id="paneIn" novalidate>
+      <input class="regfield" id="iMail" type="email" placeholder="E-mail" autocomplete="email"
+             autocapitalize="off" autocorrect="off" spellcheck="false">
+      <div class="pw"><input class="regfield" id="iPass" type="password" placeholder="Password"
+             autocomplete="current-password"><button class="eye" data-eye="iPass" type="button"
+             aria-label="Show password"></button></div>
+      <button class="keygo" id="inGo" type="submit">Sign in</button>
+      <div class="lock-hint">No account yet? <button class="linky" type="button" data-go="up">Create one</button>
+        — the first seven days are free.</div>
+    </form>
 
-    <div class="pane" id="paneUp" hidden>
-      <input class="regfield" id="rName" placeholder="Your name" autocomplete="name">
+    <form class="pane" id="paneUp" novalidate hidden>
+      <input class="regfield" id="rName" placeholder="Full name" autocomplete="name">
       <input class="regfield" id="rMail" type="email" placeholder="E-mail" autocomplete="email"
-             autocapitalize="off" spellcheck="false">
-      <select class="regfield" id="rPlan">
-        <option value="trial">7-day trial</option>
-        <option value="basic">Basic — £5 a month</option>
-        <option value="pro" selected>Pro — £9 a month</option>
-        <option value="max">Max — £19 a month, for a school</option>
-      </select>
-      <button class="keygo" id="regGo">Ask for a key</button>
-      <div class="lock-hint">Your key comes back to that address, usually the same day.<br>
-        Already have one? <button class="linky" data-go="in">Sign in</button>
-        · <a href="index.html#pricing">Compare the plans</a><br>
-        Or <button class="linky trialBtn">start the trial now</button> and ask later.</div>
-    </div>
+             autocapitalize="off" autocorrect="off" spellcheck="false">
+      <div class="pw"><input class="regfield" id="rPass" type="password" placeholder="Password"
+             autocomplete="new-password"><button class="eye" data-eye="rPass" type="button"
+             aria-label="Show password"></button></div>
+      <div class="pw"><input class="regfield" id="rPass2" type="password" placeholder="Repeat password"
+             autocomplete="new-password"><button class="eye" data-eye="rPass2" type="button"
+             aria-label="Show password"></button></div>
+      <button class="keygo" id="upGo" type="submit">Create my account</button>
+      <div class="lock-hint">Seven days of full access, no card.
+        Already registered? <button class="linky" type="button" data-go="in">Sign in</button>
+        · <a href="index.html#pricing">See the plans</a></div>
+    </form>
 
     <div class="lock-msg" id="lockMsg"></div>
     <div class="lock-ok-msg" id="lockOk"></div>
@@ -1044,7 +1054,7 @@ select.regfield option{background:#20233b;color:#fff}
           <a href="index.html#pricing" class="hint" style="text-decoration:underline">Compare plans</a>
         </div>
         <div class="hint" id="whoAmI" style="margin-top:6px"></div></div>
-      <button class="ibtn" id="lockBtn">🔒 Sign out / change key</button>
+      <button class="ibtn" id="lockBtn">🔒 Sign out</button>
     </div>
   </aside>
 
@@ -12534,69 +12544,81 @@ document.addEventListener('keydown',e=>{const m=e.metaKey||e.ctrlKey;
 $('#canvas').addEventListener('mousedown',e=>{if(e.target.closest('.paper'))return;selectedId=null;document.querySelectorAll('.block.sel').forEach(x=>x.classList.remove('sel'));refreshInspector();});
 
 /* =====================================================================
-   LICENCE KEYS AND PLANS
+   ACCOUNTS
 
-   A key is eight characters, shown as WS-XXXX-XXXX. It carries the plan,
-   the expiry date and a checksum, so the app can verify it offline —
-   no server, no account. Keys are issued from admin.html.
+   A teacher signs in with an e-mail and a password. Both are checked by
+   the accounts function on the server, so no password and no password
+   hash ever lives in this file, and the plan a teacher is on cannot be
+   edited with the developer tools.
 
-   Soft lock, not real security: this file is public, so the checksum
-   below is readable in the page source. It stops casual sharing, not a
-   determined reader. Real enforcement needs a server-side check.
+   What is kept here is the session token the server handed back and the
+   last answer it gave. That is what lets the builder open on a train
+   with no signal — see OFFLINE_GRACE_DAYS.
    ===================================================================== */
-const KA='23456789ABCDEFGHJKMNPQRSTUVWXYZ';        /* 31 chars, no 0/O/1/I/L */
-const KSALT='worksheet-studio-key-v1';
-const KEPOCH=Date.UTC(2024,0,1);
-function kEnc(n,len){let s='';for(let i=0;i<len;i++){s=KA[n%31]+s;n=Math.floor(n/31);}return s;}
-function kDec(s){let n=0;for(const c of s){const i=KA.indexOf(c);if(i<0)return -1;n=n*31+i;}return n;}
-function kSum(p){
-  let h=7;
-  for(let i=0;i<p.length;i++)h=(h*31+p.charCodeAt(i))%99991;
-  for(let i=0;i<KSALT.length;i++)h=(h*17+KSALT.charCodeAt(i))%99991;
-  return KA[h%31]+KA[Math.floor(h/31)%31];
-}
-function makeKey(tier,days){
-  const exp=Math.floor((Date.now()+days*864e5-KEPOCH)/864e5);
-  const p=tier+kEnc(exp,3)+KA[Math.floor(Math.random()*31)]+KA[Math.floor(Math.random()*31)];
-  const s=p+kSum(p);
-  return 'WS-'+s.slice(0,4)+'-'+s.slice(4);
-}
-function readKey(raw){
-  let s=(raw||'').toUpperCase().replace(/[^0-9A-Z]/g,'');
-  if(s.slice(0,2)==='WS')s=s.slice(2);
-  if(s.length!==8)return null;
-  const p=s.slice(0,6);
-  if(kSum(p)!==s.slice(6))return null;
-  if('BPM'.indexOf(p[0])<0)return null;
-  const d=kDec(p.slice(1,4));if(d<0)return null;
-  return {tier:p[0],expires:KEPOCH+d*864e5,key:'WS-'+s.slice(0,4)+'-'+s.slice(4)};
-}
+const API='/api';
+const OFFLINE_GRACE_DAYS=14;   /* how long a stored session lasts unverified */
+const EMAIL_RE=/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/;
 
-/* What each plan may do. `levels` are the library levels, `themes` the
-   number of A4 designs, `pages` the page limit for one document. */
 const PLANS={
-  trial:{id:'trial',name:'Trial',   levels:['A2','B1','B2','C1'],themes:99,pages:99,gen:true, brand:true},
-  B:    {id:'B',    name:'Basic',   levels:['A2','B1'],          themes:8, pages:3, gen:false,brand:false},
-  P:    {id:'P',    name:'Pro',     levels:['A2','B1','B2','C1'],themes:99,pages:99,gen:true, brand:true},
-  M:    {id:'M',    name:'Max',     levels:['A2','B1','B2','C1'],themes:99,pages:99,gen:true, brand:true}
+  trial:{id:'trial',name:'Trial',levels:['A2','B1','B2','C1'],themes:99,pages:99,gen:true, brand:true},
+  basic:{id:'basic',name:'Basic',levels:['A2','B1'],          themes:8, pages:3, gen:false,brand:false},
+  pro:  {id:'pro',  name:'Pro',  levels:['A2','B1','B2','C1'],themes:99,pages:99,gen:true, brand:true},
+  max:  {id:'max',  name:'Max',  levels:['A2','B1','B2','C1'],themes:99,pages:99,gen:true, brand:true}
 };
 const GEN_BLOCKS=['crossword','wordsearch'];
-let PLAN=PLANS.B, LIC=null;
+let PLAN=PLANS.basic, ME=null, TOKEN='';
 
-function daysLeft(ms){return Math.max(0,Math.ceil((ms-Date.now())/864e5));}
-function trialEnds(){
-  let s=0;try{s=parseInt(localStorage.getItem('ws_trial')||'0',10)||0;}catch(e){}
-  return s?s+7*864e5:0;
+function loadSession(){try{return JSON.parse(localStorage.getItem('ws_session')||'null');}catch(e){return null;}}
+function saveSession(token,account){
+  TOKEN=token;ME=account;PLAN=PLANS[account.plan]||PLANS.basic;
+  try{localStorage.setItem('ws_session',JSON.stringify({token,account,seen:Date.now()}));}catch(e){}
 }
-function loadLicence(){
-  let raw='';try{raw=localStorage.getItem('ws_key')||'';}catch(e){}
-  const k=readKey(raw);
-  if(k&&k.expires>Date.now()){LIC=k;PLAN=PLANS[k.tier];return true;}
-  const te=trialEnds();
-  if(te>Date.now()){LIC={tier:'trial',expires:te,key:''};PLAN=PLANS.trial;return true;}
-  LIC=null;PLAN=PLANS.B;return false;
+function clearSession(){
+  TOKEN='';ME=null;PLAN=PLANS.basic;
+  try{localStorage.removeItem('ws_session');}catch(e){}
 }
-/* True when the current plan allows `what`; otherwise nudges and returns false. */
+function planEnds(){return ME&&ME.until?Date.parse(ME.until+'T23:59:59'):0;}
+function daysLeft(){const e=planEnds();return e?Math.max(0,Math.ceil((e-Date.now())/864e5)):0;}
+function planLive(){return planEnds()>Date.now();}
+
+async function api(path,{method='GET',body,token}={}){
+  const r=await fetch(API+path,{
+    method,
+    headers:Object.assign({'Content-Type':'application/json'},token?{Authorization:'Bearer '+token}:{}),
+    body:body?JSON.stringify(body):undefined
+  });
+  let data={};try{data=await r.json();}catch(e){}
+  if(!r.ok)throw Object.assign(new Error(data.message||'Something went wrong.'),{status:r.status});
+  return data;
+}
+
+/* Asks the server who we are. Runs after the app has already opened, so
+   a plan bought this morning appears without signing in again. Silence
+   from the server is not an error — we carry on with what we had. */
+async function refreshMe(){
+  if(!TOKEN)return;
+  const knownEmail=ME&&ME.email;
+  try{
+    const {account}=await api('/me',{token:TOKEN});
+    saveSession(TOKEN,account);
+    if(planLive()){
+      if(document.body.classList.contains('locked')){
+        document.body.classList.remove('locked');
+        $('#lock').classList.remove('show','ok','closing');
+      }
+      applyPlan();
+    }else{
+      lockNow('Your '+PLAN.name+' ended on '+account.until+'. Write to us to carry on.');
+      $('#iMail').value=account.email;
+    }
+  }catch(e){
+    if(e.status===401){
+      clearSession();lockNow('Please sign in again.');
+      if(knownEmail)$('#iMail').value=knownEmail;
+    }
+  }
+}
+
 function can(what){
   if(what==='gen')return PLAN.gen;
   if(what==='brand')return PLAN.brand;
@@ -12607,14 +12629,12 @@ function levelAllowed(lv){return PLAN.levels.indexOf(lv)>=0;}
 
 function refreshPlanBadge(){
   const b=$('#planPill');if(!b)return;
-  const left=LIC?daysLeft(LIC.expires):0;
-  b.className='tierpill'+(LIC&&LIC.tier==='trial'?' trial':'')+(left<=5?' over':'');
-  b.textContent=(LIC?PLAN.name:'Basic')+(LIC&&left<=14?' · '+left+'d':'');
-  b.title=LIC
-    ? PLAN.name+' — '+left+' day'+(left===1?'':'s')+' left'+(LIC.key?' ('+LIC.key+')':'')
-    : 'No licence key';
-  const w=$('#whoAmI'),pr=loadProfile();
-  if(w)w.textContent=pr&&pr.name?pr.name+(pr.mail?' · '+pr.mail:''):'';
+  const left=daysLeft();
+  b.className='tierpill'+(ME&&ME.plan==='trial'?' trial':'')+(ME&&left<=5?' over':'');
+  b.textContent=ME?PLAN.name+(left<=14?' · '+left+'d':''):'—';
+  b.title=ME?PLAN.name+' until '+ME.until+' — '+left+' day'+(left===1?'':'s')+' left':'Not signed in';
+  const w=$('#whoAmI');
+  if(w)w.textContent=ME?ME.name+' · '+ME.email:'';
 }
 function makeSparkles(){
   const box=$('#sparkles');if(!box||box.children.length)return;
@@ -12625,7 +12645,7 @@ function makeSparkles(){
     const sz=2+Math.random()*4;s.style.width=s.style.height=sz+'px';
     s.style.opacity=(.3+Math.random()*.5);box.appendChild(s);}
 }
-function keyFail(msg){
+function authFail(msg){
   const lock=$('#lock');lock.classList.add('err');
   $('#lockOk').textContent='';$('#lockMsg').innerHTML=msg;
   setTimeout(()=>lock.classList.remove('err'),600);
@@ -12633,76 +12653,85 @@ function keyFail(msg){
 function authTab(which){
   document.querySelectorAll('#authTabs button').forEach(b=>b.classList.toggle('on',b.dataset.p===which));
   $('#paneIn').hidden=which!=='in';$('#paneUp').hidden=which!=='up';
-  $('#lockSub').textContent=which==='in'?'Enter your licence key':'Tell us where to send it';
+  $('#lockSub').textContent=which==='in'?'Sign in to your account':'Seven days free, no card';
   $('#lockMsg').textContent='';$('#lockOk').textContent='';
-  setTimeout(()=>{const f=which==='in'?$('#keyField'):$('#rName');if(f)f.focus();},60);
+  document.querySelectorAll('.regfield.bad').forEach(f=>f.classList.remove('bad'));
+  setTimeout(()=>{const f=which==='in'?$('#iMail'):$('#rName');if(f)f.focus();},60);
 }
 $('#authTabs').addEventListener('click',e=>{const b=e.target.closest('button[data-p]');if(b)authTab(b.dataset.p);});
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>authTab(b.dataset.go));
 
-/* The profile is only ever what the teacher typed when asking for a key.
-   It is kept so the page footer can default to their name. */
-function loadProfile(){try{return JSON.parse(localStorage.getItem('ws_profile')||'null');}catch(e){return null;}}
-function saveProfile(p){try{localStorage.setItem('ws_profile',JSON.stringify(p));}catch(e){}}
+/* the eye that shows a password */
+const EYE_OPEN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="2.9"/></svg>';
+const EYE_SHUT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M3 3l18 18"/><path d="M10.6 6.1A10 10 0 0 1 12 6c6.4 0 10 6 10 6a17 17 0 0 1-3.3 3.9M6.3 8.2A17 17 0 0 0 2 12s3.6 6.5 10 6.5a10 10 0 0 0 3.3-.6"/><path d="M9.9 9.9a2.9 2.9 0 0 0 4.1 4.1"/></svg>';
+document.querySelectorAll('.eye').forEach(b=>{
+  b.innerHTML=EYE_OPEN;
+  b.onclick=()=>{
+    const f=$('#'+b.dataset.eye),show=f.type==='password';
+    f.type=show?'text':'password';
+    b.innerHTML=show?EYE_SHUT:EYE_OPEN;
+    b.setAttribute('aria-label',show?'Hide password':'Show password');
+    f.focus();
+  };
+});
 
-/* Sends the request to Netlify, the same form the website uses. If it
-   cannot get through, the details go to the mail client instead. */
-const CONTACT_EMAIL='tadhayrapetian8@gmail.com';
-function askForKey(){
-  const name=$('#rName').value.trim(), mail=$('#rMail').value.trim(), plan=$('#rPlan').value;
-  $('#rName').classList.toggle('bad',!name);
-  $('#rMail').classList.toggle('bad',!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail));
-  if(!name)return keyFail('Please add your name');
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail))return keyFail('That e-mail address does not look right');
-
-  saveProfile({name,mail,plan});
-  const data={'form-name':'signup',name,email:mail,plan,language:'en',school:'',message:'Sent from the builder'};
-  const btn=$('#regGo');btn.disabled=true;btn.textContent='Sending…';
-  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},
-             body:new URLSearchParams(data).toString()})
-    .then(r=>{if(!r.ok)throw new Error(r.status);
-      $('#paneUp').hidden=true;$('#authTabs').hidden=true;$('#lockSub').textContent='Request sent';
-      $('#lockMsg').textContent='';
-      $('#lockOk').textContent='Thank you — your key will come to '+mail+', usually the same day. Meanwhile you can start the 7-day trial below.';
-      $('#paneIn').hidden=false;})
-    .catch(()=>{
-      const body=Object.keys(data).filter(k=>k!=='form-name')
-        .map(k=>k+': '+data[k]).join('\n');
-      keyFail('The request could not be sent from here. '+
-        '<a href="mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('Worksheet Studio — licence key request')+
-        '&body='+encodeURIComponent(body)+'" style="color:#fca5a5">Send it by e-mail instead →</a>');
-      btn.disabled=false;btn.textContent='Ask for a key';});
-}
-function submitKey(){
-  const f=$('#keyField'),raw=f.value.trim();
-  if(!raw)return keyFail('Enter the key you were sent');
-  const k=readKey(raw);
-  if(!k)return keyFail('That key is not valid — check the letters and try again');
-  if(k.expires<=Date.now())return keyFail('That key expired on '+new Date(k.expires).toLocaleDateString());
-  try{localStorage.setItem('ws_key',k.key);}catch(e){}
-  loadLicence();
+function busy(btn,text){btn.dataset.was=btn.textContent;btn.disabled=true;btn.textContent=text;}
+function unbusy(btn){btn.disabled=false;if(btn.dataset.was)btn.textContent=btn.dataset.was;}
+const OFFLINE_MSG='Could not reach the server. Check your connection and try again.';
+function closeLock(){
   const lock=$('#lock');lock.classList.remove('err');lock.classList.add('ok','closing');
   setTimeout(unlock,620);
 }
-function startTrial(){
-  let s=0;try{s=parseInt(localStorage.getItem('ws_trial')||'0',10)||0;}catch(e){}
-  if(s&&trialEnds()<=Date.now())return keyFail('Your trial has ended — a licence key is needed now');
-  if(!s){try{localStorage.setItem('ws_trial',String(Date.now()));}catch(e){}}
-  loadLicence();
-  const lock=$('#lock');lock.classList.remove('err');lock.classList.add('ok','closing');
-  setTimeout(unlock,620);
+
+async function doSignIn(){
+  const mail=$('#iMail'),pass=$('#iPass');
+  mail.classList.remove('bad');pass.classList.remove('bad');
+  if(!EMAIL_RE.test(mail.value.trim())){mail.classList.add('bad');return authFail('That e-mail address does not look right');}
+  if(!pass.value){pass.classList.add('bad');return authFail('Please type your password');}
+  const btn=$('#inGo');busy(btn,'Signing in…');
+  try{
+    const {token,account}=await api('/login',{method:'POST',
+      body:{email:mail.value.trim(),password:pass.value}});
+    saveSession(token,account);
+    if(!planLive()){unbusy(btn);return authFail('Your '+PLAN.name+' ended on '+account.until+'. Write to us to carry on.');}
+    closeLock();
+  }catch(e){unbusy(btn);authFail(e.status?e.message:OFFLINE_MSG);}
 }
+
+async function doRegister(){
+  const name=$('#rName'),mail=$('#rMail'),p1=$('#rPass'),p2=$('#rPass2');
+  [name,mail,p1,p2].forEach(f=>f.classList.remove('bad'));
+  if(name.value.trim().length<2){name.classList.add('bad');return authFail('Please write your full name');}
+  if(!EMAIL_RE.test(mail.value.trim())){mail.classList.add('bad');return authFail('That e-mail address does not look right');}
+  if(p1.value.length<8){p1.classList.add('bad');return authFail('A password needs at least 8 characters');}
+  if(p1.value!==p2.value){p2.classList.add('bad');return authFail('The two passwords are not the same');}
+  const btn=$('#upGo');busy(btn,'Creating…');
+  try{
+    const {token,account}=await api('/register',{method:'POST',
+      body:{name:name.value.trim(),email:mail.value.trim(),password:p1.value}});
+    saveSession(token,account);
+    closeLock();
+  }catch(e){
+    unbusy(btn);
+    if(e.status===409){const m=mail.value.trim();authTab('in');$('#iMail').value=m;authFail(e.message);}
+    else authFail(e.status?e.message:OFFLINE_MSG);
+  }
+}
+
 function unlock(){
   document.body.classList.remove('locked');
   const lock=$('#lock');lock.classList.remove('show','ok','closing');
-  $('#keyField').value='';$('#lockMsg').textContent='';$('#lockOk').textContent='';
+  ['#iPass','#rPass','#rPass2'].forEach(s=>{const f=$(s);if(f)f.value='';});
+  $('#lockMsg').textContent='';$('#lockOk').textContent='';
+  if(!DOC.brand&&ME&&ME.name){DOC.brand=ME.name;renderAll();}
   applyPlan();
 }
-function lockNow(){
-  try{localStorage.removeItem('ws_key');}catch(e){}
-  loadLicence();
-  $('#keyField').value='';$('#lockMsg').textContent='';$('#lockOk').textContent='';
+function lockNow(message){
+  clearSession();
+  ['#iPass','#rPass','#rPass2'].forEach(s=>{const f=$(s);if(f)f.value='';});
+  $('#lockOk').textContent='';
   $('#authTabs').hidden=false;authTab('in');
+  $('#lockMsg').textContent=typeof message==='string'?message:'';
   const lock=$('#lock');lock.classList.remove('ok','closing','err');
   document.body.classList.add('locked');lock.classList.add('show');
   makeSparkles();
@@ -12715,19 +12744,11 @@ function applyPlan(){
   const bi=$('#brandInput');
   if(bi){bi.disabled=!can('brand');bi.placeholder=can('brand')?'Your name or school':'Pro and Max only';}
 }
-$('#keyGo').onclick=submitKey;
-$('#regGo').onclick=askForKey;
-document.querySelectorAll('.trialBtn').forEach(b=>b.onclick=startTrial);
-$('#rMail').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();askForKey();}});
-$('#keyField').addEventListener('input',e=>{
-  $('#lockMsg').textContent='';
-  let v=e.target.value.toUpperCase().replace(/[^0-9A-Z]/g,'');
-  if(v.slice(0,2)==='WS')v=v.slice(2);
-  v=v.slice(0,8);
-  e.target.value=v?'WS-'+v.slice(0,4)+(v.length>4?'-'+v.slice(4):''):'';
-});
-$('#keyField').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitKey();}});
-$('#lockBtn').onclick=lockNow;
+/* Real forms, so the browser offers to remember the password and Enter
+   submits without any help from us. */
+$('#paneIn').addEventListener('submit',e=>{e.preventDefault();doSignIn();});
+$('#paneUp').addEventListener('submit',e=>{e.preventDefault();doRegister();});
+$('#lockBtn').onclick=()=>lockNow();
 $('#printBtn').onclick=printPDF;
 $('#pdfQ').addEventListener('click',e=>{const b=e.target.closest('button[data-s]');if(!b)return;
   DOC.pdfScale=parseInt(b.dataset.s);autosave();refreshPdfQ();
@@ -12847,16 +12868,26 @@ function frReplace(q,r){
 
 /* BOOT */
 (function boot(){
-  if(loadLicence()){document.body.classList.remove('locked');$('#lock').classList.remove('show');}
-  else makeSparkles();
-  const pr=loadProfile();
-  if(pr){$('#rName').value=pr.name||'';$('#rMail').value=pr.mail||'';if(pr.plan)$('#rPlan').value=pr.plan;}
+  /* Open on what is already stored, so the builder never waits on the
+     network. The server is asked for the truth a moment later. */
+  const s=loadSession();
+  if(s&&s.token&&s.account){TOKEN=s.token;ME=s.account;PLAN=PLANS[ME.plan]||PLANS.basic;}
+  const usable=!!ME&&planLive()&&(Date.now()-((s&&s.seen)||0))<=OFFLINE_GRACE_DAYS*864e5;
+  if(usable){document.body.classList.remove('locked');$('#lock').classList.remove('show');}
+  else{
+    makeSparkles();
+    if(ME){
+      $('#iMail').value=ME.email;
+      if(!planLive())$('#lockMsg').textContent='Your '+PLAN.name+' ended on '+ME.until+'.';
+    }
+  }
   try{const u=localStorage.getItem('ws_ui');if(u)document.documentElement.setAttribute('data-ui',u);}catch(e){}
   buildPalette();buildThemeGallery();buildTemplates();
   const saved=loadAutosave();DOC=(saved&&saved.pages)?saved:newDoc('indigo');
   if(DOC.brand==null)DOC.brand='';
-  if(!DOC.brand&&pr&&pr.name)DOC.brand=pr.name;   /* the name they signed up with */
+  if(!DOC.brand&&ME&&ME.name)DOC.brand=ME.name;   /* the name on their account */
   renderAll();applyPlan();
+  refreshMe();
 })();
 </script>
 </body>

@@ -123,7 +123,7 @@ footer{padding:26px 0 40px;color:var(--muted);font-size:13px}
   <div class="gate-card">
     <h1>Заказы</h1>
     <p>Введите пароль администратора</p>
-    <input id="gatePin" type="password" autocomplete="current-password" placeholder="••••••" inputmode="numeric">
+    <input id="gatePin" type="password" autocomplete="current-password" placeholder="••••••••">
     <p id="gateErr"></p>
     <button class="btn btn-p" id="gateBtn" style="width:100%;justify-content:center">Войти</button>
   </div>
@@ -168,7 +168,7 @@ footer{padding:26px 0 40px;color:var(--muted);font-size:13px}
   <div class="tablewrap">
     <table>
       <thead><tr>
-        <th>Покупатель</th><th>Тариф</th><th>Ключ</th><th>Сумма</th><th>Оплачено</th>
+        <th>Покупатель</th><th>Тариф</th><th>Сумма</th><th>Оплачено</th>
         <th>Действует до</th><th>Статус</th><th>Отправлен</th><th>Заметка</th><th></th>
       </tr></thead>
       <tbody id="rows"></tbody>
@@ -191,9 +191,10 @@ footer{padding:26px 0 40px;color:var(--muted);font-size:13px}
       <div class="two">
         <div class="f"><label for="fTier">План</label>
           <select id="fTier">
-            <option value="B">Basic</option>
-            <option value="P" selected>Pro</option>
-            <option value="M">Max</option>
+            <option value="basic">Basic</option>
+            <option value="pro" selected>Pro</option>
+            <option value="max">Max</option>
+            <option value="trial">Пробный</option>
           </select></div>
         <div class="f"><label for="fPlan">Период</label>
           <select id="fPlan">
@@ -202,11 +203,11 @@ footer{padding:26px 0 40px;color:var(--muted);font-size:13px}
             <option value="trial">Пробный период</option>
           </select></div>
       </div>
-      <div class="f"><label for="fKey">Лицензионный ключ</label>
-        <div style="display:flex;gap:8px">
-          <input id="fKey" placeholder="WS-XXXX-XXXX" style="flex:1;font-family:ui-monospace,Menlo,monospace;letter-spacing:.08em">
-          <button class="btn" id="genKey" type="button">Создать</button>
-          <button class="btn" id="copyKey" type="button">Копировать</button>
+      <div class="f"><label>Аккаунт на сервере</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div id="acctState" class="hint" style="flex:1">Введите почту, чтобы посмотреть аккаунт.</div>
+          <button class="btn" id="acctLook" type="button">Проверить</button>
+          <button class="btn btn-p" id="acctApply" type="button">Выдать план</button>
         </div></div>
       <div class="two">
         <div class="f"><label for="fLang">Язык</label>
@@ -236,7 +237,7 @@ footer{padding:26px 0 40px;color:var(--muted);font-size:13px}
       </div>
       <div class="f"><label for="fNote">Заметка — что именно отправлено</label>
         <textarea id="fNote" placeholder="Ссылка + ключ отправлены в Telegram"></textarea></div>
-      <p class="hint">«Действует до» и сумма подставляются сами. Ключ создаётся под выбранный план и эту дату — после неё он перестаёт работать сам, отзывать вручную не нужно.</p>
+      <p class="hint">«Действует до» и сумма подставляются сами. «Выдать план» записывает план и эту дату прямо в аккаунт учителя на сервере — у него всё появится само, ничего пересылать не надо. Регистрируется он сам, на сайте.</p>
     </div>
     <div class="mf">
       <button class="btn btn-d" id="mDel" hidden>Удалить</button>
@@ -247,46 +248,67 @@ footer{padding:26px 0 40px;color:var(--muted);font-size:13px}
 </div>
 
 <script>
-/* ══ Пароль администратора. Смените здесь. ═══════════════════════════ */
-var ADMIN_PIN = '2468';
+/* ══ Доступ ═══════════════════════════════════════════════════════════
+   Пароль администратора живёт НЕ здесь, а в переменной ADMIN_PASSWORD
+   на сервере (Netlify → Site configuration → Environment variables).
+   Эта страница только пересылает его в функцию: если пароль неверный,
+   сервер ничего не отдаёт. Список заказов лежит в этом браузере и,
+   как и раньше, никуда не уходит. */
+var ADMIN_PW = '';                       /* заполняется при входе, живёт в сессии */
+var TIER_NAME = { basic:'Basic', pro:'Pro', max:'Max', trial:'Пробный' };
 
-/* ══ Лицензионные ключи ═══════════════════════════════════════════════
-   Ключ — восемь символов вида WS-XXXX-XXXX. В нём зашиты план, дата
-   окончания и контрольная сумма, поэтому app.html проверяет его без
-   сервера. Эти три строки должны совпадать с такими же в app.html. */
-var KA='23456789ABCDEFGHJKMNPQRSTUVWXYZ';
-var KSALT='worksheet-studio-key-v1';
-var KEPOCH=Date.UTC(2024,0,1);
-function kEnc(n,len){var s='';for(var i=0;i<len;i++){s=KA[n%31]+s;n=Math.floor(n/31);}return s;}
-function kSum(p){
-  var h=7,i;
-  for(i=0;i<p.length;i++)h=(h*31+p.charCodeAt(i))%99991;
-  for(i=0;i<KSALT.length;i++)h=(h*17+KSALT.charCodeAt(i))%99991;
-  return KA[h%31]+KA[Math.floor(h/31)%31];
+function adminApi(path, opts){
+  opts = opts || {};
+  return fetch('/api/admin/' + path, {
+    method: opts.method || 'GET',
+    headers: { 'Content-Type':'application/json', 'x-admin-password': ADMIN_PW },
+    body: opts.body ? JSON.stringify(opts.body) : undefined
+  }).then(function(r){
+    return r.json().catch(function(){ return {}; }).then(function(d){
+      if(!r.ok) throw Object.assign(new Error(d.message || 'Ошибка сервера'), { status:r.status });
+      return d;
+    });
+  });
 }
-/* tier: 'B' | 'P' | 'M'; until: дата «действует до» в формате YYYY-MM-DD */
-function makeKey(tier,until){
-  var end=until?Date.parse(until+'T23:59:59Z'):Date.now()+30*864e5;
-  var exp=Math.floor((end-KEPOCH)/864e5);
-  var p=tier+kEnc(exp,3)+KA[Math.floor(Math.random()*31)]+KA[Math.floor(Math.random()*31)];
-  var s=p+kSum(p);
-  return 'WS-'+s.slice(0,4)+'-'+s.slice(4);
-}
-var TIER_NAME={B:'Basic',P:'Pro',M:'Max'};
 
 (function(){
   var KEY='ws_orders_v1', UNLOCK='ws_admin_ok';
   var orders=[], editing=null;
   var $=function(s){return document.querySelector(s)};
 
-  /* ── gate ── */
-  function unlock(){ $('#gate').style.display='none'; render(); }
-  try{ if(sessionStorage.getItem(UNLOCK)==='1') unlock(); }catch(e){}
+  /* ── вход ──
+     Пароль проверяет сервер: страница просто пробует им что-нибудь
+     запросить. Если сервер недоступен, список заказов всё равно можно
+     открыть — он лежит в этом браузере, — но выдавать планы нельзя. */
+  var serverOn = false;
+  function unlock(withServer){ serverOn = !!withServer; $('#gate').style.display='none'; render(); }
+  try{
+    var kept = sessionStorage.getItem(UNLOCK);
+    if(kept){ ADMIN_PW = kept; unlock(true); }
+  }catch(e){}
+
   function tryPin(){
-    if($('#gatePin').value===ADMIN_PIN){
-      try{sessionStorage.setItem(UNLOCK,'1')}catch(e){}
-      unlock();
-    } else { $('#gateErr').textContent='Неверный пароль'; $('#gatePin').value=''; $('#gatePin').focus(); }
+    var pw = $('#gatePin').value;
+    if(!pw) return;
+    $('#gateErr').textContent = '';
+    $('#gateBtn').disabled = true; $('#gateBtn').textContent = 'Проверяем…';
+    ADMIN_PW = pw;
+    adminApi('users').then(function(){
+      try{ sessionStorage.setItem(UNLOCK, pw); }catch(e){}
+      unlock(true);
+    }).catch(function(err){
+      $('#gateBtn').disabled = false; $('#gateBtn').textContent = 'Войти';
+      if(err && err.status){
+        ADMIN_PW = '';
+        $('#gateErr').textContent = err.message || 'Неверный пароль';
+        $('#gatePin').value=''; $('#gatePin').focus();
+      } else {
+        $('#gateErr').innerHTML = 'Нет связи с сервером. ' +
+          '<button class="btn btn-sm" id="offlineGo" type="button">Открыть только заказы</button>';
+        var b = $('#offlineGo');
+        if(b) b.addEventListener('click', function(){ ADMIN_PW=''; unlock(false); });
+      }
+    });
   }
   $('#gateBtn').addEventListener('click',tryPin);
   $('#gatePin').addEventListener('keydown',function(e){ if(e.key==='Enter') tryPin(); });
@@ -325,7 +347,7 @@ var TIER_NAME={B:'Basic',P:'Pro',M:'Max'};
       if(fs && o.status!==fs) return false;
       if(fx && (o.sent?'yes':'no')!==fx) return false;
       if(!q) return true;
-      return (o.name+' '+o.mail+' '+(o.lic||'')+' '+(o.note||'')).toLowerCase().indexOf(q)>-1;
+      return (o.name+' '+o.mail+' '+(o.note||'')).toLowerCase().indexOf(q)>-1;
     }).sort(function(a,b){ return (b.paid||'').localeCompare(a.paid||''); });
 
     var tb=$('#rows'); tb.innerHTML='';
@@ -335,7 +357,6 @@ var TIER_NAME={B:'Basic',P:'Pro',M:'Max'};
         '<td class="who"><b>'+esc(o.name||'—')+'</b><span>'+esc(o.mail||'')+'</span></td>'+
         '<td>'+(TIER_NAME[o.tier]||'—')+'<span style="color:var(--muted)"> · '+
           ({monthly:'мес',yearly:'год',trial:'проб'}[o.plan]||'—')+'</span></td>'+
-        '<td style="font-family:ui-monospace,Menlo,monospace;font-size:12.6px">'+esc(o.lic||'—')+'</td>'+
         '<td class="num">'+(o.sum?money(o.sum,o.cur):'—')+'</td>'+
         '<td class="num">'+(o.paid||'—')+'</td>'+
         '<td class="num">'+(o.until||'—')+'</td>'+
@@ -372,7 +393,9 @@ var TIER_NAME={B:'Basic',P:'Pro',M:'Max'};
     $('#mDel').hidden = !o;
     $('#fName').value=o?o.name:''; $('#fMail').value=o?o.mail:'';
     $('#fPlan').value=o?o.plan:'monthly'; $('#fLang').value=o?o.lang:'hy';
-    $('#fTier').value=o?(o.tier||'P'):'P'; $('#fKey').value=o?(o.lic||''):'';
+    $('#fTier').value=o?(o.tier||'pro'):'pro';
+    $('#acctState').textContent='Введите почту и нажмите «Проверить».';
+    $('#acctState').style.color='var(--muted)';
     $('#fSum').value=o?o.sum:''; $('#fCur').value=o?o.cur:'GBP';
     $('#fPaid').value=o?o.paid:today(); $('#fUntil').value=o?o.until:'';
     $('#fStat').value=o?o.status:'paid'; $('#fSentIn').value=o&&o.sent?'yes':'no';
@@ -383,7 +406,7 @@ var TIER_NAME={B:'Basic',P:'Pro',M:'Max'};
   function closeModal(){ $('#mb').classList.remove('on'); editing=null; }
 
   /* Цены по умолчанию — те же, что на лендинге */
-  var PRICE={B:{monthly:5,yearly:50},P:{monthly:9,yearly:90},M:{monthly:19,yearly:190}};
+  var PRICE={basic:{monthly:5,yearly:50},pro:{monthly:9,yearly:90},max:{monthly:19,yearly:190}};
   function autoUntil(){
     var p=$('#fPlan').value, t=$('#fTier').value, d=$('#fPaid').value||today();
     $('#fUntil').value = p==='yearly'?addDays(d,365) : p==='trial'?addDays(d,7) : addDays(d,30);
@@ -394,28 +417,53 @@ var TIER_NAME={B:'Basic',P:'Pro',M:'Max'};
   $('#fPaid').addEventListener('change',autoUntil);
   $('#fTier').addEventListener('change',autoUntil);
 
-  $('#genKey').addEventListener('click',function(){
-    if(!$('#fUntil').value) autoUntil();
-    $('#fKey').value = makeKey($('#fTier').value, $('#fUntil').value);
-  });
   function copy(text,btn,done){
     var ok=function(){ var t=btn.textContent; btn.textContent=done; setTimeout(function(){btn.textContent=t},1400); };
     if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(ok,function(){prompt('Скопируйте вручную:',text)}); }
     else prompt('Скопируйте вручную:',text);
   }
-  $('#copyKey').addEventListener('click',function(){
-    if(!$('#fKey').value) return alert('Сначала создайте ключ.');
-    copy($('#fKey').value,this,'Скопировано');
-  });
+
+  /* ── аккаунт на сервере ── */
+  function acctSay(text, colour){
+    var el = $('#acctState');
+    el.textContent = text;
+    el.style.color = colour || 'var(--muted)';
+  }
+  function lookUp(){
+    var mail = $('#fMail').value.trim().toLowerCase();
+    if(!mail) return acctSay('Сначала укажите почту.', 'var(--warn)');
+    if(!serverOn) return acctSay('Нет связи с сервером.', 'var(--bad)');
+    acctSay('Смотрим…');
+    adminApi('users').then(function(d){
+      var u = (d.users||[]).filter(function(x){ return x.email === mail; })[0];
+      if(!u) return acctSay('Аккаунта с такой почтой ещё нет — учитель должен зарегистрироваться сам.', 'var(--warn)');
+      acctSay(u.name + ' · ' + (TIER_NAME[u.plan]||u.plan) + ' до ' + u.until, 'var(--ok)');
+    }).catch(function(e){ acctSay(e.message || 'Ошибка сервера', 'var(--bad)'); });
+  }
+  function applyPlan(){
+    var mail = $('#fMail').value.trim().toLowerCase();
+    if(!mail) return acctSay('Сначала укажите почту.', 'var(--warn)');
+    if(!serverOn) return acctSay('Нет связи с сервером.', 'var(--bad)');
+    if(!$('#fUntil').value) autoUntil();
+    var plan = $('#fTier').value, until = $('#fUntil').value;
+    acctSay('Выдаём…');
+    adminApi('plan', { method:'POST', body:{ email:mail, plan:plan, until:until } })
+      .then(function(d){
+        acctSay('Готово: ' + (TIER_NAME[d.account.plan]||d.account.plan) + ' до ' + d.account.until, 'var(--ok)');
+      })
+      .catch(function(e){ acctSay(e.message || 'Ошибка сервера', 'var(--bad)'); });
+  }
+  $('#acctLook').addEventListener('click', lookUp);
+  $('#acctApply').addEventListener('click', applyPlan);
+
   $('#copyMsg').addEventListener('click',function(){
-    if(!$('#fKey').value) return alert('Сначала создайте ключ.');
     var L=$('#fLang').value, site=location.origin+'/app.html',
-        tier=TIER_NAME[$('#fTier').value], key=$('#fKey').value, until=$('#fUntil').value,
-        name=$('#fName').value.trim();
+        tier=TIER_NAME[$('#fTier').value]||$('#fTier').value,
+        until=$('#fUntil').value, name=$('#fName').value.trim();
     var msg={
-      ru:'Здравствуйте'+(name?', '+name:'')+'!\n\nВаш доступ к Worksheet Studio — план '+tier+', действует до '+until+'.\n\nСсылка: '+site+'\nЛицензионный ключ: '+key+'\n\nОткройте ссылку, введите ключ — и всё готово. Ключ работает на любом устройстве.',
-      en:'Hello'+(name?' '+name:'')+',\n\nHere is your access to Worksheet Studio — the '+tier+' plan, valid until '+until+'.\n\nLink: '+site+'\nLicence key: '+key+'\n\nOpen the link, type the key, and you are in. The key works on any device.',
-      hy:'Բարև'+(name?' '+name:'')+',\n\nՁեր հասանելիությունը Worksheet Studio-ին — '+tier+' փաթեթ, գործում է մինչև '+until+'։\n\nՀղում՝ '+site+'\nԼիցենզիոն բանալի՝ '+key+'\n\nԲացեք հղումը, մուտքագրեք բանալին — պատրաստ է։ Բանալին աշխատում է ցանկացած սարքի վրա։'
+      ru:'Здравствуйте'+(name?', '+name:'')+'!\n\nВаш план в Worksheet Studio — '+tier+', действует до '+until+'.\n\nСсылка: '+site+'\n\nВходите своей почтой и паролем, которые вы указали при регистрации. Работает с любого устройства.',
+      en:'Hello'+(name?' '+name:'')+',\n\nYour Worksheet Studio plan is '+tier+', valid until '+until+'.\n\nLink: '+site+'\n\nSign in with the e-mail and password you chose when you registered. It works from any device.',
+      hy:'Բարև'+(name?' '+name:'')+',\n\nՁեր փաթեթը Worksheet Studio-ում՝ '+tier+', գործում է մինչև '+until+'։\n\nՀղում՝ '+site+'\n\nՄուտք գործեք ձեր փոստով և գաղտնաբառով, որոնք ընտրել եք գրանցվելիս։ Աշխատում է ցանկացած սարքից։'
     }[L];
     copy(msg,this,'Скопировано');
   });
@@ -424,7 +472,7 @@ var TIER_NAME={B:'Basic',P:'Pro',M:'Max'};
     var name=$('#fName').value.trim(), mail=$('#fMail').value.trim();
     if(!name && !mail){ alert('Укажите хотя бы имя или почту.'); return; }
     var data={ name:name, mail:mail, plan:$('#fPlan').value, tier:$('#fTier').value,
-      lic:$('#fKey').value.trim().toUpperCase(), lang:$('#fLang').value,
+      lang:$('#fLang').value,
       sum:$('#fSum').value, cur:$('#fCur').value, paid:$('#fPaid').value, until:$('#fUntil').value,
       status:$('#fStat').value, sent:$('#fSentIn').value==='yes', note:$('#fNote').value.trim() };
     if(editing){ Object.assign(editing,data); }
@@ -460,9 +508,9 @@ var TIER_NAME={B:'Basic',P:'Pro',M:'Max'};
     a.href=URL.createObjectURL(b); a.download=name; a.click(); URL.revokeObjectURL(a.href);
   }
   $('#expCsv').addEventListener('click',function(){
-    var head=['Имя','Почта','План','Период','Ключ','Сумма','Валюта','Оплачено','Действует до','Статус','Доступ отправлен','Заметка'];
+    var head=['Имя','Почта','План','Период','Сумма','Валюта','Оплачено','Действует до','Статус','Доступ отправлен','Заметка'];
     var rows=orders.map(function(o){
-      return [o.name,o.mail,TIER_NAME[o.tier]||'',o.plan,o.lic||'',o.sum,o.cur,o.paid,o.until,o.status,o.sent?'да':'нет',o.note||''];
+      return [o.name,o.mail,TIER_NAME[o.tier]||'',o.plan,o.sum,o.cur,o.paid,o.until,o.status,o.sent?'да':'нет',o.note||''];
     });
     var csv=[head].concat(rows).map(function(r){
       return r.map(function(c){ return '"'+String(c==null?'':c).replace(/"/g,'""')+'"' }).join(',');

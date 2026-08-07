@@ -1,6 +1,6 @@
 # Worksheet Studio
 
-A worksheet and lesson builder for English teachers — A4 printables, built block by block, exported as a clean vector PDF. Runs in the browser on a Mac, a PC or an iPad. No install, no account, no internet required once the page has loaded.
+A worksheet and lesson builder for English teachers — A4 printables, built block by block, exported as a clean vector PDF. Runs in the browser on a Mac, a PC or an iPad. No install, and once a teacher has signed in it keeps working without internet.
 
 **Site:** https://sunny-figolla-4c9069.netlify.app
 **Builder:** https://sunny-figolla-4c9069.netlify.app/app.html
@@ -11,11 +11,12 @@ A worksheet and lesson builder for English teachers — A4 printables, built blo
 | --- | --- |
 | `index.html` | The landing page — Armenian, English and Russian, with the three plans |
 | `app.html` | The builder itself: editor, exercise library, PDF export |
-| `admin.html` | Private order ledger and licence-key generator (`/admin.html`, password in the script) |
+| `admin.html` | Private order ledger, and where you set a teacher's plan (`/admin.html`) |
+| `netlify/functions/auth.mjs` | The accounts server — registration, sign-in, plans |
 | `netlify.toml` | Caching, security headers and the `/app` short URL |
 | `robots.txt` | Keeps the admin page out of search engines |
 
-Everything is plain HTML, CSS and JavaScript in single self-contained files. There is no build step and no external dependency: upload the files and they are live.
+The three pages are plain HTML, CSS and JavaScript in single self-contained files — no build step, nothing to compile. The one moving part is the accounts function, which Netlify runs on the server.
 
 ## Features
 
@@ -51,9 +52,9 @@ Three plans, enforced inside `app.html` by the `PLANS` table:
 | Pages per worksheet | 3 | unlimited | unlimited |
 | Crossword and word search | — | ✓ | ✓ |
 | Your own footer | — | ✓ | ✓ |
-| Licence keys | 1 | 1 | 5 |
+| Accounts | 1 | 1 | 5 |
 
-Every plan starts with a free seven-day trial, taken from the lock screen; the trial has Pro access and its start date is kept in the browser.
+Every new account starts on a seven-day trial with full access. The plan and the date it runs out live on the account, on the server.
 
 Prices live in one object at the foot of `index.html`, and the same numbers are repeated in `admin.html` so the order form fills the amount in for you:
 
@@ -62,36 +63,59 @@ var PRICES = { basic:{m:'£5',y:'£50'}, pro:{m:'£9',y:'£90'}, max:{m:'£19',y
 var PAY    = { basic:{m:'',y:''},     pro:{m:'',y:''},      max:{m:'',y:''} };
 ```
 
-While the `PAY` links are empty the plan buttons simply open the builder, where the licence key is entered. Paste checkout URLs into `PAY` when a payment provider is connected.
+While the `PAY` links are empty the plan buttons lead to the registration form. Paste checkout URLs into `PAY` when a payment provider is connected.
 
-## Signing in and signing up
+## Accounts
 
-There are no accounts and no passwords. Two doors lead into the builder:
+Every teacher makes their own account: **full name, e-mail, password, repeat password**. Signing in afterwards takes the e-mail and the password, from any device — the account is not tied to one browser.
 
-- **Sign in** — the teacher types their licence key on the lock screen of `app.html`. It is remembered in that browser, so they only ever type it once per device.
-- **Get a key** — a short form (name, e-mail, plan), on the landing page under **#join** and repeated as the second tab of the lock screen. Both post to the same place.
-- **The trial** — a button on the lock screen opens seven days at Pro level immediately, with no form at all.
+Registration is on the landing page under `#join` and again as the second tab of the builder's sign-in screen. Both do the same thing, and both drop the teacher straight into the builder: **a new account gets seven days of full access at once**, so nobody waits on you for anything.
 
-The form is a Netlify form called `signup`. Submissions appear under **Site configuration → Forms** in the Netlify dashboard. **They are not e-mailed to anyone until you add a notification**: Netlify → your site → *Forms* → *Form notifications* → *Add notification* → *Email notification*, and put your address in. Do that once, or requests will sit in the dashboard unseen.
+| Where | What it does |
+| --- | --- |
+| `netlify/functions/auth.mjs` | The accounts server: hashes passwords, signs sessions, holds each teacher's plan |
+| `package.json` | Only there so Netlify installs `@netlify/blobs` for that function |
+| `netlify.toml` | Points `/api/*` at the function |
 
-If the POST cannot get through — the page was opened from a file, or the site is not on Netlify — the form falls back to a `mailto:` link holding the same details, so a request is never silently lost. The fallback address is one constant near the foot of `index.html` and another in `app.html`:
+### The two settings you must add
 
-```js
-var CONTACT_EMAIL = 'tadhayrapetian8@gmail.com';
-```
+In Netlify → your site → **Site configuration → Environment variables**:
 
-The name a teacher signs up with is kept in their browser and becomes the default page footer, so their worksheets carry their name from the first print.
+| Name | Value |
+| --- | --- |
+| `AUTH_SECRET` | a long random string — it signs the session tokens |
+| `ADMIN_PASSWORD` | the password `/admin.html` asks for, at least 8 characters |
 
-## Licence keys
+Nothing works until both are set; the function says so plainly if they are missing. Changing `AUTH_SECRET` later signs everyone out (their passwords still work).
 
-Access is granted by hand: you issue a key from `admin.html` and send it to the teacher.
+### How it is put together
 
-A key looks like `WS-P3DD-X9BY` — eight characters carrying the plan letter (`B`, `P`, `M`), the expiry date and a two-character checksum. `app.html` verifies it arithmetically, so there is no server and no account: the teacher types the key once and it is remembered in that browser. **The key stops working on its own the day it expires** — nothing to revoke by hand.
+Passwords are hashed with **scrypt** and a per-account salt, on the server. The hash never leaves it. A wrong password and an unknown e-mail get the same answer, so the form cannot be used to find out who has an account.
 
-To issue one: open `/admin.html` → **＋ Заказ** → choose the plan and period → **Создать** → **Скопировать письмо**. The message comes out in the buyer's language, with the link and the key in it.
+Signing in returns a **session token** — the e-mail and an expiry, signed with `AUTH_SECRET`. The browser keeps it and sends it back; a token edited by hand fails the signature and is refused.
 
-Both files must keep the same three constants — `KA`, `KSALT` and `KEPOCH`. Changing `KSALT` invalidates every key already issued.
+Accounts live in **Netlify Blobs**, which is part of the site already. There is no database to sign up for and no third party involved.
+
+### Offline
+
+The builder opens from the stored session without waiting for the network, then asks the server who you are in the background — so a plan bought this morning appears on the next visit without signing in again. A stored session keeps working offline for **14 days** (`OFFLINE_GRACE_DAYS` in `app.html`); after that it needs one connection to carry on. So the classroom without Wi-Fi still works, and a shared password cannot be used forever without checking in.
+
+When a plan runs out the sign-in screen returns with the date it ended.
+
+### Giving somebody a plan
+
+They register themselves; you decide what they get.
+
+Open `/admin.html`, enter your `ADMIN_PASSWORD` — checked by the server, not by this page — then open the order, type their e-mail, and press **Проверить** to see the account and **Выдать план** to set it. It reaches them by itself.
+
+If the server cannot be reached, the admin page still opens the local order ledger, but cannot grant anything.
+
+### What is not built yet
+
+There is **no "forgot my password" e-mail**, because the site has no mail service. If somebody forgets theirs, they will have to write to you — and today there is no way to reset it for them short of adding one. There is also no e-mail confirmation on sign-up, and no limit on how fast passwords can be guessed. Worth adding before this gets busy.
 
 ## A note on access control
 
-The key checksum in `app.html` and the password in `admin.html` live in the page source, so anyone who opens the developer tools can read them and mint their own key. They stop casual sharing between colleagues, which is what most of this is for — they are not security. Real enforcement needs a server-side check (a licence API or a Netlify Function), which is not part of this repository yet.
+Which plan a teacher is on is decided on the server, and the admin password is checked there too, so neither can be changed from the browser.
+
+What is still soft is honesty about sharing: nothing stops two teachers using one login on two laptops. Counting sessions per account would fix that, and is not built.

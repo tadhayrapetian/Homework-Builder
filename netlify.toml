@@ -1,9 +1,14 @@
 # Netlify configuration for Worksheet Studio
-# The site is plain static files: nothing is built, everything is published as is.
+# The pages are plain static files. The one moving part is the accounts
+# function, which hashes passwords and decides which plan a teacher is on.
 
 [build]
   publish = "."
   command = ""
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
 
 # ── Caching ──────────────────────────────────────────────────────────────
 # HTML must never be served from cache, or a new upload stays invisible for
@@ -30,6 +35,13 @@
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
 
 # ── Friendly URLs ────────────────────────────────────────────────────────
+# Everything under /api goes to the accounts function, which reads the path
+# to decide what to do (register, login, me, admin/…).
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/auth/:splat"
+  status = 200
+
 [[redirects]]
   from = "/app"
   to = "/app.html"
