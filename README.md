@@ -42,12 +42,12 @@ HTML is served with `must-revalidate`, so a new version appears immediately inst
 
 ## Plans
 
-Three plans, enforced inside `app.html` by the `PLANS` table:
+Three plans, enforced inside `app.html` by the `PLANS` table. **Every plan opens all four levels** — A2, B1, B2 and C1 are all there on Basic. What grows with the plan is how many topics inside each level are unlocked, set by `share` (0.34 · 0.68 · 1). The share is taken from the front of each level, so a teacher always sees the same topics rather than a set that shuffles between visits.
 
 | | Basic | Pro | Max |
 | --- | --- | --- | --- |
 | Per month / per year | £5 / £50 | £9 / £90 | £19 / £190 |
-| Library | A2 and B1 — 58 topics | all 235 topics | all 235 topics |
+| Library | all four levels, 85 topics | all four levels, 165 topics | all 235 topics |
 | A4 designs | first 8 | all 40 | all 40 |
 | Pages per worksheet | 3 | unlimited | unlimited |
 | Crossword and word search | — | ✓ | ✓ |
@@ -76,6 +76,14 @@ Registration is on the landing page under `#join` and again as the second tab of
 | `netlify/functions/auth.mjs` | The accounts server: hashes passwords, signs sessions, holds each teacher's plan |
 | `package.json` | Only there so Netlify installs `@netlify/blobs` for that function |
 | `netlify.toml` | Points `/api/*` at the function |
+
+### A site with no accounts server
+
+Until `AUTH_SECRET` is set — or if the function is not deployed at all — **the builder simply opens with everything unlocked**. The lock exists to protect a subscription, and there is no subscription to protect while the server is not answering, so there is nothing to sign in to.
+
+The moment the server does answer, the lock comes back. A device that has met a working accounts server records that fact (`ws_server` in its browser storage) and keeps asking for a password from then on, so a subscriber cannot get free access by cutting their internet.
+
+The registration form on the landing page does the same: if accounts are not switched on, it says so and sends the visitor into the builder instead of failing.
 
 ### The two settings you must add
 

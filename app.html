@@ -20,8 +20,8 @@
   --bg:#eceef3; --bg2:#f6f7fb; --panel:#ffffff; --panel2:#f7f8fc; --panel3:#eef1f7;
   --ink:#171b26; --ink2:#3a4150; --muted:#6b7385; --faint:#9aa2b4;
   --line:#e6e9f0; --line2:#dfe3ec;
-  --brand:#5b5bf0; --brand2:#8b5cf6; --brand-ink:#ffffff;
-  --brand-soft:#eef0ff; --brand-soft2:#f3eeff;
+  --brand:#a5661f; --brand2:#5a3e2e; --brand-ink:#ffffff;
+  --brand-soft:#f6ecdd; --brand-soft2:#efe9dc;
   --ok:#12a672; --warn:#f59e0b; --danger:#ef4444;
   --shadow-sm:0 1px 2px rgba(18,22,33,.05),0 1px 3px rgba(18,22,33,.06);
   --shadow:0 2px 6px rgba(18,22,33,.06),0 12px 30px rgba(18,22,33,.10);
@@ -32,7 +32,7 @@
   --bg:#0a0c12; --bg2:#0e1119; --panel:#141824; --panel2:#10141e; --panel3:#1a1f2d;
   --ink:#eef1f8; --ink2:#c3cad9; --muted:#98a1b5; --faint:#6a7488;
   --line:#232a3a; --line2:#2a3244;
-  --brand:#8f8bff; --brand2:#b78bff; --brand-soft:#191d33; --brand-soft2:#1e1935;
+  --brand:#d59a52; --brand2:#d9c7a2; --brand-soft:#2b211a; --brand-soft2:#262218;
   --shadow-sm:0 1px 2px rgba(0,0,0,.4);
   --shadow:0 2px 8px rgba(0,0,0,.4),0 16px 40px rgba(0,0,0,.5);
   --shadow-lg:0 20px 60px rgba(0,0,0,.6);
@@ -55,7 +55,7 @@ button{font-family:inherit;color:inherit}
   padding-top:env(safe-area-inset-top)}
 .brand{display:flex;align-items:center;gap:11px;padding-right:6px}
 .brand .mark{width:34px;height:34px;border-radius:10px;position:relative;flex:none;
-  background:linear-gradient(140deg,var(--brand),var(--brand2));box-shadow:0 4px 12px rgba(91,91,240,.35);
+  background:var(--ink);box-shadow:none;
   display:grid;place-items:center}
 .brand .mark svg{width:19px;height:19px;color:#fff}
 .brand .txt b{font-size:14.5px;letter-spacing:-.2px;display:block;line-height:1.1}
@@ -75,7 +75,7 @@ button{font-family:inherit;color:inherit}
 .tb svg{width:16px;height:16px;flex:none}
 .tb.solo{background:var(--panel2)}
 .tb.solo:hover{background:var(--panel3)}
-.tb.primary{background:linear-gradient(140deg,var(--brand),var(--brand2));color:#fff;font-weight:650;
+.tb.primary{background:var(--brand);color:#fff;font-weight:650;
   box-shadow:0 4px 14px rgba(91,91,240,.35);padding:9px 15px}
 .tb.primary:hover{filter:brightness(1.07);color:#fff;box-shadow:0 6px 18px rgba(91,91,240,.45)}
 .tb.lib{background:var(--brand-soft);color:var(--brand);font-weight:650}
@@ -700,137 +700,85 @@ mark{background:#fde68a;color:inherit;padding:0 2px;border-radius:3px}
 .frbar .fr-act button.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
 .frbar .fr-res{font-size:11.5px;color:var(--muted);margin-top:9px;min-height:16px}
 
-/* ---------- LOCK SCREEN ---------- */
-.lock{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;padding:24px;
-  overflow:hidden;background:linear-gradient(150deg,#0f1128,#1c1740 45%,#2a1a52 75%,#141033);
-  background-size:300% 300%;animation:bgShift 18s ease-in-out infinite}
+/* ---------- SIGN-IN SCREEN ----------
+   Same language as the website: a solid colour field, one white card
+   with a hard black edge, chunky filled inputs and a heavy button. */
+.lock{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;
+  padding:24px;overflow:auto;background:#d9c7a2;color:#2a211a;
+  font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,
+    "Segoe UI Variable Display","Segoe UI",Roboto,system-ui,sans-serif;font-weight:500}
 .lock.show{display:flex}
 body.locked .app,body.locked .zoombar{display:none !important}
-@keyframes bgShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.orbs,.sparkles{display:none}
 
-/* floating orbs */
-.orbs{position:absolute;inset:0;pointer-events:none}
-.orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55}
-.orb.o1{width:420px;height:420px;background:#5b5bf0;top:-90px;left:-70px;animation:drift1 16s ease-in-out infinite}
-.orb.o2{width:360px;height:360px;background:#a855f7;bottom:-100px;right:-60px;animation:drift2 20s ease-in-out infinite}
-.orb.o3{width:280px;height:280px;background:#f472b6;top:45%;right:12%;opacity:.32;animation:drift3 24s ease-in-out infinite}
-@keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(70px,60px) scale(1.15)}}
-@keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-60px,-50px) scale(1.2)}}
-@keyframes drift3{0%,100%{transform:translate(0,0)}33%{transform:translate(-50px,40px)}66%{transform:translate(40px,-30px)}}
+.lock-card{position:relative;width:100%;max-width:410px;background:#ede7dd;
+  border:2.5px solid #2a211a;border-radius:26px;padding:34px 30px 30px;text-align:left;
+  box-shadow:12px 12px 0 0 #5a3e2e}
+.lock-mark{width:44px;height:44px;border-radius:14px;margin:0 0 18px;display:grid;place-items:center;
+  background:#2a211a;box-shadow:none}
+.lock-mark::after{content:none}
+.lock-mark svg{width:24px;height:24px;color:#d9c7a2}
+.lock-card h1{margin:0;font-size:30px;color:#2a211a;letter-spacing:-.04em;font-weight:900;
+  line-height:1.05;animation:fadeUp .4s .04s both}
+.lock-card p{margin:9px 0 24px;font-size:16px;font-weight:600;color:#2a211a;opacity:.66;
+  animation:fadeUp .4s .09s both;text-align:left}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* sparkles */
-.sparkles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.sparkles span{position:absolute;bottom:-12px;width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.75);
-  box-shadow:0 0 8px rgba(255,255,255,.8);animation:rise linear infinite}
-@keyframes rise{0%{transform:translateY(0) scale(.5);opacity:0}
-  12%{opacity:.85}80%{opacity:.6}100%{transform:translateY(-104vh) scale(1.1);opacity:0}}
-.lock-card{position:relative;width:100%;max-width:360px;background:rgba(255,255,255,.07);backdrop-filter:blur(22px);
-  border:1px solid rgba(255,255,255,.15);border-radius:26px;padding:34px 30px 28px;text-align:center;
-  box-shadow:0 30px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.16);
-  animation:cardIn .75s cubic-bezier(.2,.9,.25,1.05) both}
-@keyframes cardIn{from{opacity:0;transform:translateY(34px) scale(.94)}to{opacity:1;transform:none}}
-.lock-mark{width:64px;height:64px;border-radius:20px;margin:0 auto 16px;display:grid;place-items:center;position:relative;
-  background:linear-gradient(140deg,#5b5bf0,#8b5cf6);box-shadow:0 12px 30px rgba(91,91,240,.55);
-  animation:markIn .8s .12s cubic-bezier(.2,1.3,.4,1) both,float 4.5s 1s ease-in-out infinite}
-@keyframes markIn{from{opacity:0;transform:scale(.4) rotate(-25deg)}to{opacity:1;transform:none}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-.lock-mark::after{content:"";position:absolute;inset:-5px;border-radius:24px;
-  background:linear-gradient(140deg,#5b5bf0,#8b5cf6);filter:blur(15px);opacity:.55;z-index:-1;
-  animation:glow 3s ease-in-out infinite}
-@keyframes glow{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.75;transform:scale(1.1)}}
-.lock-mark svg{width:34px;height:34px}
-.lock-card h1{margin:0;font-size:21px;color:#fff;letter-spacing:-.02em;font-weight:750;
-  animation:fadeUp .6s .28s both;
-  background:linear-gradient(100deg,#fff 20%,#c7b8ff 40%,#fff 60%);background-size:200% auto;
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  animation:fadeUp .6s .28s both,shine 5s 1.2s linear infinite}
-@keyframes shine{to{background-position:-200% center}}
-.lock-card p{margin:6px 0 22px;font-size:13px;color:rgba(255,255,255,.6);animation:fadeUp .6s .38s both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.pin-dots{display:flex;justify-content:center;gap:13px;margin-bottom:22px}
-.pin-dots i{width:13px;height:13px;border-radius:50%;background:rgba(255,255,255,.16);
-  border:1.5px solid rgba(255,255,255,.28);transition:.18s}
-.pin-dots i.on{background:#fff;border-color:#fff;transform:scale(1.12)}
-.lock.err .pin-dots{animation:shake .4s}
-.lock.err .pin-dots i{background:rgba(239,68,68,.85);border-color:rgba(239,68,68,.9)}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
-.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
-.keypad button{height:56px;border-radius:16px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);
-  color:#fff;font-size:21px;font-weight:600;cursor:pointer;transition:.13s;-webkit-tap-highlight-color:transparent;
-  animation:keyIn .45s both}
-.keypad button:nth-child(1){animation-delay:.44s}.keypad button:nth-child(2){animation-delay:.48s}
-.keypad button:nth-child(3){animation-delay:.52s}.keypad button:nth-child(4){animation-delay:.56s}
-.keypad button:nth-child(5){animation-delay:.60s}.keypad button:nth-child(6){animation-delay:.64s}
-.keypad button:nth-child(7){animation-delay:.68s}.keypad button:nth-child(8){animation-delay:.72s}
-.keypad button:nth-child(9){animation-delay:.76s}.keypad button:nth-child(10){animation-delay:.80s}
-.keypad button:nth-child(11){animation-delay:.84s}.keypad button:nth-child(12){animation-delay:.88s}
-@keyframes keyIn{from{opacity:0;transform:translateY(14px) scale(.85)}to{opacity:1;transform:none}}
-.keypad button:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
-.keypad button:active{transform:scale(.92)}
-.keypad button.tap{animation:tapPulse .32s}
-@keyframes tapPulse{0%{transform:scale(.9);background:rgba(255,255,255,.4)}100%{transform:scale(1)}}
-
-/* success */
-.lock.ok .lock-card{animation:okPop .5s cubic-bezier(.2,1.4,.4,1) both}
-.lock.ok .pin-dots i{background:#34d399;border-color:#34d399;box-shadow:0 0 14px rgba(52,211,153,.9)}
-@keyframes okPop{0%{transform:none}40%{transform:scale(1.05)}100%{transform:scale(.9);opacity:0}}
-.lock.closing{animation:lockOut .5s .18s ease-in forwards}
-@keyframes lockOut{to{opacity:0;transform:scale(1.08)}}
-.keypad button.wide{grid-column:span 1;font-size:15px}
-.keypad button.ghost{background:transparent;border-color:transparent}
-.lock-msg{min-height:18px;margin-top:15px;font-size:12.5px;color:#fca5a5;font-weight:600}
-.lock-hint{margin-top:14px;font-size:11px;color:rgba(255,255,255,.35);line-height:1.5}
-#pinField{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
-@media (max-width:400px){.keypad button{height:50px;font-size:19px}}
-
-/* ---------- licence key field ---------- */
-.keyfield{width:100%;height:54px;border-radius:16px;border:1px solid rgba(255,255,255,.18);
-  background:rgba(255,255,255,.08);color:#fff;font-size:18px;font-weight:700;text-align:center;
-  letter-spacing:.14em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  animation:fadeUp .6s .44s both}
-.keyfield::placeholder{color:rgba(255,255,255,.3);letter-spacing:.1em;font-weight:600}
-.keyfield:focus{outline:none;border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.14)}
-.lock.err .keyfield{border-color:rgba(239,68,68,.8);animation:shake .4s}
-.lock.ok .keyfield{border-color:#34d399;box-shadow:0 0 18px rgba(52,211,153,.5)}
-.keygo{width:100%;height:50px;margin-top:12px;border-radius:16px;border:0;cursor:pointer;
-  background:#fff;color:#191b2e;font-size:15px;font-weight:750;animation:fadeUp .6s .5s both;transition:.15s}
-.keygo:hover{transform:translateY(-1px)}
-.keygo:active{transform:scale(.98)}
-.lock-hint a,.linky{color:rgba(255,255,255,.7);text-decoration:underline;background:none;border:0;
-  padding:0;font:inherit;cursor:pointer}
-.lock-hint a:hover,.linky:hover{color:#fff}
-
-/* ---------- sign in / get a key ---------- */
-.authtabs{display:flex;gap:4px;padding:4px;border-radius:14px;background:rgba(255,255,255,.07);
-  margin:0 0 18px;animation:fadeUp .6s .4s both}
-.authtabs button{flex:1;height:38px;border:0;border-radius:11px;background:transparent;cursor:pointer;
-  color:rgba(255,255,255,.55);font:inherit;font-size:13.5px;font-weight:700;transition:.15s}
-.authtabs button.on{background:rgba(255,255,255,.16);color:#fff}
-.authtabs button:hover{color:#fff}
+.authtabs{display:flex;gap:3px;padding:4px;border-radius:999px;background:#e0d7c6;
+  border:0;margin:0 0 22px;animation:fadeUp .4s .13s both}
+.authtabs button{flex:1;height:42px;padding:0 8px;border:0;border-radius:999px;
+  background:none;cursor:pointer;color:#2a211a;opacity:.6;font:inherit;font-size:14.5px;
+  font-weight:800;letter-spacing:-.025em;white-space:nowrap;
+  transition:background .15s,color .15s,opacity .15s}
+.authtabs button.on{background:#2a211a;color:#d9c7a2;opacity:1}
+.authtabs button:hover{opacity:1}
 .pane[hidden]{display:none}
-.regfield{width:100%;height:46px;margin-bottom:9px;border-radius:13px;
-  border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;
-  font:inherit;font-size:15px;padding:0 14px;animation:fadeUp .6s .44s both}
-.regfield::placeholder{color:rgba(255,255,255,.34)}
-.regfield:focus{outline:none;border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.14)}
-select.regfield option{background:#20233b;color:#fff}
-.regfield.bad{border-color:rgba(239,68,68,.8)}
+
+.regfield{width:100%;height:auto;margin-bottom:14px;border-radius:14px;
+  border:2.5px solid transparent;background:#fff;color:#2a211a;font:inherit;font-size:16.5px;
+  font-weight:600;padding:14px 15px;animation:fadeUp .4s .17s both;
+  transition:border-color .14s,background .14s}
+.regfield::placeholder{color:#2a211a;opacity:.36;font-weight:500}
+.regfield:focus{outline:none;border-color:#bf7a30;background:#fff}
+.regfield.bad{border-color:#bf7a30;background:#fbf1e4}
+select.regfield option{background:#fff;color:#131313}
 .pw{position:relative}
-.pw .regfield{padding-right:46px}
-.eye{position:absolute;top:0;right:0;width:44px;height:46px;border:0;background:none;cursor:pointer;
-  display:grid;place-items:center;color:rgba(255,255,255,.42);padding:0}
-.eye:hover{color:rgba(255,255,255,.85)}
-.eye svg{width:19px;height:19px;display:block}
-.pwmeter{height:3px;border-radius:2px;background:rgba(255,255,255,.12);margin:-4px 0 9px;overflow:hidden}
-.pwmeter i{display:block;height:100%;width:0;border-radius:2px;transition:width .2s,background .2s}
-.lock-ok-msg{min-height:18px;margin-top:15px;font-size:13px;color:#6ee7b7;font-weight:600;line-height:1.5}
+.pw .regfield{padding-right:50px}
+.eye{position:absolute;top:0;right:0;width:48px;height:56px;border:0;background:none;cursor:pointer;
+  display:grid;place-items:center;color:#2a211a;opacity:.5;padding:0}
+.eye:hover{opacity:1}
+.eye svg{width:20px;height:20px;display:block}
+
+.keygo{width:100%;height:56px;margin-top:6px;border-radius:999px;border:2.5px solid #2a211a;
+  cursor:pointer;background:#2a211a;color:#ede7dd;font:inherit;font-size:17px;font-weight:800;
+  letter-spacing:-.02em;animation:fadeUp .4s .21s both;transition:background .15s,border-color .15s}
+.keygo:hover{background:#bf7a30;border-color:#bf7a30;color:#2a211a}
+.keygo:active{transform:translateY(2px)}
+.keygo:disabled{opacity:.5;cursor:default}
+
+.lock-msg{min-height:0;margin-top:14px;font-size:15px;font-weight:700;line-height:1.45;color:#2a211a}
+.lock-msg:not(:empty){background:#bf7a30;border-radius:14px;padding:13px 15px}
+.lock-ok-msg{min-height:0;margin-top:14px;font-size:15px;font-weight:700;line-height:1.45;color:#ede7dd}
+.lock-ok-msg:not(:empty){background:#6d6a3c;border-radius:14px;padding:13px 15px}
+.lock-hint{margin-top:20px;padding-top:18px;border-top:2.5px solid #ddd3c1;
+  font-size:15px;font-weight:600;color:#2a211a;opacity:.75;line-height:1.55;text-align:left}
+.lock-hint a,.linky{color:#2a211a;opacity:1;text-decoration:none;font-weight:800;
+  box-shadow:inset 0 -3px 0 0 #bf7a30;background:none;border:0;padding:0 1px;font:inherit;
+  font-weight:800;cursor:pointer}
+.lock-hint a:hover,.linky:hover{box-shadow:inset 0 -1.1em 0 0 #d9c7a2}
+
+.lock.err .lock-card{animation:shake .35s}
+.lock.ok .lock-card{animation:okFade .4s ease-in both}
+@keyframes okFade{to{opacity:0;transform:translateY(-8px)}}
+.lock.closing{animation:lockOut .4s .08s ease-in forwards}
+@keyframes lockOut{to{opacity:0}}
 
 /* ---------- plan badge + locked features ---------- */
-.tierpill{display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:999px;
-  background:var(--brand-soft);color:var(--brand);font-size:10.5px;font-weight:800;letter-spacing:.5px;
-  text-transform:uppercase;flex:none;cursor:pointer;border:0}
-.tierpill.trial{background:#fef3c7;color:#92400e}
-.tierpill.over{background:#fee2e2;color:#b91c1c}
+.tierpill{display:inline-flex;align-items:center;height:25px;padding:0 12px;border-radius:999px;
+  background:var(--brand);border:0;color:#fff;font-size:11.5px;font-weight:800;letter-spacing:-.01em;
+  flex:none;cursor:pointer}
+.tierpill.trial{background:#6d6a3c;color:#ede7dd}
+.tierpill.over{background:#5a3e2e;color:#ede7dd}
 .pchip.lockx,.lib-item.lockx,.tcard.lockx{opacity:.55}
 .pchip.lockx .ic,.lib-item.lockx .li-ic{filter:grayscale(1)}
 .lvlbar .lv.lockx{opacity:.55}
@@ -849,7 +797,7 @@ select.regfield option{background:#20233b;color:#fff}
   box-shadow:var(--shadow-lg);overflow:hidden}
 .modal.sm{max-width:560px}
 .modal-head{padding:20px 24px 16px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:14px}
-.modal-head .mh-ic{width:44px;height:44px;border-radius:12px;background:linear-gradient(140deg,var(--brand),var(--brand2));
+.modal-head .mh-ic{width:44px;height:44px;border-radius:12px;background:var(--brand);
   color:#fff;display:grid;place-items:center;flex:none;box-shadow:0 4px 12px rgba(91,91,240,.35)}
 .modal-head .mh-ic svg{width:23px;height:23px}
 .modal-head h2{margin:0;font-size:19px;letter-spacing:-.02em}
@@ -867,7 +815,7 @@ select.regfield option{background:#20233b;color:#fff}
 .lvlbar .lv{padding:7px 15px;border-radius:999px;border:1px solid var(--line);background:var(--panel2);
   font-size:13px;font-weight:650;cursor:pointer;color:var(--muted);transition:.13s}
 .lvlbar .lv:hover{border-color:var(--brand);color:var(--brand)}
-.lvlbar .lv.on{background:linear-gradient(140deg,var(--brand),var(--brand2));color:#fff;border-color:transparent;
+.lvlbar .lv.on{background:var(--brand);color:#fff;border-color:transparent;
   box-shadow:0 4px 12px rgba(91,91,240,.3)}
 .lvlbar .lv .n{opacity:.72;font-weight:600;margin-left:5px;font-size:11.5px}
 .lvl-note{padding:12px 24px 0;font-size:13px;color:var(--muted);line-height:1.5}
@@ -875,7 +823,7 @@ select.regfield option{background:#20233b;color:#fff}
   padding:2px 9px;border-radius:999px;background:var(--brand-soft);color:var(--brand)}
 .lib-group{margin-top:18px}
 .lib-group-h{display:flex;align-items:center;gap:9px;margin-bottom:11px}
-.lib-group-h .gi{width:8px;height:20px;border-radius:4px;background:linear-gradient(180deg,var(--brand),var(--brand2))}
+.lib-group-h .gi{width:8px;height:20px;border-radius:4px;background:var(--brand)}
 .lib-group-h b{font-size:14px;font-weight:750}
 .lib-group-h small{color:var(--muted);font-size:11.5px}
 .lib-items{display:grid;grid-template-columns:1fr 1fr;gap:9px}
@@ -889,7 +837,7 @@ select.regfield option{background:#20233b;color:#fff}
 .lib-item .li-tx span{font-size:11px;color:var(--muted);line-height:1.3;display:block}
 .lib-item .li-add{color:var(--brand);opacity:0;transition:.12s;flex:none}
 .lib-item:hover .li-add{opacity:1}
-.lib-principle{margin-top:22px;padding:15px 17px;border-radius:14px;background:linear-gradient(120deg,var(--brand-soft),var(--brand-soft2));
+.lib-principle{margin-top:22px;padding:15px 17px;border-radius:14px;background:var(--brand-soft);
   border:1px solid color-mix(in srgb,var(--brand) 20%,transparent);display:flex;gap:12px}
 .lib-principle .lp-ic{font-size:22px}
 .lib-principle b{font-size:13px}
@@ -941,12 +889,10 @@ select.regfield option{background:#20233b;color:#fff}
 
 <!-- LOCK SCREEN -->
 <div class="lock show" id="lock">
-  <div class="orbs"><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span></div>
-  <div class="sparkles" id="sparkles"></div>
   <div class="lock-card">
     <div class="lock-mark"><svg viewBox="0 0 100 100" fill="none"><path d="M27 31h46M50 31v42" stroke="#fff" stroke-width="11" stroke-linecap="round"/><circle cx="74" cy="72" r="9" fill="#fbbf24"/></svg></div>
     <h1>Worksheet Studio</h1>
-    <p id="lockSub">Sign in to your account</p>
+    <p id="lockSub">Your worksheets are where you left them.</p>
 
     <div class="authtabs" id="authTabs">
       <button data-p="in" class="on">Sign in</button>
@@ -12373,16 +12319,12 @@ function buildLevelBar(){
   const cat=libTab==='vo'?'vocab':'grammar';
   bar.innerHTML='';
   const mk=(k,lbl)=>{
-    const n=k==='all'
-      ? topicsFor(cat,'all','').filter(t=>levelAllowed(t.lvl)).length
-      : topicsFor(cat,k,'').length;
-    const locked=k!=='all'&&!levelAllowed(k);
-    const b=el('button','lv'+(libLevel===k?' on':'')+(locked?' lockx':''),
-      (locked?'🔒 ':'')+lbl+'<span class="n">'+n+'</span>');
-    b.onclick=locked
-      ? ()=>nudge('Level '+k+' is on Pro and Max — Basic covers A2 and B1.')
-      : ()=>{libLevel=k;buildLevelBar();buildLibBody($('#libSearch').value);};
-    if(!n&&k!=='all')b.style.opacity='.4';
+    const total=topicsFor(cat,k,'').length;
+    const have=allowedIn(cat,k);
+    const b=el('button','lv'+(libLevel===k?' on':''),
+      lbl+'<span class="n">'+(have<total?have+'/'+total:total)+'</span>');
+    b.onclick=()=>{libLevel=k;buildLevelBar();buildLibBody($('#libSearch').value);};
+    if(!total&&k!=='all')b.style.opacity='.4';
     bar.appendChild(b);
   };
   mk('all','All levels');
@@ -12425,10 +12367,10 @@ function buildLibBody(filter){
   if(libTab==='gr'||libTab==='vo'){
     const cat=libTab==='vo'?'vocab':'grammar';
     const all=topicsFor(cat,libLevel,q);
-    const list=all.filter(t=>levelAllowed(t.lvl));
+    const list=all.filter(topicAllowed);
     const hidden=all.length-list.length;
     if(libLevel==='all'){
-      LEVEL_ORDER.filter(levelAllowed).forEach(lv=>{
+      LEVEL_ORDER.forEach(lv=>{
         const inLv=list.filter(t=>t.lvl===lv);
         if(!inLv.length)return;
         const h=el('div','lib-group');
@@ -12441,9 +12383,10 @@ function buildLibBody(filter){
     }
     if(!body.children.length)body.appendChild(el('div','hint','No topics match your search.'));
     if(hidden>0){
+      const where=libLevel==='all'?'across the levels':'at '+libLevel;
       const u=el('div','lib-principle',
-        `<div class="lp-ic">🔒</div><div><b>${hidden} more topic${hidden===1?'':'s'} at B2 and C1</b>`
-        +`<p>Basic covers A2 and B1. Pro and Max open the whole library — all 235 topics, including the complete <i>Advanced Grammar in Use</i> syllabus. <a href="index.html#pricing">Compare the plans</a>.</p></div>`);
+        `<div class="lp-ic">🔒</div><div><b>${hidden} more topic${hidden===1?'':'s'} ${where}</b>`
+        +`<p>Your plan opens part of every level. Pro opens roughly twice as many, and Max opens the whole library — all 235 topics, including the complete <i>Advanced Grammar in Use</i> syllabus. <a href="index.html#pricing">Compare the plans</a>.</p></div>`);
       body.appendChild(u);
     }
     const pr=LIB_PRINCIPLE[libTab==='vo'?'idiom':'b1'];
@@ -12560,10 +12503,13 @@ const OFFLINE_GRACE_DAYS=14;   /* how long a stored session lasts unverified */
 const EMAIL_RE=/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/;
 
 const PLANS={
-  trial:{id:'trial',name:'Trial',levels:['A2','B1','B2','C1'],themes:99,pages:99,gen:true, brand:true},
-  basic:{id:'basic',name:'Basic',levels:['A2','B1'],          themes:8, pages:3, gen:false,brand:false},
-  pro:  {id:'pro',  name:'Pro',  levels:['A2','B1','B2','C1'],themes:99,pages:99,gen:true, brand:true},
-  max:  {id:'max',  name:'Max',  levels:['A2','B1','B2','C1'],themes:99,pages:99,gen:true, brand:true}
+  /* `share` is how much of EVERY level the plan opens. All four levels
+     are there on every plan — what grows with the plan is how many
+     topics inside each of them. Max opens the lot. */
+  trial:{id:'trial',name:'Trial',share:1,   themes:99,pages:99,gen:true, brand:true},
+  basic:{id:'basic',name:'Basic',share:.34, themes:8, pages:3, gen:false,brand:false},
+  pro:  {id:'pro',  name:'Pro',  share:.68, themes:99,pages:99,gen:true, brand:true},
+  max:  {id:'max',  name:'Max',  share:1,   themes:99,pages:99,gen:true, brand:true}
 };
 const GEN_BLOCKS=['crossword','wordsearch'];
 let PLAN=PLANS.basic, ME=null, TOKEN='';
@@ -12596,7 +12542,7 @@ async function api(path,{method='GET',body,token}={}){
    a plan bought this morning appears without signing in again. Silence
    from the server is not an error — we carry on with what we had. */
 async function refreshMe(){
-  if(!TOKEN)return;
+  if(NOSERVER||!TOKEN)return;
   const knownEmail=ME&&ME.email;
   try{
     const {account}=await api('/me',{token:TOKEN});
@@ -12619,16 +12565,67 @@ async function refreshMe(){
   }
 }
 
+/* ─────────────────────────────────────────────────────────────────────
+   The lock is there to protect a subscription. On a site with no
+   accounts server — the function is not deployed, or AUTH_SECRET was
+   never filled in — there is no subscription to protect, so the
+   builder simply opens with everything on.
+
+   Once a device has met a real accounts server it remembers that, and
+   the lock comes back for good: a subscriber cannot get free access by
+   pulling the plug on their internet.
+   ───────────────────────────────────────────────────────────────────── */
+let NOSERVER=false;
+function sawServer(){try{return localStorage.getItem('ws_server')==='1';}catch(e){return false;}}
+async function hasAccountsServer(){
+  try{
+    const r=await fetch(API+'/me',{headers:{Authorization:'Bearer none'}});
+    if(r.status===401){try{localStorage.setItem('ws_server','1');}catch(e){} return true;}
+    if(r.status===500){
+      const d=await r.json().catch(()=>({}));
+      if(d.error==='server_not_configured')return false;   /* settings missing */
+      return true;
+    }
+    return false;                       /* 404 — the function is not there */
+  }catch(e){ return false; }            /* opened from a file, or offline */
+}
+function openWithoutAccounts(){
+  NOSERVER=true; PLAN=PLANS.max; ME=null; TOKEN='';
+  document.body.classList.remove('locked');
+  $('#lock').classList.remove('show','ok','closing');
+  const lb=$('#lockBtn'); if(lb)lb.style.display='none';
+  applyPlan();
+}
+
 function can(what){
   if(what==='gen')return PLAN.gen;
   if(what==='brand')return PLAN.brand;
   return true;
 }
 function nudge(msg){toast('🔒 '+msg);}
-function levelAllowed(lv){return PLAN.levels.indexOf(lv)>=0;}
+/* The share is taken from the front of each level, so a teacher sees the
+   same topics every day — never a different set on a different visit. */
+let ALLOWED=null;
+function computeAllowed(){
+  ALLOWED=new Set();
+  ['grammar','vocab'].forEach(cat=>LEVEL_ORDER.forEach(lv=>{
+    const list=ALL_TOPICS.filter(t=>t.cat===cat&&t.lvl===lv);
+    const n=PLAN.share>=1?list.length:Math.max(1,Math.ceil(list.length*PLAN.share));
+    list.slice(0,n).forEach(t=>ALLOWED.add(t.id));
+  }));
+}
+function topicAllowed(t){return !ALLOWED||ALLOWED.has(t.id);}
+function allowedIn(cat,lvl){return topicsFor(cat,lvl,'').filter(topicAllowed).length;}
 
 function refreshPlanBadge(){
   const b=$('#planPill');if(!b)return;
+  if(NOSERVER){
+    b.className='tierpill';
+    b.textContent='Full access';
+    b.title='This site has no accounts server, so nothing is locked.';
+    const w=$('#whoAmI');if(w)w.textContent='';
+    return;
+  }
   const left=daysLeft();
   b.className='tierpill'+(ME&&ME.plan==='trial'?' trial':'')+(ME&&left<=5?' over':'');
   b.textContent=ME?PLAN.name+(left<=14?' · '+left+'d':''):'—';
@@ -12636,15 +12633,7 @@ function refreshPlanBadge(){
   const w=$('#whoAmI');
   if(w)w.textContent=ME?ME.name+' · '+ME.email:'';
 }
-function makeSparkles(){
-  const box=$('#sparkles');if(!box||box.children.length)return;
-  for(let i=0;i<18;i++){const s=document.createElement('span');
-    s.style.left=Math.random()*100+'%';
-    s.style.animationDuration=(9+Math.random()*11)+'s';
-    s.style.animationDelay=(-Math.random()*18)+'s';
-    const sz=2+Math.random()*4;s.style.width=s.style.height=sz+'px';
-    s.style.opacity=(.3+Math.random()*.5);box.appendChild(s);}
-}
+function makeSparkles(){}   /* the sign-in screen is plain paper now */
 function authFail(msg){
   const lock=$('#lock');lock.classList.add('err');
   $('#lockOk').textContent='';$('#lockMsg').innerHTML=msg;
@@ -12653,7 +12642,9 @@ function authFail(msg){
 function authTab(which){
   document.querySelectorAll('#authTabs button').forEach(b=>b.classList.toggle('on',b.dataset.p===which));
   $('#paneIn').hidden=which!=='in';$('#paneUp').hidden=which!=='up';
-  $('#lockSub').textContent=which==='in'?'Sign in to your account':'Seven days free, no card';
+  $('#lockSub').textContent=which==='in'
+    ? 'Your worksheets are where you left them.'
+    : 'Seven days of everything, no card.';
   $('#lockMsg').textContent='';$('#lockOk').textContent='';
   document.querySelectorAll('.regfield.bad').forEach(f=>f.classList.remove('bad'));
   setTimeout(()=>{const f=which==='in'?$('#iMail'):$('#rName');if(f)f.focus();},60);
@@ -12738,6 +12729,7 @@ function lockNow(message){
 }
 /* Re-paints everything that depends on the plan. */
 function applyPlan(){
+  computeAllowed();
   refreshPlanBadge();
   buildPalette($('#blkSearch')?$('#blkSearch').value:'');
   buildThemeGallery();refreshThemeUI();
@@ -12880,6 +12872,9 @@ function frReplace(q,r){
       $('#iMail').value=ME.email;
       if(!planLive())$('#lockMsg').textContent='Your '+PLAN.name+' ended on '+ME.until+'.';
     }
+    /* Only a device that has never met a real accounts server gets in
+       for nothing — see the note by hasAccountsServer. */
+    if(!sawServer())hasAccountsServer().then(ok=>{if(!ok)openWithoutAccounts();});
   }
   try{const u=localStorage.getItem('ws_ui');if(u)document.documentElement.setAttribute('data-ui',u);}catch(e){}
   buildPalette();buildThemeGallery();buildTemplates();

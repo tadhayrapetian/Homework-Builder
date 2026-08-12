@@ -5,251 +5,319 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Worksheet Studio — printable English worksheets in minutes</title>
 <meta name="description" content="A worksheet builder for English teachers. 235 ready-made grammar and vocabulary topics from A2 to C1, 42 block types, 40 A4 designs and one-click PDF export. Works offline in your browser.">
-<meta name="theme-color" content="#5b5bf0">
+<meta name="theme-color" content="#d9c7a2">
 <meta name="apple-mobile-web-app-title" content="Worksheet Studio">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b5bf0'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='26' fill='url(%23g)'/%3E%3Cpath d='M27 31h46M50 31v42' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3Ccircle cx='73' cy='71' r='9' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='26' fill='%235a3e2e'/%3E%3Cpath d='M27 31h46M50 31v42' stroke='%23ede7dd' stroke-width='11' stroke-linecap='round'/%3E%3Ccircle cx='74' cy='72' r='9' fill='%23bf7a30'/%3E%3C/svg%3E">
 <style>
+/* ═══════════════════════════════════════════════════════════════════════
+   Colour does the work here. Each section is a solid band edge to edge,
+   so the page reads as a stack of blocks rather than a white sheet with
+   cards floating on it. Type is heavy and rounded; corners are generous.
+   ═══════════════════════════════════════════════════════════════════════ */
 :root{
-  --brand:#5b5bf0; --brand-deep:#4344d6; --amber:#fbbf24; --ok:#12a672;
-  --bg:#ffffff; --raise:#ffffff; --soft:#eef0ff; --tint:#f7f8fc;
-  --ink:#12151f; --muted:#5b6478; --line:#e6e9f2;
-  --paper:#ffffff; --paper-line:#dfe3ee; --shadow:24px 30px 70px -30px rgba(18,21,31,.34);
-  --r:14px; --r-lg:22px; --measure:64ch;
-  --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-}
-@media (prefers-color-scheme:dark){
-  :root{
-    --bg:#0a0c14; --raise:#101422; --soft:#171c30; --tint:#0d1120;
-    --ink:#eef1f8; --muted:#98a2b8; --line:#222a3c;
-    --paper:#f4f5fa; --paper-line:#d3d8e6; --shadow:24px 30px 80px -30px rgba(0,0,0,.75);
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0a0c14; --raise:#101422; --soft:#171c30; --tint:#0d1120;
-  --ink:#eef1f8; --muted:#98a2b8; --line:#222a3c;
-  --paper:#f4f5fa; --paper-line:#d3d8e6; --shadow:24px 30px 80px -30px rgba(0,0,0,.75);
-}
-:root[data-theme="light"]{
-  --bg:#ffffff; --raise:#ffffff; --soft:#eef0ff; --tint:#f7f8fc;
-  --ink:#12151f; --muted:#5b6478; --line:#e6e9f2;
-  --paper:#ffffff; --paper-line:#dfe3ee; --shadow:24px 30px 70px -30px rgba(18,21,31,.34);
-}
-/* Armenian needs a slightly larger optical size and looser line height */
-:root[lang="hy"]{ --measure:58ch }
-:root[lang="hy"] body{ line-height:1.72 }
-:root[lang="hy"] h1{ letter-spacing:-.01em }
+  /* Clay Amber · Dried Sand · Olive Hearth · Walnut Wood · Fog Linen.
+     --ink is a deeper walnut: the palette's darkest tone is not quite
+     dark enough to read on Clay Amber, and text has to stay legible. */
+  --amber:#bf7a30;  --amber-deep:#a5661f;
+  --sand:#d9c7a2;   --sand-deep:#cbb68c;
+  --olive:#6d6a3c;  --olive-deep:#5b5830;
+  --walnut:#5a3e2e; --walnut-deep:#47301f;
+  --linen:#ede7dd;
+  --ink:#2a211a;
+  --white:#ffffff;  --smoke:#e4ddd0;
 
+  /* older names still used further down, pointed at the new palette */
+  --yellow:var(--sand); --blue:var(--olive); --coral:var(--amber);
+  --mint:var(--olive);  --lilac:var(--walnut); --cream:var(--linen);
+  --line:#d8cdb9;
+  --r:26px; --r-sm:14px; --r-pill:999px;
+  --measure:58ch;
+  --sans:ui-rounded,"SF Pro Rounded","Hiragino Maru Gothic ProN",-apple-system,
+    BlinkMacSystemFont,"Segoe UI Variable Display","Segoe UI",Roboto,system-ui,sans-serif;
+}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 var(--sans);
-  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{margin:0;background:var(--linen);color:var(--ink);font:17px/1.6 var(--sans);
+  -webkit-font-smoothing:antialiased;font-weight:500}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
 }
 a{color:inherit}
-:focus-visible{outline:2.5px solid var(--brand);outline-offset:3px;border-radius:6px}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:6px}
 
-.wrap{width:min(1080px,calc(100% - 40px));margin-inline:auto}
-section{padding-block:clamp(56px,8vw,104px);scroll-margin-top:76px}
-h1,h2,h3,p,summary,li{overflow-wrap:break-word}
-.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--brand);margin:0 0 14px}
-h1,h2,h3{text-wrap:balance;margin:0;letter-spacing:-.022em;line-height:1.14}
-h1{font-size:clamp(32px,5vw,56px);font-weight:800}
-h2{font-size:clamp(25px,3.2vw,36px);font-weight:750}
-h3{font-size:18px;font-weight:700;letter-spacing:-.012em}
+.wrap{width:min(1140px,calc(100% - 36px));margin-inline:auto}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.035em;line-height:1.02;text-wrap:balance}
+h1{font-size:clamp(40px,6.2vw,78px)}
+h2{font-size:clamp(29px,4.2vw,50px)}
+h3{font-size:clamp(20px,2vw,25px);letter-spacing:-.025em;line-height:1.15}
 p{margin:0}
-.lede{font-size:clamp(16.5px,1.5vw,19px);color:var(--muted);max-width:var(--measure)}
+h1,h2,h3,p,summary,li{overflow-wrap:break-word}
+.lede{font-size:clamp(17px,1.7vw,21px);max-width:var(--measure);font-weight:500}
 
-header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);
-  backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.bar{display:flex;align-items:center;gap:12px;height:62px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:750;letter-spacing:-.02em;text-decoration:none;
-  white-space:nowrap}
-.mark{width:30px;height:30px;border-radius:9px;flex:none;
-  background:linear-gradient(135deg,var(--brand),#8b5cf6);display:grid;place-items:center}
-.mark svg{width:19px;height:19px;display:block}
-nav{margin-left:auto;display:flex;align-items:center;gap:6px}
-nav a{text-decoration:none;color:var(--muted);font-size:14.5px;font-weight:550;padding:8px 11px;border-radius:9px}
-nav a:hover{color:var(--ink);background:var(--soft)}
-@media(max-width:860px){nav .hide-sm{display:none}}
-nav .btn{white-space:nowrap}
-@media(max-width:520px){
-  .bar{gap:8px}
-  .logo{font-size:15px}
-  .logo .mark{width:26px;height:26px}
-  nav{gap:3px}
-  nav .btn{padding:8px 11px;font-size:13px}
-  .lang{margin-right:2px;padding:2px}
-  .lang button{padding:5px 6px;font-size:11.5px}
+/* the label above a heading — a solid chip, not a wisp of letterspacing */
+.eyebrow{display:inline-block;font-size:13px;font-weight:800;letter-spacing:-.01em;
+  padding:7px 16px;border-radius:var(--r-pill);background:var(--ink);color:var(--linen);
+  margin:0 0 22px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font:inherit;
+  font-weight:800;font-size:17px;letter-spacing:-.02em;text-decoration:none;
+  padding:16px 28px;border-radius:var(--r-pill);border:2.5px solid var(--ink);cursor:pointer;
+  transition:transform .12s ease,background .15s,color .15s}
+.btn:active{transform:translateY(2px)}
+.btn-solid{background:var(--ink);color:var(--linen)}
+.btn-solid:hover{background:var(--amber);border-color:var(--amber);color:var(--ink)}
+.btn-ghost{background:transparent;color:var(--ink)}
+.btn-ghost:hover{background:var(--ink);color:var(--linen)}
+.btn-sm{padding:11px 20px;font-size:15px;border-width:2px}
+
+/* ── header sits on top of the hero colour, not on a white strip ── */
+header{position:sticky;top:0;z-index:60;background:var(--sand);
+  border-bottom:2.5px solid var(--ink)}
+.bar{display:flex;align-items:center;gap:12px;height:70px}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;white-space:nowrap;
+  font-weight:900;font-size:20px;letter-spacing:-.035em}
+.mark{width:34px;height:34px;flex:none;background:var(--ink);display:grid;place-items:center;
+  border-radius:11px}
+.mark svg{width:19px;height:19px;display:block;color:var(--sand)}
+nav{margin-left:auto;display:flex;align-items:center;gap:4px}
+nav a{text-decoration:none;font-size:16px;font-weight:700;padding:9px 13px;border-radius:var(--r-pill)}
+nav a:hover{background:rgba(42,33,26,.1)}
+@media(max-width:900px){nav .hide-sm{display:none}}
+@media(max-width:620px){
+  .bar{height:62px;gap:8px}
+  .logo{font-size:17px} .logo .txt{display:none}
+  nav .btn{display:none}
+  nav a{padding:8px 10px;font-size:15px}
 }
-@media(max-width:560px){ .logo .txt{display:none} }
+.lang{display:inline-flex;gap:2px;padding:3px;background:rgba(42,33,26,.12);
+  border-radius:var(--r-pill);margin-right:6px}
+.lang button{font:inherit;font-size:13px;font-weight:800;border:0;cursor:pointer;
+  padding:5px 11px;border-radius:var(--r-pill);background:transparent;color:var(--ink);opacity:.6}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--sand);opacity:1}
 
-.lang{display:inline-flex;gap:2px;padding:3px;background:var(--soft);border-radius:9px;margin-right:4px}
-.lang button{font:inherit;font-size:12.5px;font-weight:700;letter-spacing:.03em;border:0;cursor:pointer;
-  padding:5px 9px;border-radius:7px;background:transparent;color:var(--muted)}
-.lang button[aria-pressed="true"]{background:var(--raise);color:var(--brand);
-  box-shadow:0 1px 3px rgba(18,21,31,.16)}
+/* ── bands ── */
+.band-y{background:var(--sand);color:var(--ink)}
+.band-ink{background:var(--walnut);color:var(--linen)}
+.band-blue{background:var(--olive);color:var(--linen)}
+.band-coral{background:var(--olive);color:var(--linen)}
+.band-cream{background:var(--smoke);color:var(--ink)}
+.band-white{background:var(--linen);color:var(--ink)}
+section{padding-block:clamp(64px,8vw,116px);scroll-margin-top:72px;position:relative}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;
-  font-weight:650;font-size:15px;text-decoration:none;padding:11px 20px;border-radius:11px;
-  border:1px solid transparent;cursor:pointer;transition:transform .14s,background .14s,border-color .14s}
-.btn:active{transform:translateY(1px)}
-.btn-solid{background:var(--brand);color:#fff}
-.btn-solid:hover{background:var(--brand-deep)}
-.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
-.btn-ghost:hover{background:var(--soft);border-color:var(--brand)}
-.btn-sm{padding:8px 15px;font-size:14px;border-radius:9px}
+/* ── hero: one huge headline, the worksheet sliding out of the bottom ── */
+.hero{padding-block:clamp(46px,6vw,84px) 0;overflow:hidden}
+.hero h1{max-width:13ch}
+.hero .lede{margin-top:0;font-size:clamp(18px,2vw,23px);font-weight:600;max-width:34ch}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+/* Clay Amber gets the loudest job on the page */
+.hero .btn-solid{background:var(--amber);color:var(--ink);border-color:var(--ink)}
+.hero .btn-solid:hover{background:var(--ink);color:var(--linen);border-color:var(--ink)}
+.hero-note{margin:0 0 6px;font-size:15px;font-weight:600;opacity:.72;max-width:40ch}
+.hero-top{display:grid;gap:26px;grid-template-columns:1fr;align-items:end;margin-top:30px}
+@media(min-width:900px){.hero-top{grid-template-columns:1.3fr .7fr;gap:52px}}
 
-.hero{padding-block:clamp(44px,6vw,80px) clamp(40px,6vw,72px)}
-.hero-grid{display:grid;gap:clamp(36px,5vw,64px);grid-template-columns:1fr;align-items:center}
-@media(min-width:940px){.hero-grid{grid-template-columns:1.02fr .98fr}}
-.hero p.lede{margin-top:18px}
-.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-.hero-note{margin-top:16px;font-size:13.5px;color:var(--muted)}
+.sheet-stage{position:relative;margin-top:clamp(46px,6vw,72px);
+  margin-bottom:calc(clamp(64px,8vw,116px) * -1)}
+.sheet{background:#fff;color:var(--ink);border:2.5px solid var(--ink);
+  border-radius:var(--r) var(--r) 0 0;border-bottom:0;
+  padding:38px 38px 60px;transform:none;font-size:13.5px;line-height:1.6;
+  box-shadow:0 -8px 0 0 rgba(19,19,19,.12)}
+@media(min-width:900px){.sheet{padding:44px 52px 80px}}
+.sheet-head{display:flex;justify-content:space-between;align-items:baseline;gap:18px;
+  border-bottom:2.5px solid var(--ink);padding-bottom:14px;margin-bottom:22px;flex-wrap:wrap}
+.sheet-head b{font-size:22px;font-weight:800;letter-spacing:-.03em}
+.sheet-head span{font-size:12px;font-weight:800;color:var(--ink);opacity:.5;letter-spacing:-.01em}
+.task{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+.task-n{flex:none;width:26px;height:26px;border-radius:9px;background:var(--walnut);color:var(--linen);
+  font-size:14px;font-weight:800;display:grid;place-items:center;margin-top:1px}
+.task b{display:block;font-size:15px;font-weight:800;letter-spacing:-.02em}
+.task i{display:block;font-style:normal;opacity:.6;font-size:13.5px;font-weight:500}
+.q{margin:0 0 8px;padding-left:38px;font-weight:500}
+.q u{text-decoration:none;border-bottom:2.5px solid var(--ink);padding:0 30px 1px}
+.sheet-rule{height:2.5px;background:var(--ink);opacity:.12;margin:22px 0 16px;border-radius:2px}
+.key{padding-left:38px;font-size:13px;opacity:.65;font-weight:600}
+.key b{color:var(--amber-deep);font-weight:800}
+.stamp{position:absolute;left:18px;top:-24px;max-width:min(78%,300px);background:var(--olive);
+  color:var(--linen);border:2.5px solid var(--ink);border-radius:18px;padding:10px 18px;
+  letter-spacing:-.025em;transform:rotate(-2deg);line-height:1.25}
+.stamp b{display:block;font-size:14px;font-weight:800}
+.stamp span{display:block;font-weight:600;opacity:.85;font-size:12.5px}
+@media(max-width:620px){
+  .stamp{left:12px;top:-20px;padding:8px 14px;border-radius:14px}
+  .stamp b{font-size:12.5px} .stamp span{font-size:11.5px}
+}
 
-.sheet-stage{position:relative;padding-bottom:30px}
-.sheet{background:var(--paper);color:#1a2130;border-radius:4px;box-shadow:var(--shadow);
-  padding:30px 30px 34px;transform:rotate(-1.4deg);border:1px solid var(--paper-line);
-  font-size:12.5px;line-height:1.55}
-.sheet-head{display:flex;justify-content:space-between;align-items:baseline;
-  border-bottom:2px solid #1a2130;padding-bottom:9px;margin-bottom:16px}
-.sheet-head b{font-size:15px;letter-spacing:-.015em}
-.sheet-head span{font-size:10.5px;color:#6a7385}
-.task{display:flex;gap:9px;align-items:flex-start;margin-bottom:11px}
-.task-n{flex:none;width:19px;height:19px;border-radius:6px;background:var(--brand);color:#fff;
-  font-size:11px;font-weight:700;display:grid;place-items:center;margin-top:1px}
-.task b{display:block;font-size:12.5px}
-.task i{display:block;font-style:normal;color:#6a7385;font-size:11.5px}
-.q{margin:0 0 6px;padding-left:28px;color:#1a2130}
-.q u{text-decoration:none;border-bottom:1.5px solid #9aa3b6;padding:0 26px 1px}
-.sheet-rule{height:1px;background:var(--paper-line);margin:16px 0 13px}
-.key{padding-left:28px;font-size:11px;color:#6a7385}
-.key b{color:var(--ok);font-weight:650}
-.stamp{position:absolute;right:6px;bottom:-6px;background:var(--raise);color:var(--ink);
-  border:1px solid var(--line);border-radius:11px;padding:9px 14px;
-  box-shadow:0 10px 30px -12px rgba(18,21,31,.4);font-size:12.5px;font-weight:600}
-.stamp span{color:var(--muted);font-weight:500}
+/* ── the counts, huge, on ink ── */
+.band .wrap{display:grid;gap:0;grid-template-columns:repeat(2,1fr)}
+@media(min-width:820px){.band .wrap{grid-template-columns:repeat(4,1fr)}}
+.band{padding-block:clamp(44px,5vw,68px)}
+.stat{padding:16px 20px 16px 0}
+.stat b{display:block;font-size:clamp(48px,7vw,86px);font-weight:900;letter-spacing:-.055em;
+  line-height:.92;font-variant-numeric:tabular-nums}
+.stat:nth-child(1) b{color:var(--sand)}
+.stat:nth-child(2) b{color:var(--linen)}
+.stat:nth-child(3) b{color:var(--sand)}
+.stat:nth-child(4) b{color:var(--linen)}
+.stat span{display:block;margin-top:10px;font-size:15px;font-weight:600;opacity:.7}
 
-.band{border-block:1px solid var(--line);background:var(--tint)}
-.band .wrap{display:grid;gap:26px;grid-template-columns:repeat(2,1fr);padding-block:34px}
-@media(min-width:760px){.band .wrap{grid-template-columns:repeat(4,1fr)}}
-.stat b{display:block;font-size:clamp(26px,3vw,34px);font-weight:800;letter-spacing:-.03em;
-  font-variant-numeric:tabular-nums;line-height:1}
-.stat span{display:block;margin-top:6px;font-size:13.5px;color:var(--muted)}
+.head{max-width:min(760px,100%);margin-bottom:clamp(36px,4vw,54px)}
+.head h2{max-width:15ch}
+.head .lede{margin-top:20px;opacity:.8;max-width:52ch}
 
-.head{max-width:var(--measure);margin-bottom:clamp(28px,4vw,44px)}
-.head p{margin-top:14px}
+/* ── features: tiles of different sizes and colours ── */
 .cards{display:grid;gap:16px;grid-template-columns:1fr}
-@media(min-width:700px){.cards{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:980px){.cards{grid-template-columns:repeat(3,1fr)}}
-.card{background:var(--raise);border:1px solid var(--line);border-radius:var(--r-lg);
-  padding:24px 22px;display:flex;flex-direction:column;gap:9px}
-.card p{color:var(--muted);font-size:14.8px}
-.ic{width:34px;height:34px;border-radius:10px;background:var(--soft);color:var(--brand);
-  display:grid;place-items:center;margin-bottom:5px}
-.ic svg{width:19px;height:19px;display:block}
+@media(min-width:680px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1000px){
+  .cards{grid-template-columns:repeat(6,1fr)}
+  .card:nth-child(1){grid-column:span 4}
+  .card:nth-child(2){grid-column:span 2}
+  .card:nth-child(3){grid-column:span 2}
+  .card:nth-child(4){grid-column:span 4}
+  .card:nth-child(5){grid-column:span 3}
+  .card:nth-child(6){grid-column:span 3}
+}
+.card{border:2.5px solid var(--ink);border-radius:var(--r);padding:28px 26px 30px;
+  display:flex;flex-direction:column;gap:10px}
+.card:nth-child(1){background:var(--sand)}
+.card:nth-child(2){background:var(--walnut);color:var(--linen)}
+.card:nth-child(3){background:var(--amber)}
+.card:nth-child(4){background:var(--white)}
+.card:nth-child(5){background:var(--olive);color:var(--linen)}
+.card:nth-child(6){background:var(--smoke)}
+.card p{font-size:16px;font-weight:500;opacity:.82}
+.ic{width:46px;height:46px;border-radius:14px;background:var(--ink);color:var(--linen);
+  display:grid;place-items:center;margin-bottom:6px}
+.card:nth-child(2) .ic,.card:nth-child(5) .ic{background:var(--linen);color:var(--ink)}
+.ic svg{width:23px;height:23px;display:block}
 
+/* ── the library: level chips, then every topic on a moving ribbon ── */
 .levels{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
-@media(max-width:420px){.levels{grid-template-columns:1fr}}
-@media(min-width:820px){.levels{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.level{border:1px solid var(--line);border-radius:var(--r);padding:18px;background:var(--raise)}
-.level b{display:flex;align-items:baseline;gap:8px;font-size:20px;letter-spacing:-.02em}
-.level b i{font-style:normal;font-size:13px;font-weight:600;color:var(--brand);
-  background:var(--soft);padding:2px 8px;border-radius:20px;font-variant-numeric:tabular-nums}
-.level p{margin-top:8px;font-size:13.6px;color:var(--muted);overflow-wrap:break-word}
-.topics{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--line);border-radius:20px;padding:6px 13px;font-size:13.4px;
-  color:var(--muted);background:var(--raise)}
+@media(min-width:900px){.levels{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.level{border:2.5px solid var(--linen);border-radius:var(--r);padding:22px 22px 24px;
+  background:rgba(237,231,221,.1)}
+.level b{display:flex;align-items:baseline;gap:10px;font-size:34px;font-weight:900;
+  letter-spacing:-.05em}
+.level b i{font-style:normal;font-size:15px;font-weight:800;background:var(--linen);
+  color:var(--olive-deep);padding:3px 11px;border-radius:var(--r-pill);letter-spacing:-.02em}
+.level p{margin-top:12px;font-size:15px;font-weight:500;opacity:.85}
 
-.steps{display:grid;gap:18px;grid-template-columns:1fr;counter-reset:s}
-@media(min-width:820px){.steps{grid-template-columns:repeat(3,1fr)}}
-.step{padding-top:20px;border-top:2px solid var(--brand);counter-increment:s}
-.step::before{content:counter(s,decimal-leading-zero);display:block;font-size:12px;font-weight:750;
-  color:var(--brand);letter-spacing:.1em;margin-bottom:9px;font-variant-numeric:tabular-nums}
-.step p{color:var(--muted);font-size:14.8px;margin-top:8px}
+.ribbon{margin-top:38px;border-block:2.5px solid var(--linen);padding-block:18px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.ribbon-track{display:flex;gap:0;width:max-content;animation:roll 42s linear infinite}
+.ribbon:hover .ribbon-track{animation-play-state:paused}
+@keyframes roll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ribbon .chip{display:inline-flex;align-items:center;font-size:19px;font-weight:800;
+  letter-spacing:-.03em;padding:0 22px;white-space:nowrap;border:0;background:none;color:var(--linen)}
+.ribbon .chip::after{content:"●";margin-left:22px;font-size:9px;opacity:.5;vertical-align:middle}
+@media (prefers-reduced-motion:reduce){
+  .ribbon{overflow-x:auto;mask-image:none;-webkit-mask-image:none}
+  .ribbon-track{animation:none}
+}
 
-.toggle{display:inline-flex;gap:3px;padding:4px;background:var(--soft);border-radius:12px;margin-bottom:26px}
-.toggle button{font:inherit;font-size:14px;font-weight:650;border:0;cursor:pointer;
-  padding:8px 17px;border-radius:9px;background:transparent;color:var(--muted)}
-.toggle button[aria-pressed="true"]{background:var(--raise);color:var(--ink);box-shadow:0 1px 3px rgba(18,21,31,.14)}
-.plans{display:grid;gap:18px;grid-template-columns:1fr;align-items:stretch}
-@media(min-width:760px){.plans{grid-template-columns:1fr 1fr}}
-@media(min-width:1040px){.plans{grid-template-columns:1fr 1.06fr 1fr}}
-.plan{background:var(--raise);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px 26px;
-  display:flex;flex-direction:column}
-.plan ul{flex:1}
-@media(min-width:760px){.plan>p.sub{min-height:2.9em}}
-.plan.pro{border-color:var(--brand);box-shadow:0 0 0 1px var(--brand)}
-.plan li.no{opacity:.6}
-.plan li.no svg{color:var(--muted)}
-.trialnote{margin-top:22px;padding:16px 18px;border:1px dashed var(--line);border-radius:14px;
-  color:var(--muted);font-size:14.4px;text-align:center}
+/* ── three steps, big numerals ── */
+.steps{display:grid;gap:16px;grid-template-columns:1fr;counter-reset:s}
+@media(min-width:860px){.steps{grid-template-columns:repeat(3,1fr)}}
+.step{counter-increment:s;border:2.5px solid var(--ink);border-radius:var(--r);
+  padding:26px 24px 28px;background:var(--white)}
+.step:nth-child(2){background:var(--sand)}
+.step:nth-child(3){background:var(--amber)}
+.step::before{content:counter(s);display:grid;place-items:center;width:52px;height:52px;
+  border-radius:16px;background:var(--ink);color:var(--linen);font-size:26px;font-weight:900;
+  margin-bottom:16px}
+.step p{font-size:16px;font-weight:500;opacity:.82;margin-top:9px}
 
-/* ---------- sign up ---------- */
-.join{display:grid;gap:34px;grid-template-columns:1fr;align-items:start}
-@media(min-width:900px){.join{grid-template-columns:1fr 1.05fr;gap:56px}}
-.howto{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:20px;counter-reset:h}
-.howto li{counter-increment:h;display:grid;grid-template-columns:32px 1fr;gap:14px;align-items:start}
-.howto li::before{content:counter(h);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;
-  background:var(--brand);color:#fff;font-size:14px;font-weight:750}
-.howto b{display:block;font-size:15.6px;margin-bottom:3px}
-.howto span{color:var(--muted);font-size:14.6px;line-height:1.55}
-.card-form{background:var(--raise);border:1px solid var(--line);border-radius:var(--r-lg);padding:28px 26px}
-.frm{display:grid;gap:15px}
-.frm .row{display:grid;gap:15px}
-@media(min-width:560px){.frm .row{grid-template-columns:1fr 1fr}}
-.frm label{display:block;font-size:13px;font-weight:650;margin-bottom:6px}
-.frm input,.frm select,.frm textarea{width:100%;font:inherit;font-size:15px;color:var(--ink);
-  background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
-.frm textarea{min-height:84px;resize:vertical}
-.frm input:focus,.frm select:focus,.frm textarea:focus{outline:none;border-color:var(--brand);
-  box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 16%,transparent)}
-.frm .pw{position:relative}
-.frm .pw input{padding-right:44px}
-.frm .eye{position:absolute;top:0;right:0;width:42px;height:100%;border:0;background:none;cursor:pointer;
-  display:grid;place-items:center;color:var(--muted);padding:0}
-.frm .eye:hover{color:var(--ink)}
-.frm .eye svg{width:19px;height:19px;display:block}
-.frm input.bad,.frm .pw input.bad{border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.14)}
-.frm .btn{width:100%;margin-top:4px}
-.frm .note{font-size:12.8px;color:var(--muted);text-align:center;margin-top:-2px}
-.formmsg{display:none;padding:14px 16px;border-radius:12px;font-size:14.4px;line-height:1.5}
-.formmsg.ok{display:block;background:color-mix(in srgb,var(--ok) 12%,transparent);color:var(--ok)}
-.formmsg.bad{display:block;background:#fee2e2;color:#b91c1c}
-:root[data-theme="dark"] .formmsg.bad{background:#3b1414;color:#fca5a5}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .formmsg.bad{background:#3b1414;color:#fca5a5}}
-.plan-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap}
-.tag{font-size:11px;font-weight:750;letter-spacing:.1em;text-transform:uppercase;
-  background:var(--amber);color:#3d2c00;padding:3px 9px;border-radius:20px}
-.plan>p.sub{color:var(--muted);font-size:14.8px}
-.price{display:flex;align-items:baseline;gap:8px;margin:16px 0 4px;flex-wrap:wrap}
-.price b{font-size:42px;font-weight:800;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
-.price span{color:var(--muted);font-size:14.5px}
-.save{font-size:13.4px;color:var(--ok);font-weight:600;min-height:20px}
-.plan ul{list-style:none;margin:20px 0 24px;padding:0;display:grid;gap:11px}
-.plan li{display:flex;gap:10px;font-size:14.8px;color:var(--muted);align-items:flex-start}
-.plan li svg{width:17px;height:17px;flex:none;margin-top:3px;color:var(--ok)}
+/* ── pricing: three wide rows, stacked, not three columns ── */
+.toggle{display:inline-flex;padding:4px;background:var(--ink);border-radius:var(--r-pill);
+  margin-bottom:30px}
+.toggle button{font:inherit;font-size:15px;font-weight:800;border:0;cursor:pointer;
+  padding:10px 22px;border-radius:var(--r-pill);background:transparent;color:var(--linen);opacity:.6}
+.toggle button[aria-pressed="true"]{background:var(--sand);color:var(--ink);opacity:1}
+.plans{display:grid;gap:16px;grid-template-columns:1fr}
+.plan{border:2.5px solid var(--ink);border-radius:var(--r);padding:28px 26px;
+  display:grid;gap:22px;grid-template-columns:1fr;align-items:start;background:var(--white)}
+@media(min-width:900px){
+  .plan{grid-template-columns:minmax(210px,.9fr) 2fr minmax(190px,.7fr);gap:34px;
+    padding:32px 34px;align-items:center}
+}
+.plan.pro{background:var(--sand)}
+.plan:last-child{background:var(--walnut);color:var(--linen);border-color:var(--ink)}
+.plan:last-child .btn{border-color:var(--linen);color:var(--linen)}
+.plan:last-child .btn:hover{background:var(--linen);color:var(--ink)}
+.plan:last-child .save{color:var(--sand)}
+.plan-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.tag{font-size:12px;font-weight:800;letter-spacing:-.01em;background:var(--amber);color:var(--ink);
+  padding:5px 13px;border-radius:var(--r-pill)}
+.plan:last-child .tag{background:var(--sand);color:var(--ink)}
+.plan>p.sub{font-size:15.5px;font-weight:500;opacity:.75;max-width:30ch}
+.price{display:flex;align-items:baseline;gap:9px;margin:14px 0 2px;flex-wrap:wrap}
+.price b{font-size:clamp(44px,5vw,62px);font-weight:900;letter-spacing:-.055em;
+  font-variant-numeric:tabular-nums;line-height:1}
+.price span{font-size:15px;font-weight:600;opacity:.7}
+.save{font-size:14px;font-weight:800;color:var(--amber-deep);min-height:21px}
+.plan ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:620px){.plan ul{grid-template-columns:repeat(2,1fr);gap:10px 26px}}
+.plan li{display:flex;gap:10px;font-size:15.5px;font-weight:500;align-items:flex-start;opacity:.9}
+.plan li svg{width:17px;height:17px;flex:none;margin-top:4px}
+.plan li.no{opacity:.55}
 .plan .btn{width:100%}
-.fineprint{margin-top:14px;font-size:12.8px;color:var(--muted);text-align:center}
+.fineprint{display:none}
+.trialnote{margin-top:24px;border:2.5px dashed var(--ink);border-radius:var(--r);
+  padding:20px 24px;font-size:16.5px;font-weight:600;text-align:center}
 
-.faq{display:grid;border-top:1px solid var(--line)}
-details{border-bottom:1px solid var(--line)}
-summary{cursor:pointer;list-style:none;padding:19px 4px;font-weight:650;font-size:16.5px;
-  display:flex;align-items:center;justify-content:space-between;gap:16px;overflow-wrap:anywhere}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"+";color:var(--brand);font-size:22px;font-weight:400;line-height:1}
-details[open] summary::after{content:"−"}
-details p{padding:0 4px 22px;color:var(--muted);max-width:var(--measure);font-size:15px}
+/* ── registration ── */
+.join{display:grid;gap:34px;grid-template-columns:1fr;align-items:center}
+@media(min-width:940px){.join{grid-template-columns:1fr 1fr;gap:56px}}
+.howto{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:14px;counter-reset:h}
+.howto li{counter-increment:h;display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:start}
+.howto li::before{content:counter(h);display:grid;place-items:center;width:44px;height:44px;
+  border-radius:14px;background:var(--linen);color:var(--olive-deep);font-size:20px;font-weight:900}
+.howto b{display:block;font-size:18px;font-weight:800;letter-spacing:-.025em;margin-bottom:3px}
+.howto span{font-size:15.5px;font-weight:500;opacity:.88;line-height:1.55}
+.card-form{background:var(--linen);color:var(--ink);border:2.5px solid var(--ink);
+  border-radius:var(--r);padding:30px 28px 32px;box-shadow:10px 10px 0 0 var(--ink)}
+.frm{display:grid;gap:18px}
+.frm .row{display:grid;gap:18px}
+@media(min-width:560px){.frm .row{grid-template-columns:1fr 1fr}}
+.frm label{display:block;font-size:14px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.frm input,.frm select,.frm textarea{width:100%;font:inherit;font-size:16.5px;font-weight:600;
+  color:var(--ink);background:var(--white);border:2.5px solid transparent;border-radius:var(--r-sm);
+  padding:14px 15px;transition:border-color .14s,background .14s}
+.frm input::placeholder{color:var(--ink);opacity:.32;font-weight:500}
+.frm input:focus,.frm select:focus,.frm textarea:focus{outline:none;background:var(--white);
+  border-color:var(--ink)}
+.frm .pw{position:relative}
+.frm .pw input{padding-right:48px}
+.frm .eye{position:absolute;top:0;right:0;width:46px;height:100%;border:0;background:none;
+  cursor:pointer;display:grid;place-items:center;color:var(--ink);opacity:.45;padding:0}
+.frm .eye:hover{opacity:1}
+.frm .eye svg{width:20px;height:20px;display:block}
+.frm input.bad,.frm .pw input.bad{border-color:var(--amber);background:#fbf1e4}
+.frm .btn{width:100%;margin-top:4px}
+.frm .note{font-size:14px;font-weight:500;opacity:.65;text-align:center;margin-top:-4px;line-height:1.5}
+.formmsg{display:none;margin-top:16px;padding:14px 16px;border-radius:var(--r-sm);
+  font-size:15.5px;font-weight:700;line-height:1.5}
+.formmsg.ok{display:block;background:var(--olive);color:var(--linen)}
+.formmsg.bad{display:block;background:var(--amber);color:var(--ink)}
 
-.close-cta{background:var(--tint);border-block:1px solid var(--line);text-align:center}
-.close-cta .wrap{display:flex;flex-direction:column;align-items:center;gap:18px}
-.close-cta p{max-width:52ch}
-footer{padding-block:32px;font-size:13.6px;color:var(--muted)}
+/* ── questions, all open, in two columns ── */
+.faq{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:820px){.faq{grid-template-columns:repeat(2,1fr);gap:16px 26px}}
+.qa{border:2.5px solid var(--ink);border-radius:var(--r);padding:22px 24px;background:var(--white)}
+.qa:nth-child(3n+2){background:var(--sand)}
+.qa:nth-child(4n+3){background:var(--smoke)}
+.qa h3{font-size:19px;font-weight:800;letter-spacing:-.025em;line-height:1.2;overflow-wrap:anywhere}
+.qa p{padding:0;margin-top:11px;font-size:16px;font-weight:500;opacity:.82}
+
+.close-cta{text-align:center}
+.close-cta .wrap{display:flex;flex-direction:column;align-items:center;gap:22px}
+.close-cta h2{max-width:16ch}
+.close-cta p{max-width:44ch;font-weight:600;opacity:.85}
+footer{padding-block:38px;font-size:15px;font-weight:600;background:var(--walnut);color:var(--linen)}
 footer .wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
-footer a{text-decoration:none}
-footer a:hover{color:var(--ink)}
+footer a{text-decoration:none;opacity:.72}
+footer a:hover{opacity:1}
 </style>
 </head>
 <body>
@@ -269,7 +337,7 @@ footer a:hover{color:var(--ink)}
         <button data-lang="en">EN</button>
         <button data-lang="ru">РУС</button>
       </span>
-      <a class="hide-sm" href="app.html" data-i="nav.login">Log in</a>
+      <a href="app.html" data-i="nav.login">Log in</a>
       <a class="btn btn-solid btn-sm" href="#join" data-i="nav.join">Create an account</a>
     </nav>
   </div>
@@ -277,15 +345,17 @@ footer a:hover{color:var(--ink)}
 
 <main id="top">
 
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <p class="eyebrow" data-i="hero.eyebrow">Worksheet builder for English teachers</p>
-      <h1 data-i="hero.h1">Your next worksheet is five minutes away.</h1>
-      <p class="lede" data-i="hero.lede">Pick a grammar point, drop a ready-made exercise on the page, and export a clean A4 PDF with the answer key attached. No formatting, no clip art, no account.</p>
-      <div class="cta-row">
-        <a class="btn btn-solid" href="app.html" data-i="hero.cta1">Try it free for 7 days</a>
-        <a class="btn btn-ghost" href="#library" data-i="hero.cta2">See the library</a>
+<section class="hero band-y">
+  <div class="wrap">
+    <p class="eyebrow" data-i="hero.eyebrow">Worksheet builder for English teachers</p>
+    <h1 data-i="hero.h1">Your next worksheet is five minutes away.</h1>
+    <div class="hero-top">
+      <div>
+        <p class="lede" data-i="hero.lede">Pick a grammar point, drop a ready-made exercise on the page, and export a clean A4 PDF with the answer key attached. No formatting, no clip art, no afternoon lost.</p>
+        <div class="cta-row">
+          <a class="btn btn-solid" href="app.html" data-i="hero.cta1">Try it free for 7 days</a>
+          <a class="btn btn-ghost" href="#library" data-i="hero.cta2">See the library</a>
+        </div>
       </div>
       <p class="hero-note" data-i="hero.note">Runs in your browser. Nothing is uploaded — your worksheets stay on your device.</p>
     </div>
@@ -309,12 +379,12 @@ footer a:hover{color:var(--ink)}
         <div class="sheet-rule"></div>
         <p class="key">Answer key · <b>1</b> Never have I heard… · Hardly had she sat… &nbsp; <b>2</b> does · had · should</p>
       </article>
-      <div class="stamp"><span data-i="hero.stamp1">Theory + 16 exercises + key</span><br><span data-i="hero.stamp2">built in one click</span></div>
+      <div class="stamp"><b data-i="hero.stamp1">Theory + 16 exercises + key</b><span data-i="hero.stamp2">built in one click</span></div>
     </div>
   </div>
 </section>
 
-<div class="band">
+<div class="band band-ink">
   <div class="wrap">
     <div class="stat"><b>235</b><span data-i="stat.topics">ready-made topics</span></div>
     <div class="stat"><b>A2–C1</b><span data-i="stat.levels">four levels covered</span></div>
@@ -323,7 +393,7 @@ footer a:hover{color:var(--ink)}
   </div>
 </div>
 
-<section id="features">
+<section id="features" class="band-white">
   <div class="wrap">
     <div class="head">
       <p class="eyebrow" data-i="feat.eyebrow">What you get</p>
@@ -359,13 +429,13 @@ footer a:hover{color:var(--ink)}
       <div class="card">
         <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2.4"/></svg></span>
         <h3 data-i="f6.h">Yours, offline</h3>
-        <p data-i="f6.p">No account, no upload, no internet needed. Work is saved in your browser and to project files you keep. Put your own name or your school at the foot of every page.</p>
+        <p data-i="f6.p">Once you have signed in, no internet is needed. Work is saved in your browser and to project files you keep, and your own name or your school goes at the foot of every page.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="library" class="band">
+<section id="library" class="band-blue">
   <div class="wrap" style="display:block">
     <div class="head">
       <p class="eyebrow" data-i="lib.eyebrow">The library</p>
@@ -378,17 +448,8 @@ footer a:hover{color:var(--ink)}
       <div class="level"><b>B2 <i>36</i></b><p data-i="lib.b2">Mixed conditionals, reported speech, modals of deduction, precision and linking.</p></div>
       <div class="level"><b>C1 <i>130</i></b><p data-i="lib.c1">Inversion, cleft sentences, participle clauses, the subjunctive, hedging, register.</p></div>
     </div>
-    <div class="topics">
-      <span class="chip">Present perfect vs past simple</span>
-      <span class="chip">Reported speech</span>
-      <span class="chip">Participle clauses</span>
-      <span class="chip">Phrasal verbs by particle</span>
-      <span class="chip">Cleft sentences</span>
-      <span class="chip">Articles: advanced use</span>
-      <span class="chip">be / get used to</span>
-      <span class="chip">Inversion</span>
-      <span class="chip">Idioms &amp; collocations</span>
-      <span class="chip" data-i="lib.more">…and 226 more</span>
+    <div class="ribbon" aria-label="Topics in the library">
+      <div class="ribbon-track"><span class="chip">Present perfect vs past simple</span><span class="chip">Reported speech</span><span class="chip">Participle clauses</span><span class="chip">Phrasal verbs by particle</span><span class="chip">Cleft sentences</span><span class="chip">Articles: advanced use</span><span class="chip">be / get used to</span><span class="chip">Inversion</span><span class="chip">Idioms &amp; collocations</span><span class="chip">Mixed conditionals</span><span class="chip">Wish / if only</span><span class="chip">Passive reporting</span><span class="chip">Relative clauses</span><span class="chip">Modals of deduction</span><span class="chip">Gerund or infinitive</span><span class="chip">Question tags</span><span class="chip">Used to / would</span><span class="chip">Comparatives</span><span class="chip">Future in the past</span><span class="chip">Emphasis and fronting</span><span class="chip">Present perfect vs past simple</span><span class="chip">Reported speech</span><span class="chip">Participle clauses</span><span class="chip">Phrasal verbs by particle</span><span class="chip">Cleft sentences</span><span class="chip">Articles: advanced use</span><span class="chip">be / get used to</span><span class="chip">Inversion</span><span class="chip">Idioms &amp; collocations</span><span class="chip">Mixed conditionals</span><span class="chip">Wish / if only</span><span class="chip">Passive reporting</span><span class="chip">Relative clauses</span><span class="chip">Modals of deduction</span><span class="chip">Gerund or infinitive</span><span class="chip">Question tags</span><span class="chip">Used to / would</span><span class="chip">Comparatives</span><span class="chip">Future in the past</span><span class="chip">Emphasis and fronting</span></div>
     </div>
   </div>
 </section>
@@ -407,7 +468,7 @@ footer a:hover{color:var(--ink)}
   </div>
 </section>
 
-<section id="pricing" class="band">
+<section id="pricing" class="band-cream">
   <div class="wrap" style="display:block">
     <div class="head">
       <p class="eyebrow" data-i="price.eyebrow">Pricing</p>
@@ -421,28 +482,28 @@ footer a:hover{color:var(--ink)}
     <div class="plans">
 
       <div class="plan">
-        <div class="plan-top"><h3 data-i="p.b.h">Basic</h3></div>
+        <div><div class="plan-top"><h3 data-i="p.b.h">Basic</h3></div>
         <p class="sub" data-i="p.b.sub">For the teacher with a handful of groups.</p>
         <div class="price"><b id="bVal">£5</b><span class="pUnit" data-i="price.permonth">per month</span></div>
-        <p class="save" id="bSave">&nbsp;</p>
+        <p class="save" id="bSave">&nbsp;</p></div>
         <ul>
-          <li><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.b.1">The A2 and B1 library — 58 topics</span></li>
+          <li><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.b.1">All four levels, A2 to C1 — 85 topics</span></li>
           <li><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.b.2">All 42 exercise block types</span></li>
           <li><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.b.3">Vector PDF with the answer key</span></li>
           <li><svg class="yes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.b.4">8 A4 designs · up to 3 pages per worksheet</span></li>
-          <li class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span data-i="p.b.5">No B2 or C1, no generators, no own footer</span></li>
+          <li class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span data-i="p.b.5">Not the whole library; no generators, no own footer</span></li>
         </ul>
         <a class="btn btn-ghost pBtn" href="app.html" data-i="p.cta.b">Choose Basic</a>
       </div>
 
       <div class="plan pro">
-        <div class="plan-top"><h3 data-i="p.p.h">Pro</h3><span class="tag" data-i="p.p.tag">Most teachers</span></div>
+        <div><div class="plan-top"><h3 data-i="p.p.h">Pro</h3><span class="tag" data-i="p.p.tag">Most teachers</span></div>
         <p class="sub" data-i="p.p.sub">The whole library and the whole builder.</p>
         <div class="price"><b id="pVal">£9</b><span class="pUnit" data-i="price.permonth">per month</span></div>
-        <p class="save" id="pSave">&nbsp;</p>
+        <p class="save" id="pSave">&nbsp;</p></div>
         <ul>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.p.1">Everything in Basic, plus:</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.p.2">All 235 topics — B2 and C1 included, with the complete Advanced Grammar in Use syllabus</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.p.2">165 topics — about twice as much of every level</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.p.3">All 40 designs, unlimited pages</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.p.4">Crossword and word search generators</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.p.5">Your own name or school on every printed page</span></li>
@@ -451,26 +512,26 @@ footer a:hover{color:var(--ink)}
       </div>
 
       <div class="plan">
-        <div class="plan-top"><h3 data-i="p.m.h">Max</h3><span class="tag" data-i="p.m.tag">Schools</span></div>
+        <div><div class="plan-top"><h3 data-i="p.m.h">Max</h3><span class="tag" data-i="p.m.tag">Schools</span></div>
         <p class="sub" data-i="p.m.sub">For a language school or a teaching team.</p>
         <div class="price"><b id="mVal">£19</b><span class="pUnit" data-i="price.permonth">per month</span></div>
-        <p class="save" id="mSave">&nbsp;</p>
+        <p class="save" id="mSave">&nbsp;</p></div>
         <ul>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.m.1">Everything in Pro, plus:</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.m.2">Five licence keys — one for each teacher</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.m.2">The whole library — all 235 topics, the complete Advanced Grammar in Use</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.m.3">The school name and logo on every worksheet</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.m.4">New topics and features first</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.m.4">Five accounts — one for each teacher</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg><span data-i="p.m.5">Help by e-mail within a day</span></li>
         </ul>
         <a class="btn btn-ghost pBtn" href="app.html" data-i="p.cta.m">Choose Max</a>
       </div>
     </div>
 
-    <p class="trialnote" data-i="price.trial">Every plan starts with a free 7-day trial — no card, no account. Open the builder, work through a week of lessons, and decide afterwards.</p>
+    <p class="trialnote" data-i="price.trial">Every plan starts with seven free days. Make an account, work through a week of lessons, and decide afterwards — no card at any point.</p>
   </div>
 </section>
 
-<section id="join">
+<section id="join" class="band-coral">
   <div class="wrap" style="display:block">
     <div class="join">
       <div>
@@ -508,24 +569,24 @@ footer a:hover{color:var(--ink)}
   </div>
 </section>
 
-<section id="faq" class="band">
+<section id="faq" class="band-white">
   <div class="wrap">
     <div class="head">
       <p class="eyebrow" data-i="faq.eyebrow">Good to know</p>
       <h2 data-i="faq.h2">Questions teachers ask first.</h2>
     </div>
     <div class="faq">
-      <details open><summary data-i="q1">Do I need to install anything?</summary><p data-i="a1">No. Worksheet Studio opens in your browser on a Mac, a PC or an iPad. On an iPad you can add it to your home screen and it behaves like an app.</p></details>
-      <details><summary data-i="q2">Where are my worksheets stored?</summary><p data-i="a2">On your own device. Nothing is uploaded to a server. Your work is saved automatically in the browser, and you can also save project files and open them again later.</p></details>
-      <details><summary data-i="q3">Does it work without internet?</summary><p data-i="a3">Yes. Once the page has loaded, everything — the library, the editor and the PDF export — runs locally. Useful in a classroom with unreliable Wi-Fi.</p></details>
-      <details><summary data-i="q4">Can I edit the ready-made exercises?</summary><p data-i="a4">Every block you drop on the page is fully editable: change the sentences, add your own items, delete what you do not need, and reorder anything.</p></details>
-      <details><summary data-i="q5">Is the answer key automatic?</summary><p data-i="a5">Yes. Switch it on and the key is generated from the exercises on your page and added as a final sheet, with marks totalled if you have set them.</p></details>
-      <details><summary data-i="q6">Can I put my school's name on the worksheets?</summary><p data-i="a6">Yes. Set a footer once in the settings and it appears at the bottom of every page you print.</p></details>
+      <div class="qa"><h3 data-i="q1">Do I need to install anything?</h3><p data-i="a1">No. Worksheet Studio opens in your browser on a Mac, a PC or an iPad. On an iPad you can add it to your home screen and it behaves like an app.</p></div>
+      <div class="qa"><h3 data-i="q2">Where are my worksheets stored?</h3><p data-i="a2">On your own device. Nothing is uploaded to a server. Your work is saved automatically in the browser, and you can also save project files and open them again later.</p></div>
+      <div class="qa"><h3 data-i="q3">Does it work without internet?</h3><p data-i="a3">Yes. Once the page has loaded, everything — the library, the editor and the PDF export — runs locally. Useful in a classroom with unreliable Wi-Fi.</p></div>
+      <div class="qa"><h3 data-i="q4">Can I edit the ready-made exercises?</h3><p data-i="a4">Every block you drop on the page is fully editable: change the sentences, add your own items, delete what you do not need, and reorder anything.</p></div>
+      <div class="qa"><h3 data-i="q5">Is the answer key automatic?</h3><p data-i="a5">Yes. Switch it on and the key is generated from the exercises on your page and added as a final sheet, with marks totalled if you have set them.</p></div>
+      <div class="qa"><h3 data-i="q6">Can I put my school's name on the worksheets?</h3><p data-i="a6">Yes. Set a footer once in the settings and it appears at the bottom of every page you print.</p></div>
     </div>
   </div>
 </section>
 
-<section class="close-cta">
+<section class="close-cta band-y">
   <div class="wrap">
     <h2 data-i="close.h2">Stop making worksheets by hand.</h2>
     <p class="lede" style="color:var(--muted)" data-i="close.p">Open the builder, pick tomorrow's grammar point, and print. The first week is free.</p>
@@ -546,7 +607,7 @@ footer a:hover{color:var(--ink)}
 /* ══ Prices ═══════════════════════════════════════════════════════════
    Yearly is ten months' money for twelve, so two months come free.
    Checkout links stay empty while access is granted by hand: the buttons
-   then open the builder, where the licence key is entered.            */
+   then lead to the registration form below.                          */
 var PRICES = {
   basic: { m:'£5',  y:'£50'  },
   pro:   { m:'£9',  y:'£90'  },
@@ -567,7 +628,7 @@ en:{
  'nav.features':'Features','nav.library':'Library','nav.pricing':'Pricing','nav.open':'Open the builder','foot.faq':'FAQ',
  'hero.eyebrow':'Worksheet builder for English teachers',
  'hero.h1':'Your next worksheet is five minutes away.',
- 'hero.lede':'Pick a grammar point, drop a ready-made exercise on the page, and export a clean A4 PDF with the answer key attached. No formatting, no clip art, no account.',
+ 'hero.lede':'Pick a grammar point, drop a ready-made exercise on the page, and export a clean A4 PDF with the answer key attached. No formatting, no clip art, no afternoon lost.',
  'hero.cta1':'Try it free for 7 days','hero.cta2':'See the library',
  'hero.note':'Runs in your browser. Nothing is uploaded — your worksheets stay on your device.',
  'hero.stamp1':'Theory + 16 exercises + key','hero.stamp2':'built in one click',
@@ -579,7 +640,7 @@ en:{
  'f3.h':'Real vector PDF','f3.p':'One click downloads a true vector PDF — selectable text, sharp at any zoom, no print dialog and no white margins. Long pages split across A4 sheets at block boundaries.',
  'f4.h':'Answer key on demand','f4.p':'Switch the key on and it is generated from the exercises themselves and appended as a final page. Add marks per exercise and the totals appear there too.',
  'f5.h':'Crosswords and word searches','f5.p':'Type your words and clues; the grid interlocks itself with numbered Across and Down lists. The word search hides your vocabulary automatically.',
- 'f6.h':'Yours, offline','f6.p':'No account, no upload, no internet needed. Work is saved in your browser and to project files you keep. Put your own name or your school at the foot of every page.',
+ 'f6.h':'Yours, offline','f6.p':'Once you have signed in, no internet is needed. Work is saved in your browser and to project files you keep, and your own name or your school goes at the foot of every page.',
  'lib.eyebrow':'The library','lib.h2':'Two hundred and thirty-five topics, already written.',
  'lib.lede':'Grammar from elementary to advanced, plus topic vocabulary, idioms and academic English. Each topic carries a rule card and its own set of exercises.',
  'lib.a2':'The building blocks: core tenses, articles, question forms.',
@@ -611,7 +672,7 @@ en:{
  'join.f.sending':'Creating…',
  'join.f.fine':'Seven days of full access, no card. Your address is only used to sign you in.',
  'join.f.ok':'Welcome. Opening the builder…',
- 'join.f.bad':'Could not reach the server. Check your connection and try again.',
+ 'join.f.noserver':'Accounts are not switched on for this site yet — opening the builder, which is open to everyone.','join.f.bad':'Could not reach the server. Check your connection and try again.',
  'join.e.name':'Please write your full name.',
  'join.e.mail':'That e-mail address does not look right.',
  'join.e.short':'A password needs at least 8 characters.',
@@ -620,16 +681,16 @@ en:{
  'price.lede':'Every plan is the same builder — what changes is how much of the library you open and how far the printing goes.',
  'price.monthly':'Monthly','price.yearly':'Yearly','price.permonth':'per month','price.peryear':'per year','price.save':'Two months free',
  'price.open':'Open the builder',
- 'price.trial':'Every plan starts with a free 7-day trial — no card, no account. Open the builder, work through a week of lessons, and decide afterwards.',
+ 'price.trial':'Every plan starts with seven free days. Make an account, work through a week of lessons, and decide afterwards — no card at any point.',
  'p.b.h':'Basic','p.b.sub':'For the teacher with a handful of groups.',
- 'p.b.1':'The A2 and B1 library — 58 topics','p.b.2':'All 42 exercise block types','p.b.3':'Vector PDF with the answer key',
- 'p.b.4':'8 A4 designs · up to 3 pages per worksheet','p.b.5':'No B2 or C1, no generators, no own footer',
+ 'p.b.1':'All four levels, A2 to C1 — 85 topics','p.b.2':'All 42 exercise block types','p.b.3':'Vector PDF with the answer key',
+ 'p.b.4':'8 A4 designs · up to 3 pages per worksheet','p.b.5':'Not the whole library; no generators, no own footer',
  'p.p.h':'Pro','p.p.tag':'Most teachers','p.p.sub':'The whole library and the whole builder.',
- 'p.p.1':'Everything in Basic, plus:','p.p.2':'All 235 topics — B2 and C1 included, with the complete Advanced Grammar in Use syllabus',
+ 'p.p.1':'Everything in Basic, plus:','p.p.2':'165 topics — about twice as much of every level',
  'p.p.3':'All 40 designs, unlimited pages','p.p.4':'Crossword and word search generators','p.p.5':'Your own name or school on every printed page',
  'p.m.h':'Max','p.m.tag':'Schools','p.m.sub':'For a language school or a teaching team.',
- 'p.m.1':'Everything in Pro, plus:','p.m.2':'Five licence keys — one for each teacher','p.m.3':'The school name and logo on every worksheet',
- 'p.m.4':'New topics and features first','p.m.5':'Help by e-mail within a day',
+ 'p.m.1':'Everything in Pro, plus:','p.m.2':'The whole library — all 235 topics, the complete Advanced Grammar in Use','p.m.3':'The school name and logo on every worksheet',
+ 'p.m.4':'Five accounts — one for each teacher','p.m.5':'Help by e-mail within a day',
  'p.cta.b':'Choose Basic','p.cta.p':'Choose Pro','p.cta.m':'Choose Max',
  'faq.eyebrow':'Good to know','faq.h2':'Questions teachers ask first.',
  'q1':'Do I need to install anything?','a1':'No. Worksheet Studio opens in your browser on a Mac, a PC or an iPad. On an iPad you can add it to your home screen and it behaves like an app.',
@@ -644,7 +705,7 @@ ru:{
  'nav.features':'Возможности','nav.library':'Библиотека','nav.pricing':'Тарифы','nav.open':'Открыть конструктор','foot.faq':'Вопросы',
  'hero.eyebrow':'Конструктор рабочих листов для учителей английского',
  'hero.h1':'Рабочий лист на завтра — за пять минут.',
- 'hero.lede':'Выберите грамматическую тему, положите готовое упражнение на страницу и выгрузите аккуратный PDF формата А4 вместе с ключом. Без вёрстки, без картинок из интернета, без регистрации.',
+ 'hero.lede':'Выберите грамматическую тему, положите готовое упражнение на страницу и выгрузите аккуратный PDF формата А4 вместе с ключом. Без вёрстки, без картинок из интернета, без потерянного вечера.',
  'hero.cta1':'7 дней бесплатно','hero.cta2':'Посмотреть библиотеку',
  'hero.note':'Работает прямо в браузере. Ничего не загружается на сервер — ваши листы остаются на вашем устройстве.',
  'hero.stamp1':'Теория + 16 упражнений + ключ','hero.stamp2':'собирается одним нажатием',
@@ -656,7 +717,7 @@ ru:{
  'f3.h':'Настоящий векторный PDF','f3.p':'Одно нажатие — и файл скачан: текст выделяется, при увеличении не мылится, без диалога печати и без белых полей. Длинные страницы разрезаются по границам блоков.',
  'f4.h':'Ключ по одному переключателю','f4.p':'Включите ключ — он соберётся из самих упражнений и добавится последней страницей. Проставьте баллы, и там же появится итоговая сумма.',
  'f5.h':'Кроссворды и филворды','f5.p':'Введите слова и определения — сетка соберётся сама, с нумерацией по горизонтали и вертикали. Филворд спрячет вашу лексику автоматически.',
- 'f6.h':'Ваше и офлайн','f6.p':'Ни аккаунта, ни загрузок, ни интернета. Работа сохраняется в браузере и в файлы проекта, которые остаются у вас. Своё имя или название школы — внизу каждой страницы.',
+ 'f6.h':'Ваше и офлайн','f6.p':'После входа интернет уже не нужен. Работа сохраняется в браузере и в файлы проекта, которые остаются у вас, а внизу каждой страницы — своё имя или название школы.',
  'lib.eyebrow':'Библиотека','lib.h2':'Двести тридцать пять тем — уже написаны.',
  'lib.lede':'Грамматика от начального до продвинутого уровня, плюс тематическая лексика, идиомы и академический английский. У каждой темы своё правило и свои упражнения.',
  'lib.a2':'Основа: базовые времена, артикли, вопросительные формы.',
@@ -688,7 +749,7 @@ ru:{
  'join.f.sending':'Создаём…',
  'join.f.fine':'Семь дней полного доступа, без карты. Почта нужна только для входа.',
  'join.f.ok':'Готово. Открываем конструктор…',
- 'join.f.bad':'Не получилось связаться с сервером. Проверьте соединение и попробуйте ещё раз.',
+ 'join.f.noserver':'Аккаунты на этом сайте пока не включены — открываем конструктор, он доступен всем.','join.f.bad':'Не получилось связаться с сервером. Проверьте соединение и попробуйте ещё раз.',
  'join.e.name':'Напишите, пожалуйста, ФИО.',
  'join.e.mail':'Такой адрес почты выглядит неправильно.',
  'join.e.short':'В пароле должно быть не меньше 8 символов.',
@@ -697,16 +758,16 @@ ru:{
  'price.lede':'Конструктор во всех тарифах один и тот же — отличается то, сколько библиотеки открыто и как далеко можно зайти в печати.',
  'price.monthly':'Помесячно','price.yearly':'На год','price.permonth':'в месяц','price.peryear':'в год','price.save':'Два месяца в подарок',
  'price.open':'Открыть конструктор',
- 'price.trial':'Любой тариф начинается с бесплатных 7 дней — без карты и без регистрации. Откройте конструктор, проведите на нём неделю уроков и решайте потом.',
+ 'price.trial':'Любой тариф начинается с семи бесплатных дней. Заведите аккаунт, проведите неделю уроков и решайте потом — карта не нужна ни на одном шаге.',
  'p.b.h':'Basic','p.b.sub':'Для преподавателя с несколькими группами.',
- 'p.b.1':'Библиотека A2 и B1 — 58 тем','p.b.2':'Все 42 типа заданий','p.b.3':'Векторный PDF с ключом ответов',
- 'p.b.4':'8 дизайнов A4 · до 3 страниц в листе','p.b.5':'Без B2 и C1, без генераторов, без своей подписи',
+ 'p.b.1':'Все четыре уровня, A2–C1 — 85 тем','p.b.2':'Все 42 типа заданий','p.b.3':'Векторный PDF с ключом ответов',
+ 'p.b.4':'8 дизайнов A4 · до 3 страниц в листе','p.b.5':'Не вся библиотека; без генераторов, без своей подписи',
  'p.p.h':'Pro','p.p.tag':'Выбор большинства','p.p.sub':'Вся библиотека и весь конструктор.',
- 'p.p.1':'Всё из Basic, а также:','p.p.2':'Все 235 тем — B2 и C1 включены, вместе с полным курсом Advanced Grammar in Use',
+ 'p.p.1':'Всё из Basic, а также:','p.p.2':'165 тем — примерно вдвое больше на каждом уровне',
  'p.p.3':'Все 40 дизайнов, страниц сколько угодно','p.p.4':'Генераторы кроссвордов и филвордов','p.p.5':'Ваше имя или школа на каждой странице',
  'p.m.h':'Max','p.m.tag':'Школам','p.m.sub':'Для языковой школы или команды преподавателей.',
- 'p.m.1':'Всё из Pro, а также:','p.m.2':'Пять ключей — по одному на преподавателя','p.m.3':'Название и логотип школы на каждом листе',
- 'p.m.4':'Новые темы и функции первыми','p.m.5':'Ответ на письмо в течение суток',
+ 'p.m.1':'Всё из Pro, а также:','p.m.2':'Вся библиотека — все 235 тем, полный курс Advanced Grammar in Use','p.m.3':'Название и логотип школы на каждом листе',
+ 'p.m.4':'Пять аккаунтов — по одному на преподавателя','p.m.5':'Ответ на письмо в течение суток',
  'p.cta.b':'Выбрать Basic','p.cta.p':'Выбрать Pro','p.cta.m':'Выбрать Max',
  'faq.eyebrow':'Полезно знать','faq.h2':'О чём спрашивают в первую очередь.',
  'q1':'Нужно ли что-то устанавливать?','a1':'Нет. Worksheet Studio открывается в браузере на Mac, ПК и iPad. На iPad его можно добавить на домашний экран, и он будет вести себя как приложение.',
@@ -721,7 +782,7 @@ hy:{
  'nav.features':'Հնարավորություններ','nav.library':'Գրադարան','nav.pricing':'Սակագներ','nav.open':'Բացել կառուցիչը','foot.faq':'Հարցեր',
  'hero.eyebrow':'Աշխատաթերթերի կառուցիչ անգլերենի ուսուցիչների համար',
  'hero.h1':'Վաղվա աշխատաթերթը՝ հինգ րոպեում։',
- 'hero.lede':'Ընտրեք քերականական թեման, դրեք պատրաստի վարժությունը էջին և ներբեռնեք մաքուր A4 PDF՝ պատասխանների բանալիով միասին։ Առանց ձևավորման, առանց նկարների, առանց գրանցման։',
+ 'hero.lede':'Ընտրեք քերականական թեման, դրեք պատրաստի վարժությունը էջին և ներբեռնեք մաքուր A4 PDF՝ պատասխանների բանալիով միասին։ Առանց ձևավորման, առանց նկարների, առանց կորցրած երեկոյի։',
  'hero.cta1':'7 օր անվճար','hero.cta2':'Տեսնել գրադարանը',
  'hero.note':'Աշխատում է անմիջապես բրաուզերում։ Ոչինչ չի ուղարկվում սերվեր — ձեր թերթերը մնում են ձեր սարքում։',
  'hero.stamp1':'Տեսություն + 16 վարժություն + բանալի','hero.stamp2':'ստեղծվում է մեկ սեղմումով',
@@ -733,7 +794,7 @@ hy:{
  'f3.h':'Իսկական վեկտորային PDF','f3.p':'Մեկ սեղմում՝ և ֆայլը ներբեռնված է. տեքստն ընտրվում է, մեծացնելիս չի մշուշվում, առանց տպման պատուհանի և առանց սպիտակ լուսանցքների։',
  'f4.h':'Բանալին՝ ըստ ցանկության','f4.p':'Միացրեք բանալին, և այն կկազմվի հենց վարժություններից ու կավելացվի վերջին էջով։ Նշեք միավորները, և ընդհանուրը նույնպես կհայտնվի այնտեղ։',
  'f5.h':'Խաչբառեր և բառախաղեր','f5.p':'Մուտքագրեք բառերն ու բացատրությունները, և ցանցն ինքն իրեն կհյուսվի՝ համարակալված ցուցակներով։ Բառախաղը ձեր բառապաշարը կթաքցնի ինքնաբերաբար։',
- 'f6.h':'Ձերը և առցանց կապից անկախ','f6.p':'Ոչ հաշիվ, ոչ վերբեռնում, ոչ ինտերնետ։ Աշխատանքը պահվում է բրաուզերում և նախագծի ֆայլերում, որոնք մնում են ձեզ։ Ձեր անունը կամ դպրոցի անվանումը՝ յուրաքանչյուր էջի ներքևում։',
+ 'f6.h':'Ձերը և առցանց կապից անկախ','f6.p':'Մուտք գործելուց հետո ինտերնետն այլևս պետք չէ։ Աշխատանքը պահվում է բրաուզերում և նախագծի ֆայլերում, որոնք մնում են ձեզ, իսկ յուրաքանչյուր էջի ներքևում՝ ձեր անունը կամ դպրոցի անվանումը։',
  'lib.eyebrow':'Գրադարան','lib.h2':'Երկու հարյուր երեսունհինգ թեմա՝ արդեն գրված։',
  'lib.lede':'Քերականություն՝ սկզբնականից մինչև առաջադեմ մակարդակ, ինչպես նաև թեմատիկ բառապաշար, դարձվածքներ և ակադեմիական անգլերեն։ Յուրաքանչյուր թեմա ունի իր կանոնն ու իր վարժությունները։',
  'lib.a2':'Հիմքը՝ հիմնական ժամանակները, հոդերը, հարցական ձևերը։',
@@ -765,7 +826,7 @@ hy:{
  'join.f.sending':'Ստեղծվում է…',
  'join.f.fine':'Յոթ օր լիարժեք մուտք, առանց քարտի։ Փոստը պետք է միայն մուտքի համար։',
  'join.f.ok':'Պատրաստ է։ Բացում ենք կառուցիչը…',
- 'join.f.bad':'Չհաջողվեց կապվել սերվերի հետ։ Ստուգեք կապը և փորձեք նորից։',
+ 'join.f.noserver':'Այս կայքում հաշիվները դեռ միացված չեն — բացում ենք կառուցիչը, այն հասանելի է բոլորին։','join.f.bad':'Չհաջողվեց կապվել սերվերի հետ։ Ստուգեք կապը և փորձեք նորից։',
  'join.e.name':'Խնդրում ենք գրել անուն, ազգանուն։',
  'join.e.mail':'Փոստի այդ հասցեն սխալ տեսք ունի։',
  'join.e.short':'Գաղտնաբառը պետք է լինի առնվազն 8 նիշ։',
@@ -774,16 +835,16 @@ hy:{
  'price.lede':'Կառուցիչը բոլոր փաթեթներում նույնն է — տարբերվում է այն, թե գրադարանից որքանն է բացված և որքան հեռու է գնում տպագրությունը։',
  'price.monthly':'Ամսական','price.yearly':'Տարեկան','price.permonth':'ամսական','price.peryear':'տարեկան','price.save':'Երկու ամիս նվեր',
  'price.open':'Բացել կառուցիչը',
- 'price.trial':'Ցանկացած փաթեթ սկսվում է անվճար 7 օրով՝ առանց քարտի և գրանցման։ Բացեք կառուցիչը, անցկացրեք մեկ շաբաթ դասեր և որոշեք հետո։',
+ 'price.trial':'Ցանկացած փաթեթ սկսվում է յոթ անվճար օրով։ Ստեղծեք հաշիվ, անցկացրեք մեկ շաբաթ դասեր և որոշեք հետո՝ քարտ պետք չէ ոչ մի քայլում։',
  'p.b.h':'Basic','p.b.sub':'Մի քանի խումբ ունեցող ուսուցչի համար։',
- 'p.b.1':'A2 և B1 գրադարանը՝ 58 թեմա','p.b.2':'Բոլոր 42 տեսակի առաջադրանքները','p.b.3':'Վեկտորային PDF՝ պատասխանների բանալիով',
- 'p.b.4':'8 A4 ձևավորում · մինչև 3 էջ մեկ թերթում','p.b.5':'Առանց B2 և C1, առանց գեներատորների, առանց սեփական ստորագրության',
+ 'p.b.1':'Բոլոր չորս մակարդակները՝ A2–C1, 85 թեմա','p.b.2':'Բոլոր 42 տեսակի առաջադրանքները','p.b.3':'Վեկտորային PDF՝ պատասխանների բանալիով',
+ 'p.b.4':'8 A4 ձևավորում · մինչև 3 էջ մեկ թերթում','p.b.5':'Ոչ ամբողջ գրադարանը. առանց գեներատորների, առանց սեփական ստորագրության',
  'p.p.h':'Pro','p.p.tag':'Մեծամասնության ընտրությունը','p.p.sub':'Ամբողջ գրադարանն ու ամբողջ կառուցիչը։',
- 'p.p.1':'Ամեն ինչ Basic-ից, նաև՝','p.p.2':'Բոլոր 235 թեմաները՝ B2 և C1 ներառյալ, ամբողջական Advanced Grammar in Use դասընթացով',
+ 'p.p.1':'Ամեն ինչ Basic-ից, նաև՝','p.p.2':'165 թեմա՝ մոտ երկու անգամ ավելի յուրաքանչյուր մակարդակում',
  'p.p.3':'Բոլոր 40 ձևավորումները, էջերն անսահմանափակ','p.p.4':'Խաչբառերի և բառախաղերի գեներատորներ','p.p.5':'Ձեր անունը կամ դպրոցը յուրաքանչյուր էջին',
  'p.m.h':'Max','p.m.tag':'Դպրոցներին','p.m.sub':'Լեզվի դպրոցի կամ ուսուցիչների թիմի համար։',
- 'p.m.1':'Ամեն ինչ Pro-ից, նաև՝','p.m.2':'Հինգ բանալի՝ մեկը յուրաքանչյուր ուսուցչի','p.m.3':'Դպրոցի անվանումն ու լոգոն յուրաքանչյուր թերթին',
- 'p.m.4':'Նոր թեմաներն ու հնարավորությունները՝ առաջինը','p.m.5':'Պատասխան նամակին մեկ օրվա ընթացքում',
+ 'p.m.1':'Ամեն ինչ Pro-ից, նաև՝','p.m.2':'Ամբողջ գրադարանը՝ բոլոր 235 թեմաները, ամբողջական Advanced Grammar in Use','p.m.3':'Դպրոցի անվանումն ու լոգոն յուրաքանչյուր թերթին',
+ 'p.m.4':'Հինգ հաշիվ՝ մեկը յուրաքանչյուր ուսուցչի','p.m.5':'Պատասխան նամակին մեկ օրվա ընթացքում',
  'p.cta.b':'Ընտրել Basic','p.cta.p':'Ընտրել Pro','p.cta.m':'Ընտրել Max',
  'faq.eyebrow':'Օգտակար է իմանալ','faq.h2':'Ինչ են հարցնում առաջին հերթին։',
  'q1':'Պե՞տք է ինչ-որ բան տեղադրել։','a1':'Ոչ։ Worksheet Studio-ն բացվում է բրաուզերում՝ Mac-ի, համակարգչի կամ iPad-ի վրա։ iPad-ում կարող եք ավելացնել այն հիմնական էկրանին, և այն կաշխատի ինչպես հավելված։',
@@ -924,6 +985,16 @@ hy:{
       form.style.display = 'none';
       setTimeout(function(){ location.href = 'app.html'; }, 900);
     }).catch(function(res){
+      /* No accounts server on this site yet? Then there is nothing to
+         register with — the builder is open to everyone, so just go. */
+      var noServer = !res || !res.status || res.status === 404 ||
+                     (res.d && res.d.error === 'server_not_configured');
+      if(noServer){
+        msg.className = 'formmsg ok';
+        msg.textContent = dict['join.f.noserver'];
+        setTimeout(function(){ location.href = 'app.html'; }, 1100);
+        return;
+      }
       msg.className = 'formmsg bad';
       msg.textContent = (res && res.d && res.d.message) || dict['join.f.bad'];
       if(res && res.status === 409){ mail.classList.add('bad'); mail.focus(); }
