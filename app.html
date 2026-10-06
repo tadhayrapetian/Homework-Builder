@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Worksheet Studio">
-<meta name="theme-color" content="#5b5bf0">
+<meta name="theme-color" content="#e9dfd0">
 <title>Worksheet Studio — Worksheet Builder for English Teachers</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b5bf0'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='26' fill='url(%23g)'/%3E%3Cpath d='M27 31h46M50 31v42' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3Ccircle cx='73' cy='71' r='9' fill='%23fbbf24'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b5bf0'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23g)'/%3E%3Cpath d='M27 31h46M50 31v42' stroke='white' stroke-width='10' stroke-linecap='round'/%3E%3Ccircle cx='73' cy='71' r='9' fill='%23fbbf24'/%3E%3C/svg%3E">
@@ -17,22 +17,41 @@
    PDF export via print. No build, no internet.
    ========================================================================== */
 :root{
-  --bg:#eceef3; --bg2:#f6f7fb; --panel:#ffffff; --panel2:#f7f8fc; --panel3:#eef1f7;
-  --ink:#171b26; --ink2:#3a4150; --muted:#6b7385; --faint:#9aa2b4;
-  --line:#e6e9f0; --line2:#dfe3ec;
+  --bg:#ece4d7; --bg2:#f4eee4; --panel:rgba(255,255,255,.66); --panel2:rgba(255,255,255,.42); --panel3:rgba(255,255,255,.78);
+  --ink:#2a211a; --ink2:#4d4034; --muted:#6f6052; --faint:#8d7d69;
+  --line:rgba(255,255,255,.58); --line2:rgba(120,95,70,.22);
   --brand:#a5661f; --brand2:#5a3e2e; --brand-ink:#ffffff;
-  --brand-soft:#f6ecdd; --brand-soft2:#efe9dc;
-  --ok:#12a672; --warn:#f59e0b; --danger:#ef4444;
-  --shadow-sm:0 1px 2px rgba(18,22,33,.05),0 1px 3px rgba(18,22,33,.06);
-  --shadow:0 2px 6px rgba(18,22,33,.06),0 12px 30px rgba(18,22,33,.10);
-  --shadow-lg:0 10px 40px rgba(18,22,33,.16),0 4px 12px rgba(18,22,33,.08);
-  --r:14px; --r-sm:10px; --r-lg:20px;
+  --brand-soft:rgba(191,122,48,.16); --brand-soft2:rgba(191,122,48,.10);
+  --ok:#3f7d52; --warn:#b8791d; --danger:#b4432e;
+  /* liquid glass */
+  --glass:rgba(255,255,255,.60);
+  --glass-2:rgba(255,255,255,.40);
+  --glass-brd:rgba(255,255,255,.72);
+  --glass-hi:inset 0 1px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(120,95,70,.07);
+  --blur:saturate(165%) blur(20px);
+  --blur-lg:saturate(180%) blur(34px);
+  --shadow-sm:0 1px 2px rgba(80,56,38,.05),0 1px 3px rgba(80,56,38,.05);
+  --shadow:0 2px 8px rgba(80,56,38,.07),0 14px 34px rgba(80,56,38,.12);
+  --shadow-lg:0 20px 60px rgba(62,43,29,.22),0 4px 14px rgba(62,43,29,.10);
+  --r:16px; --r-sm:11px; --r-lg:24px;
 }
+:root[data-ui="dark"] body{background-image:
+    radial-gradient(62vw 54vh at 10% 4%,rgba(191,122,48,.26),transparent 60%),
+    radial-gradient(52vw 48vh at 92% 10%,rgba(109,106,60,.22),transparent 62%),
+    radial-gradient(58vw 58vh at 74% 92%,rgba(120,86,54,.30),transparent 62%),
+    radial-gradient(48vw 44vh at 16% 96%,rgba(40,28,20,.55),transparent 62%)}
 :root[data-ui="dark"]{
-  --bg:#0a0c12; --bg2:#0e1119; --panel:#141824; --panel2:#10141e; --panel3:#1a1f2d;
-  --ink:#eef1f8; --ink2:#c3cad9; --muted:#98a1b5; --faint:#6a7488;
-  --line:#232a3a; --line2:#2a3244;
-  --brand:#d59a52; --brand2:#d9c7a2; --brand-soft:#2b211a; --brand-soft2:#262218;
+  --bg:#140f0b; --bg2:#1b1510; --panel:rgba(48,38,29,.62); --panel2:rgba(28,22,16,.52); --panel3:rgba(66,52,39,.70);
+  --ink:#f4ede2; --ink2:#d8cab6; --muted:#b2a08a; --faint:#8d7c68;
+  --line:rgba(255,255,255,.13); --line2:rgba(255,255,255,.20);
+  --brand:#e3a862; --brand2:#e4d6ba; --brand-soft:rgba(227,168,98,.18); --brand-soft2:rgba(227,168,98,.10);
+  --glass:rgba(44,35,26,.60);
+  --glass-2:rgba(30,24,18,.46);
+  --glass-brd:rgba(255,255,255,.16);
+  --glass-hi:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -1px 0 rgba(0,0,0,.25);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4);
+  --shadow:0 2px 10px rgba(0,0,0,.42),0 18px 44px rgba(0,0,0,.5);
+  --shadow-lg:0 24px 70px rgba(0,0,0,.62);
   --shadow-sm:0 1px 2px rgba(0,0,0,.4);
   --shadow:0 2px 8px rgba(0,0,0,.4),0 16px 40px rgba(0,0,0,.5);
   --shadow-lg:0 20px 60px rgba(0,0,0,.6);
@@ -41,19 +60,85 @@
 html,body{margin:0;padding:0;height:100%}
 body{
   background:var(--bg);color:var(--ink);overflow:hidden;-webkit-tap-highlight-color:transparent;
+  background-image:
+    radial-gradient(62vw 54vh at 10% 4%,rgba(191,122,48,.34),transparent 60%),
+    radial-gradient(52vw 48vh at 92% 10%,rgba(109,106,60,.30),transparent 62%),
+    radial-gradient(58vw 58vh at 74% 92%,rgba(217,199,162,.62),transparent 62%),
+    radial-gradient(48vw 44vh at 16% 96%,rgba(90,62,46,.22),transparent 62%);
+  background-attachment:fixed;
   font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Helvetica,Arial,sans-serif;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
 button{font-family:inherit;color:inherit}
 ::selection{background:var(--brand-soft);color:var(--brand)}
 
-.app{display:grid;grid-template-columns:288px 1fr 300px;grid-template-rows:auto 1fr;height:100vh;height:100dvh}
+.app{display:grid;grid-template-columns:76px 0fr minmax(0,1fr);grid-template-rows:auto 1fr;
+  height:100vh;height:100dvh;background:transparent;
+  transition:grid-template-columns .24s cubic-bezier(.4,0,.2,1)}
+.app.dock-open{grid-template-columns:76px 318px minmax(0,1fr)}
+
+/* ---------- glass primitive ---------- */
+.glass{background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--glass-brd);box-shadow:var(--glass-hi),var(--shadow)}
+
+/* ---------- RAIL ---------- */
+.rail{grid-row:2;grid-column:1;margin:10px 0 14px 12px;border-radius:22px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;padding:11px 0 12px;z-index:45;
+  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--glass-brd);box-shadow:var(--glass-hi),var(--shadow)}
+.rail .rmark{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;flex:none;
+  background:linear-gradient(150deg,#d08f45,#a5661f);margin-bottom:10px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 4px 12px rgba(165,102,31,.34)}
+.rail .rmark svg{width:21px;height:21px;color:#fff}
+.rb{width:50px;height:46px;border-radius:15px;border:1px solid transparent;background:transparent;cursor:pointer;
+  display:grid;place-items:center;position:relative;color:var(--ink2);transition:.16s;flex:none}
+.rb svg{width:21px;height:21px}
+.rb:hover{background:var(--glass-2);border-color:var(--glass-brd);color:var(--ink)}
+.rb.on{background:linear-gradient(160deg,rgba(255,255,255,.80),rgba(255,255,255,.46));
+  border-color:var(--glass-brd);color:var(--brand);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 3px 10px rgba(80,56,38,.14)}
+:root[data-ui="dark"] .rb.on{background:linear-gradient(160deg,rgba(227,168,98,.26),rgba(227,168,98,.12))}
+.rail .grow{flex:1}
+
+/* ---------- DOCK ---------- */
+.dock{grid-row:2;grid-column:2;margin:10px 0 14px 12px;border-radius:22px;overflow:hidden;
+  display:flex;flex-direction:column;min-width:0;
+  background:var(--glass);backdrop-filter:var(--blur-lg);-webkit-backdrop-filter:var(--blur-lg);
+  border:1px solid var(--glass-brd);box-shadow:var(--glass-hi),var(--shadow)}
+.app:not(.dock-open) .dock{display:none}
+.dock-head{display:flex;align-items:center;gap:9px;padding:14px 15px 11px;flex:none;
+  border-bottom:1px solid var(--line)}
+.dock-head b{font-size:13.5px;letter-spacing:-.15px}
+.dock-head .dk-n{background:var(--brand-soft);color:var(--brand2);border-radius:999px;padding:2px 8px;font-size:10px;font-weight:700}
+.dock-head .dk-x{margin-left:auto;width:28px;height:28px;border-radius:10px;border:1px solid var(--glass-brd);
+  background:var(--glass-2);cursor:pointer;color:var(--muted);font-size:15px;line-height:1;display:grid;place-items:center}
+.dock-head .dk-x:hover{background:var(--panel3);color:var(--ink)}
+.dock-body{flex:1;overflow:auto;-webkit-overflow-scrolling:touch}
+.dock-body::-webkit-scrollbar{width:9px}
+.dock-body::-webkit-scrollbar-thumb{background:var(--line2);border-radius:9px;border:3px solid transparent;background-clip:padding-box}
+.dock-body .sec[hidden]{display:none}
+.dock-body .sec:first-child{padding-top:14px}
+.dock-body .sec+.sec{border-top:1px solid var(--line)}
+
+/* ---------- FLOATING CANVAS BAR ---------- */
+.cbar{position:fixed;bottom:18px;right:22px;z-index:50;display:flex;align-items:center;gap:3px;padding:6px;
+  border-radius:19px;color:var(--ink);
+  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--glass-brd);box-shadow:var(--glass-hi),var(--shadow)}
+.cbar button{width:36px;height:36px;border:0;background:transparent;color:var(--ink2);border-radius:12px;
+  cursor:pointer;display:grid;place-items:center;font-size:15px}
+.cbar button:hover{background:var(--glass-2);color:var(--ink)}
+.cbar svg{width:18px;height:18px}
+.cbar .cdiv{width:1px;height:20px;background:var(--line2);margin:0 4px}
+.cbar .zv{min-width:46px;text-align:center;font-size:11.5px;font-weight:700;color:var(--ink2)}
 
 /* ---------- TOP BAR ---------- */
-.topbar{grid-column:1/-1;display:flex;align-items:center;gap:8px;height:58px;padding:0 14px;
-  background:var(--panel);border-bottom:1px solid var(--line);position:relative;z-index:40;
+.topbar{grid-column:1/-1;display:flex;align-items:center;gap:8px;height:60px;padding:0 16px;min-width:0;
+  margin:12px 12px 0;border-radius:20px;position:relative;z-index:40;color:var(--ink);
+  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--glass-brd);box-shadow:var(--glass-hi),var(--shadow);
   padding-top:env(safe-area-inset-top)}
-.brand{display:flex;align-items:center;gap:11px;padding-right:6px}
+.brand{display:none}
 .brand .mark{width:34px;height:34px;border-radius:10px;position:relative;flex:none;
   background:var(--ink);box-shadow:none;
   display:grid;place-items:center}
@@ -61,12 +146,14 @@ button{font-family:inherit;color:inherit}
 .brand .txt b{font-size:14.5px;letter-spacing:-.2px;display:block;line-height:1.1}
 .brand .txt small{font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.6px;text-transform:uppercase}
 .divx{width:1px;height:26px;background:var(--line);margin:0 4px}
-.tb-title{font-weight:650;background:var(--panel2);border:1px solid transparent;color:var(--ink);
+.tb-title{font-weight:650;background:var(--glass-2);border:1px solid var(--glass-brd);color:var(--ink);
   font-size:14px;padding:8px 12px;border-radius:var(--r-sm);min-width:130px;max-width:280px;transition:.15s}
 .tb-title:hover{border-color:var(--line2)}
 .tb-title:focus{outline:none;border-color:var(--brand);background:var(--panel)}
 .spacer{flex:1}
 .grp{display:flex;align-items:center;gap:5px;padding:4px;background:var(--panel2);border-radius:12px}
+.grp[hidden]{display:none}
+.divx{display:none}
 .tb{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid transparent;
   background:transparent;border-radius:9px;font-size:13px;font-weight:550;cursor:pointer;white-space:nowrap;
   transition:.13s;color:var(--ink2)}
@@ -75,16 +162,17 @@ button{font-family:inherit;color:inherit}
 .tb svg{width:16px;height:16px;flex:none}
 .tb.solo{background:var(--panel2)}
 .tb.solo:hover{background:var(--panel3)}
-.tb.primary{background:var(--brand);color:#fff;font-weight:650;
-  box-shadow:0 4px 14px rgba(91,91,240,.35);padding:9px 15px}
-.tb.primary:hover{filter:brightness(1.07);color:#fff;box-shadow:0 6px 18px rgba(91,91,240,.45)}
-.tb.lib{background:var(--brand-soft);color:var(--brand);font-weight:650}
+.tb.primary{background:linear-gradient(160deg,#a5661f,#87520f);color:#fff;font-weight:680;
+  box-shadow:0 4px 16px rgba(165,102,31,.32);padding:9px 15px}
+.tb.primary:hover{filter:brightness(1.06);color:#fff;box-shadow:0 6px 22px rgba(165,102,31,.42)}
+.tb.lib{background:var(--brand-soft);color:#7d4a11;font-weight:680}
+:root[data-ui="dark"] .tb.lib{color:#eabd80}
 .tb.lib:hover{background:var(--brand-soft);filter:brightness(.97)}
 .tb.icon{padding:9px}
 .mob{display:none}
 
 /* ---------- SIDE PANELS ---------- */
-.side{background:var(--panel);overflow:auto;-webkit-overflow-scrolling:touch;position:relative}
+.side{display:none}
 .side.left{border-right:1px solid var(--line)}
 .side.right{border-left:1px solid var(--line)}
 .side::-webkit-scrollbar{width:10px}
@@ -94,7 +182,7 @@ button{font-family:inherit;color:inherit}
 .sec+.sec{border-top:1px solid var(--line)}
 .sec h3{margin:0 0 11px;font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);
   font-weight:700;display:flex;align-items:center;gap:8px}
-.sec h3 .pill{margin-left:auto;background:var(--brand-soft);color:var(--brand);border-radius:999px;
+.sec h3 .pill{margin-left:auto;background:var(--brand-soft);color:var(--brand2);border-radius:999px;
   padding:2px 8px;font-size:10px;font-weight:700;letter-spacing:.2px}
 
 /* search */
@@ -106,11 +194,15 @@ button{font-family:inherit;color:inherit}
 
 /* block palette */
 .palette{display:flex;flex-direction:column;gap:6px}
-.pgroup-label{font-size:10px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;
+.pgroup-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;
   margin:8px 2px 3px}
 .pchip{display:flex;align-items:center;gap:11px;padding:9px 10px;border:1px solid var(--line);
   border-radius:11px;background:var(--panel);cursor:pointer;text-align:left;transition:.12s;width:100%}
-.pchip:hover{border-color:var(--brand);background:var(--brand-soft);transform:translateX(2px)}
+.pchip{position:relative;overflow:hidden;background:var(--glass-2);border-color:var(--glass-brd)}
+.pchip:before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brand);
+  transform:scaleY(0);transform-origin:center;transition:transform .17s cubic-bezier(.4,0,.2,1)}
+.pchip:hover{border-color:var(--glass-brd);background:var(--panel3)}
+.pchip:hover:before{transform:scaleY(1)}
 .pchip:active{transform:scale(.98)}
 .pchip .ic{width:32px;height:32px;border-radius:9px;flex:none;display:grid;place-items:center;
   background:linear-gradient(140deg,var(--brand-soft),var(--brand-soft2));color:var(--brand)}
@@ -126,6 +218,7 @@ button{font-family:inherit;color:inherit}
 .tcard:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
 .tcard.on{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
 .tcard.on .badge{opacity:1;transform:scale(1)}
+:root[data-ui="dark"] .tcard .badge{color:#241a12}
 .tcard .badge{position:absolute;top:6px;right:6px;width:19px;height:19px;border-radius:50%;background:var(--brand);
   color:#fff;font-size:11px;display:grid;place-items:center;font-weight:800;opacity:0;transform:scale(.5);transition:.15s;z-index:2}
 .tprev{height:62px;padding:9px 10px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
@@ -189,9 +282,8 @@ button{font-family:inherit;color:inherit}
 .prow .pt small{font-size:10.5px;color:var(--muted)}
 
 /* ---------- CANVAS ---------- */
-.canvas{background:
-   radial-gradient(1200px 500px at 50% -10%, var(--bg2), transparent),
-   var(--bg);
+.canvas{grid-row:2;grid-column:3;background:
+   transparent;
   overflow:auto;-webkit-overflow-scrolling:touch;position:relative}
 .canvas-inner{min-height:100%;padding:28px 24px 140px;display:flex;flex-direction:column;align-items:center;gap:28px}
 #pages{display:flex;flex-direction:column;align-items:center;gap:30px}
@@ -790,7 +882,7 @@ select.regfield option{background:#fff;color:#131313}
   background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:12px;font-size:13px;z-index:200;
   pointer-events:none;transition:.22s;box-shadow:var(--shadow-lg);font-weight:600}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.modal-bg{position:fixed;inset:0;background:rgba(10,12,20,.55);backdrop-filter:blur(4px);z-index:100;display:none;
+.modal-bg{position:fixed;inset:0;background:rgba(58,42,30,.34);backdrop-filter:saturate(140%) blur(14px);-webkit-backdrop-filter:saturate(140%) blur(14px);z-index:100;display:none;
   align-items:center;justify-content:center;padding:20px}
 .modal-bg.show{display:flex}
 .modal{background:var(--panel);border-radius:var(--r-lg);max-width:940px;width:100%;max-height:88vh;display:flex;flex-direction:column;
@@ -798,7 +890,7 @@ select.regfield option{background:#fff;color:#131313}
 .modal.sm{max-width:560px}
 .modal-head{padding:20px 24px 16px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:14px}
 .modal-head .mh-ic{width:44px;height:44px;border-radius:12px;background:var(--brand);
-  color:#fff;display:grid;place-items:center;flex:none;box-shadow:0 4px 12px rgba(91,91,240,.35)}
+  color:#fff;display:grid;place-items:center;flex:none;box-shadow:0 4px 12px rgba(165,102,31,.30)}
 .modal-head .mh-ic svg{width:23px;height:23px}
 .modal-head h2{margin:0;font-size:19px;letter-spacing:-.02em}
 .modal-head p{margin:3px 0 0;color:var(--muted);font-size:13px}
@@ -816,7 +908,7 @@ select.regfield option{background:#fff;color:#131313}
   font-size:13px;font-weight:650;cursor:pointer;color:var(--muted);transition:.13s}
 .lvlbar .lv:hover{border-color:var(--brand);color:var(--brand)}
 .lvlbar .lv.on{background:var(--brand);color:#fff;border-color:transparent;
-  box-shadow:0 4px 12px rgba(91,91,240,.3)}
+  box-shadow:0 4px 12px rgba(165,102,31,.26)}
 .lvlbar .lv .n{opacity:.72;font-weight:600;margin-left:5px;font-size:11.5px}
 .lvl-note{padding:12px 24px 0;font-size:13px;color:var(--muted);line-height:1.5}
 .lib-group-h .lvtag{margin-left:auto;font-size:10.5px;font-weight:800;letter-spacing:.6px;
@@ -854,22 +946,37 @@ select.regfield option{background:#fff;color:#131313}
 /* ---------- MOBILE / iPad ---------- */
 .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:55;display:none}
 .backdrop.show{display:block}
+/* the dock floats over the canvas on narrow screens */
+@media (max-width:980px){
+  .app,.app.dock-open{grid-template-columns:70px 0fr minmax(0,1fr)}
+  .dock{position:fixed;left:70px;top:84px;bottom:14px;width:min(320px,calc(100vw - 82px));z-index:60}
+  .app:not(.dock-open) .dock{display:none}
+  .rail{margin-left:8px}
+  .rb{width:46px;height:44px}
+  .cbar{bottom:14px;right:12px}
+  .topbar{margin:8px 8px 0;height:56px}
+}
 @media (max-width:1180px){
-  .app{grid-template-columns:1fr}
+  .app{grid-template-columns:76px 0fr minmax(0,1fr)}
   .side{position:fixed;top:0;bottom:0;width:300px;z-index:60;transform:translateX(-100%);transition:.24s cubic-bezier(.4,0,.2,1);box-shadow:var(--shadow-lg);padding-top:env(safe-area-inset-top)}
   .side.left{left:0}.side.right{right:0;left:auto;transform:translateX(100%)}
   .side.open{transform:translateX(0)}
-  .mob{display:inline-flex}
+  .mob{display:none}
   .hide-mob{display:none}
   .lib-items,.tmpl-grid{grid-template-columns:1fr}
 }
-@media (max-width:560px){.tb-title{max-width:110px}.brand .txt{display:none}.zoombar{display:none}}
+@media (max-width:560px){.tb-title{max-width:none;min-width:0;flex:1 1 auto}.brand .txt{display:none}}
+@media (max-width:430px){.tb.primary .lbl,.tb.lib .lbl{display:none}.tb.primary,.tb.lib{padding:9px}
+  .topbar{gap:5px;padding:0 9px}.tb{padding:8px 9px}.cbar{padding:4px}.cbar button{width:32px;height:32px}}
 
 /* ===================== PRINT / PDF ===================== */
 @page{size:A4;margin:0}
 @media print{
   html,body{overflow:visible;background:#fff;height:auto}
-  .topbar,.side,.backdrop,.toast,.pg-tools,.bbar,.bhandle,.pg-label,.zoombar,.pg-num-screen{display:none !important}
+  .topbar,.side,.rail,.dock,.cbar,.backdrop,.toast,.pg-tools,.bbar,.bhandle,.pg-label,.zoombar,.pg-num-screen{display:none !important}
+  body{background:#fff !important;background-image:none !important}
+  .app,.app.dock-open{grid-template-columns:1fr !important}
+  .canvas{grid-column:1 !important;grid-row:1 !important}
   .app{display:block;height:auto}
   .canvas{overflow:visible;height:auto;background:#fff}
   .canvas-inner{padding:0;gap:0;display:block}
@@ -883,6 +990,86 @@ select.regfield option{background:#fff;color:#131313}
   .pg-foot{left:14mm;right:14mm;bottom:7mm}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
+
+/* ── Word formation ── */
+.wform{display:grid;gap:9px}
+.wf-row{display:flex;gap:10px;align-items:flex-start}
+.wf-n{flex:none;width:20px;font-weight:700;color:var(--pa-accent)}
+.wf-mid{flex:1;line-height:1.75}
+.wf-gap{display:inline-block;min-width:110px;border-bottom:1.6px solid var(--pa-line);text-align:center;margin:0 3px}
+.wf-a{color:var(--pa-accent);font-weight:650}
+.answers-off .wform .wf-a{color:transparent}
+.wf-root{flex:none;align-self:flex-end;font-size:11.5px;letter-spacing:.06em;font-weight:750;
+  color:var(--pa-ink);opacity:.75;border:1.4px solid var(--pa-line);border-radius:7px;padding:2px 8px;white-space:nowrap}
+
+/* ── Multiple-choice cloze ── */
+.mcz-text{line-height:1.95;margin-bottom:12px}
+.mcz-qs{display:grid;gap:7px}
+.mcz-q{display:flex;gap:10px;align-items:baseline}
+.mcz-n{flex:none;width:20px;font-weight:700;color:var(--pa-accent)}
+.mcz-opts{flex:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.mcz-o{display:flex;gap:5px;align-items:baseline;border:1.4px solid var(--pa-line);border-radius:8px;padding:3px 7px;cursor:pointer}
+.mcz-l{font-weight:750;font-size:11px;color:var(--pa-accent)}
+.mcz-t{min-width:14px}
+.answers-on .mcz-o.correct{border-color:var(--pa-accent);background:var(--pa-soft)}
+.answers-on .mcz-o.correct .mcz-t{font-weight:650;color:var(--pa-accent)}
+
+/* ── Collocation grid ── */
+.cgrid{width:100%;border-collapse:collapse}
+.cgrid th,.cgrid td{border:1.4px solid var(--pa-line);padding:7px 9px;text-align:center;font-size:13.5px}
+.cgrid th{background:var(--pa-soft);font-weight:650}
+.cgrid .cg-corner{background:none;border-top:none;border-left:none}
+.cgrid .cg-row{text-align:left;white-space:nowrap}
+.cg-cell{cursor:pointer;height:30px}
+.cg-tick{color:var(--pa-accent);font-weight:800;opacity:0}
+.cg-cell.on .cg-tick{opacity:1}
+.answers-off .cgrid .cg-tick{opacity:0}
+
+/* ── Bingo ── */
+.bingo-t{font-weight:750;text-align:center;margin-bottom:9px;letter-spacing:.02em}
+.bingo-g{display:grid;gap:6px}
+.bingo-c{border:1.8px solid var(--pa-line);border-radius:9px;min-height:56px;display:flex;
+  align-items:center;justify-content:center;text-align:center;padding:6px 5px;font-size:13.5px}
+
+/* ── Opinion line ── */
+.opline{display:grid;gap:15px}
+.ol-s{font-weight:600;margin-bottom:7px}
+.ol-scale{display:flex;align-items:center;gap:10px}
+.ol-end{font-size:11.5px;opacity:.7;white-space:nowrap}
+.ol-r{text-align:right}
+.ol-bar{flex:1;display:flex;align-items:center;justify-content:space-between;position:relative;height:16px}
+.ol-bar:before{content:'';position:absolute;left:0;right:0;top:50%;height:1.6px;background:var(--pa-line)}
+.ol-dot{width:11px;height:11px;border-radius:50%;border:1.6px solid var(--pa-line);background:var(--pa-paper);position:relative}
+
+/* ── Minimal pairs ── */
+.mpairs{display:grid;gap:8px}
+.mp-row{display:flex;gap:9px;align-items:center}
+.mp-n{flex:none;width:20px;font-weight:700;color:var(--pa-accent)}
+.mp-o{border:1.6px solid var(--pa-line);border-radius:9px;padding:4px 15px;cursor:pointer;min-width:86px;text-align:center}
+.answers-on .mp-o.pick{border-color:var(--pa-accent);background:var(--pa-soft);font-weight:650;color:var(--pa-accent)}
+
+/* ── Sentence builder ── */
+.subtab{width:100%;border-collapse:collapse}
+.subtab td{border:1.4px solid var(--pa-line);padding:6px 11px;font-size:13.5px}
+.subtab tr:first-child td{background:var(--pa-soft)}
+
+/* ── Venn diagram ── */
+.venn-d{position:relative;min-height:214px}
+.venn-c{position:absolute;top:0;height:100%;width:62%;box-sizing:border-box;
+  border:2px solid var(--pa-accent);border-radius:50%;padding:20px 20px}
+.venn-l{left:0;text-align:left;padding-right:34%}
+.venn-r{right:0;text-align:right;padding-left:34%;border-color:var(--pa-accent2,var(--pa-accent))}
+.venn-m{position:absolute;top:0;left:50%;transform:translateX(-50%);height:100%;width:24%;
+  box-sizing:border-box;padding:20px 4px;text-align:center;z-index:2}
+.venn-lb{font-weight:750;font-size:12px;letter-spacing:.03em;margin-bottom:7px;color:var(--pa-accent)}
+.venn-r .venn-lb{color:var(--pa-accent2,var(--pa-accent))}
+.venn-m .venn-lb{color:var(--pa-ink);opacity:.75}
+.venn-list{display:grid;gap:5px}
+.venn-i{font-size:12px;line-height:1.45;min-height:15px}
+@media(max-width:560px){.venn-d{min-height:0;display:grid;gap:9px}
+ .venn-c,.venn-m{position:static;transform:none;width:auto;height:auto;padding:13px 15px;
+   border:2px solid var(--pa-accent);border-radius:11px;text-align:left}
+ .venn-m{border-style:dashed}}
 </style>
 </head>
 <body class="locked">
@@ -944,7 +1131,7 @@ select.regfield option{background:#fff;color:#131313}
     <input class="tb-title" id="docTitle" value="Untitled worksheet" spellcheck="false">
     <div class="spacer"></div>
     <button class="tb lib" id="libBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11"/><path d="M4 19a2 2 0 0 0 2 2h12"/><path d="M9 7h4M9 11h7M9 15h7"/></svg><span class="hide-mob">Exercise Library</span></button>
-    <div class="grp hide-mob">
+    <div class="grp hide-mob" hidden>
       <button class="tb" id="undoBtn" title="Undo (⌘Z)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-1"/></svg></button>
       <button class="tb" id="redoBtn" title="Redo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 14 5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h1"/></svg></button>
     </div>
@@ -955,7 +1142,25 @@ select.regfield option{background:#fff;color:#131313}
     <button class="tb icon mob" id="mobRight" aria-label="Design">🎨</button>
   </div>
 
-  <!-- LEFT -->
+  <!-- RAIL -->
+  <nav class="rail" id="rail">
+    <div class="rmark"><svg viewBox="0 0 100 100" fill="none"><path d="M27 31h46M50 31v42" stroke="#fff" stroke-width="11" stroke-linecap="round"/></svg></div>
+    <button class="rb" data-grp="blocks" title="Add block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><path d="M17.5 14.5v6M14.5 17.5h6"/></svg></button>
+    <button class="rb" data-grp="inspect" title="Selected block"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4.2"/></svg></button>
+    <button class="rb" data-grp="design" title="Worksheet design"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="9.5" r="1.3"/><circle cx="15" cy="9.5" r="1.3"/><circle cx="9.5" cy="15" r="1.3"/></svg></button>
+    <button class="rb" data-grp="pages" title="Pages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="12" height="16" rx="2"/><path d="M8 21h10a2 2 0 0 0 2-2V8"/></svg></button>
+    <button class="rb" data-grp="file" title="File and plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h5l2 3h5a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/></svg></button>
+    <div class="grow"></div>
+    <button class="rb" id="railTheme" title="Light / dark interface"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg></button>
+  </nav>
+
+  <!-- DOCK -->
+  <section class="dock" id="dock">
+    <div class="dock-head"><b id="dockTitle">Add block</b><span class="dk-n" id="dockBadge" hidden></span><button class="dk-x" id="dockClose" aria-label="Close panel">×</button></div>
+    <div class="dock-body" id="dockBody"></div>
+  </section>
+
+  <!-- LEFT (source, moved into the dock at boot) -->
   <aside class="side left" id="leftPanel">
     <div class="sec">
       <h3>Add block <span class="pill" id="blkCount">0</span></h3>
@@ -1046,9 +1251,15 @@ select.regfield option{background:#fff;color:#131313}
   <div class="backdrop" id="backdrop"></div>
 </div>
 
-<!-- Zoom -->
-<div class="zoombar" id="zoombar">
-  <button id="zOut">−</button><div class="zval" id="zVal">100%</div><button id="zIn">+</button><button id="zFit" title="Fit">⤢</button>
+<!-- Floating canvas bar -->
+<div class="cbar" id="cbar">
+  <button id="cUndo" title="Undo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10H9"/></svg></button>
+  <button id="cRedo" title="Redo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 14 5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h6"/></svg></button>
+  <div class="cdiv"></div>
+  <button id="zOut" title="Zoom out">−</button><div class="zv" id="zVal">100%</div>
+  <button id="zIn" title="Zoom in">+</button><button id="zFit" title="Fit to width">⤢</button>
+  <div class="cdiv"></div>
+  <button id="cAddPage" title="New A4 page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="14" height="18" rx="2"/><path d="M11 9v6M8 12h6"/></svg></button>
 </div>
 
 <!-- LIBRARY MODAL -->
@@ -1173,6 +1384,8 @@ const BLOCK_DEFS=[
  {t:'promptlines',g:'Questions',icon:I.prompt,name:'Prompts + lines',hint:'Write / answer'},
  {t:'match',g:'Questions',icon:I.match,name:'Matching',hint:'Join pairs'},
  {t:'short',g:'Questions',icon:I.short,name:'Short answer',hint:'Question + lines'},
+ {t:'wordform',g:'Questions',icon:I.fib,name:'Word formation',hint:'Root word → correct form'},
+ {t:'mccloze',g:'Questions',icon:I.mcq,name:'Multiple-choice cloze',hint:'Text with A/B/C/D gaps'},
 
  {t:'wordbank',g:'Vocabulary',icon:I.bank,name:'Word bank',hint:'Support words'},
  {t:'vocablist',g:'Vocabulary',icon:I.text,name:'Vocabulary list',hint:'Auto definitions / RU'},
@@ -1182,6 +1395,8 @@ const BLOCK_DEFS=[
  {t:'cards',g:'Vocabulary',icon:I.cards,name:'Cards',hint:'Taboo / flashcards'},
  {t:'wordsearch',g:'Vocabulary',icon:I.search,name:'Word search',hint:'Hidden words'},
  {t:'crossword',g:'Vocabulary',icon:I.grid,name:'Crossword',hint:'Clues → auto grid'},
+ {t:'collgrid',g:'Vocabulary',icon:I.check,name:'Collocation grid',hint:'Tick what goes together'},
+ {t:'bingo',g:'Vocabulary',icon:I.grid,name:'Bingo card',hint:'Vocabulary game grid'},
 
  {t:'speaking',g:'Speaking & writing',icon:I.speak,name:'Speaking',hint:'Discussion / role-play'},
  {t:'dialogue',g:'Speaking & writing',icon:I.speak,name:'Dialogue',hint:'A / B conversation'},
@@ -1192,6 +1407,8 @@ const BLOCK_DEFS=[
  {t:'handwriting',g:'Speaking & writing',icon:I.hw,name:'Handwriting',hint:'Tracing lines'},
  {t:'answerbox',g:'Speaking & writing',icon:I.box,name:'Answer box',hint:'Framed space'},
  {t:'rating',g:'Speaking & writing',icon:I.rate,name:'Self-assessment',hint:'Stars / reflection'},
+ {t:'opinionline',g:'Speaking & writing',icon:I.rate,name:'Opinion line',hint:'Agree ↔ disagree scale'},
+ {t:'minimalpairs',g:'Speaking & writing',icon:I.speak,name:'Minimal pairs',hint:'Circle the word you hear'},
 
  {t:'table',g:'Structure',icon:I.table,name:'Table',hint:'Grid N×M'},
  {t:'verbtable',g:'Structure',icon:I.table,name:'Verb forms',hint:'Infinitive · past · participle'},
@@ -1200,7 +1417,9 @@ const BLOCK_DEFS=[
  {t:'tipbox',g:'Structure',icon:I.instr,name:'Tip / warning',hint:'Highlighted note'},
  {t:'checklist',g:'Structure',icon:I.check,name:'Checklist',hint:'List with boxes'},
  {t:'gridpaper',g:'Structure',icon:I.grid,name:'Grid paper',hint:'Squared area'},
- {t:'image',g:'Structure',icon:I.img,name:'Image',hint:'Upload a picture'}
+ {t:'image',g:'Structure',icon:I.img,name:'Image',hint:'Upload a picture'},
+ {t:'substitution',g:'Structure',icon:I.table,name:'Sentence builder',hint:'Substitution table'},
+ {t:'venn',g:'Structure',icon:I.mind,name:'Venn diagram',hint:'Compare two things'}
 ];
 
 /* =====================================================================
@@ -1268,7 +1487,28 @@ const TEMPLATES=[
  {em:'🧩',name:'Games sheet',desc:'Word search, matching, word bank',theme:'sky',blocks:['header','namebar','wordbank','wordsearch','match']},
  {em:'📚',name:'Reading + questions',desc:'Text and comprehension check',theme:'academy',blocks:['header','namebar','text','mcq','truefalse','short']},
  {em:'✍️',name:'Essay / writing',desc:'Prompt, plan, ruled lines',theme:'news',blocks:['header','namebar','instr','steps','lines']},
- {em:'⭐',name:'Blank sheet',desc:'Start from an empty A4',theme:'indigo',blocks:['header','namebar']}
+ {em:'⭐',name:'Blank sheet',desc:'Start from an empty A4',theme:'indigo',blocks:['header','namebar']},
+
+ {em:'🎯',name:'Exam practice',desc:'Word formation, MC cloze, transformations',theme:'academy',
+  blocks:['header','namebar','instr','wordform','instr','mccloze','instr','transform','short']},
+ {em:'🗣️',name:'Speaking lesson',desc:'Opinion line, discussion, compare',theme:'coral',
+  blocks:['header','namebar','instr','opinionline','instr','venn','speaking','lines']},
+ {em:'🔊',name:'Pronunciation clinic',desc:'Minimal pairs and word stress',theme:'sky',
+  blocks:['header','namebar','instr','minimalpairs','instr','pronounce','cards','rating']},
+ {em:'🧠',name:'Vocabulary deep-dive',desc:'Word list, collocations, mind map, bingo',theme:'emerald',
+  blocks:['header','namebar','vocablist','instr','collgrid','mindmap','bingo']},
+ {em:'🏁',name:'Five-minute warm-up',desc:'A quick starter for the first minutes',theme:'highlighter',
+  blocks:['header','instr','bingo','anagram','oddone']},
+ {em:'🧱',name:'Grammar clinic',desc:'Rule card, sentence builder, drills',theme:'blueprint',
+  blocks:['header','namebar','theory','instr','substitution','fillblank','transform','promptlines']},
+ {em:'🎲',name:'Game pack',desc:'Bingo, cards, word search, crossword',theme:'bubblegum',
+  blocks:['header','instr','bingo','cards','wordsearch','crossword']},
+ {em:'🧾',name:'One-page revision',desc:'Everything on one sheet before a test',theme:'kraft',
+  blocks:['header','namebar','theory','collgrid','cloze','checklist','rating']},
+ {em:'🪞',name:'Compare & contrast',desc:'Venn diagram, reading, written response',theme:'nordic',
+  blocks:['header','namebar','text','instr','venn','promptlines','lines']},
+ {em:'📊',name:'Progress check',desc:'Rubric, can-do list, self-assessment',theme:'steel',
+  blocks:['header','namebar','instr','rubric','checklist','rating','answerbox']}
 ];
 
 /* =====================================================================
@@ -1309,6 +1549,26 @@ function makeBlock(type){
    case'answerbox':b.q='Solve and write your answer:';b.lined=true;b.h=110;break;
    case'table':b.rowsN=3;b.colsN=3;b.head=true;b.data=[['Column 1','Column 2','Column 3'],['','',''],['','','']];break;
    case'checklist':b.items=['First item','Second item','Third item'];break;
+   case'wordform':b.rows=[{s:'The instructions were completely [.] to me.',r:'COMPREHEND',a:'incomprehensible'},
+     {s:'Her [.] in the final was outstanding.',r:'PERFORM',a:'performance'},
+     {s:'There is a strong [.] that the flight will be delayed.',r:'POSSIBLE',a:'possibility'},
+     {s:'Their behaviour was totally [.].',r:'RESPONSIBLE',a:'irresponsible'},
+     {s:'She spoke with great [.].',r:'CONFIDENT',a:'confidence'}];break;
+   case'mccloze':b.text='Learning a language as an adult is often (1) __ harder than people expect. Many learners (2) __ up after a few months because progress feels slow. In fact, the brain needs time to (3) __ new patterns, and the learners who succeed are usually the ones who simply (4) __ going.';
+     b.qs=[{opts:['far','very','too','much more'],correct:0},{opts:['give','put','take','set'],correct:0},
+           {opts:['take in','take on','take up','take over'],correct:0},{opts:['keep','hold','stay','remain'],correct:0}];break;
+   case'collgrid':b.rows=['make','do','take','have'];b.cols=['a decision','the washing-up','a break','fun'];
+     b.key=[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]];break;
+   case'bingo':b.size=3;b.title='Vocabulary bingo';
+     b.words=['journey','luggage','delay','platform','abroad','sightseeing','departure','currency','souvenir'];break;
+   case'opinionline':b.left='Strongly disagree';b.right='Strongly agree';
+     b.rows=['Exams are the fairest way to measure progress.','Children should learn a second language from the age of five.','Working from home is better than working in an office.'];break;
+   case'minimalpairs':b.rows=[{a:'ship',b:'sheep',correct:0},{a:'live',b:'leave',correct:1},
+     {a:'bat',b:'bad',correct:0},{a:'thin',b:'sin',correct:0},{a:'walk',b:'work',correct:1}];break;
+   case'substitution':b.cols=[['I','She','They'],['have never','has never','have often'],['been to','thought about','heard of'],['Japan.','that idea.','this band.']];break;
+   case'venn':b.left='Speaking';b.right='Writing';b.both='Both';
+     b.li=['happens in real time','you can use gesture'];b.ri=['you can plan and edit','stays as a record'];
+     b.bi=['needs vocabulary','needs a clear structure'];break;
    case'gridpaper':b.h=200;b.style='grid';break;
    case'image':b.src='';b.cap='Image caption';b.h=170;break;
    case'wordsearch':b.words=['CAT','SUN','TREE','BOOK','STAR'];b.size=11;b.grid=null;break;
@@ -1377,6 +1637,10 @@ function applyPageStyle(p,st){
   p.setAttribute('data-deco',st.deco);
 }
 function renderAll(){
+  if(!DOC||!Array.isArray(DOC.pages)||!DOC.pages.length){
+    DOC=DOC&&typeof DOC==='object'?DOC:{};
+    DOC.pages=[{id:uid(),blocks:[],style:defaultStyle('indigo')}];}
+  DOC.pages.forEach(p=>{if(!Array.isArray(p.blocks))p.blocks=[];if(!p.style)p.style=defaultStyle('indigo');if(!p.id)p.id=uid();});
   $('#docTitle').value=DOC.title;
   taskNo=0;
   const wrap=$('#pages');wrap.innerHTML='';
@@ -1578,6 +1842,83 @@ function renderContent(b){
         cell.contentEditable='true';cell.spellcheck=false;cell.innerHTML=(b.data[r]&&b.data[r][c])||'';
         cell.addEventListener('input',()=>{if(!b.data[r])b.data[r]=[];b.data[r][c]=cell.innerHTML;});cell.addEventListener('blur',scheduleSnapshot);tr.appendChild(cell);}t.appendChild(tr);}return t;}
    case'checklist':{const w=el('div','checklist');b.items.forEach((it,i)=>{const ci=el('div','ci');ci.appendChild(el('div','box'));ci.appendChild(ce('div','',it,'Item…',v=>b.items[i]=v));w.appendChild(ci);});return w;}
+   case'wordform':{const w=el('div','wform');b.rows.forEach((r,i)=>{const it=el('div','wf-row');
+       it.appendChild(el('div','wf-n',String(i+1)));
+       const mid=el('div','wf-mid');const parts=(r.s||'').split('[.]');
+       mid.appendChild(el('span','',esc(parts[0]||'')));
+       const gapw=el('span','wf-gap');gapw.appendChild(ce('span','wf-a',r.a,'____',v=>b.rows[i].a=stripHtml(v)));
+       mid.appendChild(gapw);mid.appendChild(el('span','',esc(parts[1]||'')));
+       it.appendChild(mid);
+       it.appendChild(ce('div','wf-root',r.r,'ROOT',v=>b.rows[i].r=stripHtml(v).toUpperCase()));
+       w.appendChild(it);});return w;}
+   case'mccloze':{const w=el('div','mcz');
+     w.appendChild(ce('div','mcz-text',b.text,'Type the text, marking gaps (1) __ , (2) __ …',v=>b.text=v));
+     const qs=el('div','mcz-qs');
+     b.qs.forEach((q,i)=>{const r=el('div','mcz-q');r.appendChild(el('div','mcz-n',String(i+1)));
+       const ow=el('div','mcz-opts');
+       q.opts.forEach((o,j)=>{const op=el('div','mcz-o'+(q.correct===j?' correct':''));
+         op.appendChild(el('span','mcz-l',String.fromCharCode(65+j)));
+         op.appendChild(ce('span','mcz-t',o,'option',v=>b.qs[i].opts[j]=stripHtml(v)));
+         op.addEventListener('click',e=>{if(e.target.isContentEditable)return;b.qs[i].correct=j;renderAll();});
+         ow.appendChild(op);});
+       r.appendChild(ow);qs.appendChild(r);});
+     w.appendChild(qs);return w;}
+   case'collgrid':{const t=el('table','cgrid');
+     const hr=el('tr');hr.appendChild(el('th','cg-corner',''));
+     b.cols.forEach((c,j)=>{const th=el('th');th.appendChild(ce('span','',c,'…',v=>b.cols[j]=stripHtml(v)));hr.appendChild(th);});
+     t.appendChild(hr);
+     b.rows.forEach((r,i)=>{const tr=el('tr');
+       const th=el('th','cg-row');th.appendChild(ce('span','',r,'…',v=>b.rows[i]=stripHtml(v)));tr.appendChild(th);
+       b.cols.forEach((c,j)=>{const td=el('td','cg-cell'+((b.key[i]&&b.key[i][j])?' on':''));
+         td.appendChild(el('span','cg-tick','✓'));
+         td.addEventListener('click',()=>{if(!b.key[i])b.key[i]=[];b.key[i][j]=b.key[i][j]?0:1;snapshot();renderAll();});
+         tr.appendChild(td);});
+       t.appendChild(tr);});
+     return t;}
+   case'bingo':{const w=el('div','bingo');
+     w.appendChild(ce('div','bingo-t',b.title,'Bingo title',v=>b.title=v));
+     const g=el('div','bingo-g');g.style.gridTemplateColumns='repeat('+b.size+',1fr)';
+     for(let k=0;k<b.size*b.size;k++){const c=el('div','bingo-c');
+       c.appendChild(ce('span','',b.words[k]||'','',v=>{b.words[k]=stripHtml(v);}));g.appendChild(c);}
+     w.appendChild(g);return w;}
+   case'opinionline':{const w=el('div','opline');
+     b.rows.forEach((r,i)=>{const it=el('div','ol-item');
+       it.appendChild(ce('div','ol-s',r,'Statement…',v=>b.rows[i]=v));
+       const sc=el('div','ol-scale');
+       sc.appendChild(ce('span','ol-end',b.left,'',v=>b.left=stripHtml(v)));
+       const bar=el('div','ol-bar');for(let k=0;k<5;k++)bar.appendChild(el('span','ol-dot'));
+       sc.appendChild(bar);
+       sc.appendChild(ce('span','ol-end ol-r',b.right,'',v=>b.right=stripHtml(v)));
+       it.appendChild(sc);w.appendChild(it);});
+     return w;}
+   case'minimalpairs':{const w=el('div','mpairs');
+     b.rows.forEach((r,i)=>{const it=el('div','mp-row');it.appendChild(el('div','mp-n',String(i+1)));
+       [['a',0],['b',1]].forEach(([k,idx])=>{const o=el('div','mp-o'+(r.correct===idx?' pick':''));
+         o.appendChild(ce('span','',r[k],'word',v=>b.rows[i][k]=stripHtml(v)));
+         o.addEventListener('click',e=>{if(e.target.isContentEditable)return;b.rows[i].correct=idx;renderAll();});
+         it.appendChild(o);});
+       w.appendChild(it);});
+     return w;}
+   case'substitution':{const t=el('table','subtab');
+     const n=Math.max(...b.cols.map(c=>c.length));
+     for(let r=0;r<n;r++){const tr=el('tr');
+       b.cols.forEach((col,c)=>{const td=el('td');
+         if(col[r]!==undefined)td.appendChild(ce('span','',col[r],'',v=>b.cols[c][r]=stripHtml(v)));
+         tr.appendChild(td);});
+       t.appendChild(tr);}
+     return t;}
+   case'venn':{const w=el('div','venn');
+     const d=el('div','venn-d');
+     const Lc=el('div','venn-c venn-l'),Rc=el('div','venn-c venn-r'),M=el('div','venn-m');
+     const col=(host,label,items,setL,arr)=>{
+       host.appendChild(ce('div','venn-lb',label,'Label',setL));
+       const ul=el('div','venn-list');
+       items.forEach((x,i)=>ul.appendChild(ce('div','venn-i',x,'…',v=>arr[i]=stripHtml(v))));
+       host.appendChild(ul);};
+     col(Lc,b.left,b.li,v=>b.left=stripHtml(v),b.li);
+     col(M,b.both,b.bi,v=>b.both=stripHtml(v),b.bi);
+     col(Rc,b.right,b.ri,v=>b.right=stripHtml(v),b.ri);
+     d.appendChild(Lc);d.appendChild(M);d.appendChild(Rc);w.appendChild(d);return w;}
    case'gridpaper':{const g=el('div','grid-paper');const H=b.h||200,C=24,W=700;
      g.style.height=H+'px';
      if(b.style==='dots'){for(let y=C;y<H;y+=C)for(let x=C;x<W;x+=C){const d=el('div','gp-d');d.style.top=(y-1.4)+'px';d.style.left=(x-1.4)+'px';g.appendChild(d);}}
@@ -1777,6 +2118,15 @@ function answerText(b){
    case'pronounce':{const a=b.rows.map(r=>stripHtml(r.w)+' ('+(r.s+1)+')');return a.length?a.join(', '):null;}
    case'crossword':{if(!b.grid)b.grid=buildCrossword(b.entries);if(!b.grid)return null;
      const ac=b.grid.across.map(e=>e.num+'.'+e.w).join('  '),dn=b.grid.down.map(e=>e.num+'.'+e.w).join('  ');return'Across — '+ac+'   ·   Down — '+dn;}
+   case'wordform':{const a=b.rows.map(r=>stripHtml(r.a)).filter(Boolean);
+     return a.length?a.map((x,i)=>(i+1)+'. '+x).join('   '):null;}
+   case'mccloze':{const a=b.qs.map((q,i)=>(i+1)+'. '+String.fromCharCode(65+(q.correct||0))+' ('+stripHtml(q.opts[q.correct||0]||'')+')');
+     return a.length?a.join('   '):null;}
+   case'minimalpairs':{const a=b.rows.map((r,i)=>(i+1)+'. '+stripHtml(r.correct===1?r.b:r.a));
+     return a.length?a.join(', '):null;}
+   case'collgrid':{const a=[];b.rows.forEach((r,i)=>{const on=b.cols.filter((c,j)=>b.key[i]&&b.key[i][j]);
+     if(on.length)a.push(stripHtml(r)+' + '+on.map(stripHtml).join(', '));});
+     return a.length?a.join('   ·   '):null;}
    default:return null;
   }
 }
@@ -1826,6 +2176,7 @@ function currentPage(){if(selectedId){const f=findBlock(selectedId);if(f)return 
 
 function refreshInspector(){
   const box=$('#inspector');const f=selectedId&&findBlock(selectedId);
+  if(f&&typeof dockGroup!=='undefined'&&dockOpen&&dockGroup!=='inspect'&&dockGroup!=='blocks')showGroup('inspect',true);
   if(!f){box.innerHTML='<div class="inspect-empty"><div class="ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><div>Select a block on the page<br>to edit its properties</div></div>';return;}
   const b=f.b;box.innerHTML='';
   const num=(label,val,mn,mx,set)=>{const w=el('div','field');w.innerHTML=`<label>${label}</label>`;const inp=el('input');inp.type='number';inp.value=val;inp.min=mn;inp.max=mx;
@@ -1887,6 +2238,76 @@ function refreshInspector(){
   else if(b.type==='answerbox'){box.appendChild(num('Height, px',b.h,60,400,v=>b.h=v));box.appendChild(seg('Inside',[{l:'Lines',v:true},{l:'Empty',v:false}],b.lined,v=>b.lined=v));}
   else if(b.type==='table'){box.appendChild(num('Rows',b.rowsN,1,15,v=>{resizeTable(b,v,b.colsN);b.rowsN=v;}));box.appendChild(num('Columns',b.colsN,1,8,v=>{resizeTable(b,b.rowsN,v);b.colsN=v;}));box.appendChild(seg('Header row',[{l:'Yes',v:true},{l:'No',v:false}],b.head,v=>b.head=v));}
   else if(b.type==='checklist'){const{w,ta}=list('Items (one per line)',b.items);ta.addEventListener('input',()=>{b.items=ta.value.split('\n');renderAll();});box.appendChild(w);}
+  else if(b.type==='wordform'){
+    const w=el('div','field');w.innerHTML='<label>Items — "sentence with [.] = ROOT = answer", one per line</label>';
+    const ta=el('textarea');ta.rows=7;
+    ta.value=b.rows.map(r=>`${r.s} = ${r.r} = ${r.a}`).join('\n');
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(x=>x.trim()).map(l=>{
+      const p=l.split('=');return{s:(p[0]||'').trim(),r:(p[1]||'').trim().toUpperCase(),a:(p[2]||'').trim()};});renderAll();});
+    w.appendChild(ta);box.appendChild(w);
+    box.appendChild(el('div','hint','Write <b>[.]</b> where the gap goes. The root word prints in capitals on the right, exam-style.'));
+  }
+  else if(b.type==='mccloze'){
+    const w=el('div','field');w.innerHTML='<label>Text — mark the gaps (1) __ , (2) __ …</label>';
+    const ta=el('textarea');ta.rows=5;ta.value=stripHtml(b.text);
+    ta.addEventListener('input',()=>{b.text=ta.value;renderAll();});w.appendChild(ta);box.appendChild(w);
+    const w2=el('div','field');w2.innerHTML='<label>Options — four per line, the correct one first</label>';
+    const t2=el('textarea');t2.rows=6;
+    t2.value=b.qs.map(q=>[q.opts[q.correct||0]].concat(q.opts.filter((o,i)=>i!==(q.correct||0))).join(', ')).join('\n');
+    t2.addEventListener('input',()=>{b.qs=t2.value.split('\n').filter(x=>x.trim()).map(l=>({opts:l.split(',').map(x=>x.trim()).filter(Boolean),correct:0}));renderAll();});
+    w2.appendChild(t2);box.appendChild(w2);
+    box.appendChild(el('div','hint','Type the correct option first — then click any option on the page to move the key.'));
+  }
+  else if(b.type==='collgrid'){
+    const{w,ta}=list('Rows — down the left (one per line)',b.rows);
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);
+    const{w:w2,ta:t2}=list('Columns — across the top (one per line)',b.cols);
+    t2.addEventListener('input',()=>{b.cols=t2.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w2);
+    box.appendChild(el('div','hint','Click a cell on the page to tick it. Ticks are the answer key and hide in student mode.'));
+  }
+  else if(b.type==='bingo'){
+    box.appendChild(num('Grid size (3 = 3×3)',b.size,2,5,v=>b.size=v));
+    const{w,ta}=list('Words (one per line)',b.words);
+    ta.addEventListener('input',()=>{b.words=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);
+    box.appendChild(el('div','hint','Add a few more words than squares, then duplicate the block and shuffle for a second card.'));
+  }
+  else if(b.type==='opinionline'){
+    const w=el('div','field');w.innerHTML='<label>Left-hand label</label>';const i1=el('input');i1.value=b.left;
+    i1.addEventListener('input',()=>{b.left=i1.value;renderAll();});w.appendChild(i1);box.appendChild(w);
+    const w2=el('div','field');w2.innerHTML='<label>Right-hand label</label>';const i2=el('input');i2.value=b.right;
+    i2.addEventListener('input',()=>{b.right=i2.value;renderAll();});w2.appendChild(i2);box.appendChild(w2);
+    const{w:w3,ta}=list('Statements (one per line)',b.rows);
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w3);
+  }
+  else if(b.type==='minimalpairs'){
+    const w=el('div','field');w.innerHTML='<label>Pairs — "word A, word B", one per line</label>';
+    const ta=el('textarea');ta.rows=6;ta.value=b.rows.map(r=>`${r.a}, ${r.b}`).join('\n');
+    ta.addEventListener('input',()=>{const old=b.rows;b.rows=ta.value.split('\n').filter(x=>x.trim()).map((l,i)=>{
+      const p=l.split(',');return{a:(p[0]||'').trim(),b:(p[1]||'').trim(),correct:(old[i]&&old[i].correct)||0};});renderAll();});
+    w.appendChild(ta);box.appendChild(w);
+    box.appendChild(el('div','hint','Click a word on the page to mark the one you will say aloud. It shows only in Answers mode.'));
+  }
+  else if(b.type==='substitution'){
+    const w=el('div','field');w.innerHTML='<label>Columns — one column per line, items separated by /</label>';
+    const ta=el('textarea');ta.rows=5;ta.value=b.cols.map(c=>c.join(' / ')).join('\n');
+    ta.addEventListener('input',()=>{b.cols=ta.value.split('\n').filter(x=>x.trim()).map(l=>l.split('/').map(x=>x.trim()).filter(Boolean));renderAll();});
+    w.appendChild(ta);box.appendChild(w);
+    box.appendChild(el('div','hint','Students build sentences by taking one chunk from each column, left to right.'));
+  }
+  else if(b.type==='venn'){
+    const mk=(lab,cur,set)=>{const w=el('div','field');w.innerHTML='<label>'+lab+'</label>';const i=el('input');i.value=cur;
+      i.addEventListener('input',()=>{set(i.value);renderAll();});w.appendChild(i);return w;};
+    box.appendChild(mk('Left circle',b.left,v=>b.left=v));
+    box.appendChild(mk('Right circle',b.right,v=>b.right=v));
+    box.appendChild(mk('Overlap',b.both,v=>b.both=v));
+    const{w,ta}=list('Left-only points (one per line)',b.li);
+    ta.addEventListener('input',()=>{b.li=ta.value.split('\n');renderAll();});box.appendChild(w);
+    const{w:w2,ta:t2}=list('Right-only points (one per line)',b.ri);
+    t2.addEventListener('input',()=>{b.ri=t2.value.split('\n');renderAll();});box.appendChild(w2);
+    const{w:w3,ta:t3}=list('Shared points (one per line)',b.bi);
+    t3.addEventListener('input',()=>{b.bi=t3.value.split('\n');renderAll();});box.appendChild(w3);
+    box.appendChild(el('div','hint','Leave the lists empty to print a blank diagram for students to fill in.'));
+  }
   else if(b.type==='gridpaper'){box.appendChild(num('Height, px',b.h,80,500,v=>b.h=v));box.appendChild(seg('Style',[{l:'Grid',v:'grid'},{l:'Dots',v:'dots'}],b.style,v=>b.style=v));}
   else if(b.type==='image'){box.appendChild(button('📷 Upload image',()=>pickImage(b),'primary'));if(b.src)box.appendChild(num('Height, px',b.h,60,500,v=>b.h=v));if(b.src)box.appendChild(button('Remove image',()=>{snapshot();b.src='';renderAll();}));}
   else if(b.type==='wordsearch'){const{w,ta}=list('Words to hide',b.words);ta.addEventListener('input',()=>{b.words=ta.value.split('\n').map(x=>x.trim()).filter(Boolean);});ta.addEventListener('blur',()=>{b.grid=null;snapshot();renderAll();});box.appendChild(w);
@@ -2064,12 +2485,13 @@ function onDragEnd(){if(!drag)return;document.removeEventListener('pointermove',
 let snapTimer=null;
 function scheduleSnapshot(){clearTimeout(snapTimer);snapTimer=setTimeout(()=>snapshot(),450);}
 function autosave(){try{localStorage.setItem('ws_studio2',JSON.stringify(DOC));}catch(e){}}
-function loadAutosave(){try{const s=localStorage.getItem('ws_studio2');if(s)return JSON.parse(s);}catch(e){}return null;}
+function validDoc(d){return !!(d&&Array.isArray(d.pages)&&d.pages.length&&d.pages.every(p=>p&&Array.isArray(p.blocks)));}
+function loadAutosave(){try{const s=localStorage.getItem('ws_studio2');if(s){const d=JSON.parse(s);if(validDoc(d))return d;}}catch(e){}return null;}
 function saveProject(){const blob=new Blob([JSON.stringify(DOC)],{type:'application/json'});const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);a.download=(DOC.title||'worksheet').replace(/[^\w\- ]/g,'').trim()+'.wsp';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('Project saved (.wsp)');}
 function openProject(){$('#fileInput').click();}
 $('#fileInput').addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const rd=new FileReader();
-  rd.onload=()=>{try{const d=JSON.parse(rd.result);if(d&&d.pages){DOC=d;selectedId=null;history=[];future=[];renderAll();toast('Project opened');}else toast('Invalid file');}catch(err){toast('Could not read file');}};
+  rd.onload=()=>{try{const d=JSON.parse(rd.result);if(validDoc(d)){DOC=d;selectedId=null;history=[];future=[];renderAll();toast('Project opened');}else toast('That file is not a Worksheet Studio project');}catch(err){toast('Could not read file');}};
   rd.readAsText(file);e.target.value='';});
 let imgTarget=null;
 function pickImage(b){imgTarget=b;$('#imgInput').click();}
@@ -3084,6 +3506,26 @@ deep|going a long way down|глубокий
 early|before the usual time|ранний
 late|after the usual time|поздний
 proudly|in a way that shows pride|гордо
+crime|an illegal act that can be punished by law|преступление
+police|the official force that keeps public order|полиция
+court|the place where legal cases are decided|суд
+judge|the official who decides a case in court|судья
+prison|a building where criminals are kept|тюрьма
+money|coins and notes used to buy things|деньги
+sport|a physical game or activity with rules|спорт
+team|a group who play or work together|команда
+match|a game between two players or teams|матч
+train|to practise regularly for a sport or job|тренироваться
+win|to be first or best in a competition|выигрывать
+film|a story told in moving pictures|фильм
+actor|a person who performs in films or plays|актёр
+story|a description of real or imagined events|история
+music|sounds arranged in a pleasing way|музыка
+theatre|a building where plays are performed|театр
+exciting|making you feel interested and eager|захватывающий
+neighbourhood|the area around where you live|район
+science|the study of the physical world through evidence|наука
+experiment|a test carried out to find something out|эксперимент
 `;
 const DICT={};
 DICT_RAW.trim().split('\n').forEach(line=>{const p=line.split('|');if(p.length>=3)DICT[p[0].trim().toLowerCase()]={en:p[1].trim(),ru:p[2].trim()};});
@@ -5327,6 +5769,78 @@ const GRAMMAR_B1=[
     '4  a [bowl] of soup','5  a [tube] of toothpaste','6  a [carton] of milk')]},
   {n:'Correct the mistakes',b:()=>[TASK('Find and correct the mistake','Each sentence has one mistake with countable or uncountable nouns.'),
     WRITE(1)('She gave me some useful advices.','We need to buy new furnitures.','How many money do you have?','The news are on at six.','I have a lot of works to do.')]}
+]},
+{id:'b1-say-tell',name:'say · tell · speak · talk',
+ theory:T({icon:'💬',title:'Four verbs, four different patterns',
+  form:[{s:'say',x:'<em>say</em> something (<em>to</em> someone) — He <em>said</em> hello <em>to</em> me.'},{s:'tell',x:'<em>tell</em> someone something — He <em>told me</em> the truth.'},{s:'speak',x:'<em>speak</em> a language · <em>speak to</em> someone — She <em>speaks</em> Italian.'},{s:'talk',x:'<em>talk about</em> something · <em>talk to</em> someone — We <em>talked about</em> work.'}],
+  uses:[{r:'say is never followed directly by a person',x:'He said to me (not: he said me)'},{r:'tell is always followed by a person',x:'He told me / told us / told them'},{r:'Fixed phrases with tell: tell a lie, tell the truth, tell a story, tell the time',x:'Don’t tell lies.'},{r:'Fixed phrases with say: say sorry, say hello, say a word, say nothing',x:'She didn’t say a word.'}],
+  words:['say something','tell someone','speak a language','talk about','tell the truth','say sorry'],
+  note:'<b>The rule in one line:</b> you <b>tell</b> a <u>person</u>, you <b>say</b> a <u>thing</u>.'}),
+ ex:[
+  {n:'say or tell?',b:()=>[TASK('Complete with the correct form of say or tell','Write one word in each gap.'),
+    ...FIBS('1  He [told] me that he was late.',
+    '2  She [said] that the film was boring.',
+    '3  Please don’t [tell] anyone my secret.',
+    '4  Can you [say] that again, please?',
+    '5  My grandmother used to [tell] us stories.',
+    '6  He never [says] sorry.',
+    '7  The teacher [told] us to open our books.',
+    '8  What did she [say] to you?',
+    '9  Always [tell] the truth.',
+    '10  Could you [tell] me the time?')]},
+  {n:'Which verb?',b:()=>[TASK('Circle the correct verb','Only one verb fits the pattern.'),
+    CHOOSE(['1  She ( said / told ) me a funny story.','told'],
+    ['2  He ( said / told ) nothing all evening.','said'],
+    ['3  Do you ( speak / talk ) English?','speak'],
+    ['4  We ( spoke / talked ) about the holidays.','talked'],
+    ['5  I need to ( speak / tell ) to the manager.','speak'],
+    ['6  Don’t ( say / tell ) lies!','tell'],
+    ['7  He ( said / told ) hello and left.','said'],
+    ['8  They ( talked / said ) for two hours.','talked'])]},
+  {n:'Choose the correct sentence',b:()=>[TASK('Choose the correct sentence','Only one sentence in each group is correct.'),
+    MC('',['He said me the answer.','He told me the answer.','He told to me the answer.','He said to me the answer is.'],1),
+    MC('',['She told that she was tired.','She said that she was tired.','She said me she was tired.','She told she was tired.'],1),
+    MC('',['Can you say me the time?','Can you tell me the time?','Can you talk me the time?','Can you speak me the time?'],1),
+    MC('',['We spoke about the problem.','We said about the problem.','We told about the problem.','We talked the problem.'],0),
+    MC('',['Do you talk French?','Do you speak French?','Do you say French?','Do you tell French?'],1),
+    MC('',['He told the truth.','He said the truth.','He spoke the truth to.','He talked the truth.'],0)]},
+  {n:'Rewrite the sentences',b:()=>[TASK('Rewrite using the verb in brackets','Change the pattern where you need to.'),
+    WRITE(1)('He said to me that he was sorry. (tell)','She told us that the shop was closed. (say)','They talked about politics for an hour. (speak)','“Open the window,” the teacher said. (tell)','He never says the truth. (tell)','I want to say something to the manager. (speak)')]},
+  {n:'Report a conversation',b:()=>[TASK('Write about a real conversation','Write eight sentences using say, tell, speak and talk at least twice each.'),B('lines',{count:8})]}
+]},
+{id:'b1-make-do',name:'make · do · take · have',
+ theory:T({icon:'🧩',title:'Four common verbs and the words they live with',
+  form:[{s:'make',x:'<em>make</em> a mistake · a decision · a noise · dinner · friends · money'},{s:'do',x:'<em>do</em> homework · the washing-up · exercise · your best · nothing'},{s:'take',x:'<em>take</em> a photo · a break · a shower · an exam · time · the bus'},{s:'have',x:'<em>have</em> breakfast · a shower · a good time · a look · a problem'}],
+  uses:[{r:'make = create or produce something new',x:'She made a cake / made a decision.'},{r:'do = perform an activity or a job',x:'I did the shopping and the washing-up.'},{r:'Some collocations work with two verbs, with no change',x:'have a shower = take a shower'},{r:'Learn them as whole phrases, not as single words',x:'make a mistake — always make, never do'}],
+  words:['make a mistake','make a decision','do homework','do your best','take a photo','take a break','have a good time'],
+  note:'<b>Quick test:</b> if something new appears at the end, it is usually <b>make</b>; if it is an activity or a duty, it is usually <b>do</b>.'}),
+ ex:[
+  {n:'Which verb goes with which?',b:()=>[TASK('Tick the correct combinations','Tick the box where the verb and the noun go together.'),
+    B('collgrid',{rows:['make','do','take','have'],cols:['a mistake','the washing-up','a photo','breakfast'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete with make, do, take or have','Write the correct form of the verb.'),
+    ...FIBS('1  Everybody [makes] mistakes sometimes.',
+    '2  I have to [do] my homework before dinner.',
+    '3  Shall we [take] a break for ten minutes?',
+    '4  We [had] a great time at the party.',
+    '5  Please don’t [make] so much noise!',
+    '6  She [does] exercise every morning.',
+    '7  Can you [take] a photo of us?',
+    '8  I need to [make] a decision by Friday.',
+    '9  He always [does] his best in class.',
+    '10  Let’s [have] a look at the map.')]},
+  {n:'Sort the phrases',b:()=>[TASK('Sort the words by their verb','Which verb goes with each noun?'),
+    B('wordbank',{title:'Words',words:['a mistake','homework','a photo','breakfast','a decision','the washing-up','a shower','money','exercise','a break','a noise','a good time']}),
+    B('sortcols',{cols:[{title:'make'},{title:'do'},{title:'take'},{title:'have'}]})]},
+  {n:'Choose the right verb',b:()=>[TASK('Circle the correct verb','Only one verb is natural here.'),
+    CHOOSE(['1  She ( made / did ) a lot of money last year.','made'],
+    ['2  I ( make / do ) the shopping on Saturdays.','do'],
+    ['3  Let me ( take / make ) a photo.','take'],
+    ['4  We ( had / did ) a problem with the car.','had'],
+    ['5  He ( made / did ) friends very quickly.','made'],
+    ['6  Please ( take / do ) a seat.','take'],
+    ['7  They ( did / made ) nothing all day.','did'],
+    ['8  I usually ( have / make ) a shower in the morning.','have'])]},
+  {n:'Your day',b:()=>[TASK('Write about yourself','Write eight sentences about a normal day, using make, do, take and have twice each.'),B('lines',{count:8})]}
 ]}
 ];
 
@@ -13084,6 +13598,645 @@ const GRAMMAR_TOPICVOCAB=[
     ...FIBS('A: Can I [try] these on?','B: Of course, the changing rooms are there.',
     'A: They\'re lovely, but I can\'t [afford] them.','B: They\'re on [offer] — thirty per cent off.',
     'A: In that case I\'ll take them. Can I have a [receipt]?')]}
+]},
+{id:'v-crime',name:'Crime & the law',
+ theory:T({icon:'⚖️',title:'From the crime to the sentence',
+  form:[{s:'crimes',x:'<em>burglary</em> · <em>fraud</em> · <em>shoplifting</em> · <em>vandalism</em> · <em>bribery</em> · <em>arson</em>'},{s:'people',x:'a <em>suspect</em> · a <em>witness</em> · the <em>defendant</em> · the <em>jury</em> · a <em>lawyer</em>'},{s:'the process',x:'<em>arrest</em> → <em>charge</em> → <em>trial</em> → <em>verdict</em> → <em>sentence</em>'},{s:'outcomes',x:'be <em>found guilty</em> / <em>acquitted</em> · get a <em>fine</em> · a <em>suspended sentence</em>'}],
+  uses:[{r:'The crime, the criminal and the verb are three different words',x:'burglary — a burglar — to burgle'},{r:'You commit a crime; the police arrest and charge you',x:'He was charged with fraud.'},{r:'accused of something, but charged with something',x:'accused of lying · charged with theft'},{r:'A sentence is the punishment; a verdict is the decision',x:'The jury reached a verdict; the judge passed sentence.'}],
+  words:['commit a crime','arrest','charge sb with','evidence','trial','verdict','sentence','fine','acquit'],
+  note:'<b>Word families:</b> theft — a thief — to steal · robbery — a robber — to rob · burglary — a burglar — to burgle.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Crime and the law',['crime','police','court','judge','prison','guilty'],'both')]},
+  {n:'Crime and criminal',b:()=>[TASK('Complete the word families','Match each crime with the person who commits it.'),
+    B('match',{left:['burglary','theft','fraud','murder','vandalism','shoplifting'],right:['a shoplifter','a burglar','a murderer','a thief','a vandal','a fraudster']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  He was [arrested] at the airport as he tried to leave.',
+    '2  She was [charged] with fraud the following morning.',
+    '3  There was not enough [evidence] to take the case to court.',
+    '4  After a three-week [trial], the jury reached its verdict.',
+    '5  He was found [guilty] on all four counts.',
+    '6  The judge gave him a two-year [suspended] sentence.',
+    '7  She had to pay a [fine] of £500 for speeding.',
+    '8  The main [witness] refused to give evidence.',
+    '9  He was [acquitted] and walked free from the court.',
+    '10  Nobody should [commit] a crime and expect no consequences.')]},
+  {n:'Which words go together?',b:()=>[TASK('Tick the correct combinations','Tick the box where the verb and the noun go together.'),
+    B('collgrid',{rows:['commit','serve','pay','give'],cols:['a crime','a sentence','a fine','evidence'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'Crime and punishment',b:()=>[TASK('Discussion','Discuss in pairs, then report back to the class.'),
+    B('speaking',{icon:'⚖️',title:'Discussion',prompts:['Should prison punish people, or change them?','Are some crimes not really crimes at all?','Should the punishment for a crime be the same everywhere?','Would you report a friend who committed a small crime?']})]}
+]},
+{id:'v-money',name:'Money & personal finance',
+ theory:T({icon:'💰',title:'Earning, spending, saving and owing',
+  form:[{s:'earning',x:'<em>salary</em> · <em>wages</em> · <em>income</em> · be <em>well paid</em> · <em>make ends meet</em>'},{s:'spending',x:'<em>afford</em> · <em>be broke</em> · <em>splash out on</em> · a <em>bargain</em> · <em>overpriced</em>'},{s:'saving & owing',x:'<em>save up for</em> · a <em>loan</em> · a <em>mortgage</em> · be <em>in debt</em>'},{s:'at the bank',x:'a current <em>account</em> · an <em>overdraft</em> · <em>interest</em> · a <em>direct debit</em>'}],
+  uses:[{r:'A salary is monthly and professional; wages are usually weekly',x:'She earns a good salary.'},{r:'Afford almost always follows can or can’t',x:'We can’t afford a new car.'},{r:'Lend = give, borrow = take',x:'Can you lend me £10? / Can I borrow £10?'},{r:'Make ends meet = have just enough to live on',x:'Since the rent went up, we can barely make ends meet.'}],
+  words:['salary','income','afford','be broke','save up for','in debt','a bargain','overdraft','make ends meet'],
+  note:'<b>Classic mistake:</b> the bank <b>lends</b> you money; you <b>borrow</b> it from the bank.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Money vocabulary',['money','salary','save','spend','borrow','expensive'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word or phrase in each gap.'),
+    ...FIBS('1  We simply can’t [afford] a holiday this year.',
+    '2  I’m completely [broke] until I get paid on Friday.',
+    '3  She is [saving] up for a deposit on a flat.',
+    '4  They took out a [mortgage] to buy the house.',
+    '5  Since the rent rose, we can barely make ends [meet].',
+    '6  Could you [lend] me twenty euros until tomorrow?',
+    '7  I had to [borrow] the money from my brother.',
+    '8  That coat was a real [bargain] — half price.',
+    '9  He is £4,000 in [debt] after his first year.',
+    '10  The restaurant was good but seriously [overpriced].')]},
+  {n:'Which words go together?',b:()=>[TASK('Tick the correct combinations','Tick the box where the verb and the noun go together.'),
+    B('collgrid',{rows:['earn','take out','open','pay off'],cols:['a salary','a loan','an account','a debt'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'Give advice',b:()=>[TASK('Write advice for each person','Write two sentences of advice, using the vocabulary from this unit.'),
+    WRITE(2)('a student who is always broke by the middle of the month','a couple saving for their first flat','someone who has just been offered a large loan','a friend who lends money and never asks for it back','someone whose salary has not risen for three years','a person who buys everything on credit')]},
+  {n:'Money and life',b:()=>[TASK('Discussion','Discuss in pairs, then report back to the class.'),
+    B('speaking',{icon:'💰',title:'Discussion',prompts:['Is it rude to ask someone what they earn?','Should schools teach children about money?','Would you rather have a job you love or a salary you love?','Is being in debt always a bad thing?']})]}
+]},
+{id:'v-sport',name:'Sport & fitness',
+ theory:T({icon:'🏃',title:'Playing, doing and going',
+  form:[{s:'play + ball games',x:'<em>play</em> football · tennis · basketball · chess'},{s:'do + individual',x:'<em>do</em> yoga · judo · athletics · gymnastics'},{s:'go + -ing',x:'<em>go</em> swimming · running · cycling · skiing'},{s:'results',x:'<em>beat</em> a team · <em>win</em> a match · <em>draw</em> · be <em>knocked out</em>'}],
+  uses:[{r:'You beat a person or team, but you win a match or a prize',x:'We beat Italy. / We won the match.'},{r:'Places: a pitch, a court, a track, a course',x:'They train on the pitch every Tuesday.'},{r:'Fitness: get fit · keep fit · work out · warm up',x:'I work out three times a week.'},{r:'A coach trains the team, a referee controls the match',x:'The referee sent two players off.'}],
+  words:['play','do','go','beat','win','draw','coach','referee','work out','get fit'],
+  note:'<b>Careful:</b> <i>sportsman</i> sounds old-fashioned — <i>athlete</i> or <i>player</i> is safer.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Sport vocabulary',['sport','team','match','train','win','healthy'],'both')]},
+  {n:'play, do or go?',b:()=>[TASK('Sort the sports','Which verb goes with each sport?'),
+    B('wordbank',{title:'Words',words:['football','yoga','swimming','tennis','judo','cycling','basketball','athletics','skiing','chess','gymnastics','running']}),
+    B('sortcols',{cols:[{title:'play'},{title:'do'},{title:'go'}]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  Italy [beat] Spain three–nil in the semi-final.',
+    '2  She [won] a gold medal at the World Championships.',
+    '3  The match ended in a two–two [draw].',
+    '4  They were [knocked] out in the first round.',
+    '5  The [referee] sent two players off for fighting.',
+    '6  Their new [coach] has completely changed the team.',
+    '7  I [work] out at the gym three times a week.',
+    '8  Always [warm] up properly before you run.',
+    '9  Tennis is played on a [court], football on a pitch.',
+    '10  Thirty thousand [spectators] watched the final.')]},
+  {n:'Which words go together?',b:()=>[TASK('Tick the correct combinations','Tick the box where the verb and the noun go together.'),
+    B('collgrid',{rows:['beat','win','score','break'],cols:['a rival team','a medal','a goal','a record'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'Sport and society',b:()=>[TASK('Discussion','Discuss in pairs, then report back to the class.'),
+    B('speaking',{icon:'🏃',title:'Discussion',prompts:['Are professional athletes paid too much?','Should sport be compulsory at school?','Is watching sport as valuable as playing it?','What is the healthiest sport you know, and why?']})]}
+]},
+{id:'v-arts',name:'Art, film & entertainment',
+ theory:T({icon:'🎬',title:'Talking about what you watched, read and saw',
+  form:[{s:'films',x:'the <em>plot</em> · the <em>cast</em> · the <em>soundtrack</em> · a <em>sequel</em> · <em>subtitles</em>'},{s:'genres',x:'a <em>thriller</em> · a <em>documentary</em> · a <em>rom-com</em> · <em>sci-fi</em> · an <em>animation</em>'},{s:'reactions',x:'<em>gripping</em> · <em>predictable</em> · <em>moving</em> · <em>overrated</em> · <em>disappointing</em>'},{s:'the arts',x:'an <em>exhibition</em> · a <em>gallery</em> · a <em>performance</em> · the <em>audience</em> · a <em>review</em>'}],
+  uses:[{r:'The plot is the story; the cast is all the actors',x:'The plot was thin but the cast was excellent.'},{r:'A film is set in a place and based on a book',x:'It’s set in 1920s Berlin and based on a true story.'},{r:'Audience for a film, spectators for sport, viewers for TV',x:'The audience applauded for five minutes.'},{r:'A review is written; to rate something is to score it',x:'It got terrible reviews but I rate it highly.'}],
+  words:['plot','cast','soundtrack','sequel','subtitles','gripping','predictable','exhibition','audience','review'],
+  note:'<b>Watch out:</b> a <i>historic</i> moment is important in history; a <i>historical</i> film is set in the past.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Entertainment vocabulary',['film','actor','story','music','theatre','exciting'],'both')]},
+  {n:'Complete the review',b:()=>[TASK('Read the review and choose the best word','Choose A, B, C or D for each gap.'),
+    B('mccloze',{text:'Everyone told me this film was unmissable, so I went in expecting a lot. The (1) __ is set in a small fishing town in the 1970s, and the (2) __ — most of them unknown actors — is genuinely excellent. Unfortunately the story is completely (3) __ : I guessed the ending twenty minutes in. The (4) __ , however, is beautiful, and I have listened to it three times since.',qs:[{opts:['plot','cast','review','scene'],correct:0},{opts:['cast','audience','crew','public'],correct:0},{opts:['predictable','gripping','moving','original'],correct:0},{opts:['soundtrack','subtitle','sequel','trailer'],correct:0}]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  The [plot] was so complicated that I lost track of it.',
+    '2  I always watch foreign films with English [subtitles].',
+    '3  The [sequel] was nowhere near as good as the original.',
+    '4  It was a [gripping] thriller — I couldn’t look away.',
+    '5  Honestly, I think that series is completely [overrated].',
+    '6  The [audience] gave the cast a standing ovation.',
+    '7  There is a wonderful [exhibition] of photography at the gallery.',
+    '8  The film is [based] on a novel by Elena Ferrante.',
+    '9  It got very poor [reviews] but I loved it.',
+    '10  The [soundtrack] won an award at the festival.')]},
+  {n:'Films or books?',b:()=>[TASK('Compare films and books','Write your ideas in the diagram, then compare with a partner.'),
+    B('venn',{left:'A film',right:'A book',both:'Both',li:['you see the actors’ faces','it lasts about two hours'],ri:['you imagine everything','you can stop and reread'],bi:['a plot','characters you care about']})]},
+  {n:'Film and culture',b:()=>[TASK('Discussion','Discuss in pairs, then report back to the class.'),
+    B('speaking',{icon:'🎬',title:'Discussion',prompts:['Do you prefer subtitles or dubbing? Why?','Can a remake ever be better than the original?','Is streaming killing the cinema?','Which film would you recommend to someone learning English?']})]}
+]},
+{id:'v-city',name:'City life & transport',
+ theory:T({icon:'🚇',title:'Getting around and living in a city',
+  form:[{s:'transport',x:'the <em>underground</em> · a <em>commuter</em> · <em>rush hour</em> · a <em>fare</em> · a <em>season ticket</em>'},{s:'problems',x:'<em>congestion</em> · a <em>traffic jam</em> · <em>overcrowded</em> · <em>noise pollution</em> · <em>rent</em>'},{s:'places',x:'the <em>outskirts</em> · a <em>suburb</em> · the <em>city centre</em> · a <em>pedestrian zone</em>'},{s:'good things',x:'<em>facilities</em> · <em>nightlife</em> · <em>green spaces</em> · well <em>connected</em> · <em>lively</em>'}],
+  uses:[{r:'A commuter travels to work every day',x:'She commutes forty minutes each way.'},{r:'You pay a fare to travel and rent for a flat',x:'The bus fare has gone up again.'},{r:'Traffic is uncountable — never "a traffic"',x:'The traffic was terrible this morning.'},{r:'Outskirts is always plural',x:'They live on the outskirts of Berlin.'}],
+  words:['commuter','rush hour','fare','congestion','traffic jam','outskirts','suburb','facilities','nightlife'],
+  note:'<b>Careful:</b> <i>traffic</i> and <i>transport</i> are uncountable — <i>heavy traffic</i>, <i>public transport</i>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('City vocabulary',['city','traffic','station','crowded','journey','neighbourhood'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word or phrase in each gap.'),
+    ...FIBS('1  Avoid the centre during [rush] hour — it takes twice as long.',
+    '2  We sat in a [traffic] jam for fifty minutes.',
+    '3  The bus [fare] has gone up twice this year.',
+    '4  A monthly [season] ticket works out much cheaper.',
+    '5  They live on the [outskirts], about eight kilometres out.',
+    '6  The city centre is now a [pedestrian] zone.',
+    '7  The area has excellent [facilities]: a pool, a library and two parks.',
+    '8  [Congestion] charges have reduced the number of cars.',
+    '9  She [commutes] an hour each way, five days a week.',
+    '10  Rents in the [suburbs] are far lower than in the centre.')]},
+  {n:'Which words go together?',b:()=>[TASK('Tick the correct combinations','Tick the box where the adjective and the noun go together.'),
+    B('collgrid',{rows:['heavy','public','green','affordable'],cols:['traffic','transport','spaces','housing'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'City or countryside?',b:()=>[TASK('Compare city and country life','Write your ideas in the diagram, then compare with a partner.'),
+    B('venn',{left:'City life',right:'Country life',both:'Both',li:['good public transport','nightlife and culture'],ri:['clean air','cheaper housing'],bi:['you need neighbours','costs money to live']})]},
+  {n:'How much do you agree?',b:()=>[TASK('Mark your opinion on each line','Mark the line, then explain your choice to a partner.'),
+    B('opinionline',{left:'Strongly disagree',right:'Strongly agree',rows:['City centres should be closed to private cars.','Public transport should be free for everyone.','It is better to raise children in the countryside.','Working from home is the real solution to congestion.']})]}
+]},
+{id:'v-science',name:'Science & discovery',
+ theory:T({icon:'🔬',title:'Research, evidence and breakthroughs',
+  form:[{s:'doing science',x:'carry out <em>research</em> · run an <em>experiment</em> · collect <em>data</em> · draw a <em>conclusion</em>'},{s:'results',x:'a <em>breakthrough</em> · a <em>discovery</em> · <em>evidence</em> · <em>findings</em> · a <em>theory</em>'},{s:'people & places',x:'a <em>researcher</em> · a <em>lab</em> · a <em>trial</em> · <em>peer review</em>'},{s:'being careful',x:'the results <em>suggest</em> · it <em>appears</em> that · <em>further research</em> is needed'}],
+  uses:[{r:'You carry out or conduct research — never "make research"',x:'They carried out research over ten years.'},{r:'Research, evidence and data are uncountable in everyday use',x:'The evidence is convincing.'},{r:'You invent something new; you discover what was already there',x:'Fleming discovered penicillin.'},{r:'Scientists hedge: suggest, indicate, appear to',x:'The findings suggest a link between the two.'}],
+  words:['carry out research','experiment','data','evidence','breakthrough','discovery','findings','theory','trial'],
+  note:'<b>Two verbs people confuse:</b> you <i>discover</i> what already existed and <i>invent</i> what did not.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Science vocabulary',['science','research','experiment','discover','invent','result'],'both')]},
+  {n:'Build the right word',b:()=>[TASK('Complete with the correct form of the word in capitals','Change the word so that it fits the sentence.'),
+    B('wordform',{rows:[{s:'The team made a major [.] in cancer treatment.',r:'DISCOVER',a:'discovery'},{s:'The results are not [.] enough to publish yet.',r:'CONVINCE',a:'convincing'},{s:'She is a [.] at the Institute of Marine Biology.',r:'RESEARCH',a:'researcher'},{s:'The experiment produced a completely [.] result.',r:'EXPECT',a:'unexpected'},{s:'There is growing [.] that the theory is wrong.',r:'EVIDENT',a:'evidence'},{s:'The [.] of penicillin changed medicine forever.',r:'INVENT',a:'invention'}]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  The team [carried] out research over a period of ten years.',
+    '2  They ran the [experiment] forty times to be certain.',
+    '3  All the [data] were collected under the same conditions.',
+    '4  The [findings] were published in a leading journal.',
+    '5  It was a genuine [breakthrough] in the treatment of malaria.',
+    '6  There is no [evidence] at all for that claim.',
+    '7  The results [suggest] a link, but do not prove one.',
+    '8  Fleming [discovered] penicillin almost by accident.',
+    '9  Before publication, every paper goes through peer [review].',
+    '10  Further [research] is needed before we can be sure.')]},
+  {n:'Report the findings carefully',b:()=>[TASK('Rewrite each claim more cautiously','Use suggest, indicate, appear to or may.'),
+    WRITE(2)('Coffee prevents heart disease.','This drug cures the illness completely.','Screen time makes children less intelligent.','The new method is twice as effective.','Everyone who exercises lives longer.','The experiment proves our theory.')]},
+  {n:'Science and society',b:()=>[TASK('Discussion','Discuss in pairs, then report back to the class.'),
+    B('speaking',{icon:'🔬',title:'Discussion',prompts:['Which scientific discovery has changed life the most?','Should scientists decide how discoveries are used?','Do people trust science less than they used to? Why?','Is there any research that should not be carried out?']})]}
+]},
+{id:'v-family',name:'Family & friends',
+ theory:T({icon:'👪',title:'The people around you',
+  form:[{s:'close family',x:'<em>mother</em> · <em>father</em> · <em>parents</em> · <em>sister</em> · <em>brother</em> · <em>son</em> · <em>daughter</em>'},{s:'wider family',x:'<em>grandmother</em> · <em>uncle</em> · <em>aunt</em> · <em>cousin</em> · <em>nephew</em> · <em>niece</em>'},{s:'describing',x:'<em>older</em> / <em>younger</em> than me · an <em>only child</em> · <em>twins</em>'},{s:'friends',x:'a <em>best friend</em> · a <em>neighbour</em> · a <em>classmate</em>'}],
+  uses:[{r:'Parents = mother and father together',x:'My parents live in Yerevan.'},{r:'Use the possessive ’s for family',x:'This is my sister’s husband.'},{r:'An only child has no brothers or sisters',x:'I’m an only child.'},{r:'Say how old with be',x:'My brother is twelve.'}],
+  words:['mother','father','parents','sister','brother','grandmother','uncle','aunt','cousin','best friend'],
+  note:'<b>Careful:</b> say <i>my parents</i>, not <s>my parent’s</s>, when you mean both of them.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Family words',['mother','father','sister','brother','family','friend'],'both')]},
+  {n:'Who is who?',b:()=>[TASK('Match the words','Match each word with its meaning.'),
+    B('match',{left:['your mother’s sister','your brother’s son','your aunt’s child','your mother and father','your sister’s daughter','your father’s mother'],right:['your parents','your cousin','your aunt','your grandmother','your nephew','your niece']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  My [parents] are called Anna and Pavel.',
+    '2  My father’s brother is my [uncle].',
+    '3  I have no brothers or sisters — I am an only [child].',
+    '4  My sister is two years [older] than me.',
+    '5  My aunt’s daughter is my [cousin].',
+    '6  My [grandmother] is eighty years old.',
+    '7  Lena is my [best] friend — we met at school.',
+    '8  My brother’s wife is my sister-in-[law].',
+    '9  They were born on the same day; they are [twins].',
+    '10  The woman next door is our [neighbour].')]},
+  {n:'Your family',b:()=>[TASK('Write about your family','Write two sentences about each person.'),
+    WRITE(2)('your mother or father','a brother, sister or cousin','a grandparent','your best friend')]},
+  {n:'Talk about people',b:()=>[TASK('Speaking','Ask and answer in pairs.'),
+    B('speaking',{icon:'👪',title:'Talk about your family',prompts:['How many people are there in your family?','Who are you most like?','Who is the oldest person in your family?','Tell your partner about your best friend.']})]}
+]},
+{id:'v-school',name:'School & the classroom',
+ theory:T({icon:'🎒',title:'Things, people and places at school',
+  form:[{s:'things',x:'a <em>pencil</em> · a <em>rubber</em> · a <em>ruler</em> · a <em>notebook</em> · a <em>whiteboard</em>'},{s:'people',x:'a <em>teacher</em> · a <em>pupil</em> · a <em>classmate</em> · the <em>head teacher</em>'},{s:'places',x:'the <em>classroom</em> · the <em>library</em> · the <em>playground</em> · the <em>canteen</em>'},{s:'subjects',x:'<em>maths</em> · <em>history</em> · <em>science</em> · <em>PE</em> · <em>art</em>'}],
+  uses:[{r:'We say do homework, not make homework',x:'I do my homework after dinner.'},{r:'Verbs at school: learn, study, teach, take an exam',x:'She is studying for her exam.'},{r:'A lesson lasts 45 minutes; a break is between lessons',x:'We have a break at eleven.'},{r:'Say good at + subject',x:'I’m good at maths.'}],
+  words:['pencil','rubber','ruler','notebook','teacher','classroom','homework','lesson','break','exam'],
+  note:'<b>Careful:</b> we <i>do</i> homework and <i>take</i> or <i>sit</i> an exam — never <s>make homework</s>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('School words',['school','teacher','student','lesson','book','learn'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  I always do my [homework] before dinner.',
+    '2  Can I borrow your [rubber]? I made a mistake.',
+    '3  We have an English [lesson] at nine o’clock.',
+    '4  Our [teacher] is very kind.',
+    '5  At eleven we have a short [break].',
+    '6  I’m good [at] maths but bad at history.',
+    '7  We eat lunch in the school [canteen].',
+    '8  Draw a straight line with your [ruler].',
+    '9  She is studying hard for her [exam].',
+    '10  All the books are in the [library].')]},
+  {n:'Which things?',b:()=>[TASK('Sort the school words','Put each word in the right group.'),
+    B('wordbank',{title:'School words',words:['pencil','maths','library','teacher','ruler','history','canteen','pupil','notebook','science','playground','head teacher']}),
+    B('sortcols',{cols:[{title:'things'},{title:'subjects'},{title:'places'},{title:'people'}]})]},
+  {n:'Classroom bingo',b:()=>[TASK('Play bingo','Your teacher says a word. Cross it out when you hear it.'),
+    B('bingo',{size:3,title:'Classroom bingo',words:['pencil','teacher','book','desk','chair','board','bag','ruler','window']})]},
+  {n:'Your school day',b:()=>[TASK('Write about school','Write two sentences for each.'),
+    WRITE(2)('your favourite subject','your classroom','your homework','your teacher')]}
+]},
+{id:'v-clothes',name:'Clothes & colours',
+ theory:T({icon:'👕',title:'What you wear, and what colour it is',
+  form:[{s:'tops',x:'a <em>T-shirt</em> · a <em>shirt</em> · a <em>jumper</em> · a <em>jacket</em> · a <em>coat</em>'},{s:'bottoms',x:'<em>trousers</em> · <em>jeans</em> · a <em>skirt</em> · <em>shorts</em> · a <em>dress</em>'},{s:'feet & extras',x:'<em>shoes</em> · <em>boots</em> · <em>socks</em> · a <em>hat</em> · a <em>scarf</em>'},{s:'colours',x:'<em>red</em> · <em>blue</em> · <em>green</em> · <em>black</em> · <em>white</em> · <em>grey</em> · <em>brown</em>'}],
+  uses:[{r:'Trousers, jeans and shorts are always plural',x:'My jeans are new.'},{r:'Use wear for clothes on your body, put on for the action',x:'She wears glasses. / Put on your coat.'},{r:'The colour comes before the noun',x:'a blue shirt (not: a shirt blue)'},{r:'a pair of + plural clothes',x:'a pair of shoes · a pair of trousers'}],
+  words:['T-shirt','jumper','jacket','trousers','jeans','skirt','shoes','socks','hat','a pair of'],
+  note:'<b>Careful:</b> <i>trousers are</i>, not <s>trousers is</s>. For one item say <i>a pair of trousers</i>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Clothes and colours',['shirt','shoes','dress','hat','red','blue'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  It is cold — put on your [coat].',
+    '2  I bought a new [pair] of shoes yesterday.',
+    '3  She is [wearing] a long red dress.',
+    '4  My jeans [are] too small now.',
+    '5  In winter I wear a [scarf] and gloves.',
+    '6  He has a white [shirt] and black trousers.',
+    '7  Football players wear [boots].',
+    '8  My favourite [colour] is green.',
+    '9  Take off your [hat] indoors, please.',
+    '10  These [socks] don’t match!')]},
+  {n:'Choose the correct word',b:()=>[TASK('Circle the correct word','Only one word fits.'),
+    CHOOSE(['1  My trousers ( is / are ) black.','are'],
+    ['2  She is ( wearing / putting ) a blue jumper.','wearing'],
+    ['3  I need a new ( pair / piece ) of jeans.','pair'],
+    ['4  He has a ( shirt white / white shirt ).','white shirt'],
+    ['5  ( Put on / Wear ) your jacket, it’s raining.','Put on'],
+    ['6  These shoes ( is / are ) too big.','are'],
+    ['7  I always wear ( short / shorts ) in summer.','shorts'],
+    ['8  Her dress is ( colour red / red ).','red'])]},
+  {n:'What are they wearing?',b:()=>[TASK('Describe the people','Write one sentence for each person in your class.'),
+    B('lines',{count:6})]},
+  {n:'Shopping for clothes',b:()=>[TASK('Speaking','Work in pairs: one is the customer, one is the shop assistant.'),
+    B('speaking',{icon:'👕',title:'In the clothes shop',prompts:['Can I try this on, please?','What size are you?','Do you have it in another colour?','How much is it?']})]}
+]},
+{id:'v-animals',name:'Animals & pets',
+ theory:T({icon:'🐕',title:'Animals at home, on the farm and in the wild',
+  form:[{s:'pets',x:'a <em>dog</em> · a <em>cat</em> · a <em>rabbit</em> · a <em>hamster</em> · a <em>goldfish</em>'},{s:'farm',x:'a <em>cow</em> · a <em>horse</em> · a <em>sheep</em> · a <em>chicken</em> · a <em>pig</em>'},{s:'wild',x:'a <em>lion</em> · an <em>elephant</em> · a <em>bear</em> · a <em>monkey</em> · a <em>snake</em>'},{s:'verbs',x:'<em>feed</em> · <em>take for a walk</em> · <em>look after</em> · <em>live in</em>'}],
+  uses:[{r:'Use have got for pets',x:'I’ve got two cats.'},{r:'Most animals are <i>it</i>, but people often say he or she about a pet',x:'My dog — she loves the park.'},{r:'Some plurals are irregular',x:'one mouse → two mice · one sheep → two sheep'},{r:'Animals live in places',x:'Fish live in water. Birds live in trees.'}],
+  words:['dog','cat','horse','cow','sheep','lion','elephant','bird','fish','feed'],
+  note:'<b>Careful:</b> one <i>sheep</i>, two <i>sheep</i> — the word does not change. The same with <i>fish</i>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Animal words',['dog','cat','bird','fish','horse','animal'],'both')]},
+  {n:'Where do they live?',b:()=>[TASK('Sort the animals','Put each animal in the right group.'),
+    B('wordbank',{title:'Animals',words:['dog','cow','lion','cat','sheep','elephant','rabbit','horse','monkey','chicken','hamster','bear']}),
+    B('sortcols',{cols:[{title:'pets'},{title:'farm animals'},{title:'wild animals'}]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  I [feed] my cat twice a day.',
+    '2  We take the dog for a [walk] every evening.',
+    '3  A [cow] gives us milk.',
+    '4  The [lion] is a very strong wild animal.',
+    '5  Birds build a [nest] in the tree.',
+    '6  My sister has got two [rabbits].',
+    '7  An [elephant] is the biggest land animal.',
+    '8  Fish [live] in water.',
+    '9  Who will look [after] your dog in the holidays?',
+    '10  One mouse, two [mice].')]},
+  {n:'Which animal?',b:()=>[TASK('Choose the correct answer','Read the clue and choose.'),
+    MC('It gives milk and lives on a farm.',['a cow','a lion','a cat','a bird'],0),
+    MC('It is very big and has a long nose.',['a monkey','an elephant','a sheep','a fish'],1),
+    MC('It lives in water and has no legs.',['a horse','a dog','a fish','a bear'],2),
+    MC('Many people keep it at home and walk it every day.',['a dog','a cow','a snake','a chicken'],0),
+    MC('It gives us wool.',['a pig','a sheep','a hamster','a bird'],1),
+    MC('It can fly and lives in a tree.',['a bird','a rabbit','a horse','a fish'],0)]},
+  {n:'Your animals',b:()=>[TASK('Speaking','Ask and answer in pairs.'),
+    B('speaking',{icon:'🐕',title:'Talk about animals',prompts:['Have you got a pet? Tell your partner about it.','What is your favourite animal? Why?','Which animals are common in your country?','Would you like a pet? Which one?']})]}
+]},
+{id:'v-daily',name:'Daily routine & telling the time',
+ theory:T({icon:'⏰',title:'A normal day, hour by hour',
+  form:[{s:'morning',x:'<em>get up</em> · <em>have a shower</em> · <em>have breakfast</em> · <em>go to work</em>'},{s:'day',x:'<em>start work</em> · <em>have lunch</em> · <em>finish work</em> · <em>go home</em>'},{s:'evening',x:'<em>have dinner</em> · <em>watch TV</em> · <em>go to bed</em> · <em>fall asleep</em>'},{s:'the time',x:'<em>half past</em> seven · a <em>quarter to</em> nine · <em>ten past</em> six'}],
+  uses:[{r:'Use at + a clock time',x:'I get up at seven o’clock.'},{r:'Use in the + part of the day, but at night',x:'in the morning · in the evening · at night'},{r:'have is used for meals and washing',x:'have breakfast · have a shower'},{r:'get up = leave the bed; wake up = stop sleeping',x:'I wake up at six but get up at half past.'}],
+  words:['get up','have breakfast','go to work','have lunch','finish work','have dinner','go to bed','o’clock','half past'],
+  note:'<b>Careful:</b> we say <i>go to bed</i> and <i>go home</i> with no <i>the</i>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Daily routine',['morning','evening','breakfast','work','sleep','early'],'both')]},
+  {n:'Complete the routine',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  I [get] up at half past six.',
+    '2  Then I have a [shower] and get dressed.',
+    '3  I have [breakfast] at seven o’clock.',
+    '4  I go [to] work by bus.',
+    '5  I start work [at] nine.',
+    '6  We have [lunch] in the canteen at one.',
+    '7  I [finish] work at half past five.',
+    '8  In the evening I [watch] TV for an hour.',
+    '9  I go to [bed] at about eleven.',
+    '10  I fall [asleep] very quickly.')]},
+  {n:'at, in or on?',b:()=>[TASK('Circle the correct preposition','Only one preposition fits.'),
+    CHOOSE(['1  I get up ( at / in ) seven o’clock.','at'],
+    ['2  She works ( at / in ) the morning.','in'],
+    ['3  We watch TV ( at / in ) the evening.','in'],
+    ['4  He never goes out ( at / in ) night.','at'],
+    ['5  I have lunch ( at / on ) one o’clock.','at'],
+    ['6  They play football ( at / on ) Saturdays.','on'],
+    ['7  The shop opens ( at / in ) half past eight.','at'],
+    ['8  We go away ( at / in ) the summer.','in'])]},
+  {n:'Build your routine',b:()=>[TASK('Make sentences about your day','Take one part from each column.'),
+    B('substitution',{cols:[['I','My sister','We'],['get up','have breakfast','go to work','go to bed'],['at seven','at half past eight','at eleven'],['o’clock.','in the morning.','every day.']]})]},
+  {n:'Your day',b:()=>[TASK('Write about your day','Write two sentences for each part of the day.'),
+    WRITE(2)('your morning','your afternoon','your evening','the weekend')]}
+]},
+{id:'v-town',name:'Places in town & directions',
+ theory:T({icon:'🏙️',title:'Where things are, and how to get there',
+  form:[{s:'places',x:'a <em>supermarket</em> · a <em>bank</em> · a <em>post office</em> · a <em>chemist</em> · a <em>station</em>'},{s:'more places',x:'a <em>park</em> · a <em>museum</em> · a <em>cinema</em> · a <em>hospital</em> · a <em>café</em>'},{s:'where',x:'<em>next to</em> · <em>opposite</em> · <em>between</em> · <em>near</em> · <em>on the corner</em>'},{s:'directions',x:'<em>go straight on</em> · <em>turn left</em> · <em>turn right</em> · <em>cross the road</em>'}],
+  uses:[{r:'Use there is / there are to say what a place has',x:'There is a park near my house.'},{r:'Ask the way politely',x:'Excuse me, how do I get to the station?'},{r:'Opposite = on the other side of the street',x:'The bank is opposite the café.'},{r:'Say it is five minutes from here',x:'It’s about ten minutes on foot.'}],
+  words:['supermarket','bank','post office','station','park','museum','next to','opposite','turn left','straight on'],
+  note:'<b>Useful:</b> <i>Excuse me, is there a chemist near here?</i> — the normal way to start.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Places in town',['shop','street','park','station','city','near'],'both')]},
+  {n:'Where do you go?',b:()=>[TASK('Match the place and the reason','Match each place with what you do there.'),
+    B('match',{left:['a bank','a chemist','a post office','a library','a station','a museum'],right:['send a letter','borrow a book','catch a train','get money','see old things','buy medicine']})]},
+  {n:'Complete the directions',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  Excuse me, how do I [get] to the station?',
+    '2  Go [straight] on for two hundred metres.',
+    '3  Then [turn] left at the traffic lights.',
+    '4  The bank is [opposite] the supermarket.',
+    '5  The café is [next] to the cinema.',
+    '6  The post office is [between] the bank and the shop.',
+    '7  [Cross] the road and you will see it.',
+    '8  It is about five minutes on [foot].',
+    '9  Is there a chemist [near] here?',
+    '10  The hotel is on the [corner] of the street.')]},
+  {n:'Describe your town',b:()=>[TASK('Write about where you live','Write two sentences for each.'),
+    WRITE(2)('the shops near your home','a park or green place','how you get to the centre','your favourite place in town')]},
+  {n:'Ask the way',b:()=>[TASK('Speaking','Work in pairs: one asks the way, one gives directions.'),
+    B('speaking',{icon:'🏙️',title:'Asking the way',prompts:['Excuse me, is there a bank near here?','How do I get to the station?','Is it far?','Can you say that again, please?']})]}
+]},
+{id:'v-hobbies',name:'Free time & hobbies',
+ theory:T({icon:'🎸',title:'What you do when you are not working',
+  form:[{s:'indoor',x:'<em>reading</em> · <em>cooking</em> · <em>painting</em> · <em>playing an instrument</em> · <em>board games</em>'},{s:'outdoor',x:'<em>hiking</em> · <em>fishing</em> · <em>gardening</em> · <em>camping</em> · <em>cycling</em>'},{s:'verbs',x:'<em>be into</em> · <em>take up</em> · <em>give up</em> · <em>be keen on</em> · <em>spend time</em>'},{s:'how good',x:'a <em>beginner</em> · pretty <em>good at</em> · an <em>amateur</em> · <em>join a club</em>'}],
+  uses:[{r:'be into something = be very interested in it',x:'He’s really into photography.'},{r:'take up = start a new hobby; give up = stop it',x:'I took up yoga last year.'},{r:'be good at + -ing',x:'She’s good at drawing.'},{r:'spend time + -ing',x:'I spend a lot of time cooking.'}],
+  words:['be into','take up','give up','be keen on','good at','spend time','join a club','a beginner'],
+  note:'<b>Careful:</b> after <i>into</i>, <i>keen on</i>, <i>good at</i> and <i>spend time</i> we always use <b>-ing</b>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Free-time words',['hobby','free','enjoy','music','read','travel'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  I’m really [into] photography at the moment.',
+    '2  She [took] up the guitar when she was ten.',
+    '3  He [gave] up football after the injury.',
+    '4  My sister is very keen [on] cooking.',
+    '5  I’m not very good [at] drawing.',
+    '6  We [spend] every Sunday hiking in the hills.',
+    '7  Why don’t you [join] a chess club?',
+    '8  I’m only a [beginner], I started last month.',
+    '9  Gardening is a very relaxing [hobby].',
+    '10  In my free [time] I play the piano.')]},
+  {n:'Which go together?',b:()=>[TASK('Tick the correct combinations','Tick the box where the verb and the phrase go together.'),
+    B('collgrid',{rows:['take','give','join','spend'],cols:['up a new hobby','up smoking','a club','time reading'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'Talk about hobbies',b:()=>[TASK('Write about these people','Write two sentences for each, using the vocabulary above.'),
+    WRITE(2)('someone who has just started a hobby','someone who gave one up','a hobby you would like to try','a hobby that costs nothing','a hobby you share with a friend','a hobby you are good at')]},
+  {n:'Free time',b:()=>[TASK('Speaking','Ask and answer in pairs.'),
+    B('speaking',{icon:'🎸',title:'Talk about free time',prompts:['What are you into at the moment?','Have you ever given up a hobby? Why?','Is it better to have one hobby or many?','What hobby would you take up with more time and money?']})]}
+]},
+{id:'v-personality',name:'Personality & feelings',
+ theory:T({icon:'🙂',title:'Describing what people are like, and how they feel',
+  form:[{s:'positive',x:'<em>friendly</em> · <em>generous</em> · <em>patient</em> · <em>reliable</em> · <em>hard-working</em>'},{s:'negative',x:'<em>selfish</em> · <em>lazy</em> · <em>rude</em> · <em>mean</em> · <em>impatient</em>'},{s:'feelings',x:'<em>excited</em> · <em>nervous</em> · <em>disappointed</em> · <em>relieved</em> · <em>annoyed</em>'},{s:'-ed / -ing',x:'I was <em>bored</em>. · The lesson was <em>boring</em>.'}],
+  uses:[{r:'-ed describes the person, -ing describes the thing',x:'I’m interested. / The book is interesting.'},{r:'Use feel or be with feelings',x:'I feel nervous. / I am nervous.'},{r:'Prepositions: annoyed with, worried about, excited about',x:'She’s worried about the exam.'},{r:'mean has two senses: unkind, and not generous with money',x:'Don’t be so mean to your brother.'}],
+  words:['friendly','generous','patient','reliable','selfish','lazy','excited','nervous','disappointed','relieved'],
+  note:'<b>Classic mistake:</b> <i>I am boring</i> means you bore other people. If the lesson was dull, say <i>I was bored</i>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Personality words',['friendly','kind','happy','angry','nervous','honest'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  She always helps people — she is very [generous].',
+    '2  He never does any work; he is so [lazy].',
+    '3  I was really [excited] about the trip.',
+    '4  Don’t be [rude] to the waiter!',
+    '5  You can always count on him; he is very [reliable].',
+    '6  I felt [nervous] before the interview.',
+    '7  We were [disappointed] when the concert was cancelled.',
+    '8  I was [relieved] when I heard she was safe.',
+    '9  Teachers need to be [patient] with young children.',
+    '10  He only thinks about himself — he is [selfish].')]},
+  {n:'-ed or -ing?',b:()=>[TASK('Circle the correct form','The -ed form describes the person; -ing describes the thing.'),
+    CHOOSE(['1  The film was ( bored / boring ).','boring'],
+    ['2  I was ( bored / boring ) during the lecture.','bored'],
+    ['3  This book is very ( interested / interesting ).','interesting'],
+    ['4  She felt ( tired / tiring ) after work.','tired'],
+    ['5  The journey was ( tired / tiring ).','tiring'],
+    ['6  I’m ( confused / confusing ) by these instructions.','confused'],
+    ['7  The news was ( shocked / shocking ).','shocking'],
+    ['8  He looked ( surprised / surprising ).','surprised'])]},
+  {n:'Opposites',b:()=>[TASK('Match the opposites','Match each adjective with its opposite.'),
+    B('match',{left:['generous','lazy','patient','rude','reliable','shy'],right:['polite','mean','hard-working','outgoing','impatient','unreliable']})]},
+  {n:'How much do you agree?',b:()=>[TASK('Mark your opinion','Mark the line, then explain your choice to a partner.'),
+    B('opinionline',{left:'Strongly disagree',right:'Strongly agree',rows:['It is better to be honest than kind.','People can change their personality.','Shy people make the best friends.','Being hard-working matters more than being talented.']})]}
+]},
+{id:'v-nature',name:'Nature & the countryside',
+ theory:T({icon:'🌲',title:'Landscape, weather and the living world',
+  form:[{s:'landscape',x:'a <em>forest</em> · a <em>hill</em> · a <em>valley</em> · a <em>lake</em> · a <em>river</em> · the <em>coast</em>'},{s:'weather',x:'<em>sunny</em> · <em>cloudy</em> · <em>foggy</em> · <em>windy</em> · a <em>storm</em> · a <em>shower</em>'},{s:'living things',x:'a <em>tree</em> · a <em>branch</em> · a <em>leaf</em> · a <em>flower</em> · <em>grass</em> · <em>wildlife</em>'},{s:'verbs',x:'<em>grow</em> · <em>pick</em> · <em>climb</em> · <em>protect</em> · <em>go for a walk</em>'}],
+  uses:[{r:'Weather adjectives end in -y',x:'sun → sunny · cloud → cloudy · wind → windy'},{r:'Say what the weather is like with it is',x:'It’s raining. / It was foggy this morning.'},{r:'Plurals to watch: leaf → leaves',x:'The leaves fall in autumn.'},{r:'In the countryside, not in the nature',x:'We spent the weekend in the countryside.'}],
+  words:['forest','hill','valley','lake','river','coast','sunny','windy','leaf','wildlife'],
+  note:'<b>Careful:</b> English says <i>in the countryside</i> or <i>in nature</i> — never <s>in the nature</s>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Nature words',['tree','river','mountain','weather','rain','cold'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  We walked through a thick pine [forest].',
+    '2  The village lies in a green [valley].',
+    '3  They swam in the [lake] every morning.',
+    '4  It was very [windy] on the hill.',
+    '5  In autumn the [leaves] turn red and gold.',
+    '6  We went for a long [walk] in the countryside.',
+    '7  A heavy [storm] broke in the afternoon.',
+    '8  The house is on the [coast], ten metres from the sea.',
+    '9  Please don’t [pick] the wild flowers.',
+    '10  This park protects local [wildlife].')]},
+  {n:'Where is it?',b:()=>[TASK('Sort the words','Put each word in the right group.'),
+    B('wordbank',{title:'Nature words',words:['forest','sunny','leaf','river','foggy','branch','hill','storm','grass','coast','windy','flower']}),
+    B('sortcols',{cols:[{title:'landscape'},{title:'weather'},{title:'plants'}]})]},
+  {n:'Describe a place',b:()=>[TASK('Write about a place in nature','Write two sentences for each.'),
+    WRITE(2)('a place in nature you know well','the weather there','what grows or lives there','why you like it')]},
+  {n:'Nature and us',b:()=>[TASK('Speaking','Ask and answer in pairs.'),
+    B('speaking',{icon:'🌲',title:'Talk about nature',prompts:['Do you prefer the mountains or the sea? Why?','How often do you spend time in nature?','What is the weather usually like where you live?','What can ordinary people do to protect nature?']})]}
+]},
+{id:'v-media-b1',name:'TV, film & music',
+ theory:T({icon:'📺',title:'Talking about what you watch and listen to',
+  form:[{s:'on TV',x:'a <em>series</em> · an <em>episode</em> · a <em>channel</em> · the <em>news</em> · a <em>quiz show</em>'},{s:'films',x:'a <em>comedy</em> · a <em>horror film</em> · a <em>cartoon</em> · an <em>actor</em> · a <em>director</em>'},{s:'music',x:'a <em>band</em> · a <em>singer</em> · an <em>album</em> · a <em>track</em> · <em>live</em> music'},{s:'verbs',x:'<em>watch</em> TV · <em>listen to</em> music · <em>download</em> · <em>stream</em> · <em>turn up</em>'}],
+  uses:[{r:'We watch TV and films, but listen to music and the radio',x:'I watched a film and listened to music.'},{r:'A series has many episodes',x:'I’ve seen every episode of that series.'},{r:'Say what it is about with be about',x:'The film is about a family in Iceland.'},{r:'Opinions: it was brilliant, awful, worth watching',x:'It’s definitely worth watching.'}],
+  words:['series','episode','channel','comedy','cartoon','band','album','watch','listen to','download'],
+  note:'<b>Careful:</b> we <i>listen to</i> music — the <i>to</i> is never left out.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Media words',['film','music','watch','listen','song','famous'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  I watched the last [episode] of the series last night.',
+    '2  What [channel] is the match on?',
+    '3  She listens [to] music while she works.',
+    '4  My favourite [band] is playing in Yerevan.',
+    '5  Their new [album] came out in March.',
+    '6  It is a [comedy] — I laughed the whole time.',
+    '7  The children love that [cartoon].',
+    '8  I [downloaded] the film to watch on the plane.',
+    '9  The film is [about] two brothers in Georgia.',
+    '10  Can you turn the music [up]? I love this song.')]},
+  {n:'Which verb?',b:()=>[TASK('Circle the correct verb','Only one verb fits.'),
+    CHOOSE(['1  I ( watch / listen ) the news every evening.','watch'],
+    ['2  We ( watched / listened to ) the radio in the car.','listened to'],
+    ['3  Do you want to ( see / watch ) a film tonight?','watch'],
+    ['4  She ( plays / makes ) the guitar.','plays'],
+    ['5  They ( streamed / downloaded ) the concert live.','streamed'],
+    ['6  He ( looked / watched ) at the screen.','looked'],
+    ['7  I ( heard / listened ) a strange noise.','heard'],
+    ['8  The band ( gave / did ) a great concert.','gave'])]},
+  {n:'Film or music?',b:()=>[TASK('Sort the words','Put each word in the right group.'),
+    B('wordbank',{title:'Media words',words:['episode','album','director','track','channel','singer','cartoon','band','series','live','actor','quiz show']}),
+    B('sortcols',{cols:[{title:'TV'},{title:'film'},{title:'music'}]})]},
+  {n:'Your favourites',b:()=>[TASK('Speaking','Ask and answer in pairs.'),
+    B('speaking',{icon:'📺',title:'Talk about what you watch',prompts:['What was the last film you saw? What was it about?','Do you prefer films or series? Why?','What music do you listen to while working?','Is it better to see a band live or listen at home?']})]}
+]},
+{id:'v-housework',name:'Housework & jobs at home',
+ theory:T({icon:'🧹',title:'The jobs nobody wants to do',
+  form:[{s:'cleaning',x:'<em>do the washing-up</em> · <em>do the hoovering</em> · <em>dust</em> · <em>mop the floor</em>'},{s:'clothes',x:'<em>do the laundry</em> · <em>hang out</em> the washing · <em>iron</em> · <em>fold</em>'},{s:'kitchen',x:'<em>cook</em> · <em>lay the table</em> · <em>clear the table</em> · <em>take out the rubbish</em>'},{s:'outside',x:'<em>mow the lawn</em> · <em>water the plants</em> · <em>walk the dog</em> · <em>do the shopping</em>'}],
+  uses:[{r:'Most housework takes do: do the washing-up, do the shopping',x:'I did the shopping this morning.'},{r:'Tidy up = make a room neat; clean = remove dirt',x:'Tidy up your room, then clean the window.'},{r:'Say whose turn it is',x:'It’s your turn to take out the rubbish.'},{r:'A chore is a boring job you have to do',x:'Housework is a daily chore.'}],
+  words:['do the washing-up','do the laundry','hoover','iron','lay the table','take out the rubbish','tidy up','chore'],
+  note:'<b>Careful:</b> <i>do the washing</i> = clothes; <i>do the washing-up</i> = plates and cups. One word changes everything.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Housework words',['clean','kitchen','wash','tidy','cook','home'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  It is your turn to do the washing-[up].',
+    '2  I [hoover] the living room twice a week.',
+    '3  Could you [lay] the table, please? Dinner is ready.',
+    '4  He never [takes] out the rubbish.',
+    '5  I hate [ironing] shirts.',
+    '6  Please [tidy] up your room before your friends arrive.',
+    '7  We [do] the shopping on Saturday mornings.',
+    '8  Don’t forget to [water] the plants.',
+    '9  My brother [walks] the dog every evening.',
+    '10  Housework is a boring daily [chore].')]},
+  {n:'Which verb?',b:()=>[TASK('Tick the correct combinations','Tick the box where the verb and the noun go together.'),
+    B('collgrid',{rows:['do','lay','take out','mow'],cols:['the laundry','the table','the rubbish','the lawn'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'Who does what?',b:()=>[TASK('Write about your home','Write two sentences for each.'),
+    WRITE(2)('the job you do most often','the job you hate most','a job you never do','how jobs are shared in your home')]},
+  {n:'Sharing the housework',b:()=>[TASK('Speaking','Discuss in pairs.'),
+    B('speaking',{icon:'🧹',title:'Talk about housework',prompts:['Which chore do you dislike most, and why?','Should children have to do housework?','Is housework shared fairly in most families?','Would you pay someone to do it if you could?']})]}
+]},
+{id:'v-foodout',name:'Food, cooking & eating out',
+ theory:T({icon:'🍽️',title:'From the recipe to the bill',
+  form:[{s:'cooking verbs',x:'<em>boil</em> · <em>fry</em> · <em>roast</em> · <em>grill</em> · <em>chop</em> · <em>stir</em> · <em>season</em>'},{s:'describing food',x:'<em>spicy</em> · <em>bland</em> · <em>rich</em> · <em>crispy</em> · <em>tender</em> · <em>overcooked</em>'},{s:'eating out',x:'<em>book a table</em> · a <em>starter</em> · a <em>main course</em> · the <em>bill</em> · a <em>tip</em>'},{s:'diets',x:'<em>vegetarian</em> · <em>vegan</em> · <em>gluten-free</em> · <em>home-made</em> · a <em>takeaway</em>'}],
+  uses:[{r:'Bland means it has too little flavour — the opposite of spicy or tasty',x:'The soup was rather bland.'},{r:'A starter comes first, then the main course, then dessert',x:'We skipped the starter.'},{r:'Ask for the bill in British English, the check in American',x:'Could we have the bill, please?'},{r:'Collocations: a light meal, a heavy meal, a quick bite',x:'Let’s just grab a quick bite.'}],
+  words:['boil','fry','roast','chop','spicy','bland','tender','book a table','the bill','takeaway'],
+  note:'<b>Careful:</b> <i>a recipe</i> is instructions for cooking; <i>a receipt</i> is the piece of paper from the till.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Food vocabulary',['food','cook','restaurant','delicious','dinner','fresh'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  [Chop] the onions finely before you start.',
+    '2  The chicken was beautifully [tender].',
+    '3  The soup was rather [bland] — it needed salt.',
+    '4  I burnt the rice because I forgot to [stir] it.',
+    '5  Shall I [book] a table for eight o’clock?',
+    '6  For my [main] course I had grilled fish.',
+    '7  Could we have the [bill], please?',
+    '8  In many countries you leave a ten per cent [tip].',
+    '9  She is [vegetarian], so she doesn’t eat meat.',
+    '10  We were too tired to cook, so we ordered a [takeaway].')]},
+  {n:'Choose the right word',b:()=>[TASK('Circle the correct word','Only one word fits.'),
+    CHOOSE(['1  He gave me the ( recipe / receipt ) for the cake.','recipe'],
+    ['2  Keep the ( recipe / receipt ) in case you want a refund.','receipt'],
+    ['3  The steak was ( overcooked / overdone ) and dry.','overcooked'],
+    ['4  This curry is far too ( spicy / spiced ) for me.','spicy'],
+    ['5  We ( booked / ordered ) a table for six people.','booked'],
+    ['6  She ( roasted / boiled ) the potatoes in the oven.','roasted'],
+    ['7  Let’s grab a quick ( bite / meal ) before the film.','bite'],
+    ['8  The bread is ( home-made / house-made ).','home-made'])]},
+  {n:'Which words go together?',b:()=>[TASK('Tick the correct combinations','Tick the box where the words go together.'),
+    B('collgrid',{rows:['book','leave','order','follow'],cols:['a table','a tip','a takeaway','a recipe'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'Food and culture',b:()=>[TASK('Discussion','Discuss in pairs, then report back to the class.'),
+    B('speaking',{icon:'🍽️',title:'Discussion',prompts:['Is home cooking always better than eating out?','Should restaurants show the calories on the menu?','Is tipping fair?','What dish from your country would you cook for a visitor?']})]}
+]},
+{id:'c1v-politics',name:'Politics, power and protest',
+ theory:T({icon:'🏛️',title:'The language of public life',
+  form:[{s:'institutions',x:'<em>parliament</em> · a <em>constituency</em> · a <em>coalition</em> · the <em>cabinet</em> · a <em>referendum</em>'},{s:'people',x:'an <em>MP</em> · a <em>candidate</em> · the <em>electorate</em> · a <em>backbencher</em> · a <em>lobbyist</em>'},{s:'process',x:'<em>stand for</em> election · <em>win by a landslide</em> · <em>pass</em> a law · <em>veto</em> · <em>resign</em>'},{s:'dissent',x:'a <em>demonstration</em> · <em>civil disobedience</em> · a <em>boycott</em> · a <em>petition</em> · a <em>crackdown</em>'}],
+  uses:[{r:'You stand for election in Britain and run for office in the US',x:'She is standing for parliament.'},{r:'A landslide is an overwhelming victory',x:'They won by a landslide.'},{r:'Legislation is passed, amended, repealed or blocked',x:'The bill was blocked in the upper house.'},{r:'Hedge political claims: arguably, it could be argued that',x:'Arguably, the reform went too far.'}],
+  words:['parliament','coalition','referendum','the electorate','stand for election','landslide','pass a law','demonstration'],
+  note:'<b>Register:</b> <i>politician</i> is neutral; <i>statesman</i> is admiring; <i>bureaucrat</i> and <i>apparatchik</i> are hostile.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Political vocabulary',['government','vote','law','power','protest','public'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word or phrase in each gap.'),
+    ...FIBS('1  No single party won, so they formed a [coalition].',
+    '2  The question was put to the people in a [referendum].',
+    '3  She is [standing] for election in her home constituency.',
+    '4  The party won the election by a [landslide].',
+    '5  Parliament voted to [pass] the new climate law.',
+    '6  The minister was forced to [resign] after the scandal.',
+    '7  Thousands joined the [demonstration] outside parliament.',
+    '8  Campaigners organised a [boycott] of the company.',
+    '9  Over a million people signed the [petition].',
+    '10  The government responded with a [crackdown] on protest.')]},
+  {n:'Build the right word',b:()=>[TASK('Complete with the correct form of the word in capitals','Change the word so that it fits.'),
+    B('wordform',{rows:[{s:'The reform was deeply [.] from the start.',r:'CONTROVERSY',a:'controversial'},{s:'Turnout among younger voters was [.] low.',r:'USUAL',a:'unusually'},{s:'He was accused of political [.].',r:'OPPORTUNIST',a:'opportunism'},{s:'The committee reached a [.] decision.',r:'UNANIMITY',a:'unanimous'},{s:'There was widespread [.] with the result.',r:'SATISFY',a:'dissatisfaction'},{s:'The policy proved deeply [.] in rural areas.',r:'POPULAR',a:'unpopular'}]})]},
+  {n:'Report it neutrally',b:()=>[TASK('Rewrite each sentence without the loaded language','Keep the facts, remove the judgement.'),
+    WRITE(2)('The regime crushed the mob of troublemakers.','A brave handful of patriots defied the corrupt elite.','The so-called reform is nothing but a power grab.','Loyal citizens rallied behind their great leader.','Agitators stirred up the ignorant public.','The puppet parliament rubber-stamped the decree.')]},
+  {n:'Politics and society',b:()=>[TASK('Discussion','Discuss in pairs, then report back.'),
+    B('speaking',{icon:'🏛️',title:'Discussion',prompts:['Should voting be compulsory?','Is protest ever justified if it breaks the law?','Do referendums make better decisions than parliaments?','Can an ordinary citizen influence policy?']})]}
+]},
+{id:'c1v-health',name:'Health, medicine and the body',
+ theory:T({icon:'🩺',title:'From symptoms to treatment',
+  form:[{s:'symptoms',x:'a <em>rash</em> · <em>nausea</em> · <em>dizziness</em> · <em>fatigue</em> · <em>swelling</em> · <em>shortness of breath</em>'},{s:'conditions',x:'<em>chronic</em> · <em>acute</em> · <em>contagious</em> · <em>terminal</em> · a <em>relapse</em>'},{s:'treatment',x:'a <em>diagnosis</em> · a <em>prescription</em> · <em>surgery</em> · a <em>side effect</em> · <em>recovery</em>'},{s:'systems',x:'the <em>NHS</em> · <em>private healthcare</em> · a <em>GP</em> · a <em>specialist</em> · a <em>waiting list</em>'}],
+  uses:[{r:'Chronic = long-lasting; acute = sudden and severe',x:'a chronic condition / an acute attack'},{r:'A doctor makes a diagnosis and writes a prescription',x:'She was given a clear diagnosis.'},{r:'Collocations: make a full recovery, suffer a relapse',x:'He made a full recovery within a month.'},{r:'Hedge medical claims',x:'The treatment appears to reduce symptoms in some patients.'}],
+  words:['symptom','chronic','acute','contagious','diagnosis','prescription','side effect','make a recovery','GP'],
+  note:'<b>Careful:</b> <i>chronic</i> does not mean "very bad" — it means long-lasting. A chronic illness can be mild.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Health vocabulary',['health','doctor','medicine','illness','pain','treatment'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  Her main [symptoms] were fatigue and dizziness.',
+    '2  Asthma is a [chronic] condition that lasts for years.',
+    '3  The infection is highly [contagious], so stay at home.',
+    '4  It took three weeks to reach a firm [diagnosis].',
+    '5  The doctor wrote me a [prescription] for antibiotics.',
+    '6  Drowsiness is a common [side] effect of this drug.',
+    '7  He made a full [recovery] after the operation.',
+    '8  She suffered a [relapse] two months later.',
+    '9  The [waiting] list for surgery is eighteen months long.',
+    '10  See your [GP] first; they will refer you to a specialist.')]},
+  {n:'Build the right word',b:()=>[TASK('Complete with the correct form of the word in capitals','Change the word so that it fits.'),
+    B('wordform',{rows:[{s:'The patient made a remarkable [.].',r:'RECOVER',a:'recovery'},{s:'The drug has not yet been [.] approved.',r:'CLINIC',a:'clinically'},{s:'Early [.] greatly improves the outcome.',r:'DIAGNOSE',a:'diagnosis'},{s:'The illness proved more [.] than expected.',r:'SERIOUS',a:'serious'},{s:'Hospitals must prevent the [.] of infection.',r:'TRANSMIT',a:'transmission'},{s:'The treatment was largely [.].',r:'EFFECT',a:'ineffective'}]})]},
+  {n:'Say it more cautiously',b:()=>[TASK('Rewrite each claim as a careful medical statement','Use appears to, may, is associated with, in some cases.'),
+    WRITE(2)('This drug cures the disease.','Stress causes heart attacks.','Vitamin C prevents colds.','The new treatment has no side effects.','Everyone recovers within a week.','Diet alone eliminates the risk.')]},
+  {n:'Health and society',b:()=>[TASK('Discussion','Discuss in pairs, then report back.'),
+    B('speaking',{icon:'🩺',title:'Discussion',prompts:['Should healthcare be free at the point of use?','Who should decide how limited medical resources are shared?','Is modern medicine too quick to prescribe?','How much responsibility do we have for our own health?']})]}
+]},
+{id:'c1v-media',name:'Media, news and misinformation',
+ theory:T({icon:'📰',title:'How information is made, framed and spread',
+  form:[{s:'making news',x:'a <em>scoop</em> · a <em>source</em> · an <em>exclusive</em> · a <em>correspondent</em> · an <em>editorial</em>'},{s:'framing',x:'<em>bias</em> · <em>spin</em> · a <em>headline</em> · <em>sensationalism</em> · a <em>soundbite</em>'},{s:'problems',x:'<em>misinformation</em> · <em>disinformation</em> · a <em>hoax</em> · <em>clickbait</em> · an <em>echo chamber</em>'},{s:'checking',x:'<em>fact-check</em> · <em>verify</em> · <em>corroborate</em> · <em>retract</em> · issue a <em>correction</em>'}],
+  uses:[{r:'Misinformation is wrong; disinformation is wrong on purpose',x:'The campaign spread deliberate disinformation.'},{r:'Spin is presenting facts in a favourable way',x:'The press office put a positive spin on the figures.'},{r:'Sources are named, anonymous, reliable or unverified',x:'The story rests on a single anonymous source.'},{r:'A paper retracts a story and issues a correction',x:'The newspaper retracted the claim.'}],
+  words:['source','bias','spin','headline','misinformation','disinformation','clickbait','fact-check','retract'],
+  note:'<b>Precision matters:</b> <i>misinformation</i> can be an honest error; <i>disinformation</i> is deliberate. Do not use them interchangeably.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Media vocabulary',['news','newspaper','report','information','true','internet'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  The paper refused to name its [source].',
+    '2  Every outlet has some degree of political [bias].',
+    '3  The government put a positive [spin] on the unemployment figures.',
+    '4  The [headline] was far more dramatic than the article itself.',
+    '5  Deliberately false content is called [disinformation].',
+    '6  Honest mistakes that spread online are [misinformation].',
+    '7  That article is pure [clickbait] — the title promises far more than it delivers.',
+    '8  Journalists should [verify] a claim before publishing it.',
+    '9  The magazine was forced to [retract] the story.',
+    '10  Social media can create an echo [chamber].')]},
+  {n:'Check the claim',b:()=>[TASK('Read the paragraph and choose the best word','Choose A, B, C or D for each gap.'),
+    B('mccloze',{text:'A striking claim spread across social media last week, apparently supported by a single screenshot. Within hours it had been shared half a million times, largely because the (1) __ was far more dramatic than the evidence behind it. Journalists who tried to (2) __ the story found that no named (3) __ would confirm it. The outlet that first published it eventually issued a (4) __ , but by then the correction reached a tiny fraction of the original audience.',qs:[{opts:['headline','editorial','column','caption'],correct:0},{opts:['verify','advertise','translate','publish'],correct:0},{opts:['source','reader','editor','printer'],correct:0},{opts:['correction','exclusive','scoop','feature'],correct:0}]})]},
+  {n:'Rewrite the headline',b:()=>[TASK('Rewrite each headline without the sensationalism','Keep the facts; drop the exaggeration.'),
+    WRITE(2)('SHOCK: Experts admit coffee could KILL you','Schools in meltdown as pupils abandon classrooms','Miracle cure doctors do not want you to know about','Economy on brink of total collapse, warns insider','You will not BELIEVE what the minister said next','War declared on motorists in new parking plan')]},
+  {n:'Media and trust',b:()=>[TASK('Discussion','Discuss in pairs, then report back.'),
+    B('speaking',{icon:'📰',title:'Discussion',prompts:['Can journalism ever be genuinely neutral?','Who should decide what counts as misinformation?','Has social media made us better or worse informed?','How do you personally check a surprising story?']})]}
+]},
+{id:'c1v-global',name:'Globalisation, migration and identity',
+ theory:T({icon:'🌐',title:'People, borders and belonging',
+  form:[{s:'movement',x:'a <em>migrant</em> · a <em>refugee</em> · an <em>asylum seeker</em> · an <em>expat</em> · the <em>diaspora</em>'},{s:'economy',x:'<em>outsourcing</em> · a <em>supply chain</em> · <em>free trade</em> · <em>brain drain</em> · <em>remittances</em>'},{s:'culture',x:'<em>assimilation</em> · <em>integration</em> · a <em>multicultural</em> society · <em>cultural identity</em>'},{s:'tensions',x:'<em>inequality</em> · <em>exploitation</em> · <em>protectionism</em> · <em>xenophobia</em> · <em>stereotyping</em>'}],
+  uses:[{r:'A refugee is fleeing danger; a migrant may be moving for work',x:'She arrived as a refugee in 2015.'},{r:'Brain drain = skilled people leaving a country',x:'The brain drain has hit the health service hard.'},{r:'Remittances are money sent home by people working abroad',x:'Remittances make up a tenth of the economy.'},{r:'Integration is two-way; assimilation asks newcomers to give up their culture',x:'a policy of integration, not assimilation'}],
+  words:['migrant','refugee','diaspora','outsourcing','brain drain','remittances','integration','multicultural','inequality'],
+  note:'<b>Choose words carefully:</b> <i>expat</i> and <i>migrant</i> often describe the same act — the difference is usually status, not meaning.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Global vocabulary',['country','world','culture','foreign','border','language'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  She arrived as a [refugee] after the war began.',
+    '2  The Armenian [diaspora] stretches across four continents.',
+    '3  Many firms cut costs through [outsourcing].',
+    '4  The [brain] drain has hit the health service hard.',
+    '5  [Remittances] from abroad make up a tenth of the economy.',
+    '6  The city prides itself on being genuinely [multicultural].',
+    '7  Real [integration] requires effort on both sides.',
+    '8  Rising [inequality] has fuelled the protests.',
+    '9  The report documented the [exploitation] of seasonal workers.',
+    '10  Economic nationalism and [protectionism] are returning.')]},
+  {n:'Which words go together?',b:()=>[TASK('Tick the correct combinations','Tick the box where the words go together.'),
+    B('collgrid',{rows:['seek','send','cross','bridge'],cols:['asylum','remittances','a border','a cultural gap'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'Two sides of globalisation',b:()=>[TASK('Weigh the arguments','Write your ideas in the diagram, then compare with a partner.'),
+    B('venn',{left:'Benefits',right:'Costs',both:'Depends who you ask',li:['cheaper goods','wider opportunity'],ri:['local jobs lost','cultural flattening'],bi:['migration','faster change']})]},
+  {n:'A global world',b:()=>[TASK('Discussion','Discuss in pairs, then report back.'),
+    B('speaking',{icon:'🌐',title:'Discussion',prompts:['Has globalisation helped or harmed your country?','Should countries be able to choose who enters?','Can you belong to two cultures equally?','Is a single global language a gain or a loss?']})]}
 ]}
 ];
 
@@ -13126,15 +14279,528 @@ const TOPIC_LEVEL={
  // ---- vocabulary ----
  'id-feelings':'B1','id-body':'B1','id-communication':'B2','id-work':'B2','id-time-money':'B2',
  'v-home':'A2','v-food':'A2','v-people':'A2','v-travel':'B1','v-work':'B1','v-health':'B1',
- 'v-shopping':'B1','v-environment':'B2','v-technology':'B2','v-education':'B2'
+ 'v-shopping':'B1','v-environment':'B2','v-technology':'B2','v-education':'B2',
+ 'v-crime':'B2','v-money':'B2','v-sport':'B2','v-arts':'B2','v-city':'B2','v-science':'B2',
+ 'v-family':'A2','v-school':'A2','v-clothes':'A2','v-animals':'A2','v-daily':'A2','v-town':'A2',
+ 'v-hobbies':'B1','v-personality':'B1','v-nature':'B1','v-media-b1':'B1','v-housework':'B1',
+ 'v-foodout':'B2','c1v-politics':'C1','c1v-health':'C1','c1v-media':'C1','c1v-global':'C1'
 };
+const GRAMMAR_B2=[
+{id:'b2-mixed-cond',name:'Mixed conditionals',
+ theory:T({icon:'🔀',title:'When the condition and the result belong to different times',
+  form:[{s:'past → present',x:'If I <em>had studied</em> medicine, I <em>would be</em> a doctor now.'},{s:'present → past',x:'If I <em>were</em> more organised, I <em>wouldn’t have missed</em> the flight.'},{s:'past → present (negative)',x:'If she <em>hadn’t moved</em>, we <em>would still be</em> neighbours.'}],
+  uses:[{r:'Past condition, present result: if + past perfect → would + infinitive',x:'If they had left earlier, they would be here by now.'},{r:'Present condition, past result: if + past simple → would have + past participle',x:'If he weren’t so proud, he would have asked for help.'},{r:'now, today, still signal a present result',x:'If I hadn’t eaten so much, I wouldn’t feel sick now.'},{r:'yesterday, last week, then signal a past result',x:'If she spoke Spanish, she would have understood the guide.'}],
+  words:['if I had known, I’d be','if I hadn’t, I would still','if I were, I would have','would be … now'],
+  note:'<b>Watch out:</b> check the time words before you choose the form — <i>now</i> in the result means <i>would be</i>, not <s>would have been</s>.'}),
+ ex:[
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Put the verb in brackets into the correct form.'),
+    ...FIBS('1  If I had taken that job, I [would be] (be) living in Rome now.',
+    '2  If she hadn’t missed the train, she [would be] (be) here already.',
+    '3  If he weren’t so shy, he [would have asked] (ask) her to dance.',
+    '4  If I hadn’t eaten all that cake, I [wouldn’t feel] (not feel) sick now.',
+    '5  If they were better organised, they [would have finished] (finish) on time.',
+    '6  If we [had booked] (book) earlier, we would have a table now.',
+    '7  If you [weren’t] (not be) so stubborn, you would have apologised.',
+    '8  If I [had learnt] (learn) to drive, I wouldn’t need a taxi every day.',
+    '9  She would be a millionaire today if she [had sold] (sell) the shares.',
+    '10  He wouldn’t have panicked if he [were] (be) a calmer person.')]},
+  {n:'Which half is which time?',b:()=>[TASK('Circle the correct form','Look at the time words before you choose.'),
+    CHOOSE(['1  If I had gone to bed earlier, I ( wouldn’t be / wouldn’t have been ) so tired now.','wouldn’t be'],
+    ['2  If she were more patient, she ( would have stayed / would stay ) until the end yesterday.','would have stayed'],
+    ['3  If they hadn’t sold the house, they ( would live / would have lived ) there still.','would live'],
+    ['4  If I spoke German, I ( would have taken / would take ) that job in Munich last year.','would have taken'],
+    ['5  If we had invested then, we ( would be / would have been ) rich today.','would be'],
+    ['6  If he weren’t afraid of flying, he ( would come / would have come ) with us last summer.','would have come'],
+    ['7  If I hadn’t lost my phone, I ( could call / could have called ) you now.','could call'],
+    ['8  If she were taller, she ( would get / would have got ) the part last month.','would have got'])]},
+  {n:'What does it mean?',b:()=>[TASK('Choose the correct explanation','What does each sentence tell us?'),
+    MC('If I had studied law, I would be a lawyer now.',['I studied law and I am a lawyer.','I didn’t study law, so I am not a lawyer.','I am studying law now.','I will study law.'],1),
+    MC('If she weren’t so careless, she wouldn’t have broken it.',['She is careless, and she broke it.','She is careful and broke nothing.','She may break it.','She broke it on purpose.'],0),
+    MC('If they had caught the earlier flight, they would be at the hotel by now.',['They are at the hotel.','They are not at the hotel.','They caught the flight.','The flight was cancelled.'],1),
+    MC('If he spoke French, he would have enjoyed the film.',['He speaks French.','He didn’t enjoy it because he doesn’t speak French.','He enjoyed the film.','The film was in English.'],1),
+    MC('If I hadn’t moved here, I wouldn’t know you.',['I don’t know you.','I moved here and I know you.','I am moving here.','You moved here too.'],1),
+    MC('If she were a better cook, she would have made the cake herself.',['She made the cake.','She bought it because she can’t cook well.','She is a good cook.','She will make a cake.'],1)]},
+  {n:'Rewrite the pairs',b:()=>[TASK('Join each pair into one mixed conditional','Write one sentence, keeping both times.'),
+    WRITE(2)('I didn’t learn to swim. I’m afraid of the sea now.','She isn’t very confident. She didn’t apply for the job.','We didn’t book a table. We are standing outside now.','He is allergic to cats. He didn’t take the flat.','They moved abroad. We aren’t friends any more.','I’m not good with numbers. I chose the wrong course.')]},
+  {n:'Your own regrets',b:()=>[TASK('Write about yourself','Write six mixed conditionals about your own life: a past decision with a result today.'),B('lines',{count:8})]}
+]},
+{id:'b2-reporting-verbs',name:'Reporting verbs & their patterns',
+ theory:T({icon:'🗣️',title:'Which pattern goes with which verb',
+  form:[{s:'verb + <b>to</b> + inf.',x:'He <em>offered to help</em>. · She <em>refused to sign</em>.'},{s:'verb + <b>-ing</b>',x:'They <em>suggested leaving</em>. · He <em>admitted taking</em> it.'},{s:'verb + <b>object</b> + to + inf.',x:'She <em>advised me to wait</em>. · They <em>warned us not to swim</em>.'},{s:'verb + <b>preposition</b> + -ing',x:'He <em>apologised for being</em> late. · She <em>accused him of lying</em>.'}],
+  uses:[{r:'to + infinitive: offer, promise, refuse, agree, threaten, decide',x:'“I’ll pay.” → He promised to pay.'},{r:'-ing: suggest, admit, deny, recommend, mention, regret',x:'“Let’s take a taxi.” → She suggested taking a taxi.'},{r:'object + to + infinitive: advise, warn, remind, persuade, encourage',x:'“Don’t forget your passport.” → He reminded me to take it.'},{r:'preposition + -ing: apologise for, insist on, accuse sb of, congratulate sb on',x:'“You broke it!” → She accused me of breaking it.'}],
+  words:['offer to','refuse to','suggest -ing','admit -ing','advise sb to','warn sb not to','apologise for -ing'],
+  note:'<b>Common trap:</b> <i>suggest</i> never takes object + infinitive. Say <i>She suggested taking a taxi</i>, not <s>She suggested me to take a taxi</s>.'}),
+ ex:[
+  {n:'Sort the verbs',b:()=>[TASK('Sort the reporting verbs','Write each verb in the column for the pattern it takes.'),
+    B('wordbank',{title:'Words',words:['offer','suggest','advise','apologise','refuse','admit','remind','insist','promise','deny','persuade','accuse']}),
+    B('sortcols',{cols:[{title:'+ to + infinitive'},{title:'+ -ing'},{title:'+ object + to + inf.'},{title:'+ preposition + -ing'}]})]},
+  {n:'Complete the reports',b:()=>[TASK('Complete the sentences','Use the verb in brackets in the correct pattern.'),
+    ...FIBS('1  “I’ll drive you to the airport.” — He offered [to drive] me to the airport.',
+    '2  “Let’s meet on Friday.” — She suggested [meeting] on Friday.',
+    '3  “You should see a doctor.” — They advised me [to see] a doctor.',
+    '4  “I’m sorry I shouted.” — He apologised [for shouting].',
+    '5  “I didn’t touch it.” — She denied [touching] it.',
+    '6  “Don’t go near the edge!” — He warned us [not to go] near the edge.',
+    '7  “Yes, I took the money.” — He admitted [taking] the money.',
+    '8  “No, I won’t do it.” — He refused [to do] it.',
+    '9  “Remember to lock up.” — She reminded me [to lock] up.',
+    '10  “Well done on passing!” — They congratulated me [on passing].')]},
+  {n:'Choose the right pattern',b:()=>[TASK('Circle the correct form','Only one pattern is possible with each verb.'),
+    CHOOSE(['1  She suggested ( me to take / taking ) the earlier train.','taking'],
+    ['2  He promised ( calling / to call ) as soon as he arrived.','to call'],
+    ['3  They accused the manager ( of hiding / to hide ) the figures.','of hiding'],
+    ['4  I persuaded ( her to apply / to apply her ) for the course.','her to apply'],
+    ['5  He admitted ( to break / breaking ) the window.','breaking'],
+    ['6  She congratulated me ( on passing / for pass ) the exam.','on passing'],
+    ['7  The doctor recommended ( me to rest / resting ) for a week.','resting'],
+    ['8  They threatened ( calling / to call ) the police.','to call'])]},
+  {n:'Report the words',b:()=>[TASK('Report each sentence with a suitable verb','Do not use <i>say</i> or <i>tell</i> — choose a more precise verb.'),
+    WRITE(2)('“Would you like to come to my party?” (Anna)','“I really think you should rest.” (the doctor)','“It was me. I ate the last one.” (Tom)','“Don’t touch the wire, it’s dangerous.” (the engineer)','“No, I absolutely will not apologise.” (Marta)','“Well done on your promotion!” (my boss)')]},
+  {n:'Report a conversation',b:()=>[TASK('Write about a real conversation','Report six things people said to you this week, each with a different reporting verb.'),B('lines',{count:8})]}
+]},
+{id:'b2-so-such',name:'so · such · so much · such a lot of',
+ theory:T({icon:'✨',title:'Making things stronger, and showing the result',
+  form:[{s:'so + adjective / adverb',x:'It was <em>so cold</em>. · She spoke <em>so quickly</em>.'},{s:'such a + adj + singular noun',x:'It was <em>such a cold day</em>.'},{s:'such + adj + plural / uncountable',x:'They were <em>such kind people</em>. · It was <em>such good news</em>.'},{s:'result clause',x:'It was so cold <em>that</em> the lake froze.'}],
+  uses:[{r:'<b>so</b> goes with an adjective or adverb on its own',x:'The film was so long.'},{r:'<b>such</b> goes with a noun',x:'It was such a long film.'},{r:'quantities: so much / so many, such a lot of',x:'so much traffic · so many people'},{r:'add <b>that</b> + clause for the result',x:'She was so tired that she fell asleep.'}],
+  words:['so + adjective','such a + noun','so much','so many','such a lot of','so … that','such … that'],
+  note:'<b>Word order:</b> <i>such a good film</i> — the article comes after <i>such</i>, never before. Not <s>a such good film</s>.'}),
+ ex:[
+  {n:'so or such?',b:()=>[TASK('Complete with so, such or such a','Write one or two words in each gap.'),
+    ...FIBS('1  It was [such a] beautiful morning that we walked to work.',
+    '2  The exam was [so] difficult that half the class failed.',
+    '3  They are [such] generous people.',
+    '4  There was [so] much noise that I couldn’t hear you.',
+    '5  She drives [so] fast — it frightens me.',
+    '6  We had [such] good weather in June.',
+    '7  He is [such a] talented musician.',
+    '8  There were [so] many applicants that they cancelled the interviews.',
+    '9  I’ve never seen [such] beautiful scenery.',
+    '10  The queue was [so] long that we gave up.')]},
+  {n:'Choose the correct word',b:()=>[TASK('Circle the correct word','Look at what follows the gap.'),
+    CHOOSE(['1  It was ( so / such ) a long journey.','such'],
+    ['2  The children were ( so / such ) excited.','so'],
+    ['3  She has ( so / such ) a lovely voice.','such'],
+    ['4  There is ( so much / so many ) work to do.','so much'],
+    ['5  We had ( so much / such a lot of ) fun at the party.','so much'],
+    ['6  They were ( so / such ) helpful to us.','so'],
+    ['7  I’ve never met ( so / such ) an interesting person.','such'],
+    ['8  He earns ( so much / so many ) money.','so much'])]},
+  {n:'Find the mistake',b:()=>[TASK('Choose the correct sentence','Only one sentence in each group is correct.'),
+    MC('',['It was a such good idea.','It was such a good idea.','It was so a good idea.','It was such good a idea.'],1),
+    MC('',['There was so many traffic.','There was such many traffic.','There was so much traffic.','There was so traffic.'],2),
+    MC('',['She was so tired that she slept twelve hours.','She was such tired that she slept.','She was so tired than she slept.','She was such a tired that she slept.'],0),
+    MC('',['They are such nice people.','They are so nice people.','They are such a nice people.','They are so a nice people.'],0),
+    MC('',['We had so a lot of rain.','We had such a lot of rain.','We had so much of rain.','We had such much rain.'],1),
+    MC('',['It was so cold day.','It was such cold day.','It was such a cold day.','It was so a cold day.'],2)]},
+  {n:'Join with that',b:()=>[TASK('Join each pair with so … that or such … that','Write one sentence showing the result.'),
+    WRITE(2)('The music was very loud. We couldn’t talk.','It was a very boring lecture. Half the students left.','She has very little free time. She never sees her friends.','They were very kind people. We stayed a whole week.','The film was very frightening. I couldn’t sleep.','There was a lot of snow. The airport closed.')]},
+  {n:'Talk about your week',b:()=>[TASK('Write about your own week','Write six sentences using so, such, so much, so many and such a lot of.'),B('lines',{count:8})]}
+]},
+{id:'b2-narrative',name:'Narrative tenses: telling a story',
+ theory:T({icon:'📖',title:'Four past tenses working together',
+  form:[{s:'past simple',x:'the main events — I <em>opened</em> the door and <em>went</em> in.'},{s:'past continuous',x:'the background — It <em>was raining</em>. I <em>was reading</em> when …'},{s:'past perfect',x:'something earlier — The train <em>had already left</em>.'},{s:'past perfect continuous',x:'how long before that — She <em>had been waiting</em> for an hour.'}],
+  uses:[{r:'Past simple moves the story forward',x:'He got up, made coffee and left.'},{r:'Past continuous sets the scene or is interrupted',x:'The sun was shining when we set off.'},{r:'Past perfect goes back to an earlier point',x:'When I arrived, the film had started.'},{r:'Past perfect continuous gives the length of an earlier activity',x:'He was tired because he had been driving all night.'}],
+  words:['it was getting dark','while I was walking','by the time I arrived','had already','had been … for','suddenly'],
+  note:'<b>The classic pair:</b> <i>When I arrived, the film started</i> (I saw the beginning) vs <i>When I arrived, the film had started</i> (I missed it).'}),
+ ex:[
+  {n:'Complete the story',b:()=>[TASK('Put the verbs into the correct past tense','Choose past simple, continuous, perfect or perfect continuous.'),
+    ...FIBS('1  It [was raining] (rain) hard when we left the house.',
+    '2  By the time the ambulance arrived, the driver [had died] (die).',
+    '3  She [was reading] (read) when the lights went out.',
+    '4  He was out of breath because he [had been running] (run).',
+    '5  I didn’t recognise her — she [had changed] (change) completely.',
+    '6  While they [were arguing] (argue), the dinner burned.',
+    '7  We [had been waiting] (wait) for two hours when the train came.',
+    '8  As soon as I [saw] (see) his face, I knew something was wrong.',
+    '9  The room was a mess — somebody [had broken] (break) in.',
+    '10  He [was walking] (walk) home when he found the wallet.')]},
+  {n:'Which tense?',b:()=>[TASK('Circle the correct tense','Think about the order of events.'),
+    CHOOSE(['1  When we arrived, the concert ( started / had started ) — we missed the first song.','had started'],
+    ['2  I ( was cooking / cooked ) dinner when the phone rang.','was cooking'],
+    ['3  She ( had been living / lived ) in Paris for five years before she moved.','had been living'],
+    ['4  He opened the letter, ( read / was reading ) it and put it in his pocket.','read'],
+    ['5  The ground was wet because it ( rained / had rained ) in the night.','had rained'],
+    ['6  While I ( waited / was waiting ), I read the whole newspaper.','was waiting'],
+    ['7  They ( had finished / finished ) the report by six, so they went home.','had finished'],
+    ['8  It ( was getting / got ) dark, so we decided to turn back.','was getting'])]},
+  {n:'What happened first?',b:()=>[TASK('Choose the correct answer','Which action came first?'),
+    MC('When I got to the station, the train had left.',['I got there first.','The train left first.','At the same time.','The train never left.'],1),
+    MC('When I got to the station, the train left.',['I saw the train leave.','I missed it completely.','The train was cancelled.','I left too.'],0),
+    MC('She was cooking when he came home.',['She started cooking after he came.','She was already cooking.','She never cooked.','They cooked together.'],1),
+    MC('He had been working there for ten years when the factory closed.',['He started after it closed.','He worked there ten years before it closed.','He worked ten years after.','He never worked there.'],1),
+    MC('They had eaten before we arrived.',['We ate together.','They ate first.','We ate first.','Nobody ate.'],1),
+    MC('I was reading when I heard the noise.',['The noise came first.','I started reading after the noise.','The reading was already in progress.','I read about the noise.'],2)]},
+  {n:'Continue the story',b:()=>[TASK('Continue each opening','Write one sentence, using a different past tense from the one given.'),
+    WRITE(2)('The sun was setting over the empty beach when …','By the time the police arrived, the thief …','She had been standing in the queue for an hour when …','He opened the box, looked inside and …','It was the first time I had ever …','While everyone was watching the match, …')]},
+  {n:'Tell a story',b:()=>[TASK('Write a short story','Write ten sentences about something that happened to you. Use all four past tenses.'),B('lines',{count:10})]}
+]},
+{id:'b2-verb-meaning',name:'Verbs that change meaning: remember · stop · try',
+ theory:T({icon:'🔄',title:'Same verb, two patterns, two meanings',
+  form:[{s:'remember / forget',x:'<em>remember doing</em> = a memory · <em>remember to do</em> = not forget a duty'},{s:'stop',x:'<em>stop doing</em> = end it · <em>stop to do</em> = pause in order to do'},{s:'try',x:'<em>try doing</em> = experiment · <em>try to do</em> = make an effort'},{s:'regret / go on / mean',x:'<em>regret telling</em> · <em>regret to tell</em> — <em>go on talking</em> · <em>go on to talk</em>'}],
+  uses:[{r:'I remember locking the door = I did it and I recall it',x:'I remember meeting her in Prague.'},{r:'I remembered to lock the door = I didn’t forget',x:'Remember to call your mother.'},{r:'He stopped smoking = gave it up. He stopped to smoke = paused',x:'She stopped working / stopped to work it out.'},{r:'Try adding salt = experiment. Try to lift it = make an effort',x:'Try turning it off and on again.'}],
+  words:['remember doing / to do','stop doing / to do','try doing / to do','regret doing / to say','mean doing / to do'],
+  note:'<b>Also useful:</b> <i>need</i> works the same way — <i>The car needs washing</i> = <i>The car needs to be washed</i>.'}),
+ ex:[
+  {n:'Complete the sentences',b:()=>[TASK('Complete with the -ing form or to + infinitive','Use the verb in brackets.'),
+    ...FIBS('1  I distinctly remember [posting] (post) that letter last week.',
+    '2  Please remember [to lock] (lock) the door when you leave.',
+    '3  She stopped [smoking] (smoke) three years ago and feels much better.',
+    '4  On the way home he stopped [to buy] (buy) some milk.',
+    '5  I tried [phoning] (phone) her twice, but the line was busy.',
+    '6  He tried [to lift] (lift) the box but it was far too heavy.',
+    '7  We regret [to inform] (inform) you that your application was unsuccessful.',
+    '8  I’ll always regret [not going] (not go) to university.',
+    '9  He went on [talking] (talk) for another twenty minutes.',
+    '10  After the introduction she went on [to describe] (describe) her research.')]},
+  {n:'Choose the meaning',b:()=>[TASK('Circle the correct form','Read the whole sentence before choosing.'),
+    CHOOSE(['1  Don’t forget ( bringing / to bring ) your ID tomorrow.','to bring'],
+    ['2  I’ll never forget ( seeing / to see ) the Northern Lights.','seeing'],
+    ['3  The photocopier isn’t working. Try ( switching / to switch ) it off and on.','switching'],
+    ['4  He tried ( opening / to open ) the jar but couldn’t.','to open'],
+    ['5  We stopped ( having / to have ) lunch at a small café.','to have'],
+    ['6  You must stop ( working / to work ) so late every night.','working'],
+    ['7  I didn’t mean ( hurting / to hurt ) you.','to hurt'],
+    ['8  Taking the job means ( moving / to move ) to another city.','moving'])]},
+  {n:'What does it mean?',b:()=>[TASK('Choose the correct meaning','Choose the option that matches the sentence.'),
+    MC('She stopped to read the message.',['She never read messages again.','She paused in order to read it.','She gave up reading.','She read it quickly.'],1),
+    MC('She stopped reading the message.',['She paused to read it.','She stopped the activity of reading.','She read it again.','She started reading.'],1),
+    MC('I remember locking the door.',['I must not forget.','I have a clear memory of doing it.','I forgot to do it.','I will do it later.'],1),
+    MC('I remembered to lock the door.',['I have an old memory of it.','I did not forget my duty.','I forgot.','Someone else locked it.'],1),
+    MC('We regret to announce a delay.',['We are sorry about the past.','We are sorry to give this bad news now.','We will not announce it.','We enjoyed announcing it.'],1),
+    MC('The house needs painting.',['The house wants to paint.','Someone should paint the house.','The house is painted.','The house paints itself.'],1)]},
+  {n:'Explain the difference',b:()=>[TASK('Write a sentence for each','Show the difference in meaning clearly.'),
+    WRITE(2)('try doing something','try to do something','stop doing something','stop to do something','remember doing something','remember to do something')]},
+  {n:'About your own life',b:()=>[TASK('Write about yourself','Write six sentences: two with remember, two with stop, two with try — one of each pattern.'),B('lines',{count:8})]}
+]},
+{id:'b2-word-formation',name:'Word formation: prefixes & suffixes',
+ theory:T({icon:'🧱',title:'Building new words from words you know',
+  form:[{s:'negative prefixes',x:'<em>un</em>happy · <em>im</em>possible · <em>in</em>correct · <em>ir</em>regular · <em>il</em>legal · <em>dis</em>agree'},{s:'other prefixes',x:'<em>mis</em>understand · <em>over</em>work · <em>under</em>estimate · <em>re</em>write'},{s:'noun suffixes',x:'govern<em>ment</em> · decis<em>ion</em> · happi<em>ness</em> · possibil<em>ity</em>'},{s:'adjective suffixes',x:'care<em>ful</em> · care<em>less</em> · comfort<em>able</em> · attract<em>ive</em> · danger<em>ous</em>'}],
+  uses:[{r:'im- before p, b, m · ir- before r · il- before l',x:'impatient · irresponsible · illogical'},{r:'mis- = wrongly · over- = too much · under- = too little · re- = again',x:'misjudge · overcook · underpaid · rebuild'},{r:'Verbs → nouns with -ment, -ion, -ance; adjectives → nouns with -ness, -ity',x:'develop → development · kind → kindness'},{r:'Watch the spelling change',x:'happy → happiness · possible → possibility · decide → decision'}],
+  words:['un-','im-','ir-','dis-','mis-','over-','re-','-ment','-ness','-ity','-ful','-less','-able'],
+  note:'<b>Exam tip:</b> decide first what <i>part of speech</i> the gap needs — noun, adjective or adverb — and only then choose the ending.'}),
+ ex:[
+  {n:'Sort the prefixes',b:()=>[TASK('Sort the adjectives by their negative prefix','Write each word with the correct prefix in the right column.'),
+    B('wordbank',{title:'Words',words:['possible','patient','regular','legal','honest','correct','responsible','polite','logical','loyal','formal','rational']}),
+    B('sortcols',{cols:[{title:'un-'},{title:'im-'},{title:'in-'},{title:'ir- / il- / dis-'}]})]},
+  {n:'Make the right word',b:()=>[TASK('Complete with the correct form of the word in capitals','Change the word so that it fits the sentence.'),
+    B('wordform',{rows:[{s:'The instructions were completely [.] to me.',r:'COMPREHEND',a:'incomprehensible'},{s:'Her [.] in the final was outstanding.',r:'PERFORM',a:'performance'},{s:'He was criticised for his [.] with the accounts.',r:'CARE',a:'carelessness'},{s:'There is a strong [.] that the flight will be delayed.',r:'POSSIBLE',a:'possibility'},{s:'I completely [.] what she meant.',r:'UNDERSTAND',a:'misunderstood'},{s:'Their behaviour was totally [.].',r:'RESPONSIBLE',a:'irresponsible'},{s:'She spoke with great [.].',r:'CONFIDENT',a:'confidence'},{s:'He is one of the most [.] writers alive.',r:'SUCCESS',a:'successful'}]})]},
+  {n:'Choose the right form',b:()=>[TASK('Circle the correct word','Decide which part of speech the sentence needs.'),
+    CHOOSE(['1  The meeting was very ( produce / productive ).','productive'],
+    ['2  We need a ( decide / decision ) by Friday.','decision'],
+    ['3  He behaved ( responsible / responsibly ) throughout.','responsibly'],
+    ['4  Her ( kind / kindness ) surprised everyone.','kindness'],
+    ['5  The film was ( disappoint / disappointing ).','disappointing'],
+    ['6  It is ( imposible / impossible ) to finish today.','impossible'],
+    ['7  They ( rebuilt / unbuilt ) the bridge after the flood.','rebuilt'],
+    ['8  The report was full of ( accuracies / inaccuracies ).','inaccuracies'])]},
+  {n:'Build the family',b:()=>[TASK('Write the word family','For each word write the noun, the adjective and the negative adjective.'),
+    WRITE(2)('CARE','SUCCESS','PATIENCE','RESPONSIBLE','COMFORT','HOPE')]},
+  {n:'Use them in sentences',b:()=>[TASK('Write your own sentences','Choose eight words you formed above and write a sentence for each.'),B('lines',{count:8})]}
+]},
+{id:'b2-other-another',name:'other · another · others · the other',
+ theory:T({icon:'🔁',title:'One little group of words, four different jobs',
+  form:[{s:'another + singular noun',x:'Would you like <em>another cup</em>? (one more)'},{s:'other + plural / uncountable',x:'<em>Other people</em> disagree. · I have <em>other work</em> to do.'},{s:'the other + noun',x:'I write with <em>the other hand</em>. (the second of two)'},{s:'pronouns',x:'Some stayed, <em>others</em> left. · One is red, <em>the other</em> is blue.'}],
+  uses:[{r:'another = one more, or a different one — singular countable only',x:'Can I have another biscuit?'},{r:'other never takes -s before a noun',x:'other students (not: others students)'},{r:'others and the others are pronouns — nothing follows them',x:'Some agreed; others didn’t.'},{r:'the other = the remaining one of two; the others = all the rest',x:'One twin is quiet, the other is noisy.'}],
+  words:['another cup','other people','the other one','others','the others','each other','the other day'],
+  note:'<b>Fixed phrases:</b> <i>the other day</i> = a few days ago · <i>every other week</i> = every second week · <i>each other</i> = mutually.'}),
+ ex:[
+  {n:'Complete the sentences',b:()=>[TASK('Complete with another, other, others, the other or the others','Write one or two words in each gap.'),
+    ...FIBS('1  Would you like [another] cup of tea?',
+    '2  Some people like the cold; [others] hate it.',
+    '3  I can’t come on Tuesday. Could we meet [another] day?',
+    '4  One of the twins is at university; [the other] is still at school.',
+    '5  Marta and Kim arrived early. [The others] came after lunch.',
+    '6  There are [other] ways of solving this problem.',
+    '7  I saw him [the other] day in the supermarket.',
+    '8  We visit my parents every [other] weekend.',
+    '9  They have known [each other] since childhood.',
+    '10  Half the students passed; [the others] have to resit.')]},
+  {n:'Choose the correct word',b:()=>[TASK('Circle the correct word','Look at whether a noun follows, and whether it is singular or plural.'),
+    CHOOSE(['1  Do you have any ( other / others ) questions?','other'],
+    ['2  Some agreed, but ( other / others ) refused.','others'],
+    ['3  Give me ( another / other ) five minutes.','another'],
+    ['4  One shoe is here — where is ( other / the other )?','the other'],
+    ['5  There are many ( other / others ) reasons.','other'],
+    ['6  I met her ( another / the other ) day.','the other'],
+    ['7  They wrote to ( each other / the others each ) every week.','each other'],
+    ['8  Two people stayed; ( the others / other ) went home.','the others'])]},
+  {n:'Which is correct?',b:()=>[TASK('Choose the correct sentence','Only one sentence in each group is correct.'),
+    MC('',['I need others pen.','I need another pen.','I need other pen.','I need the others pen.'],1),
+    MC('',['Others students disagreed.','Other students disagreed.','Another students disagreed.','Other student disagreed.'],1),
+    MC('',['One is mine, other is yours.','One is mine, the other is yours.','One is mine, another is yours.','One is mine, others is yours.'],1),
+    MC('',['Where are the other?','Where are the others?','Where are another?','Where are other?'],1),
+    MC('',['We see us every week.','We see each other every week.','We see the other every week.','We see others every week.'],1),
+    MC('',['I go there every other week.','I go there every another week.','I go there every others week.','I go there every the other week.'],0)]},
+  {n:'Correct the mistakes',b:()=>[TASK('Find and correct the mistake','Each sentence has one mistake. Rewrite it correctly.'),
+    WRITE(2)('Would you like other piece of cake?','Some students passed but other failed.','One book is on the table, another is on the shelf — there are only two.','They have known themselves for years.','I saw her another day at the station.','Where are other? We are all waiting.')]},
+  {n:'Compare two things',b:()=>[TASK('Write your own sentences','Compare two people, two cities or two jobs. Use another, other, the other and the others.'),B('lines',{count:8})]}
+]},
+{id:'b2-perception',name:'see / hear / watch + infinitive or -ing',
+ theory:T({icon:'👀',title:'Did you see the whole thing, or only part of it?',
+  form:[{s:'+ infinitive (no <i>to</i>)',x:'I <em>saw him leave</em> the building. (complete action)'},{s:'+ -ing',x:'I <em>saw him leaving</em> the building. (in progress)'},{s:'with a noise',x:'I <em>heard someone shout</em>. · I <em>heard someone shouting</em> for hours.'},{s:'passive: <i>to</i> comes back',x:'He <em>was seen to leave</em> the building.'}],
+  uses:[{r:'Bare infinitive for a single, complete action from start to finish',x:'I watched her open the letter and read it.'},{r:'-ing for an action already in progress, or a longer one',x:'I saw them arguing in the street.'},{r:'Verbs in this group: see, hear, watch, notice, feel, observe',x:'I felt something touch my arm.'},{r:'In the passive the infinitive takes <b>to</b>',x:'The thief was seen to enter the shop.'}],
+  words:['see sb do','see sb doing','hear sb do','hear sb doing','watch sb do','notice sb doing','be seen to do'],
+  note:'<b>Careful:</b> after <i>see, hear, watch</i> the infinitive has <b>no <i>to</i></b> — <i>I saw him fall</i>, not <s>I saw him to fall</s>.'}),
+ ex:[
+  {n:'Complete the sentences',b:()=>[TASK('Put the verb into the infinitive or the -ing form','Think about whether the action was complete or in progress.'),
+    ...FIBS('1  I saw her [get] (get) into a taxi and drive away.',
+    '2  As I passed the window I saw them [dancing] (dance) in the kitchen.',
+    '3  We heard the bomb [explode] (explode) — one loud bang.',
+    '4  I could hear the neighbours [arguing] (argue) all evening.',
+    '5  She felt something [touch] (touch) her shoulder and turned round.',
+    '6  I noticed him [watching] (watch) me from across the room.',
+    '7  We watched the sun [set] (set) behind the mountains.',
+    '8  The suspect was seen [to leave] (leave) the building at midnight.',
+    '9  Did you hear me [call] (call) you? I shouted your name once.',
+    '10  I can smell something [burning] (burn) in the kitchen.')]},
+  {n:'Complete or in progress?',b:()=>[TASK('Circle the correct form','Choose the form that matches the meaning.'),
+    CHOOSE(['1  I saw the plane ( land / landing ) safely — I watched the whole thing.','land'],
+    ['2  When I looked out, I saw it ( rain / raining ) heavily.','raining'],
+    ['3  We heard the door ( slam / slamming ) once, then silence.','slam'],
+    ['4  I lay awake listening to the rain ( fall / falling ) on the roof.','falling'],
+    ['5  He was heard ( to say / saying ) that he would resign.','to say'],
+    ['6  I watched her ( write / to write ) the whole letter.','write'],
+    ['7  I noticed someone ( follow / following ) us for several streets.','following'],
+    ['8  She felt the ground ( shake / to shake ) beneath her.','shake'])]},
+  {n:'What does it mean?',b:()=>[TASK('Choose the correct meaning','Choose the option that matches the sentence.'),
+    MC('I saw him cross the road.',['I saw the whole crossing.','I saw part of it.','I helped him cross.','He didn’t cross.'],0),
+    MC('I saw him crossing the road.',['I saw the whole crossing.','I saw him in the middle of crossing.','He never crossed.','I crossed with him.'],1),
+    MC('I heard her sing at the festival.',['I heard the whole performance.','I heard one note.','She didn’t sing.','I sang with her.'],0),
+    MC('He was seen to take the money.',['Nobody saw him.','Somebody saw him take it.','He saw somebody take it.','The money was lost.'],1),
+    MC('I could hear water dripping all night.',['One single drip.','A continuous sound over a long time.','The tap was off.','I heard nothing.'],1),
+    MC('I felt the train move.',['A single, complete movement.','The train stayed still.','I moved the train.','I was outside the train.'],0)]},
+  {n:'Describe what you saw',b:()=>[TASK('Rewrite using see, hear or watch','Use the infinitive or the -ing form, whichever fits.'),
+    WRITE(2)('The man got into the car. I was watching the whole time.','The children were playing in the garden. I looked out once.','Somebody shouted my name. It was one short shout.','The birds were singing. I lay in bed listening for an hour.','She opened the parcel. I watched from start to finish.','Someone was following me. I noticed it in the street.')]},
+  {n:'An eyewitness account',b:()=>[TASK('Write what you saw','Imagine you witnessed an unusual event. Write eight sentences using see, hear, watch, notice and feel.'),B('lines',{count:8})]}
+]},
+{id:'b2-quite-rather',name:'quite · rather · fairly · pretty · a bit',
+ theory:T({icon:'🎚️',title:'Turning an adjective up or down',
+  form:[{s:'softer than "very"',x:'It was <em>quite</em> good. · She is <em>fairly</em> tall. · It’s <em>pretty</em> cold.'},{s:'negative colouring',x:'The film was <em>rather</em> disappointing. · I’m <em>a bit</em> tired.'},{s:'with a strong adjective',x:'<em>quite</em> excellent = completely excellent'},{s:'with a noun',x:'<em>quite a</em> good film · <em>rather a</em> long journey'}],
+  uses:[{r:'fairly < quite < rather < very',x:'fairly warm → quite warm → rather warm'},{r:'rather and a bit usually go with something negative',x:'rather expensive · a bit boring'},{r:'rather with something positive = a surprise',x:'The exam was rather easy, actually!'},{r:'With non-gradable adjectives quite means "completely"',x:'quite perfect · quite impossible · quite right'}],
+  words:['fairly','quite','rather','pretty','a bit','quite a','rather a','not quite'],
+  note:'<b>Careful:</b> <i>a bit</i> only works with negative adjectives. <i>a bit tired</i> ✓ · <s>a bit happy</s> ✗ — say <i>quite happy</i>.'}),
+ ex:[
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write quite, rather, fairly, pretty or a bit.'),
+    ...FIBS('1  I’m [a bit] worried about the exam, to be honest.',
+    '2  The hotel was [fairly] comfortable, but nothing special.',
+    '3  That’s [quite] impossible — the deadline is tomorrow.',
+    '4  The journey took [rather] longer than we expected.',
+    '5  She speaks Italian [pretty] well for a beginner.',
+    '6  You’re [quite] right — I hadn’t thought of that.',
+    '7  It was [rather] a disappointing performance.',
+    '8  The room is [quite] a nice size, actually.',
+    '9  I’m [a bit] disappointed with my mark.',
+    '10  He’s [fairly] confident he will get the job.')]},
+  {n:'Which one fits?',b:()=>[TASK('Circle the correct word','Think about whether the adjective is positive or negative.'),
+    CHOOSE(['1  The meal was ( a bit / quite ) delicious.','quite'],
+    ['2  I found the lecture ( a bit / very ) dull.','a bit'],
+    ['3  You are ( fairly / quite ) certain about that, aren’t you?','quite'],
+    ['4  It was ( rather / a bit ) a difficult decision.','rather'],
+    ['5  The weather is ( quite / a bit ) perfect today.','quite'],
+    ['6  She was ( pretty / rather ) pleased with her results.','pretty'],
+    ['7  It’s ( fairly / quite ) obvious what he means.','quite'],
+    ['8  The bus was ( a bit / quite ) late again.','a bit'])]},
+  {n:'How strong is it?',b:()=>[TASK('Choose the correct meaning','Choose the option closest in meaning.'),
+    MC('It was quite cold.',['freezing','a little cold, but not very','warm','not cold at all'],1),
+    MC('It was quite impossible.',['a little difficult','completely impossible','possible with effort','quite easy'],1),
+    MC('The film was rather good.',['bad','surprisingly good','the best ever','boring'],1),
+    MC('I’m a bit annoyed.',['furious','slightly annoyed','delighted','not annoyed'],1),
+    MC('The test was fairly easy.',['extremely easy','reasonably easy','very hard','impossible'],1),
+    MC('You’re quite right.',['partly right','completely right','wrong','almost right'],1)]},
+  {n:'Soften the sentence',b:()=>[TASK('Rewrite each sentence more politely','Use quite, rather, fairly, pretty or a bit instead of the strong word.'),
+    WRITE(2)('Your essay is terrible.','The hotel was awful.','I hate this exercise.','His accent is impossible to understand.','The price is outrageous.','She was extremely rude to me.')]},
+  {n:'Describe your week',b:()=>[TASK('Write about yourself','Write six sentences about your week using quite, rather, fairly, pretty and a bit.'),B('lines',{count:8})]}
+]},
+{id:'b2-articles-places',name:'Articles with places & institutions',
+ theory:T({icon:'🗺️',title:'go to school or go to the school?',
+  form:[{s:'no article — the purpose',x:'go to <em>school</em> · be in <em>hospital</em> · go to <em>bed</em> · at <em>work</em>'},{s:'the — the building',x:'go to <em>the school</em> to meet the head · park at <em>the hospital</em>'},{s:'the — with of, seas, ranges, plurals',x:'<em>the</em> Republic of Ireland · <em>the</em> Alps · <em>the</em> Netherlands'},{s:'no article — most place names',x:'France · Lake Como · Mount Fuji · Oxford Street'}],
+  uses:[{r:'No article when you go there for its purpose',x:'My son goes to school. / She’s in hospital.'},{r:'Use the when you mean the actual building',x:'I left my car at the school.'},{r:'Countries with of, plurals or a political word take the',x:'the United States · the Philippines'},{r:'Rivers, seas and ranges take the; single mountains and lakes do not',x:'the Danube · the Andes — but Everest, Lake Geneva'}],
+  words:['go to school','in hospital','at university','the cinema','the United Kingdom','the Thames','Mount Everest'],
+  note:'<b>Note:</b> British English says <i>in hospital</i> and <i>at university</i>; American English says <i>in the hospital</i>.'}),
+ ex:[
+  {n:'Add the article',b:()=>[TASK('Complete with the or leave the gap empty','Write <i>the</i> or a dash (—) if no article is needed.'),
+    ...FIBS('1  My daughter starts [—] school in September.',
+    '2  I had to drive to [the] school to collect her bag.',
+    '3  He has been in [—] hospital since Tuesday.',
+    '4  We met outside [the] hospital at six.',
+    '5  She studied law at [—] university.',
+    '6  They sailed down [the] Nile.',
+    '7  We climbed [—] Mount Kilimanjaro last year.',
+    '8  He comes from [the] Netherlands.',
+    '9  We spent a week by [—] Lake Como.',
+    '10  The talks took place in [the] United Arab Emirates.')]},
+  {n:'Purpose or building?',b:()=>[TASK('Circle the correct option','Ask yourself: the purpose, or the actual building?'),
+    CHOOSE(['1  My grandmother is in ( hospital / the hospital ) after her fall.','hospital'],
+    ['2  The conference was held at ( university / the university ) in Leeds.','the university'],
+    ['3  I go to ( bed / the bed ) at eleven.','bed'],
+    ['4  He’s in ( prison / the prison ) for three years.','prison'],
+    ['5  We drove past ( prison / the prison ) on the way.','the prison'],
+    ['6  She’s at ( work / the work ) until six.','work'],
+    ['7  Shall we go to ( cinema / the cinema ) tonight?','the cinema'],
+    ['8  He was sent to ( church / the church ) to fetch the key.','the church'])]},
+  {n:'Which is correct?',b:()=>[TASK('Choose the correct sentence','Only one sentence in each group is correct.'),
+    MC('',['I come from the France.','I come from France.','I come from a France.','I come from France the.'],1),
+    MC('',['We crossed Atlantic.','We crossed the Atlantic.','We crossed an Atlantic.','We crossed Atlantic Ocean.'],1),
+    MC('',['She lives in United States.','She lives in the United States.','She lives in a United States.','She lives in States United.'],1),
+    MC('',['We climbed the Everest.','We climbed Everest.','We climbed an Everest.','We climbed Everest the.'],1),
+    MC('',['He walked along the Oxford Street.','He walked along Oxford Street.','He walked along an Oxford Street.','He walked Oxford the Street.'],1),
+    MC('',['They hiked in Alps.','They hiked in the Alps.','They hiked in an Alps.','They hiked in Alps the.'],1)]},
+  {n:'Sort the place names',b:()=>[TASK('Sort the place names','Which take <i>the</i> and which take no article?'),
+    B('wordbank',{title:'Words',words:['Amazon','Sweden','Himalayas','Lake Victoria','Black Sea','Mount Etna','Philippines','Red Square','Danube','Czech Republic']}),
+    B('sortcols',{cols:[{title:'takes the'},{title:'no article'}]})]},
+  {n:'Describe a journey',b:()=>[TASK('Write about a journey','Write eight sentences about a journey, naming countries, rivers, mountains and buildings.'),B('lines',{count:8})]}
+]}
+];
+const GRAMMAR_A2=[
+{id:'a2-plurals',name:'Plurals: regular & irregular',
+ theory:T({icon:'🔢',title:'One book, two books — and the odd ones',
+  form:[{s:'most nouns: + s',x:'book → book<em>s</em> · table → table<em>s</em>'},{s:'-s, -sh, -ch, -x: + es',x:'bus → bus<em>es</em> · watch → watch<em>es</em> · box → box<em>es</em>'},{s:'consonant + y → ies',x:'city → cit<em>ies</em> · baby → bab<em>ies</em>'},{s:'irregular',x:'man → <em>men</em> · child → <em>children</em> · foot → <em>feet</em> · fish → <em>fish</em>'}],
+  uses:[{r:'Add -es after a hissing sound',x:'glasses, boxes, churches'},{r:'Vowel + y just takes -s',x:'boy → boys · day → days'},{r:'Some nouns ending in -f change to -ves',x:'knife → knives · leaf → leaves'},{r:'A few nouns do not change at all',x:'one sheep, two sheep · one fish, two fish'}],
+  words:['books','buses','cities','men','women','children','feet','teeth','people','knives'],
+  note:'<b>Remember:</b> <i>people</i> is already plural — say <i>many people are</i>, not <s>peoples</s>.'}),
+ ex:[
+  {n:'Write the plural',b:()=>[TASK('Write the plural form','Write one word in each gap.'),
+    ...FIBS('1  one box → two [boxes]',
+    '2  one city → three [cities]',
+    '3  one man → five [men]',
+    '4  one child → two [children]',
+    '5  one watch → six [watches]',
+    '6  one knife → four [knives]',
+    '7  one foot → two [feet]',
+    '8  one baby → three [babies]',
+    '9  one sheep → ten [sheep]',
+    '10  one tooth → thirty-two [teeth]')]},
+  {n:'Choose the correct plural',b:()=>[TASK('Circle the correct word','Only one form is correct.'),
+    CHOOSE(['1  There are three ( buss / buses ) a day.','buses'],
+    ['2  I have two ( childs / children ).','children'],
+    ['3  She bought six ( tomatos / tomatoes ).','tomatoes'],
+    ['4  The ( womans / women ) are waiting outside.','women'],
+    ['5  We saw a lot of ( fishes / fish ) in the lake.','fish'],
+    ['6  My ( foots / feet ) hurt.','feet'],
+    ['7  He has two ( babys / babies ).','babies'],
+    ['8  Many ( person / people ) came to the party.','people'])]},
+  {n:'Sort the plurals',b:()=>[TASK('Sort the nouns by their plural ending','Write each plural in the correct column.'),
+    B('wordbank',{title:'Words',words:['book','bus','city','box','boy','baby','watch','day','glass','party','chair','brush']}),
+    B('sortcols',{cols:[{title:'+ s'},{title:'+ es'},{title:'y → ies'}]})]},
+  {n:'Write about your things',b:()=>[TASK('Write six sentences','Use a plural noun in each sentence, about your home or your class.'),
+    WRITE(1)('two things in your bag','three things in your kitchen','people in your family','animals you like','things on your desk','places in your town')]},
+  {n:'Count the room',b:()=>[TASK('Look around you','Write eight sentences: "There are three windows." Use plural nouns.'),B('lines',{count:8})]}
+]},
+{id:'a2-frequency',name:'Adverbs of frequency & time expressions',
+ theory:T({icon:'🕒',title:'How often do you do it?',
+  form:[{s:'scale',x:'<em>always</em> → <em>usually</em> → <em>often</em> → <em>sometimes</em> → <em>rarely</em> → <em>never</em>'},{s:'position',x:'I <em>always</em> get up at seven. · She is <em>never</em> late.'},{s:'how often',x:'<em>every day</em> · <em>twice a week</em> · <em>once a month</em> · <em>at weekends</em>'},{s:'questions',x:'<em>How often</em> do you go to the gym?'}],
+  uses:[{r:'Frequency adverbs go BEFORE the main verb',x:'I often walk to work.'},{r:'But AFTER the verb <i>be</i>',x:'She is often tired.'},{r:'Time expressions go at the end (or the beginning)',x:'I play tennis twice a week.'},{r:'never is already negative — don’t add don’t',x:'I never eat meat. (not: I don’t never eat)'}],
+  words:['always','usually','often','sometimes','rarely','never','every day','twice a week','once a month'],
+  note:'<b>Careful:</b> <i>I am always late</i> but <i>I always arrive late</i> — the adverb jumps over <i>be</i>.'}),
+ ex:[
+  {n:'Put the adverb in',b:()=>[TASK('Rewrite the sentence with the adverb in brackets','Write the missing words.'),
+    ...FIBS('1  (always) I [always get] up at six o’clock.',
+    '2  (never) She [is never] late for class.',
+    '3  (often) We [often go] to the cinema on Fridays.',
+    '4  (sometimes) They [are sometimes] very noisy.',
+    '5  (usually) He [usually walks] to school.',
+    '6  (rarely) I [rarely eat] fast food.',
+    '7  (always) My brother [is always] hungry.',
+    '8  (never) We [never watch] TV in the morning.',
+    '9  (often) Do you [often play] football?',
+    '10  (sometimes) It [is sometimes] cold in May.')]},
+  {n:'Where does it go?',b:()=>[TASK('Circle the correct sentence','Choose the sentence with the correct word order.'),
+    CHOOSE(['1  ( I always am tired. / I am always tired. )','I am always tired.'],
+    ['2  ( She goes often to the park. / She often goes to the park. )','She often goes to the park.'],
+    ['3  ( We never are late. / We are never late. )','We are never late.'],
+    ['4  ( He plays usually chess. / He usually plays chess. )','He usually plays chess.'],
+    ['5  ( I go to the gym twice a week. / I twice a week go to the gym. )','I go to the gym twice a week.'],
+    ['6  ( They are sometimes busy. / They sometimes are busy. )','They are sometimes busy.'],
+    ['7  ( I don’t never smoke. / I never smoke. )','I never smoke.'],
+    ['8  ( How often do you travel? / How often you travel? )','How often do you travel?'])]},
+  {n:'Build the sentences',b:()=>[TASK('Make true sentences about yourself','Take one part from each column.'),
+    B('substitution',{cols:[['I','My friend','We'],['always','usually','sometimes','never'],['get up early','eat breakfast','walk to work','watch TV'],['at the weekend.','during the week.','in the morning.']]})]},
+  {n:'Answer about you',b:()=>[TASK('Answer the questions in full sentences','Use a frequency adverb or a time expression.'),
+    WRITE(1)('How often do you speak English?','How often do you cook?','How often are you late?','How often do you see your family?','How often do you do sport?','How often do you read a book?')]},
+  {n:'Your week',b:()=>[TASK('Write about your week','Write eight sentences about your usual week, using a different frequency word in each.'),B('lines',{count:8})]}
+]},
+{id:'a2-pronouns',name:'Subject, object & possessive pronouns',
+ theory:T({icon:'👤',title:'I · me · my · mine',
+  form:[{s:'subject',x:'<em>I</em> · <em>you</em> · <em>he</em> · <em>she</em> · <em>it</em> · <em>we</em> · <em>they</em>'},{s:'object',x:'<em>me</em> · <em>you</em> · <em>him</em> · <em>her</em> · <em>it</em> · <em>us</em> · <em>them</em>'},{s:'possessive adjective',x:'<em>my</em> · <em>your</em> · <em>his</em> · <em>her</em> · <em>its</em> · <em>our</em> · <em>their</em>'},{s:'possessive pronoun',x:'<em>mine</em> · <em>yours</em> · <em>his</em> · <em>hers</em> · <em>ours</em> · <em>theirs</em>'}],
+  uses:[{r:'Subject pronouns come before the verb',x:'She works here.'},{r:'Object pronouns come after the verb or a preposition',x:'I saw her. / Give it to me.'},{r:'A possessive adjective is always followed by a noun',x:'This is my book.'},{r:'A possessive pronoun stands alone',x:'This book is mine.'}],
+  words:['I / me / my / mine','he / him / his','she / her / hers','we / us / our / ours','they / them / their / theirs'],
+  note:'<b>Careful:</b> <i>its</i> means "belonging to it"; <i>it’s</i> means "it is". The dog wagged <b>its</b> tail.'}),
+ ex:[
+  {n:'Complete the sentences',b:()=>[TASK('Complete with the correct pronoun','Write one word in each gap.'),
+    ...FIBS('1  This is my sister. [She] is a doctor.',
+    '2  I like Tom. I see [him] every day.',
+    '3  That is not your coat, it is [mine].',
+    '4  We are late. Please wait for [us].',
+    '5  Anna lost [her] keys this morning.',
+    '6  The children are hungry. Give [them] some bread.',
+    '7  Is this your pen? — Yes, it is [mine].',
+    '8  My parents sold [their] car last year.',
+    '9  The cat is washing [its] face.',
+    '10  Can you help [me], please?')]},
+  {n:'Which pronoun?',b:()=>[TASK('Circle the correct word','Only one pronoun fits.'),
+    CHOOSE(['1  ( He / Him ) lives in Madrid.','He'],
+    ['2  I called ( she / her ) yesterday.','her'],
+    ['3  This is ( our / ours ) house.','our'],
+    ['4  That bag is ( her / hers ).','hers'],
+    ['5  ( We / Us ) are going home now.','We'],
+    ['6  Tell ( they / them ) the truth.','them'],
+    ['7  The dog hurt ( it’s / its ) leg.','its'],
+    ['8  Are these books ( your / yours )?','yours'])]},
+  {n:'Sort the pronouns',b:()=>[TASK('Sort the words into the right column','Write each word where it belongs.'),
+    B('wordbank',{title:'Words',words:['I','me','my','mine','he','him','his','we','us','our','they','them']}),
+    B('sortcols',{cols:[{title:'subject'},{title:'object'},{title:'possessive'}]})]},
+  {n:'Rewrite without the noun',b:()=>[TASK('Rewrite using a pronoun','Replace the underlined words with a pronoun.'),
+    WRITE(1)('Maria called Maria’s mother.','Give the books to Tom and me.','This car belongs to my parents.','Peter and I are going out.','I saw Anna and Kate at the shop.','The phone is my phone.')]},
+  {n:'Your family',b:()=>[TASK('Write about your family','Write eight sentences about your family using I, he, she, we, my, his, her and their.'),B('lines',{count:8})]}
+]},
+{id:'a2-this-that',name:'this · that · these · those',
+ theory:T({icon:'👉',title:'Near me or over there?',
+  form:[{s:'near, one thing',x:'<em>This</em> is my bag.'},{s:'far, one thing',x:'<em>That</em> is your bag.'},{s:'near, many things',x:'<em>These</em> are my books.'},{s:'far, many things',x:'<em>Those</em> are your books.'}],
+  uses:[{r:'this / these = near the speaker',x:'This pen (in my hand) is new.'},{r:'that / those = further away',x:'That building over there is a bank.'},{r:'They work with a noun or alone',x:'this book / This is my book.'},{r:'On the phone we say: this is …',x:'Hello, this is Anna speaking.'}],
+  words:['this','that','these','those','this one','that one','these ones','those ones'],
+  note:'<b>Careful:</b> use <i>these</i> and <i>those</i> only with plural nouns — <i>these books</i>, not <s>these book</s>.'}),
+ ex:[
+  {n:'Near or far?',b:()=>[TASK('Complete with this, that, these or those','Write one word in each gap.'),
+    ...FIBS('1  [This] is my phone — here in my hand.',
+    '2  [That] is the school, at the end of the street.',
+    '3  [These] shoes (on my feet) are very comfortable.',
+    '4  Look at [those] birds in the sky!',
+    '5  Do you like [this] photo? I took it yesterday.',
+    '6  Who is [that] man over there?',
+    '7  [These] are my children, Anna and Marco.',
+    '8  [Those] mountains are a long way away.',
+    '9  Hello, [this] is Katia speaking.',
+    '10  I don’t like [those] chairs at the back.')]},
+  {n:'Singular or plural?',b:()=>[TASK('Circle the correct word','Look at the noun.'),
+    CHOOSE(['1  ( This / These ) apples are fresh.','These'],
+    ['2  ( That / Those ) car is very fast.','That'],
+    ['3  I bought ( this / these ) sweater today.','this'],
+    ['4  ( That / Those ) houses are new.','Those'],
+    ['5  ( This / These ) is my best friend.','This'],
+    ['6  Give me ( that / those ) book, please.','that'],
+    ['7  ( These / This ) exercises are difficult.','These'],
+    ['8  Look at ( that / those ) beautiful flowers!','those'])]},
+  {n:'Choose the meaning',b:()=>[TASK('Choose the correct answer','Where is the thing?'),
+    MC('This is my seat.',['far from me','here, next to me','behind the door','in another room'],1),
+    MC('Those are expensive.',['one thing, near','many things, far','one thing, far','many things, near'],1),
+    MC('These look good.',['many things, near','one thing, near','many things, far','nothing'],0),
+    MC('That was delicious.',['something near now','something finished or further away','many things','a plan'],1),
+    MC('Can I try these on?',['one shirt','several items, here','one item, far','nothing'],1),
+    MC('Hello, this is Marco.',['Marco is far away','Marco is speaking on the phone','Marco is a thing','Marco left'],1)]},
+  {n:'In the shop',b:()=>[TASK('Write what you say','Write one sentence for each situation, using this, that, these or those.'),
+    WRITE(1)('You want the shoes you are holding.','You point at a jacket across the shop.','You show the shop assistant two shirts in your hand.','You ask about the bags on the top shelf.','You introduce your friend standing beside you.','You answer the phone.')]},
+  {n:'In your classroom',b:()=>[TASK('Look around the room','Write eight sentences about things near you and far from you.'),B('lines',{count:8})]}
+]}
+];
 function tagBank(bank,cat,fallback){bank.forEach(t=>{t.cat=cat;t.lvl=TOPIC_LEVEL[t.id]||fallback;});}
+tagBank(GRAMMAR_A2,'grammar','A2');
 tagBank(GRAMMAR_B1,'grammar','B1');
+tagBank(GRAMMAR_B2,'grammar','B2');
 tagBank(GRAMMAR_C1,'grammar','C1');
 tagBank(GRAMMAR_IDIOM,'vocab','B2');
 tagBank(GRAMMAR_ACADEMIC,'vocab','C1');
 tagBank(GRAMMAR_TOPICVOCAB,'vocab','B1');
-const ALL_TOPICS=[].concat(GRAMMAR_B1,GRAMMAR_C1,GRAMMAR_TOPICVOCAB,GRAMMAR_IDIOM,GRAMMAR_ACADEMIC);
+const ALL_TOPICS=[].concat(GRAMMAR_A2,GRAMMAR_B1,GRAMMAR_B2,GRAMMAR_C1,GRAMMAR_TOPICVOCAB,GRAMMAR_IDIOM,GRAMMAR_ACADEMIC);
 const LEVEL_ORDER=['A2','B1','B2','C1'];
 const LEVEL_BLURB={
  A2:'The building blocks — the tenses, articles and question forms every learner needs before anything else.',
@@ -13311,9 +14977,16 @@ $('#brandInput').addEventListener('blur',()=>{scheduleSnapshot();renderAll();});
 $('#uiThemeBtn').onclick=()=>{const cur=document.documentElement.getAttribute('data-ui');const nx=cur==='dark'?'':'dark';document.documentElement.setAttribute('data-ui',nx);try{localStorage.setItem('ws_ui',nx);}catch(e){}};
 
 // zoom
-function setZoom(z){zoom=Math.max(.5,Math.min(1.6,z));$('#zoomwrap').style.transform=`scale(${zoom})`;$('#zVal').textContent=Math.round(zoom*100)+'%';}
-$('#zIn').onclick=()=>setZoom(zoom+.1);$('#zOut').onclick=()=>setZoom(zoom-.1);
-$('#zFit').onclick=()=>{const cw=$('#canvas').clientWidth-60;setZoom(Math.min(1,cw/794));};
+function setZoom(z){zoom=Math.max(.28,Math.min(1.6,z));$('#zoomwrap').style.transform=`scale(${zoom})`;$('#zVal').textContent=Math.round(zoom*100)+'%';}
+let userZoomed=false;
+$('#zIn').onclick=()=>{userZoomed=true;setZoom(zoom+.1);};$('#zOut').onclick=()=>{userZoomed=true;setZoom(zoom-.1);};
+function fitToWidth(){const c=$('#canvas');if(!c)return;
+  const pad=c.clientWidth<560?16:60;setZoom(Math.min(1,(c.clientWidth-pad)/794));}
+$('#zFit').onclick=()=>{userZoomed=false;fitToWidth();};
+function autoFit(){if(userZoomed)return;const c=$('#canvas');
+  if(c&&c.clientWidth<794+40)fitToWidth();else setZoom(1);}
+window.addEventListener('resize',()=>{clearTimeout(window.__fitT);window.__fitT=setTimeout(autoFit,150);});
+setTimeout(autoFit,320);
 
 // templates + library modals
 function buildTemplates(){const g=$('#tmplGrid');g.innerHTML='';TEMPLATES.forEach(t=>{const c=el('div','tmpl',`<div class="em">${t.em}</div><b>${t.name}</b><small>${t.desc}</small>`);
@@ -13327,9 +15000,53 @@ document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>{closeModal('
 ['#libModal','#tmplModal'].forEach(sel=>$(sel).addEventListener('click',e=>{if(e.target.id===sel.slice(1))closeModal(sel);}));
 
 // mobile panels
-$('#mobLeft').onclick=()=>{$('#leftPanel').classList.toggle('open');$('#backdrop').classList.toggle('show',$('#leftPanel').classList.contains('open'));};
-$('#mobRight').onclick=()=>{$('#rightPanel').classList.toggle('open');$('#backdrop').classList.toggle('show',$('#rightPanel').classList.contains('open'));};
-$('#backdrop').onclick=()=>{$('#leftPanel').classList.remove('open');$('#rightPanel').classList.remove('open');$('#backdrop').classList.remove('show');};
+/* ---------- rail + dock ---------- */
+const DOCK_TITLES={blocks:'Add block',inspect:'Selected block',design:'Worksheet design',pages:'Pages',file:'File and plan'};
+const SEC_GROUP={'add block':'blocks','pages':'pages','footer branding':'file','file':'file',
+  'worksheet design':'design','style':'design','block properties':'inspect'};
+let dockGroup='blocks',dockOpen=true;
+function buildDock(){
+  const body=$('#dockBody');
+  document.querySelectorAll('#leftPanel .sec, #rightPanel .sec').forEach(sec=>{
+    const h=sec.querySelector('h3');
+    const key=h?h.textContent.replace(/\s*\d+\s*$/,'').trim().toLowerCase():'';
+    sec.dataset.grp=SEC_GROUP[key]||'file';
+    body.appendChild(sec);
+  });
+  if(innerWidth<1180){dockOpen=false;$('#app').classList.remove('dock-open');
+    document.querySelectorAll('.rb[data-grp]').forEach(b=>b.classList.remove('on'));}
+  else showGroup(dockGroup,true);
+}
+function showGroup(g,keepOpen){
+  if(dockOpen&&g===dockGroup&&!keepOpen){closeDock();return;}
+  dockGroup=g;dockOpen=true;
+  let badge='';
+  document.querySelectorAll('#dockBody .sec').forEach(sec=>{
+    sec.hidden=sec.dataset.grp!==g;
+    if(!sec.hidden){const h=sec.querySelector('h3');
+      if(h){const same=h.textContent.replace(/\s*\d+\s*$/,'').trim().toLowerCase()===(DOCK_TITLES[g]||'').toLowerCase();
+        h.style.display=same?'none':'';
+        if(same){const pl=h.querySelector('.pill');badge=pl?pl.textContent.trim():'';}}}});
+  $('#dockTitle').textContent=DOCK_TITLES[g]||'';
+  const bd=$('#dockBadge');if(bd){bd.textContent=badge;bd.hidden=!badge;}
+  document.querySelectorAll('.rb[data-grp]').forEach(b=>b.classList.toggle('on',b.dataset.grp===g));
+  $('#app').classList.add('dock-open');
+  setTimeout(()=>{if(!userZoomed)autoFit();},260);
+}
+function closeDock(){dockOpen=false;$('#app').classList.remove('dock-open');
+  document.querySelectorAll('.rb[data-grp]').forEach(b=>b.classList.remove('on'));
+  setTimeout(()=>{if(!userZoomed)autoFit();},260);}
+document.querySelectorAll('.rb[data-grp]').forEach(b=>b.onclick=()=>showGroup(b.dataset.grp));
+$('#dockClose').onclick=closeDock;
+$('#canvas').addEventListener('pointerdown',()=>{if(innerWidth<=980&&dockOpen)closeDock();},true);
+$('#railTheme').onclick=()=>$('#uiThemeBtn').click();
+$('#mobLeft').onclick=()=>showGroup('blocks');
+$('#mobRight').onclick=()=>showGroup('design');
+$('#backdrop').onclick=()=>{$('#backdrop').classList.remove('show');};
+$('#cUndo').onclick=()=>$('#undoBtn').click();
+$('#cRedo').onclick=()=>$('#redoBtn').click();
+$('#cAddPage').onclick=()=>$('#addPage').click();
+buildDock();
 
 // keyboard
 document.addEventListener('keydown',e=>{const m=e.metaKey||e.ctrlKey;
