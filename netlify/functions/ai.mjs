@@ -8,7 +8,7 @@
  *   POST /api/ai/check      → {spec, issues} → {ok, issues, fixed}
  *
  * Required environment variable: GEMINI_API_KEY
- * Optional:                      GEMINI_MODEL (default gemini-2.5-flash)
+ * Optional:                      GEMINI_MODEL (default gemini-3.8-flash)
  */
 
 const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';

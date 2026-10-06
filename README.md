@@ -105,7 +105,7 @@ To switch that third tab on, add one more environment variable:
 | Variable | What it is |
 |---|---|
 | `GEMINI_API_KEY` | a key from [Google AI Studio](https://aistudio.google.com/apikey) |
-| `GEMINI_MODEL` | optional; defaults to `gemini-2.5-flash` |
+| `GEMINI_MODEL` | optional; defaults to `gemini-3.8-flash` |
 
 The key lives on the server only. The page never sees it: the browser calls `/api/ai/…`, that function calls Google. Putting the key in the page instead would publish it to anyone who opens the site.
 
