@@ -37,6 +37,13 @@
 # ── Friendly URLs ────────────────────────────────────────────────────────
 # Everything under /api goes to the accounts function, which reads the path
 # to decide what to do (register, login, me, admin/…).
+# The AI routes must be matched before the catch-all below, because Netlify
+# takes the first rule that fits.
+[[redirects]]
+  from = "/api/ai/*"
+  to = "/.netlify/functions/ai/:splat"
+  status = 200
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/auth/:splat"

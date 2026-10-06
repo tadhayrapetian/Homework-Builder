@@ -96,6 +96,30 @@ In Netlify → your site → **Site configuration → Environment variables**:
 
 Nothing works until both are set; the function says so plainly if they are missing. Changing `AUTH_SECRET` later signs everyone out (their passwords still work).
 
+## The AI generator
+
+The **Generate** button has three tabs. Two of them — a bank of graded texts, and your own pasted text — work offline and need nothing. The third writes a worksheet with **Gemini**, then sends it back to Gemini to be proof-read, and repairs what the check finds.
+
+To switch that third tab on, add one more environment variable:
+
+| Variable | What it is |
+|---|---|
+| `GEMINI_API_KEY` | a key from [Google AI Studio](https://aistudio.google.com/apikey) |
+| `GEMINI_MODEL` | optional; defaults to `gemini-2.5-flash` |
+
+The key lives on the server only. The page never sees it: the browser calls `/api/ai/…`, that function calls Google. Putting the key in the page instead would publish it to anyone who opens the site.
+
+Without the key, the AI tab says so and stays disabled; nothing else changes.
+
+**How a worksheet is made**
+
+1. Gemini writes a worksheet as structured JSON — reading text, exercises, answers.
+2. The app checks it with its own rules: every gap has an answer, every multiple-choice key points at a real option, no two options identical, no exercise with fewer than three items, true/false not all the same.
+3. Gemini is asked to proof-read its own work, and is given whatever the automatic check flagged.
+4. The repaired version is checked again. Anything still wrong is **left out** and named on screen, rather than printed as a broken exercise.
+
+That last step matters: the model is not trusted to mark its own homework. The deterministic check runs on both sides of it.
+
 ### How it is put together
 
 Passwords are hashed with **scrypt** and a per-account salt, on the server. The hash never leaves it. A wrong password and an unknown e-mail get the same answer, so the form cannot be used to find out who has an account.

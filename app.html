@@ -1270,6 +1270,7 @@ select.regfield option{background:#fff;color:#131313}
 .gen-card i{font-style:normal;font-size:12px;color:var(--ink2);opacity:.75;line-height:1.5}
 .gen-right h4{margin:0 0 10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .gen-tasks{display:grid;gap:5px;max-height:40vh;overflow:auto;padding-right:4px}
+.gen-tasks[hidden],.field[hidden],.gen-t[hidden]{display:none}
 .gen-t{display:flex;align-items:center;gap:9px;border:1.4px solid var(--line);border-radius:10px;
   padding:7px 10px;cursor:pointer;font-size:12.5px;background:var(--panel2)}
 .gen-t.on{border-color:var(--brand);background:var(--brand-soft);font-weight:600}
@@ -1325,6 +1326,16 @@ select.regfield option{background:#fff;color:#131313}
 @media print{
   .paper[data-frame="thin"],.paper[data-frame="double"],.paper[data-frame="soft"]{outline-offset:-8mm}
 }
+
+.ai-state{margin-top:12px;padding:11px 13px;border-radius:12px;font-size:12.5px;line-height:1.55;
+  background:var(--panel2);border:1px solid var(--line);color:var(--ink2)}
+.ai-state.ok{border-color:var(--brand);background:var(--brand-soft)}
+.ai-state.warn{border-color:var(--warn);background:rgba(184,121,29,.12)}
+.ai-state.bad{border-color:var(--danger);background:rgba(180,67,46,.12)}
+.ai-state code{background:var(--panel3);padding:1px 6px;border-radius:5px;font-size:11.5px}
+#genAI .gen-f input,#genAI input[type=text],#genAI input:not([type=checkbox]){width:100%;padding:8px 10px;
+  border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--ink);font-size:13px}
+#genGo:disabled{opacity:.5;cursor:not-allowed}
 </style>
 </head>
 <body class="locked">
@@ -1571,7 +1582,7 @@ select.regfield option{background:#fff;color:#131313}
     <div class="modal-body">
       <div class="gen-wrap">
         <div class="gen-left">
-          <div class="gen-seg" id="genSrc"><button data-s="bank" class="on">Ready-made text</button><button data-s="own">My own text</button></div>
+          <div class="gen-seg" id="genSrc"><button data-s="bank" class="on">Ready-made text</button><button data-s="own">My own text</button><button data-s="ai">✨ Write it with AI</button></div>
 
           <div id="genBank">
             <div class="gen-filters">
@@ -1579,6 +1590,19 @@ select.regfield option{background:#fff;color:#131313}
               <div class="gen-f"><label>Topic</label><select id="genTheme"></select></div>
             </div>
             <div class="gen-list" id="genList"></div>
+          </div>
+
+          <div id="genAI" hidden>
+            <div class="gen-filters">
+              <div class="gen-f"><label>Level</label><div class="seg" id="aiLvl"></div></div>
+              <div class="gen-f"><label>Items per exercise</label><input id="aiN" type="number" min="4" max="14" value="8"></div>
+            </div>
+            <div class="field"><label>Topic</label><input id="aiTopic" placeholder="e.g. air travel, job interviews, climate"></div>
+            <div class="field"><label>Anything else the worksheet should do</label>
+              <textarea id="aiNotes" rows="2" placeholder="Optional: focus on the passive, avoid phrasal verbs, make it for teenagers…"></textarea></div>
+            <label class="gen-t on" id="aiTextTog"><input type="checkbox" checked><span>Start with a reading text</span></label>
+            <div class="field" style="margin-top:10px"><label>Exercises</label>
+              <div class="gen-tasks" id="aiKinds"></div></div>
           </div>
 
           <div id="genOwn" hidden>
@@ -1595,6 +1619,7 @@ select.regfield option{background:#fff;color:#131313}
           <div class="field" style="margin-top:12px"><label>Items per exercise</label>
             <input type="range" id="genN" min="4" max="12" value="8" class="gen-range">
             <div class="hint"><span id="genNv">8</span> items where it makes sense</div></div>
+          <div class="ai-state" id="aiState" hidden></div>
           <div class="gen-sum" id="genSum">Nothing selected yet.</div>
           <button class="keygo" id="genGo">Build the worksheet</button>
           <div class="hint" style="margin-top:8px">The blocks are added to a new page. Everything stays editable afterwards.</div>
@@ -2099,6 +2124,145 @@ function genWriting(text,title){
     'Describe a similar experience of your own.'];
   const l=makeBlock('lines');l.count=8;
   return[instr('Writing','Choose one task and write your answer on the lines.'),b,l];}
+
+/* =====================================================================
+   AI WORKSHEETS  (Gemini, through /api/ai — the key stays on the server)
+   ===================================================================== */
+let AI={on:null,model:null,busy:false,last:null};
+
+async function aiStatus(){
+  try{const r=await fetch(API+'/ai/status');if(!r.ok)throw 0;
+    const d=await r.json();AI.on=!!d.configured;AI.model=d.model;return AI.on;}
+  catch(e){AI.on=false;return false;}
+}
+
+/* the same checks the function runs, so the page can judge a draft on its own */
+function aiValidate(spec){
+  const out=[];
+  if(!spec||typeof spec!=='object')return['the worksheet is not an object'];
+  if(!Array.isArray(spec.exercises)||!spec.exercises.length)out.push('there are no exercises');
+  (spec.exercises||[]).forEach((ex,i)=>{
+    const at='exercise '+(i+1)+' ('+((ex&&ex.type)||'unknown')+')';
+    if(!ex||!ex.type){out.push(at+': no type');return;}
+    if(!ex.instruction)out.push(at+': no instruction');
+    if(ex.type==='gapfill'||ex.type==='wordform'){
+      const it=ex.items||[];if(it.length<3)out.push(at+': fewer than three items');
+      it.forEach((x,k)=>{const w=at+' item '+(k+1);
+        if(!x||!x.q){out.push(w+': no sentence');return;}
+        if(!/_{2,}/.test(x.q))out.push(w+': no gap in the sentence');
+        if(!x.a||!String(x.a).trim())out.push(w+': no answer');
+        if(ex.type==='wordform'&&!x.root)out.push(w+': no root word');});}
+    if(ex.type==='mcq'){
+      const it=ex.items||[];if(it.length<3)out.push(at+': fewer than three questions');
+      it.forEach((x,k)=>{const w=at+' item '+(k+1);const o=(x&&x.options)||[];
+        if(o.length<3){out.push(w+': fewer than three options');return;}
+        const set=new Set(o.map(y=>String(y).trim().toLowerCase()));
+        if(set.size!==o.length)out.push(w+': two options are the same');
+        if(typeof x.correct!=='number'||x.correct<0||x.correct>=o.length)
+          out.push(w+': the answer key points outside the options');});}
+    if(ex.type==='match'){
+      const p=ex.pairs||[];if(p.length<3)out.push(at+': fewer than three pairs');
+      p.forEach((pr,k)=>{if(!Array.isArray(pr)||!pr[0]||!pr[1])out.push(at+' pair '+(k+1)+': one side is empty');});}
+    if(ex.type==='truefalse'){
+      const it=ex.items||[];if(it.length<3)out.push(at+': fewer than three statements');
+      it.forEach((x,k)=>{if(!x||!x.q)out.push(at+' item '+(k+1)+': no statement');
+        if(!x||typeof x.a!=='boolean')out.push(at+' item '+(k+1)+': the answer is not true or false');});
+      if(it.length&&it.every(x=>x&&x.a===it[0].a))out.push(at+': every statement has the same answer');}
+    if(ex.type==='transform')(ex.items||[]).forEach((x,k)=>{
+      if(!x||!x.q)out.push(at+' item '+(k+1)+': no original sentence');
+      if(!x||!x.a)out.push(at+' item '+(k+1)+': no rewritten sentence');});
+    if(ex.type==='writing'||ex.type==='speaking'){
+      if(!((ex.prompts||[]).filter(Boolean).length))out.push(at+': no prompts');}
+  });
+  return out;
+}
+
+/* drop only what is still broken after the repair pass */
+function aiPrune(spec){
+  const kept=[],dropped=[];
+  (spec.exercises||[]).forEach(ex=>{
+    const bad=aiValidate({level:spec.level,exercises:[ex]});
+    if(bad.length){dropped.push(((ex&&ex.type)||'unknown')+' — '+bad[0]);}else kept.push(ex);});
+  return{spec:Object.assign({},spec,{exercises:kept}),dropped};
+}
+
+/* ---------- spec → the builder's own blocks ---------- */
+function aiToBlocks(spec){
+  const out=[];
+  const head=makeBlock('header');
+  head.eyebrow=(spec.level||'')+(spec.topic?' · '+spec.topic:'');
+  head.title=spec.title||'Worksheet';head.sub='Name:                                    Date:';
+  out.push(head);
+  if(spec.text&&String(spec.text).trim()){
+    out.push(instr('Read the text','Read the text and then do the tasks below.'));
+    const t=makeBlock('text');t.reading=true;
+    t.html=String(spec.text).split(/\n{2,}/).map(x=>esc(x.trim())).filter(Boolean).join('<br><br>');
+    out.push(t);}
+  (spec.exercises||[]).forEach(ex=>{
+    const lead=({gapfill:'Complete the sentences',mcq:'Choose the correct answer',match:'Match the two halves',
+      truefalse:'True or false?',wordform:'Use the word in capitals',transform:'Rewrite the sentence',
+      writing:'Writing',speaking:'Speaking'})[ex.type]||'Task';
+    out.push(instr(lead,ex.instruction||''));
+    if(ex.type==='gapfill'){
+      const lines=(ex.items||[]).map((x,i)=>(i+1)+'  '+String(x.q).replace(/_{2,}/,'['+String(x.a)+']'));
+      FIBS.apply(null,lines).forEach(b=>out.push(b));}
+    else if(ex.type==='mcq'){
+      (ex.items||[]).forEach(x=>{const b=makeBlock('mcq');
+        b.q=String(x.q);b.opts=(x.options||[]).map(String);b.correct=x.correct|0;b.cols=b.opts.length===4;
+        out.push(b);});}
+    else if(ex.type==='match'){
+      const b=makeBlock('match');
+      b.left=(ex.pairs||[]).map(p=>String(p[0]));
+      b.right=gShuffle((ex.pairs||[]).map(p=>String(p[1])),(ex.pairs||[]).length*7);
+      out.push(b);}
+    else if(ex.type==='truefalse'){
+      const b=makeBlock('truefalse');
+      b.rows=(ex.items||[]).map(x=>String(x.q));
+      b.correct=(ex.items||[]).map(x=>!!x.a);out.push(b);}
+    else if(ex.type==='wordform'){
+      const b=makeBlock('wordform');
+      b.rows=(ex.items||[]).map(x=>({s:String(x.q).replace(/_{2,}/,'[.]'),r:String(x.root||'').toUpperCase(),a:String(x.a||'')}));
+      out.push(b);}
+    else if(ex.type==='transform'){
+      const b=makeBlock('transform');
+      b.rows=(ex.items||[]).map(x=>({q:String(x.q),k:String(x.key||''),a:String(x.a||'')}));
+      out.push(b);}
+    else if(ex.type==='writing'){
+      const b=makeBlock('promptlines');b.prompts=(ex.prompts||[]).map(String);b.lines=0;out.push(b);
+      const l=makeBlock('lines');l.count=8;out.push(l);}
+    else if(ex.type==='speaking'){
+      const b=makeBlock('speaking');b.icon='💬';b.title='Talk about it';
+      b.prompts=(ex.prompts||[]).map(String);out.push(b);}
+  });
+  return out;
+}
+
+/* ---------- generate → check → fix ---------- */
+async function aiRun(opts,say){
+  say('Writing the worksheet…');
+  const g=await fetch(API+'/ai/generate',{method:'POST',headers:{'content-type':'application/json'},
+    body:JSON.stringify(opts)});
+  const gd=await g.json().catch(()=>({}));
+  if(!g.ok)throw new Error(gd.message||gd.error||('the server answered '+g.status));
+  let spec=gd.spec;
+  let found=aiValidate(spec);
+
+  say('Checking it'+(found.length?' — '+found.length+' thing(s) to look at':'')+'…');
+  let issues=found.slice(),remaining=found.slice();
+  try{
+    const c=await fetch(API+'/ai/check',{method:'POST',headers:{'content-type':'application/json'},
+      body:JSON.stringify({spec:spec})});
+    const cd=await c.json().catch(()=>({}));
+    if(c.ok){
+      if(cd.fixed&&aiValidate(cd.fixed).length<=aiValidate(spec).length)spec=cd.fixed;
+      issues=(cd.issues||[]).slice();
+      remaining=aiValidate(spec);
+    }
+  }catch(e){/* the draft still stands if the check cannot run */}
+
+  const pruned=aiPrune(spec);
+  return{spec:pruned.spec,issues:issues,remaining:remaining,dropped:pruned.dropped,model:gd.model};
+}
 
 const GENERATORS=[
  {k:'reading', n:'The reading text',          f:(t,o)=>genReading(t,o.title)},
@@ -17051,10 +17215,87 @@ function genStats(){const t=$('#genText').value;
 $('#genSrc').querySelectorAll('button').forEach(b=>b.onclick=()=>{
   genSource=b.dataset.s;
   $('#genSrc').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
-  $('#genBank').hidden=genSource!=='bank';$('#genOwn').hidden=genSource!=='own';genSum();});
+  $('#genBank').hidden=genSource!=='bank';
+  $('#genOwn').hidden=genSource!=='own';
+  $('#genAI').hidden=genSource!=='ai';
+  $('#genTasks').closest('.gen-right').querySelector('h4').textContent=
+    genSource==='ai'?'What the AI will do':'Tasks to build';
+  $('#genTasks').hidden=genSource==='ai';
+  $('#genN').closest('.field').hidden=genSource==='ai';
+  if(genSource==='ai')aiRefresh();else genSum();});
+
+/* ---------- the AI panel ---------- */
+const AI_KINDS=[['gapfill','Gap-fill'],['mcq','Multiple choice'],['match','Matching'],
+  ['truefalse','True / false'],['wordform','Word formation'],['transform','Key-word transform'],
+  ['writing','Writing task'],['speaking','Discussion']];
+let aiOn={gapfill:1,mcq:1,match:1,writing:1};
+function aiBuildUI(){
+  const lv=$('#aiLvl');lv.innerHTML='';
+  ['A2','B1','B2','C1'].forEach((l,i)=>{const b=el('button',i===1?'on':'',l);
+    b.onclick=()=>{[...lv.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');};
+    lv.appendChild(b);});
+  const k=$('#aiKinds');k.innerHTML='';
+  AI_KINDS.forEach(([id,name])=>{
+    const row=el('label','gen-t'+(aiOn[id]?' on':''));
+    const cb=el('input');cb.type='checkbox';cb.checked=!!aiOn[id];
+    cb.onchange=()=>{aiOn[id]=cb.checked?1:0;row.classList.toggle('on',cb.checked);};
+    row.appendChild(cb);row.appendChild(el('span','',name));k.appendChild(row);});
+  const tt=$('#aiTextTog');tt.onclick=()=>setTimeout(()=>tt.classList.toggle('on',tt.querySelector('input').checked),0);
+}
+function aiSay(msg,kind){
+  const s=$('#aiState');s.hidden=false;
+  s.className='ai-state'+(kind?' '+kind:'');
+  s.innerHTML=msg;
+}
+async function aiRefresh(){
+  if(AI.on===null){aiSay('Checking the connection…');await aiStatus();}
+  if(!AI.on){
+    aiSay('<b>No AI key on the server yet.</b><br>Add <code>GEMINI_API_KEY</code> in the Netlify '+
+      'environment variables and this panel starts working. The two tabs on the left work without it.','warn');
+    $('#genGo').disabled=true;return;}
+  $('#genGo').disabled=false;
+  aiSay('Connected to <b>'+esc(AI.model||'Gemini')+'</b>. It writes the worksheet, then checks its own work and fixes what it finds.','ok');
+  $('#genSum').innerHTML='The AI will write, check and repair the worksheet before it reaches the page.';
+}
+async function aiGo(){
+  if(AI.busy)return;
+  const lvB=$('#aiLvl').querySelector('.on');
+  const kinds=AI_KINDS.filter(([id])=>aiOn[id]).map(([id])=>id);
+  if(!kinds.length){toast('Tick at least one exercise type');return;}
+  AI.busy=true;$('#genGo').disabled=true;
+  const t0=Date.now();
+  try{
+    const res=await aiRun({
+      level:lvB?lvB.textContent:'B1',
+      topic:$('#aiTopic').value.trim()||'everyday life',
+      notes:$('#aiNotes').value.trim(),
+      kinds:kinds,
+      withText:$('#aiTextTog').querySelector('input').checked,
+      n:parseInt($('#aiN').value)||8,
+      length:130
+    },m=>aiSay(m));
+    const blocks=aiToBlocks(res.spec);
+    if(!blocks.length)throw new Error('nothing usable came back');
+    snapshot();
+    DOC.pages.push({id:uid(),blocks:blocks,style:JSON.parse(JSON.stringify(currentPage().style))});
+    selectedId=null;renderAll();
+    AI.last=res;
+    const secs=Math.round((Date.now()-t0)/100)/10;
+    let msg='<b>Done in '+secs+'s.</b> '+res.spec.exercises.length+' exercise(s), '+blocks.length+' blocks.';
+    if(res.issues.length)msg+='<br>Checked and repaired: '+res.issues.length+' point(s).';
+    if(res.dropped.length)msg+='<br><b>Left out because it stayed wrong:</b> '+res.dropped.map(esc).join('; ');
+    aiSay(msg,res.dropped.length?'warn':'ok');
+    toast('AI worksheet added on a new page');
+    const ps=document.querySelectorAll('.paper');if(ps.length)ps[ps.length-1].scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(e){
+    aiSay('<b>It did not work.</b><br>'+esc(String(e.message||e))+
+      '<br>The two tabs on the left still work without AI.','bad');
+  }finally{AI.busy=false;$('#genGo').disabled=false;}
+}
 $('#genText').addEventListener('input',()=>{genStats();genSum();});
 $('#genN').addEventListener('input',genSum);
 $('#genGo').onclick=()=>{
+  if(genSource==='ai'){aiGo();return;}
   const p=genPayload();const n=parseInt($('#genN').value)||8;
   if(!gClean(p.text)){toast('Choose a text, or paste your own');return;}
   const chosen=GENERATORS.filter(g=>genOn[g.k]);
@@ -17072,7 +17313,8 @@ $('#genGo').onclick=()=>{
 };
 $('#genBtn').onclick=()=>{
   if(!can('gen')){nudge('The worksheet generator is on Pro and Max.');return;}
-  openModal('#genModal');genBuildUI();genStats();};
+  openModal('#genModal');genBuildUI();aiBuildUI();genStats();
+  if(AI.on===null)aiStatus();};
 $('#libBtn').onclick=()=>{buildLibTabs();buildLibBody('');$('#libSearch').value='';openModal('#libModal');};
 $('#libSearch').addEventListener('input',e=>buildLibBody(e.target.value));
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>{closeModal('#libModal');closeModal('#tmplModal');closeModal('#genModal');});
