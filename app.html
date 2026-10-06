@@ -1248,6 +1248,83 @@ select.regfield option{background:#fff;color:#131313}
 
 @media(max-width:560px){.doms,.roles,.db-g,.lp-list,.cf-l{grid-template-columns:1fr}
  .cfork{flex-direction:column;align-items:stretch}}
+
+/* ===== GENERATOR ===== */
+.gen-wrap{display:grid;grid-template-columns:1fr 310px;gap:18px;align-items:start}
+.gen-seg{display:flex;gap:4px;padding:4px;background:var(--panel2);border-radius:12px;margin-bottom:13px}
+.gen-seg button{flex:1;border:0;background:transparent;padding:8px 10px;border-radius:9px;cursor:pointer;
+  font-size:13px;font-weight:600;color:var(--ink2)}
+.gen-seg button.on{background:var(--panel);color:var(--brand);box-shadow:var(--shadow-sm)}
+.gen-filters{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:12px}
+.gen-f label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--muted);margin-bottom:6px}
+.gen-f select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:10px;
+  background:var(--panel2);color:var(--ink);font-size:13px}
+.gen-list{display:grid;gap:8px;max-height:46vh;overflow:auto;padding-right:4px}
+.gen-card{text-align:left;border:1.5px solid var(--line);background:var(--panel2);border-radius:13px;
+  padding:11px 13px;cursor:pointer;display:grid;gap:3px;transition:.14s}
+.gen-card:hover{border-color:var(--line2);background:var(--panel3)}
+.gen-card.on{border-color:var(--brand);background:var(--brand-soft)}
+.gen-card b{font-size:13.5px}
+.gen-card span{font-size:11px;color:var(--muted);font-weight:650;text-transform:uppercase;letter-spacing:.04em}
+.gen-card i{font-style:normal;font-size:12px;color:var(--ink2);opacity:.75;line-height:1.5}
+.gen-right h4{margin:0 0 10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.gen-tasks{display:grid;gap:5px;max-height:40vh;overflow:auto;padding-right:4px}
+.gen-t{display:flex;align-items:center;gap:9px;border:1.4px solid var(--line);border-radius:10px;
+  padding:7px 10px;cursor:pointer;font-size:12.5px;background:var(--panel2)}
+.gen-t.on{border-color:var(--brand);background:var(--brand-soft);font-weight:600}
+.gen-t input{accent-color:var(--brand);width:15px;height:15px;flex:none}
+.gen-range{width:100%;accent-color:var(--brand)}
+.gen-sum{margin:12px 0 10px;padding:10px 12px;border-radius:11px;background:var(--panel2);
+  border:1px dashed var(--line2);font-size:12.5px;color:var(--ink2)}
+@media(max-width:860px){.gen-wrap{grid-template-columns:1fr}.gen-list{max-height:32vh}.gen-tasks{max-height:none}}
+
+/* ===== NEW HEADER STYLES ===== */
+.paper[data-header="rule"] .ws-header{border-top:3px solid var(--pa-accent);border-bottom:1px solid var(--pa-accent);
+  padding:13px 0 12px;margin-bottom:4px}
+.paper[data-header="rule"] .ws-eyebrow{letter-spacing:.22em}
+.paper[data-header="stripe"] .ws-header{position:relative;padding-left:22px}
+.paper[data-header="stripe"] .ws-header:before{content:'';position:absolute;left:0;top:2px;bottom:2px;width:7px;
+  border-radius:4px;background:linear-gradient(180deg,var(--pa-accent),var(--pa-accent2))}
+.paper[data-header="bubble"] .ws-header{background:var(--pa-soft);border-radius:0 26px 26px 26px;
+  padding:18px 24px;border:2px solid var(--pa-accent)}
+.paper[data-header="bubble"] .ws-title{font-size:27px}
+.paper[data-header="stamp"] .ws-header{display:inline-block;border:2.5px solid var(--pa-accent);
+  border-radius:4px;padding:11px 20px;transform:rotate(-1.2deg)}
+.paper[data-header="stamp"] .ws-eyebrow{color:var(--pa-accent);letter-spacing:.2em}
+.paper[data-header="arch"] .ws-header{background:linear-gradient(180deg,var(--pa-soft),transparent);
+  border-radius:150px 150px 14px 14px;padding:26px 24px 16px;text-align:center}
+.paper[data-header="wave2"] .ws-header{padding-bottom:20px;position:relative}
+.paper[data-header="wave2"] .ws-header:after{content:'';position:absolute;left:0;right:0;bottom:0;height:9px;
+  background:radial-gradient(circle at 8px -4px,transparent 8px,var(--pa-accent) 8.5px) repeat-x;
+  background-size:16px 9px}
+
+/* ===== NEW PAGE BACKGROUNDS ===== */
+.paper[data-deco="lines"]{background-image:repeating-linear-gradient(transparent,transparent 27px,var(--pa-line) 27px,var(--pa-line) 28px)}
+.paper[data-deco="graph"]{background-image:
+  linear-gradient(var(--pa-line) .6px,transparent .6px),linear-gradient(90deg,var(--pa-line) .6px,transparent .6px),
+  linear-gradient(var(--pa-line) 1.2px,transparent 1.2px),linear-gradient(90deg,var(--pa-line) 1.2px,transparent 1.2px);
+  background-size:10px 10px,10px 10px,50px 50px,50px 50px}
+.paper[data-deco="margin"]{background-image:linear-gradient(90deg,transparent 0 46px,var(--pa-accent2) 46px 47.4px,transparent 47.4px)}
+.paper[data-deco="corner2"]{background-image:
+  radial-gradient(circle at 0 0,transparent 58px,var(--pa-soft) 58px 62px,transparent 62px),
+  radial-gradient(circle at 100% 100%,transparent 58px,var(--pa-soft) 58px 62px,transparent 62px)}
+.paper[data-deco="halftone"]{background-image:radial-gradient(var(--pa-soft) 2.4px,transparent 2.6px);background-size:15px 15px}
+.paper[data-deco="frame2"]{box-shadow:inset 0 0 0 1px var(--pa-line),inset 0 0 0 9px var(--pa-paper),inset 0 0 0 10.5px var(--pa-accent2)}
+
+/* ===== PAGE LAYOUT ===== */
+.paper[data-margin="narrow"]{padding:11mm 10mm}
+.paper[data-margin="wide"]{padding:22mm 21mm}
+.paper[data-frame="thin"]{outline:1.6px solid var(--pa-accent);outline-offset:-9mm}
+.paper[data-frame="double"]{outline:1.4px solid var(--pa-accent);outline-offset:-8mm;
+  box-shadow:inset 0 0 0 calc(8mm + 4px) transparent,inset 0 0 0 calc(8mm + 5.4px) var(--pa-accent2)}
+.paper[data-frame="soft"]{outline:2px solid var(--pa-soft);outline-offset:-7mm;border-radius:18px}
+.paper[data-cols="2"] .blocks{display:block;column-count:2;column-gap:9mm}
+.paper[data-cols="2"] .blocks>.block{margin:0 0 14px}
+.paper[data-cols="2"] .blocks .block{break-inside:avoid;page-break-inside:avoid;-webkit-column-break-inside:avoid}
+@media print{
+  .paper[data-frame="thin"],.paper[data-frame="double"],.paper[data-frame="soft"]{outline-offset:-8mm}
+}
 </style>
 </head>
 <body class="locked">
@@ -1313,6 +1390,7 @@ select.regfield option{background:#fff;color:#131313}
       <button class="tb" id="undoBtn" title="Undo (⌘Z)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-1"/></svg></button>
       <button class="tb" id="redoBtn" title="Redo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 14 5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h1"/></svg></button>
     </div>
+    <button class="tb lib" id="genBtn" title="Generate a worksheet from a text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3v4M3 5h4M6 17v4M4 19h4"/><path d="m13 3 2.5 6.5L22 12l-6.5 2.5L13 21l-2.5-6.5L4 12l6.5-2.5Z"/></svg><span class="lbl">Generate</span></button>
     <button class="tb solo hide-mob" id="tmplBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18" opacity=".0"/><path d="m12 2 2.4 5.6L20 9l-4.5 3.9L17 19l-5-3.2L7 19l1.5-6.1L4 9l5.6-1.4Z"/></svg><span>Templates</span></button>
     <button class="tb solo" id="ansBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><span class="hide-mob">Answers</span></button>
     <button class="tb solo" id="shareBtn" title="Send by e-mail / share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="m4 6 8 6 8-6"/></svg><span class="hide-mob">Send</span></button>
@@ -1408,16 +1486,30 @@ select.regfield option{background:#fff;color:#131313}
           <option value="plain">Plain</option><option value="underline">Underline</option><option value="banner">Banner</option>
           <option value="gradient">Gradient</option><option value="sidebar">Side bar</option><option value="badge">Badge</option>
           <option value="ribbon">Ribbon</option><option value="dotline">Dotted</option><option value="frame">Framed</option>
-          <option value="tab">Tab</option><option value="corner">Corner</option></select></div>
+          <option value="tab">Tab</option><option value="corner">Corner</option><option value="rule">Double rule</option><option value="stripe">Side stripe</option><option value="bubble">Bubble</option><option value="stamp">Stamp</option><option value="arch">Arch</option><option value="wave2">Wave edge</option></select></div>
       <div class="field"><label>Page background</label>
         <select id="decoSel">
           <option value="none">Clean</option><option value="dots">Dots</option><option value="grid">Grid</option>
           <option value="notebook">Notebook</option><option value="corners">Corners</option><option value="edge">Top band</option>
-          <option value="wave">Wave</option><option value="confetti">Confetti</option></select></div>
+          <option value="wave">Wave</option><option value="confetti">Confetti</option><option value="lines">Ruled lines</option><option value="graph">Graph paper</option><option value="margin">Margin rule</option><option value="corner2">Corner arcs</option><option value="halftone">Halftone</option><option value="frame2">Thin frame</option></select></div>
       <div class="field"><label>Font</label>
         <select id="fontSel">
           <option value="sans">Sans (grotesk)</option><option value="serif">Serif (classic)</option>
           <option value="round">Rounded</option><option value="mono">Mono</option><option value="hand">Handwriting</option></select></div>
+      <div class="field"><label>Page margins</label>
+        <div class="seg" id="marginSel">
+          <button data-m="narrow">Narrow</button><button data-m="normal" class="on">Normal</button><button data-m="wide">Wide</button>
+        </div></div>
+      <div class="field"><label>Page frame</label>
+        <div class="seg" id="frameSel">
+          <button data-f="none" class="on">None</button><button data-f="thin">Thin</button>
+          <button data-f="double">Double</button><button data-f="soft">Rounded</button>
+        </div></div>
+      <div class="field"><label>Columns</label>
+        <div class="seg" id="colSel">
+          <button data-c="1" class="on">One</button><button data-c="2">Two</button>
+        </div>
+        <div class="hint" style="margin-top:6px">Two columns suit short exercises; long texts read better in one.</div></div>
       <div class="toggle" id="applyAllTog"><div><b>Apply to all pages</b><small>One style for the whole doc</small></div><div class="sw-t"></div></div>
     </div>
     <div class="sec">
@@ -1465,6 +1557,50 @@ select.regfield option{background:#fff;color:#131313}
       <button class="close" data-close>×</button>
     </div>
     <div class="modal-body"><div class="tmpl-grid" id="tmplGrid"></div></div>
+  </div>
+</div>
+
+<!-- GENERATOR MODAL -->
+<div class="modal-bg" id="genModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="mh-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3v4M3 5h4M6 17v4M4 19h4"/><path d="m13 3 2.5 6.5L22 12l-6.5 2.5L13 21l-2.5-6.5L4 12l6.5-2.5Z"/></svg></div>
+      <div><h2>Generate a worksheet</h2><p>Pick a graded text or paste your own, choose the tasks, and the whole worksheet is built for you.</p></div>
+      <button class="close" data-close>×</button>
+    </div>
+    <div class="modal-body">
+      <div class="gen-wrap">
+        <div class="gen-left">
+          <div class="gen-seg" id="genSrc"><button data-s="bank" class="on">Ready-made text</button><button data-s="own">My own text</button></div>
+
+          <div id="genBank">
+            <div class="gen-filters">
+              <div class="gen-f"><label>Level</label><div class="seg" id="genLvl"></div></div>
+              <div class="gen-f"><label>Topic</label><select id="genTheme"></select></div>
+            </div>
+            <div class="gen-list" id="genList"></div>
+          </div>
+
+          <div id="genOwn" hidden>
+            <div class="field"><label>Title</label><input id="genTitle" placeholder="Worksheet title"></div>
+            <div class="field"><label>Your text — paste anything, in paragraphs</label>
+              <textarea id="genText" rows="11" placeholder="Paste or type a reading text here. Leave a blank line between paragraphs."></textarea></div>
+            <div class="hint" id="genStats">0 words · 0 sentences</div>
+          </div>
+        </div>
+
+        <div class="gen-right">
+          <h4>Tasks to build</h4>
+          <div class="gen-tasks" id="genTasks"></div>
+          <div class="field" style="margin-top:12px"><label>Items per exercise</label>
+            <input type="range" id="genN" min="4" max="12" value="8" class="gen-range">
+            <div class="hint"><span id="genNv">8</span> items where it makes sense</div></div>
+          <div class="gen-sum" id="genSum">Nothing selected yet.</div>
+          <button class="keygo" id="genGo">Build the worksheet</button>
+          <div class="hint" style="margin-top:8px">The blocks are added to a new page. Everything stays editable afterwards.</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1637,6 +1773,22 @@ const FONTS={
 };
 const THEMES=[
  {id:'indigo',name:'Indigo Pro',accent:'#5b5bf0',accent2:'#8b5cf6',ink:'#1a2130',paper:'#ffffff',font:'sans',header:'underline',deco:'none'},
+ {id:'claystudio',name:'Clay Studio',accent:'#bf7a30',accent2:'#6d6a3c',ink:'#2a211a',paper:'#fdfaf4',font:'serif',header:'sidebar',deco:'none'},
+ {id:'ink',name:'Ink & Paper',accent:'#1f2937',accent2:'#6b7280',ink:'#111827',paper:'#fbfbf9',font:'serif',header:'rule',deco:'none'},
+ {id:'sage',name:'Sage',accent:'#4e7a5e',accent2:'#8aab8f',ink:'#1e2b23',paper:'#f7faf6',font:'sans',header:'tab',deco:'none'},
+ {id:'plum',name:'Plum',accent:'#7c3a67',accent2:'#b06a99',ink:'#2a1726',paper:'#fdf8fc',font:'serif',header:'badge',deco:'none'},
+ {id:'cobalt',name:'Cobalt',accent:'#1d4ed8',accent2:'#60a5fa',ink:'#0f1d3a',paper:'#ffffff',font:'sans',header:'banner',deco:'edge'},
+ {id:'rust',name:'Rust',accent:'#b4432e',accent2:'#e08a5c',ink:'#30180f',paper:'#fffaf6',font:'sans',header:'ribbon',deco:'none'},
+ {id:'teal',name:'Deep Teal',accent:'#0f766e',accent2:'#5eead4',ink:'#0b2a28',paper:'#f6fdfb',font:'sans',header:'corner',deco:'none'},
+ {id:'honey',name:'Honey',accent:'#c98a04',accent2:'#fcd34d',ink:'#352505',paper:'#fffdf4',font:'round',header:'dotline',deco:'dots'},
+ {id:'slate',name:'Slate Minimal',accent:'#475569',accent2:'#94a3b8',ink:'#1e293b',paper:'#ffffff',font:'sans',header:'plain',deco:'none'},
+ {id:'cherry',name:'Cherry',accent:'#be123c',accent2:'#fb7185',ink:'#3f0a1c',paper:'#fff7f9',font:'round',header:'badge',deco:'none'},
+ {id:'moss',name:'Moss',accent:'#3f6212',accent2:'#a3bf5c',ink:'#1b2608',paper:'#fbfdf5',font:'serif',header:'frame',deco:'none'},
+ {id:'denim',name:'Denim',accent:'#3b5f87',accent2:'#8fb3d4',ink:'#16283c',paper:'#f8fbfe',font:'sans',header:'stripe',deco:'none'},
+ {id:'amber',name:'Amber Kids',accent:'#ea7317',accent2:'#ffd166',ink:'#3a2008',paper:'#fffaf0',font:'round',header:'bubble',deco:'confetti'},
+ {id:'graphite',name:'Graphite',accent:'#111827',accent2:'#4b5563',ink:'#0b0f17',paper:'#f4f4f5',font:'mono',header:'stamp',deco:'grid'},
+ {id:'lilacsoft',name:'Soft Lilac',accent:'#8b5cf6',accent2:'#c4b5fd',ink:'#241a3d',paper:'#fcfaff',font:'round',header:'arch',deco:'none'},
+ {id:'seafoam',name:'Seafoam',accent:'#0891b2',accent2:'#7dd3fc',ink:'#0c2a35',paper:'#f6fdff',font:'sans',header:'wave2',deco:'wave'},
  {id:'ocean',name:'Ocean',accent:'#0284c7',accent2:'#0ea5e9',ink:'#0f2436',paper:'#ffffff',font:'sans',header:'banner',deco:'edge'},
  {id:'forest',name:'Forest',accent:'#0f9d6f',accent2:'#65a30d',ink:'#14261e',paper:'#ffffff',font:'sans',header:'sidebar',deco:'none'},
  {id:'sunset',name:'Sunset',accent:'#ea580c',accent2:'#e11d48',ink:'#2b1810',paper:'#fffaf5',font:'round',header:'gradient',deco:'none'},
@@ -1715,11 +1867,268 @@ const TEMPLATES=[
 ];
 
 /* =====================================================================
+   TEXT & EXERCISE GENERATOR
+   ===================================================================== */
+const GEN_THEMES=['Everyday life','Work & study','Travel','Science & nature','Society','Culture'];
+const TEXTS=[
+ {lvl:'A2',th:'Everyday life',t:'A morning in the city',
+  b:'Marta gets up at half past six every morning. She has a shower, makes coffee and listens to the radio while she gets dressed. She leaves the flat at ten past seven and walks to the bus stop. The bus is often late, so she usually takes a book with her. At work she starts with emails and a second coffee. She likes her job, but she does not like getting up early. At the weekend she sleeps until nine and nobody can wake her.'},
+ {lvl:'A2',th:'Everyday life',t:'The new flat',
+  b:'Anna and Pavel moved into a small flat in September. It has two rooms, a tiny kitchen and a balcony with space for one chair. The building is old and the stairs are steep, but the windows are big and the morning sun comes in. Their neighbours are quiet and friendly. Every Saturday they clean the flat together, buy bread at the corner shop and cook something simple. They do not have much furniture yet, but they are happy there.'},
+ {lvl:'A2',th:'Travel',t:'A day by the sea',
+  b:'Last July we took the early train to the coast. The journey was two hours and the sun came up over the hills. We arrived at nine and the beach was almost empty. We swam before breakfast, ate bread and tomatoes, and slept under an umbrella. In the afternoon the wind got stronger and the water was cold, so we walked along the harbour and looked at the boats. We came home late, tired and happy, with sand in our shoes.'},
+ {lvl:'A2',th:'Work & study',t:'My first job',
+  b:'My first job was in a small bakery near the station. I started at five in the morning, which was very hard at eighteen. The owner was patient and taught me how to make bread, weigh flour and talk to customers. I worked there for two summers. I did not earn much money, but I learned to get up early, to listen carefully and to say sorry when I made a mistake. I still remember the smell of that kitchen.'},
+ {lvl:'A2',th:'Science & nature',t:'The cat in the garden',
+  b:'There is a grey cat in our garden every evening. It sits under the apple tree and waits. We do not know who it belongs to, but it is not thin and it is not afraid of people. My sister gives it water in summer. In winter it sleeps in the small shed behind the house. Last week it brought one of its kittens with it. Now we have two visitors, and my mother says we will soon have a cat.'},
+ {lvl:'A2',th:'Culture',t:'Sunday lunch',
+  b:'In my family Sunday lunch starts at two and finishes when everyone is too full to move. My grandmother cooks for ten people and refuses any help in the kitchen. My uncle always arrives late and always brings the wrong bread. The children eat quickly and run into the garden. The adults stay at the table for hours, drinking tea and telling the same stories. Nobody wants to wash up, so we do it together and it takes ten minutes.'},
+
+ {lvl:'B1',th:'Work & study',t:'Working from home',
+  b:'When the office closed, Daniel thought working from home would be easy. For the first month it was. He saved two hours of commuting, he could cook properly at lunchtime, and nobody interrupted him every ten minutes. By the third month the problems appeared. The kitchen table was not a desk, the day never really ended, and he had not spoken to a colleague face to face since March. Now he goes into the office twice a week, mainly to remember that the people he emails are real.'},
+ {lvl:'B1',th:'Everyday life',t:'The art of saving money',
+  b:'Katia had never thought about money until she moved out of her parents\' house. In the first month she spent almost everything on things she could not remember buying. So she started writing down every purchase in a notebook. The result surprised her: coffee, delivery and small online orders cost more than her electricity bill. She did not give them up completely, but she made one rule — nothing is bought on the same day she first sees it. A year later she had saved enough for a second-hand car.'},
+ {lvl:'B1',th:'Travel',t:'Twelve hours in a strange city',
+  b:'My flight was cancelled and I was given a hotel and twelve hours in a city I had never planned to visit. I decided not to look at any guide. I walked without a map, got lost twice, and ate in a place with no English menu, where the waiter chose the food for me. I saw no famous buildings. What I remember is a street of second-hand bookshops, an old man playing the accordion badly, and the fact that strangers were kinder than I expected.'},
+ {lvl:'B1',th:'Science & nature',t:'The river comes back',
+  b:'For sixty years the river behind the factory was dead. Nothing lived in it, and local people stopped going near the water. When the factory closed, nobody expected much to change. But three years later a biology teacher found insects in the shallow parts, and two years after that, small fish. Today there are birds on the bank that had not been seen in the region since the nineteen fifties. Nobody cleaned the river. It simply recovered once we stopped damaging it.'},
+ {lvl:'B1',th:'Society',t:'The library that stayed open',
+  b:'When the council announced that the town library would close, almost nobody was surprised. Fewer people were borrowing books, and the building needed an expensive roof. What surprised everyone was the response. Two hundred people came to the meeting, and within a month a group of volunteers had offered to run it. The library reopened with shorter hours and a new purpose: homework help, language classes and a warm room in winter. It lends fewer books now, but more people walk through the door.'},
+ {lvl:'B1',th:'Culture',t:'Why we still go to the cinema',
+  b:'You can watch almost anything at home, on a screen you choose, at a time that suits you, and you can stop it whenever you like. So it is strange that people still pay more to sit in the dark with strangers. Perhaps that is the point. At home there is always something else to do. In a cinema you cannot check your messages without everyone noticing, and you cannot pause. For two hours you are not in charge, and that turns out to be a kind of rest.'},
+
+ {lvl:'B2',th:'Society',t:'The fifteen-minute city',
+  b:'The idea sounds modest: everything you need within a quarter of an hour on foot or by bike. Shops, a school, a doctor, a park. Supporters argue that it reduces traffic, improves air quality and rebuilds the kind of neighbourhood where people recognise each other. Critics counter that it is easy to propose in a dense European capital and almost meaningless in a region where the nearest hospital is forty kilometres away. Both are right. The principle is sound; the difficulty, as usual, is that cities are not built from scratch.'},
+ {lvl:'B2',th:'Work & study',t:'The four-day week',
+  b:'Several countries have now run large trials of a shorter working week with no reduction in pay. The headline results were striking: productivity held steady or rose slightly, and reported stress fell sharply. Sceptics point out that the firms which volunteered were mostly office-based and already well organised, which hardly makes them typical. It is also unclear what happens in hospitals, schools or restaurants, where output is measured in hours of presence. The trials proved something narrower than the headlines suggested, but not nothing.'},
+ {lvl:'B2',th:'Science & nature',t:'What the ice remembers',
+  b:'Drill deep enough into an ice sheet and you reach snow that fell before the first cities were built. Each layer traps a little air, and that air is a sample of the atmosphere on the day it froze. By measuring it, researchers can reconstruct temperatures and carbon dioxide levels going back hundreds of thousands of years. The record shows cycles of warming and cooling driven by changes in the earth\'s orbit — and, in the last two centuries, a rise that those cycles cannot explain.'},
+ {lvl:'B2',th:'Culture',t:'The problem with sequels',
+  b:'Studios keep making sequels because the economics are irresistible: an audience already exists, and the risk is lower than for anything original. The cost is harder to see. A sequel must repeat what people liked while pretending to be new, which usually produces something louder and emptier than the first film. Occasionally a director uses the second film to say something the first could not, and the result justifies the whole exercise. That happens rarely enough that we remember the examples by name.'},
+ {lvl:'B2',th:'Travel',t:'When a city has too many visitors',
+  b:'Tourism was supposed to save the old centre, and for a while it did. Buildings were restored, jobs appeared and the streets stopped emptying. Then the balance tipped. Rents rose beyond what local families could pay, the grocer became a souvenir shop, and the bakery opened at eleven because its customers were no longer people going to work. The town is busier than it has been in fifty years, and fewer people live in it than at any point since the war.'},
+ {lvl:'B2',th:'Everyday life',t:'Learning to cook properly',
+  b:'Most people who say they cannot cook have simply never been shown the five or six techniques everything else is built on. How to get a pan hot enough. How much salt is actually needed. Why you should let meat rest. None of this is difficult, and none of it is taught at school. Recipes make it worse by suggesting that cooking is a matter of following instructions precisely, when in practice it is closer to judgement, repetition and a willingness to ruin a few dinners.'},
+
+ {lvl:'C1',th:'Society',t:'The quiet erosion of attention',
+  b:'There is a tempting narrative in which technology has destroyed our capacity to concentrate, and a counter-narrative in which every generation has panicked about the new medium of its day. The evidence is less satisfying than either. What appears to have changed is not the brain\'s capacity but the economics surrounding it: attention is now the commodity being sold, and the systems competing for it are tested continuously against millions of people. Blaming individual willpower under those conditions is a little like blaming swimmers for the tide.'},
+ {lvl:'C1',th:'Science & nature',t:'The limits of prediction',
+  b:'Weather forecasting has improved more than almost any other applied science, and yet the honest forecaster still speaks in probabilities. The reason is structural rather than technical. Small differences in the initial state of the atmosphere grow exponentially, so that beyond roughly a fortnight the forecast is no better than climatology. Improving the models helps; it cannot abolish the arithmetic. This is worth remembering whenever a complex system — an economy, an epidemic, an election — is described as predictable given enough data.'},
+ {lvl:'C1',th:'Work & study',t:'Expertise and its discontents',
+  b:'Expertise is easy to admire in the abstract and uncomfortable in practice. Specialists are, by definition, people who have narrowed their attention, and the same narrowing that produces depth produces blind spots. The useful response is neither deference nor the fashionable contempt for anyone who has studied something for thirty years. It is to ask what a given expert is actually qualified to judge, and to notice when the question has quietly shifted from a technical one to a political one that nobody\'s training settles.'},
+ {lvl:'C1',th:'Culture',t:'Translation as interpretation',
+  b:'No translator renders a text; every translator rewrites it. The choice of a single adjective can shift a character from brusque to cruel, and such choices are made hundreds of times a page. This is why the idea of a definitive translation is incoherent: each is a reading, shaped by the period and the sensibility of the person making it. Readers who insist on fidelity usually mean fidelity to an effect rather than to the words, which is precisely the thing that cannot be transferred intact.'},
+ {lvl:'C1',th:'Travel',t:'The traveller and the tourist',
+  b:'The distinction flatters whoever is drawing it. Travellers, we are told, immerse themselves; tourists merely consume. In reality both arrive by the same aircraft, sleep in buildings someone else maintains and leave the same carbon behind. What the word traveller usually marks is not a different activity but a different self-image, available mainly to those with time and money enough to be unhurried. There is nothing wrong with wanting to see a place properly. There is something faintly absurd about treating it as a moral category.'},
+ {lvl:'C1',th:'Everyday life',t:'On keeping promises',
+  b:'A promise is a strange instrument. It binds the person you are now to the preferences of a person you have not yet become, and it does so deliberately, because that future self is not entirely trusted. Most moral weight attaches to keeping promises that have become inconvenient, which is the only kind that tests anything. The practical conclusion is not that one should promise less, but that one should promise with a clearer sense of what is actually within one\'s control.'}
+];
+
+/* ---------- small language helpers ---------- */
+const GEN_STOP=new Set(('the a an of to in on at for with and but or so if as by from is are was were be been being '+
+ 'have has had do does did not no this that these those it its he she they we you i his her their our my your '+
+ 'there then than when while which who what how all any some more most very can could will would shall should may '+
+ 'might must about into over under after before between during').split(' '));
+function gClean(t){return String(t||'').replace(/\s+/g,' ').trim();}
+function gParas(t){return String(t||'').split(/\n{2,}|\r\n\r\n/).map(gClean).filter(Boolean);}
+function gSents(t){return (gClean(t).match(/[^.!?]+[.!?]*/g)||[]).map(gClean).filter(x=>x.split(' ').length>3);}
+function gWords(t){return (String(t||'').match(/[A-Za-z][A-Za-z'’-]*/g)||[]);}
+function gNorm(w){return String(w||'').toLowerCase().replace(/[^a-z'’-]/g,'');}
+function gSyl(w){const x=gNorm(w).replace(/e$/,'');return Math.max(1,(x.match(/[aeiouy]+/g)||[]).length);}
+function gUniq(a){return a.filter((x,i)=>a.indexOf(x)===i);}
+function gShuffle(a,seed){const r=a.slice();let s=seed||7;
+  for(let i=r.length-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));
+    const t=r[i];r[i]=r[j];r[j]=t;}return r;}
+function gContent(t,min){min=min||4;
+  return gUniq(gWords(t).map(gNorm).filter(w=>w.length>=min&&!GEN_STOP.has(w)));}
+function gPick(arr,n,seed){return gShuffle(arr,seed).slice(0,n);}
+function gCap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+
+/* ---------- the generators ---------- */
+function genReading(text,title){
+  const out=[];
+  if(title){const h=makeBlock('header');h.eyebrow='READING';h.title=title;h.sub='Read the text and do the tasks below.';out.push(h);}
+  const b=makeBlock('text');b.html=gParas(text).map(esc).join('<br><br>');b.reading=true;out.push(b);
+  return out;}
+
+function genGapFill(text,n){
+  const sents=gSents(text).slice(0,Math.max(n,6));
+  const used=[];const items=[];
+  sents.forEach(s=>{
+    if(items.length>=n)return;
+    const cand=gWords(s).filter(w=>{const x=gNorm(w);return x.length>=5&&!GEN_STOP.has(x)&&used.indexOf(x)<0;});
+    if(!cand.length)return;
+    const w=cand[Math.floor(cand.length/2)];used.push(gNorm(w));
+    items.push((items.length+1)+'  '+s.replace(w,'['+w+']'));});
+  if(!items.length)return[];
+  return[instr('Complete the sentences','Fill each gap with one word from the text.'),...FIBS(...items)];}
+
+function genOpenCloze(text,n){
+  const sents=gSents(text);const items=[];
+  sents.forEach(s=>{
+    if(items.length>=n)return;
+    const m=gWords(s).filter(w=>GEN_STOP.has(gNorm(w))&&gNorm(w).length>1);
+    if(!m.length)return;
+    const w=m[Math.floor(m.length/2)];
+    items.push((items.length+1)+'  '+s.replace(new RegExp('\\b'+w+'\\b'),'['+w+']'));});
+  if(!items.length)return[];
+  return[instr('Open cloze','Write ONE word in each gap. The missing words are grammar words.'),...FIBS(...items)];}
+
+function genMcCloze(text,n){
+  const sents=gSents(text).slice(0,8);
+  const pool=Object.keys(DICT);
+  const body=[];const qs=[];let i=0;
+  sents.forEach(s=>{
+    if(qs.length>=n){body.push(s);return;}
+    const cand=gWords(s).filter(w=>{const x=gNorm(w);return x.length>=5&&!GEN_STOP.has(x);});
+    if(!cand.length){body.push(s);return;}
+    const w=cand[Math.floor(cand.length/2)],x=gNorm(w);i++;
+    const dis=gPick(pool.filter(p=>p!==x&&Math.abs(p.length-x.length)<=3),3,x.length*7+i);
+    while(dis.length<3)dis.push(['matter','reason','period','change'][dis.length]);
+    qs.push({opts:[x].concat(dis),correct:0});
+    body.push(s.replace(w,'('+i+') __'));});
+  if(!qs.length)return[];
+  const b=makeBlock('mccloze');b.text=body.join(' ');b.qs=qs;
+  return[instr('Multiple-choice cloze','Choose A, B, C or D for each gap.'),b];}
+
+function genVocabMatch(text,n){
+  const words=gContent(text,5).filter(w=>lookup(w));
+  if(words.length<3)return[];
+  const pick=words.slice(0,n);
+  const defs=pick.map(w=>{const d=lookup(w);return d?d.en:'';});
+  const b=makeBlock('match');b.left=pick.slice();b.right=gShuffle(defs,pick.length*3);
+  return[instr('Match the words','Match each word from the text with its meaning.'),b];}
+
+function genFindWord(text,n){
+  const words=gContent(text,5).filter(w=>lookup(w)).slice(0,n);
+  if(words.length<3)return[];
+  const b=makeBlock('promptlines');b.lines=1;
+  b.prompts=words.map(w=>{const d=lookup(w);return 'Find a word in the text that means “'+d.en+'”.';});
+  b.ans=words.slice();
+  return[instr('Find the word','Find a word in the text for each meaning.'),b];}
+
+function genWordOrder(text,n){
+  const sents=gSents(text).filter(s=>{const w=gWords(s).length;return w>=5&&w<=14;}).slice(0,n);
+  if(!sents.length)return[];
+  const b=makeBlock('wordorder');b.line=true;
+  b.rows=sents.map((s,i)=>({c:gShuffle(gWords(s),i*11+5).join(' / '),a:gClean(s)}));
+  return[instr('Put the words in order','Write the words in the correct order to make sentences from the text.'),b];}
+
+function genPunct(text,n){
+  const sents=gSents(text).slice(0,n);
+  if(!sents.length)return[];
+  const b=makeBlock('punctuation');
+  b.rows=sents.map(s=>s.toLowerCase().replace(/[.,;:!?"'’]/g,'').trim());
+  return[instr('Add the punctuation','Rewrite each line with capital letters and punctuation.'),b];}
+
+function genSpelling(text){
+  const words=gContent(text,7).sort((a,b)=>b.length-a.length).slice(0,6);
+  if(words.length<3)return[];
+  const b=makeBlock('spelling');b.words=words;
+  return[instr('Spelling practice','Look at the word, cover it and write it twice.'),b];}
+
+function genFirstLetter(text,n){
+  const sents=gSents(text);const rows=[];
+  sents.forEach(s=>{
+    if(rows.length>=n)return;
+    const cand=gWords(s).filter(w=>{const x=gNorm(w);return x.length>=6&&!GEN_STOP.has(x);});
+    if(!cand.length)return;
+    const w=cand[0];
+    rows.push({s:gClean(s).replace(w,'['+w.charAt(0)+']'),a:gNorm(w)});});
+  if(!rows.length)return[];
+  const b=makeBlock('firstletter');b.rows=rows;
+  return[instr('First-letter gaps','Complete each word. The first letter is given.'),b];}
+
+function genSyllables(text){
+  const words=gContent(text,4).slice(0,9);
+  if(words.length<4)return[];
+  const b=makeBlock('syllables');b.words=words;b.cols=3;
+  return[instr('Count the syllables','Write each word in the column for its number of syllables.'),b];}
+
+function genTrueFalse(text,n){
+  const sents=gSents(text).slice(0,n*2);
+  if(sents.length<3)return[];
+  const rows=[],key=[];
+  const flip=[[/\bis\b/,'is not'],[/\bare\b/,'are not'],[/\bwas\b/,'was not'],[/\bwere\b/,'were not'],
+              [/\bhas\b/,'has not'],[/\bhave\b/,'have not'],[/\bcan\b/,'cannot'],[/\bdoes\b/,'does not']];
+  sents.slice(0,n).forEach((s,i)=>{
+    let t=gClean(s).replace(/[.!?]+$/,'')+'.';
+    if(i%2===1){let done=false;
+      for(const[re,rep]of flip){if(re.test(t)&&!done){t=t.replace(re,rep);done=true;}}
+      if(!done){rows.push(gCap(t));key.push('T');return;}
+      rows.push(gCap(t));key.push('F');return;}
+    rows.push(gCap(t));key.push('T');});
+  const b=makeBlock('tfng');b.rows=rows;b.correct=key;
+  return[instr('True or false?','Read the text again and mark each statement T or F.'),b];}
+
+function genParaOrder(text){
+  const ps=gParas(text);
+  if(ps.length<3)return[];
+  const order=gShuffle(ps.map((p,i)=>i),ps.length*5);
+  const b=makeBlock('paraorder');
+  b.items=order.map(i=>ps[i]);
+  b.key=order.map(i=>i+1);
+  return[instr('Put the paragraphs in order','Number the paragraphs in the correct order.'),b];}
+
+function genWordBank(text,n){
+  const words=gContent(text,5).slice(0,n||10);
+  if(words.length<4)return[];
+  const b=makeBlock('wordbank');b.title='Key words from the text';b.words=words;return[b];}
+
+function genWordSearchFrom(text){
+  const words=gContent(text,4).filter(w=>w.length<=9).slice(0,8);
+  if(words.length<4)return[];
+  const b=makeBlock('wordsearch');b.words=words.map(w=>w.toUpperCase());b.size=12;b.grid=null;
+  return[instr('Word search','Find the words from the text in the grid.'),b];}
+
+function genCrosswordFrom(text){
+  const words=gContent(text,4).filter(w=>lookup(w)&&w.length<=9).slice(0,6);
+  if(words.length<4)return[];
+  const b=makeBlock('crossword');b.entries=words.map(w=>({word:w,clue:(lookup(w)||{}).en||w}));b.grid=null;
+  return[instr('Crossword','Use the clues to complete the grid. All the words are in the text.'),b];}
+
+function genDiscussion(text,title){
+  const b=makeBlock('speaking');b.icon='💬';b.title='Talk about it';
+  b.prompts=['What is the writer’s main point?','Do you agree with it? Why?',
+             'Is the same true where you live?','What would you add to the text?'];
+  return[b];}
+
+function genWriting(text,title){
+  const b=makeBlock('promptlines');b.lines=0;b.prompts=[
+    'Write a short reply to the writer (about 80 words).',
+    'Describe a similar experience of your own.'];
+  const l=makeBlock('lines');l.count=8;
+  return[instr('Writing','Choose one task and write your answer on the lines.'),b,l];}
+
+const GENERATORS=[
+ {k:'reading', n:'The reading text',          f:(t,o)=>genReading(t,o.title)},
+ {k:'wordbank',n:'Key-word bank',             f:(t)=>genWordBank(t,10)},
+ {k:'gap',     n:'Gap-fill from the text',    f:(t,o)=>genGapFill(t,o.n)},
+ {k:'cloze',   n:'Open cloze (grammar words)',f:(t,o)=>genOpenCloze(t,o.n)},
+ {k:'mc',      n:'Multiple-choice cloze',     f:(t,o)=>genMcCloze(t,Math.min(o.n,6))},
+ {k:'first',   n:'First-letter gaps',         f:(t,o)=>genFirstLetter(t,o.n)},
+ {k:'match',   n:'Match word and meaning',    f:(t,o)=>genVocabMatch(t,Math.min(o.n,8))},
+ {k:'find',    n:'Find the word in the text', f:(t,o)=>genFindWord(t,Math.min(o.n,6))},
+ {k:'tf',      n:'True / false',              f:(t,o)=>genTrueFalse(t,Math.min(o.n,8))},
+ {k:'order',   n:'Word order',                f:(t,o)=>genWordOrder(t,Math.min(o.n,5))},
+ {k:'para',    n:'Paragraph order',           f:(t)=>genParaOrder(t)},
+ {k:'punct',   n:'Punctuation',               f:(t,o)=>genPunct(t,Math.min(o.n,5))},
+ {k:'spell',   n:'Spelling practice',         f:(t)=>genSpelling(t)},
+ {k:'syl',     n:'Syllable sort',             f:(t)=>genSyllables(t)},
+ {k:'ws',      n:'Word search',               f:(t)=>genWordSearchFrom(t)},
+ {k:'xw',      n:'Crossword',                 f:(t)=>genCrosswordFrom(t)},
+ {k:'talk',    n:'Discussion questions',      f:(t,o)=>genDiscussion(t,o.title)},
+ {k:'write',   n:'Writing task',              f:(t,o)=>genWriting(t,o.title)}
+];
+function instr(lead,txt){const b=makeBlock('instr');b.lead=lead;b.text=txt;b.num='';return b;}
+
+/* =====================================================================
    STATE + BLOCK FACTORY
    ===================================================================== */
 const uid=()=>Math.random().toString(36).slice(2,9);
 function defaultStyle(id){const t=THEMES.find(x=>x.id===id)||THEMES[0];
-  return{theme:t.id,accent:t.accent,accent2:t.accent2,ink:t.ink,paper:t.paper,font:t.font,header:t.header,deco:t.deco};}
+  return{theme:t.id,accent:t.accent,accent2:t.accent2,ink:t.ink,paper:t.paper,font:t.font,header:t.header,deco:t.deco,
+    margin:'normal',frame:'none',cols:'1'};}
 function makeBlock(type){
   const b={id:uid(),type};
   switch(type){
@@ -1888,6 +2297,9 @@ function applyPageStyle(p,st){
   p.style.setProperty('--pa-soft2',mix(st.accent2,st.paper,.92));
   p.setAttribute('data-header',st.header);
   p.setAttribute('data-deco',st.deco);
+  p.setAttribute('data-margin',st.margin||'normal');
+  p.setAttribute('data-frame',st.frame||'none');
+  p.setAttribute('data-cols',st.cols||'1');
 }
 function renderAll(){
   if(!DOC||!Array.isArray(DOC.pages)||!DOC.pages.length){
@@ -16541,6 +16953,17 @@ $('#ansBtn').onclick=()=>{DOC.showAnswers=!DOC.showAnswers;$('#ansBtn').classLis
 $('#headerSel').onchange=e=>{snapshot();setStyle('header',e.target.value);};
 $('#decoSel').onchange=e=>{snapshot();setStyle('deco',e.target.value);};
 $('#fontSel').onchange=e=>{snapshot();setStyle('font',e.target.value);};
+function bindPageSeg(sel,key,attr){
+  const box=$(sel);if(!box)return;
+  box.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    box.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    snapshot();
+    const v=b.dataset[attr];
+    if(DOC.applyAll){DOC.pages.forEach(p=>p.style[key]=v);}else{currentPage().style[key]=v;}
+    renderAll();});}
+bindPageSeg('#marginSel','margin','m');
+bindPageSeg('#frameSel','frame','f');
+bindPageSeg('#colSel','cols','c');
 $('#applyAllTog').onclick=()=>{DOC.applyAll=!DOC.applyAll;refreshThemeUI();autosave();};
 $('#keyTog').onclick=()=>{snapshot();DOC.appendKey=!DOC.appendKey;renderAll();toast(DOC.appendKey?'Answer key page added':'Answer key page removed');};
 $('#numTog').onclick=()=>{snapshot();DOC.autoNumber=!DOC.autoNumber;renderAll();toast(DOC.autoNumber?'Tasks numbered automatically':'Manual task numbers');};
@@ -16575,9 +16998,84 @@ function buildTemplates(){const g=$('#tmplGrid');g.innerHTML='';TEMPLATES.forEac
 function openModal(sel){$(sel).classList.add('show');}
 function closeModal(sel){$(sel).classList.remove('show');}
 $('#tmplBtn').onclick=()=>openModal('#tmplModal');
+
+/* ---------------- generator ---------------- */
+let genSource='bank', genPicked=null, genOn={reading:1,wordbank:1,gap:1,match:1,tf:1,talk:1};
+function genBuildUI(){
+  const lv=$('#genLvl');lv.innerHTML='';
+  ['A2','B1','B2','C1'].forEach((l,i)=>{const b=el('button',i===0?'on':'',l);
+    b.onclick=()=>{[...lv.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');genList();};
+    lv.appendChild(b);});
+  const th=$('#genTheme');th.innerHTML='<option value="">All topics</option>'+
+    GEN_THEMES.map(t=>'<option>'+esc(t)+'</option>').join('');
+  th.onchange=genList;
+  const tk=$('#genTasks');tk.innerHTML='';
+  GENERATORS.forEach(g=>{
+    const row=el('label','gen-t'+(genOn[g.k]?' on':''));
+    const cb=el('input');cb.type='checkbox';cb.checked=!!genOn[g.k];
+    cb.onchange=()=>{genOn[g.k]=cb.checked?1:0;row.classList.toggle('on',cb.checked);genSum();};
+    row.appendChild(cb);row.appendChild(el('span','',esc(g.n)));tk.appendChild(row);});
+  $('#genN').oninput=()=>{$('#genNv').textContent=$('#genN').value;};
+  genList();genSum();
+}
+function genCurrentLevel(){const a=$('#genLvl').querySelector('.on');return a?a.textContent:'A2';}
+function genList(){
+  const lv=genCurrentLevel(),th=$('#genTheme').value;
+  const list=TEXTS.filter(t=>t.lvl===lv&&(!th||t.th===th));
+  const box=$('#genList');box.innerHTML='';
+  if(!list.length){box.appendChild(el('div','hint','No ready-made text for that combination — try another topic, or paste your own.'));genPicked=null;genSum();return;}
+  list.forEach((t,i)=>{
+    const c=el('button','gen-card'+(genPicked===t?' on':''));
+    c.innerHTML='<b>'+esc(t.t)+'</b><span>'+esc(t.th)+' · '+gWords(t.b).length+' words</span><i>'+esc(t.b.slice(0,120))+'…</i>';
+    c.onclick=()=>{genPicked=t;[...box.children].forEach(x=>x.classList.remove('on'));c.classList.add('on');genSum();};
+    box.appendChild(c);
+    if(i===0&&!genPicked){genPicked=t;c.classList.add('on');}});
+  genSum();
+}
+function genPayload(){
+  if(genSource==='own')return{text:$('#genText').value,title:$('#genTitle').value||'Reading worksheet'};
+  return genPicked?{text:genPicked.b,title:genPicked.t}:{text:'',title:''};
+}
+function genSum(){
+  const p=genPayload();const n=parseInt($('#genN').value)||8;
+  const chosen=GENERATORS.filter(g=>genOn[g.k]);
+  if(!gClean(p.text)){$('#genSum').textContent='Choose a text first.';return;}
+  if(!chosen.length){$('#genSum').textContent='Tick at least one task.';return;}
+  let blocks=0,made=0;
+  chosen.forEach(g=>{try{const b=g.f(p.text,{n:n,title:p.title});if(b.length){blocks+=b.length;made++;}}catch(e){}});
+  $('#genSum').innerHTML='<b>'+made+'</b> exercise'+(made===1?'':'s')+' · <b>'+blocks+'</b> blocks · '+
+    gWords(p.text).length+' words of text';
+}
+function genStats(){const t=$('#genText').value;
+  $('#genStats').textContent=gWords(t).length+' words · '+gSents(t).length+' sentences · '+gParas(t).length+' paragraph(s)';}
+$('#genSrc').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+  genSource=b.dataset.s;
+  $('#genSrc').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+  $('#genBank').hidden=genSource!=='bank';$('#genOwn').hidden=genSource!=='own';genSum();});
+$('#genText').addEventListener('input',()=>{genStats();genSum();});
+$('#genN').addEventListener('input',genSum);
+$('#genGo').onclick=()=>{
+  const p=genPayload();const n=parseInt($('#genN').value)||8;
+  if(!gClean(p.text)){toast('Choose a text, or paste your own');return;}
+  const chosen=GENERATORS.filter(g=>genOn[g.k]);
+  if(!chosen.length){toast('Tick at least one task');return;}
+  snapshot();
+  const blocks=[];
+  chosen.forEach(g=>{try{g.f(p.text,{n:n,title:p.title}).forEach(b=>blocks.push(b));}catch(e){}});
+  if(!blocks.length){toast('That text was too short to build anything');return;}
+  const pg={id:uid(),blocks:blocks,style:JSON.parse(JSON.stringify(currentPage().style))};
+  DOC.pages.push(pg);selectedId=null;renderAll();
+  closeModal('#genModal');
+  toast('Built '+blocks.length+' blocks on a new page');
+  const last=document.querySelectorAll('.paper');
+  if(last.length)last[last.length-1].scrollIntoView({behavior:'smooth',block:'start'});
+};
+$('#genBtn').onclick=()=>{
+  if(!can('gen')){nudge('The worksheet generator is on Pro and Max.');return;}
+  openModal('#genModal');genBuildUI();genStats();};
 $('#libBtn').onclick=()=>{buildLibTabs();buildLibBody('');$('#libSearch').value='';openModal('#libModal');};
 $('#libSearch').addEventListener('input',e=>buildLibBody(e.target.value));
-document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>{closeModal('#libModal');closeModal('#tmplModal');});
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>{closeModal('#libModal');closeModal('#tmplModal');closeModal('#genModal');});
 ['#libModal','#tmplModal'].forEach(sel=>$(sel).addEventListener('click',e=>{if(e.target.id===sel.slice(1))closeModal(sel);}));
 
 // mobile panels
