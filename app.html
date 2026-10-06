@@ -1070,6 +1070,184 @@ select.regfield option{background:#fff;color:#131313}
  .venn-c,.venn-m{position:static;transform:none;width:auto;height:auto;padding:13px 15px;
    border:2px solid var(--pa-accent);border-radius:11px;text-align:left}
  .venn-m{border-style:dashed}}
+
+/* ── Word order ── */
+.wordorder{display:grid;gap:11px}
+.wo-row{display:flex;gap:10px;align-items:flex-start}
+.wo-n{flex:none;width:20px;font-weight:700;color:var(--pa-accent)}
+.wo-b{flex:1}
+.wo-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:7px}
+.wo-chip{border:1.5px solid var(--pa-line);border-radius:8px;padding:3px 10px;font-size:13px;background:var(--pa-soft)}
+.wo-a{border-bottom:1.6px solid var(--pa-line);min-height:19px;color:var(--pa-accent);font-weight:600}
+.answers-off .wordorder .wo-a{color:transparent}
+
+/* ── Paragraph order ── */
+.paraorder{display:grid;gap:8px}
+.po-row{display:flex;gap:10px;align-items:flex-start}
+.po-l{flex:none;width:24px;height:24px;border-radius:7px;background:var(--pa-soft);color:var(--pa-accent);
+  font-weight:800;display:grid;place-items:center;font-size:12px}
+.po-t{flex:1;line-height:1.6}
+.po-box{flex:none;width:30px;height:30px;border:1.8px solid var(--pa-line);border-radius:8px;display:grid;place-items:center}
+.po-k{font-weight:800;color:var(--pa-accent)}
+.answers-off .paraorder .po-k{color:transparent}
+
+/* ── First-letter cloze ── */
+.flet{display:grid;gap:9px}
+.fl-row{display:flex;gap:10px}
+.fl-n{flex:none;width:20px;font-weight:700;color:var(--pa-accent)}
+.fl-mid{flex:1;line-height:1.8}
+.fl-gap{display:inline-block;min-width:104px;border-bottom:1.6px solid var(--pa-line);text-align:left;margin:0 3px;padding-left:2px}
+.fl-gap b{color:var(--pa-ink);font-weight:700}
+.fl-a{color:var(--pa-accent);font-weight:650}
+.answers-off .flet .fl-a{color:transparent}
+
+/* ── Missing sentences ── */
+.gt-text{line-height:1.95;margin-bottom:11px}
+.gt-opts{display:grid;gap:6px;margin-bottom:10px}
+.gt-o{display:flex;gap:8px;align-items:baseline;border:1.4px solid var(--pa-line);border-radius:9px;padding:5px 9px}
+.gt-l{font-weight:800;color:var(--pa-accent);font-size:12px}
+.gt-key{display:flex;gap:7px;flex-wrap:wrap}
+.gt-kc{display:flex;align-items:center;gap:4px;border:1.5px solid var(--pa-line);border-radius:8px;padding:2px 9px}
+.gt-kc i{font-style:normal;font-size:11px;color:var(--pa-ink);opacity:.6}
+.gt-kc b{color:var(--pa-accent)}
+.answers-off .gt-kc b{color:transparent}
+
+/* ── True / False / Not given ── */
+.tfng{display:grid;gap:8px}
+.tg-row{display:flex;gap:10px;align-items:center}
+.tg-n{flex:none;width:20px;font-weight:700;color:var(--pa-accent)}
+.tg-s{flex:1}
+.tg-b{display:flex;gap:5px;flex:none}
+.tg-x{border:1.6px solid var(--pa-line);background:none;border-radius:8px;padding:3px 9px;font-size:11.5px;
+  font-weight:750;cursor:pointer;color:var(--pa-ink);min-width:32px}
+.answers-on .tg-x.pick{background:var(--pa-accent);border-color:var(--pa-accent);color:#fff}
+
+/* ── Multiple matching ── */
+.mm-head{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:11px}
+.mm-t{display:flex;gap:6px;align-items:baseline;border:1.4px solid var(--pa-line);border-radius:9px;padding:4px 10px;background:var(--pa-soft)}
+.mm-l{font-weight:800;color:var(--pa-accent);font-size:12px}
+.mm-row{display:flex;gap:10px;align-items:center;margin-bottom:7px}
+.mm-n{flex:none;width:22px;font-weight:800;color:var(--pa-accent)}
+.mm-s{flex:1}
+.mm-box{flex:none;width:30px;height:30px;border:1.8px solid var(--pa-line);border-radius:8px;display:grid;
+  place-items:center;font-weight:800;color:var(--pa-accent)}
+.answers-off .mm-box{color:transparent}
+
+/* ── Punctuation ── */
+.punct{display:grid;gap:12px}
+.pu-row{display:flex;gap:10px}
+.pu-n{flex:none;width:20px;font-weight:700;color:var(--pa-accent)}
+.pu-b{flex:1}
+.pu-s{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;opacity:.8;margin-bottom:5px}
+
+/* ── Answer grid ── */
+.agrid{display:grid;gap:7px}
+.ag-c{border:1.6px solid var(--pa-line);border-radius:9px;height:40px;display:flex;align-items:center;gap:6px;padding:0 8px}
+.ag-n{font-size:10.5px;font-weight:800;color:var(--pa-accent);flex:none}
+.ag-b{flex:1;border-bottom:1.4px solid var(--pa-line);height:1px}
+
+/* ── Word family / KWL / error log / find someone / spelling ── */
+.wfam,.kwl,.elog,.fsw,.spell,.synant{width:100%;border-collapse:collapse}
+.wfam th,.kwl th,.elog th,.fsw th,.spell th,.synant th{background:var(--pa-soft);font-weight:700;font-size:11.5px;
+  text-transform:uppercase;letter-spacing:.04em;padding:7px 9px;border:1.4px solid var(--pa-line);text-align:left}
+.wfam td,.kwl td,.elog td,.fsw td,.spell td,.synant td{border:1.4px solid var(--pa-line);padding:8px 9px;height:32px;font-size:13.5px}
+.wfam td.given,.fsw td.given,.spell td.given,.synant td.given{background:var(--pa-soft);font-weight:600}
+.sa-a{color:var(--pa-accent);font-weight:600}
+.answers-off .synant .sa-a{color:transparent}
+
+/* ── Dominoes ── */
+.doms{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dom{display:flex;border:1.8px dashed var(--pa-line);border-radius:10px;overflow:hidden;min-height:42px}
+.dom-h{flex:1;padding:9px 11px;display:flex;align-items:center;font-size:13px}
+.dom-r{border-left:1.8px dashed var(--pa-line);background:var(--pa-soft)}
+
+/* ── Flashcards ── */
+.fcards{display:grid;gap:9px}
+.fc{border:1.6px solid var(--pa-line);border-radius:11px;overflow:hidden;text-align:center}
+.fc-f{padding:13px 9px;font-weight:650;font-size:14px}
+.fc-fold{border-top:1.6px dashed var(--pa-line)}
+.fc-b{padding:13px 9px;font-size:13px;background:var(--pa-soft)}
+
+/* ── Syllables ── */
+.sy-bank{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;border:2px dashed var(--pa-accent);
+  border-radius:12px;padding:11px 13px}
+.sy-bank span{border:1.4px solid var(--pa-line);border-radius:7px;padding:2px 9px;font-size:13px;background:var(--pa-paper)}
+.sy-cols{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:9px}
+.sy-c{border:1.6px solid var(--pa-line);border-radius:11px;overflow:hidden}
+.sy-h{background:var(--pa-soft);font-size:11.5px;font-weight:750;padding:6px 9px;text-align:center}
+.sy-drop{min-height:92px}
+
+/* ── Collocation fork ── */
+.cfork{display:flex;gap:16px;align-items:center}
+.cf-c{flex:none;border:2.4px solid var(--pa-accent);border-radius:14px;padding:13px 17px;font-weight:800;
+  letter-spacing:.04em;background:var(--pa-soft)}
+.cf-l{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.cf-b{border-bottom:1.6px solid var(--pa-line);padding:4px 2px;font-size:13.5px;min-height:22px}
+
+/* ── Debate ── */
+.db-m{font-weight:700;text-align:center;border:2px solid var(--pa-accent);border-radius:12px;
+  padding:10px 14px;margin-bottom:13px;background:var(--pa-soft)}
+.db-g{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.db-col{border:1.6px solid var(--pa-line);border-radius:12px;overflow:hidden}
+.db-h{font-weight:750;font-size:12px;text-transform:uppercase;letter-spacing:.05em;padding:7px 11px;background:var(--pa-soft)}
+.db-ag .db-h{background:var(--pa-line)}
+.db-r{display:flex;gap:8px;align-items:center;padding:7px 11px}
+.db-n{font-size:11px;font-weight:800;color:var(--pa-accent);flex:none}
+.db-l{flex:1;border-bottom:1.4px solid var(--pa-line);height:15px}
+
+/* ── Ranking ── */
+.rk-bank{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;border:2px dashed var(--pa-accent);
+  border-radius:12px;padding:11px 13px}
+.rk-bank span{border:1.4px solid var(--pa-line);border-radius:7px;padding:2px 9px;font-size:13px;background:var(--pa-paper)}
+.rk-list{display:grid;gap:6px}
+.rk-r{display:flex;gap:10px;align-items:center}
+.rk-n{flex:none;width:23px;height:23px;border-radius:7px;background:var(--pa-soft);color:var(--pa-accent);
+  font-weight:800;font-size:11.5px;display:grid;place-items:center}
+.rk-l{flex:1;border-bottom:1.5px solid var(--pa-line);height:19px}
+
+/* ── Role cards ── */
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.role{border:1.8px dashed var(--pa-line);border-radius:12px;overflow:hidden}
+.role-h{background:var(--pa-soft);font-weight:750;font-size:12px;padding:7px 12px;
+  text-transform:uppercase;letter-spacing:.05em;color:var(--pa-accent)}
+.role-t{padding:11px 12px;line-height:1.6;font-size:13.5px}
+
+/* ── Peer feedback ── */
+.pfb{border:1.8px solid var(--pa-line);border-radius:13px;padding:13px 15px}
+.pf-h{display:flex;gap:8px;align-items:baseline;margin-bottom:11px;font-size:12.5px;font-weight:650}
+.pf-a{flex:1;border-bottom:1.4px solid var(--pa-line);min-height:17px}
+.pf-r{margin-bottom:10px}
+.pf-i{color:var(--pa-accent);font-size:15px;margin-right:7px}
+.pf-w{color:var(--pa-accent2,var(--pa-accent))}
+.pf-t{font-size:12.5px;font-weight:600}
+
+/* ── Cause chain ── */
+.chain{display:grid;gap:4px;justify-items:center}
+.ch-c{width:100%;border:1.6px solid var(--pa-line);border-radius:11px;padding:10px 13px;
+  background:var(--pa-soft);font-size:13.5px;text-align:center}
+.ch-a{color:var(--pa-accent);font-size:17px;font-weight:800;line-height:1}
+
+/* ── Exit ticket ── */
+.exit{display:grid;gap:12px;border:2px solid var(--pa-accent);border-radius:14px;padding:14px 16px}
+.ex-r{display:flex;gap:11px}
+.ex-n{flex:none;width:27px;height:27px;border-radius:50%;background:var(--pa-accent);color:#fff;
+  font-weight:800;display:grid;place-items:center;font-size:13px}
+.ex-b{flex:1}
+.ex-q{font-weight:650;margin-bottom:6px;font-size:13.5px}
+
+/* ── Label the picture ── */
+.lp-img{border:1.8px solid var(--pa-line);border-radius:12px;overflow:hidden;display:grid;place-items:center;
+  background:var(--pa-soft);margin-bottom:11px}
+.lp-img img{max-width:100%;max-height:100%;object-fit:contain}
+.lp-ph{font-size:12.5px;opacity:.6}
+.lp-list{display:grid;grid-template-columns:1fr 1fr;gap:7px 16px}
+.lp-r{display:flex;gap:9px;align-items:center}
+.lp-n{flex:none;width:22px;height:22px;border-radius:50%;border:1.6px solid var(--pa-accent);
+  color:var(--pa-accent);font-weight:800;font-size:11px;display:grid;place-items:center}
+.lp-l{flex:1;border-bottom:1.5px solid var(--pa-line);height:18px}
+
+@media(max-width:560px){.doms,.roles,.db-g,.lp-list,.cf-l{grid-template-columns:1fr}
+ .cfork{flex-direction:column;align-items:stretch}}
 </style>
 </head>
 <body class="locked">
@@ -1386,6 +1564,14 @@ const BLOCK_DEFS=[
  {t:'short',g:'Questions',icon:I.short,name:'Short answer',hint:'Question + lines'},
  {t:'wordform',g:'Questions',icon:I.fib,name:'Word formation',hint:'Root word → correct form'},
  {t:'mccloze',g:'Questions',icon:I.mcq,name:'Multiple-choice cloze',hint:'Text with A/B/C/D gaps'},
+ {t:'wordorder',g:'Questions',icon:I.ana,name:'Word order',hint:'Put the words in order'},
+ {t:'paraorder',g:'Questions',icon:I.sort,name:'Paragraph order',hint:'Sequence A–E'},
+ {t:'firstletter',g:'Questions',icon:I.fib,name:'First-letter cloze',hint:'b______ given'},
+ {t:'gappedtext',g:'Questions',icon:I.match,name:'Missing sentences',hint:'Insert A–G into the text'},
+ {t:'tfng',g:'Questions',icon:I.tf,name:'True / False / Not given',hint:'Exam reading'},
+ {t:'multimatch',g:'Questions',icon:I.match,name:'Multiple matching',hint:'Which text says…?'},
+ {t:'punctuation',g:'Questions',icon:I.text,name:'Punctuation fix',hint:'Add capitals and stops'},
+ {t:'answergrid',g:'Questions',icon:I.grid,name:'Answer grid',hint:'Numbered answer boxes'},
 
  {t:'wordbank',g:'Vocabulary',icon:I.bank,name:'Word bank',hint:'Support words'},
  {t:'vocablist',g:'Vocabulary',icon:I.text,name:'Vocabulary list',hint:'Auto definitions / RU'},
@@ -1397,6 +1583,13 @@ const BLOCK_DEFS=[
  {t:'crossword',g:'Vocabulary',icon:I.grid,name:'Crossword',hint:'Clues → auto grid'},
  {t:'collgrid',g:'Vocabulary',icon:I.check,name:'Collocation grid',hint:'Tick what goes together'},
  {t:'bingo',g:'Vocabulary',icon:I.grid,name:'Bingo card',hint:'Vocabulary game grid'},
+ {t:'wordfamily',g:'Vocabulary',icon:I.table,name:'Word family table',hint:'noun · verb · adj · adv'},
+ {t:'synant',g:'Vocabulary',icon:I.match,name:'Synonyms & antonyms',hint:'Same / opposite'},
+ {t:'dominoes',g:'Vocabulary',icon:I.cards,name:'Dominoes',hint:'Cut-out matching halves'},
+ {t:'flashcards',g:'Vocabulary',icon:I.cards,name:'Flashcards',hint:'Fold-over cut-outs'},
+ {t:'spelling',g:'Vocabulary',icon:I.lines,name:'Spelling practice',hint:'Look · cover · write · check'},
+ {t:'syllables',g:'Vocabulary',icon:I.sort,name:'Syllable sort',hint:'Count the beats'},
+ {t:'collfork',g:'Vocabulary',icon:I.mind,name:'Collocation fork',hint:'One word, many partners'},
 
  {t:'speaking',g:'Speaking & writing',icon:I.speak,name:'Speaking',hint:'Discussion / role-play'},
  {t:'dialogue',g:'Speaking & writing',icon:I.speak,name:'Dialogue',hint:'A / B conversation'},
@@ -1409,6 +1602,11 @@ const BLOCK_DEFS=[
  {t:'rating',g:'Speaking & writing',icon:I.rate,name:'Self-assessment',hint:'Stars / reflection'},
  {t:'opinionline',g:'Speaking & writing',icon:I.rate,name:'Opinion line',hint:'Agree ↔ disagree scale'},
  {t:'minimalpairs',g:'Speaking & writing',icon:I.speak,name:'Minimal pairs',hint:'Circle the word you hear'},
+ {t:'findsomeone',g:'Speaking & writing',icon:I.table,name:'Find someone who…',hint:'Class mingle grid'},
+ {t:'debate',g:'Speaking & writing',icon:I.speak,name:'Debate planner',hint:'For and against'},
+ {t:'ranking',g:'Speaking & writing',icon:I.ladder,name:'Ranking / diamond',hint:'Order by importance'},
+ {t:'rolecards',g:'Speaking & writing',icon:I.cards,name:'Role-play cards',hint:'A / B situation cards'},
+ {t:'peerfeedback',g:'Speaking & writing',icon:I.check,name:'Peer feedback',hint:'Two stars and a wish'},
 
  {t:'table',g:'Structure',icon:I.table,name:'Table',hint:'Grid N×M'},
  {t:'verbtable',g:'Structure',icon:I.table,name:'Verb forms',hint:'Infinitive · past · participle'},
@@ -1419,7 +1617,12 @@ const BLOCK_DEFS=[
  {t:'gridpaper',g:'Structure',icon:I.grid,name:'Grid paper',hint:'Squared area'},
  {t:'image',g:'Structure',icon:I.img,name:'Image',hint:'Upload a picture'},
  {t:'substitution',g:'Structure',icon:I.table,name:'Sentence builder',hint:'Substitution table'},
- {t:'venn',g:'Structure',icon:I.mind,name:'Venn diagram',hint:'Compare two things'}
+ {t:'venn',g:'Structure',icon:I.mind,name:'Venn diagram',hint:'Compare two things'},
+ {t:'kwl',g:'Structure',icon:I.table,name:'KWL chart',hint:'Know · Want · Learned'},
+ {t:'causechain',g:'Structure',icon:I.steps,name:'Cause & effect chain',hint:'This led to that'},
+ {t:'exitticket',g:'Structure',icon:I.box,name:'Exit ticket',hint:'Three quick questions'},
+ {t:'errorlog',g:'Structure',icon:I.table,name:'Error log',hint:'Mistake · correction · rule'},
+ {t:'labelpic',g:'Structure',icon:I.img,name:'Label the picture',hint:'Numbered callout lines'}
 ];
 
 /* =====================================================================
@@ -1566,6 +1769,56 @@ function makeBlock(type){
    case'minimalpairs':b.rows=[{a:'ship',b:'sheep',correct:0},{a:'live',b:'leave',correct:1},
      {a:'bat',b:'bad',correct:0},{a:'thin',b:'sin',correct:0},{a:'walk',b:'work',correct:1}];break;
    case'substitution':b.cols=[['I','She','They'],['have never','has never','have often'],['been to','thought about','heard of'],['Japan.','that idea.','this band.']];break;
+   case'wordorder':b.rows=[{c:'you / where / do / live / ?',a:'Where do you live?'},
+     {c:'never / been / have / I / to / Spain',a:'I have never been to Spain.'},
+     {c:'rains / it / often / here',a:'It often rains here.'}];b.line=true;break;
+   case'paraorder':b.items=['The next morning the weather had changed completely.',
+     'It all began with a phone call at six in the morning.',
+     'By the time we reached the coast, the sun was setting.',
+     'We packed in ten minutes and left without breakfast.',
+     'Looking back, none of us regrets that strange weekend.'];b.key=[2,1,4,3,5];break;
+   case'firstletter':b.rows=[{s:'She was very [d] with her results.',a:'disappointed'},
+     {s:'I [b] the book from the library.',a:'borrowed'},
+     {s:'The film was absolutely [t].',a:'terrifying'},
+     {s:'He [a] for being late.',a:'apologised'}];break;
+   case'gappedtext':b.text='Learning a language takes time. (1) ___ Most people give up in the first three months, long before anything feels natural. (2) ___ The learners who succeed are rarely the most gifted. (3) ___ They simply keep going on the days when nothing seems to work.';
+     b.opts=['That is exactly when progress is invisible but real.','They are the most stubborn.','Nobody tells you how slow the start feels.'];
+     b.key=[3,1,2];break;
+   case'tfng':b.rows=['The writer has lived abroad.','The writer prefers cities to villages.','The writer speaks four languages.'];
+     b.correct=['T','F','NG'];break;
+   case'multimatch':b.texts=['Speaker A','Speaker B','Speaker C','Speaker D'];
+     b.rows=['…changed career after a long illness.','…still lives in the town where they were born.',
+       '…regrets not travelling when they were younger.','…found the decision easier than expected.'];
+     b.key=[2,1,4,3];break;
+   case'punctuation':b.rows=['my brother lives in paris and works for a french bank',
+     'where did you buy that jacket it looks expensive',
+     'on monday we visited the british museum with mr clarke',
+     'she asked me what time the train to york leaves'];break;
+   case'answergrid':b.n=12;b.cols=6;break;
+   case'wordfamily':b.cols=['noun','verb','adjective','adverb'];
+     b.rows=[['decision','decide','decisive','decisively'],['success','','',''],['','create','',''],['','','careful',''],['beauty','','','']];break;
+   case'synant':b.rows=[{w:'enormous',s:'huge',a:'tiny'},{w:'ancient',s:'',a:''},{w:'generous',s:'',a:''},
+     {w:'difficult',s:'',a:''},{w:'frequent',s:'',a:''}];break;
+   case'dominoes':b.rows=[['make','a decision'],['do','the washing-up'],['take','a break'],
+     ['have','a good time'],['keep','a secret'],['give','advice']];break;
+   case'flashcards':b.cols=3;b.rows=[['journey','путешествие'],['luggage','багаж'],['delay','задержка'],
+     ['abroad','за границей'],['departure','отправление'],['souvenir','сувенир']];break;
+   case'spelling':b.words=['necessary','separate','definitely','receive','accommodation','rhythm'];break;
+   case'syllables':b.words=['banana','cat','computer','table','elephant','dog','beautiful','book','tomorrow'];b.cols=3;break;
+   case'collfork':b.center='MAKE';b.branches=['a decision','a mistake','friends','money','progress','an effort'];break;
+   case'findsomeone':b.rows=['…has been to more than five countries.','…can play a musical instrument.',
+     '…ate something unusual last week.','…has never broken a bone.','…speaks three languages.','…gets up before six.'];break;
+   case'debate':b.motion='Homework should be abolished in primary schools.';b.n=4;break;
+   case'ranking':b.items=['salary','colleagues','short commute','interesting work','job security','holidays','training','flexible hours','respect'];
+     b.shape='list';break;
+   case'rolecards':b.a='Student A — You are a customer. You bought these shoes last week and they are already broken. You want your money back.';
+     b.b='Student B — You are the shop assistant. Company policy allows an exchange, not a refund, unless the customer has the receipt.';break;
+   case'peerfeedback':b.author='';b.stars=2;break;
+   case'kwl':b.topic='The topic';b.n=4;break;
+   case'causechain':b.items=['The factory closed.','Three hundred people lost their jobs.','Local shops began to struggle.','Young families moved away.'];break;
+   case'exitticket':b.rows=['Three things I learned today','Two things I want to practise','One question I still have'];break;
+   case'errorlog':b.n=5;break;
+   case'labelpic':b.src='';b.h=240;b.n=6;break;
    case'venn':b.left='Speaking';b.right='Writing';b.both='Both';
      b.li=['happens in real time','you can use gesture'];b.ri=['you can plan and edit','stays as a record'];
      b.bi=['needs vocabulary','needs a clear structure'];break;
@@ -1907,6 +2160,167 @@ function renderContent(b){
          tr.appendChild(td);});
        t.appendChild(tr);}
      return t;}
+   case'wordorder':{const w=el('div','wordorder');b.rows.forEach((r,i)=>{const it=el('div','wo-row');
+       it.appendChild(el('div','wo-n',String(i+1)));
+       const bd=el('div','wo-b');
+       const chips=el('div','wo-chips');
+       (r.c||'').split('/').forEach(x=>{if(x.trim())chips.appendChild(el('span','wo-chip',esc(x.trim())));});
+       bd.appendChild(chips);
+       if(b.line)bd.appendChild(ce('div','wo-a',r.a,'',v=>b.rows[i].a=stripHtml(v)));
+       else bd.appendChild(el('div','wl'));
+       it.appendChild(bd);w.appendChild(it);});return w;}
+   case'paraorder':{const w=el('div','paraorder');b.items.forEach((x,i)=>{const it=el('div','po-row');
+       it.appendChild(el('div','po-l',String.fromCharCode(65+i)));
+       it.appendChild(ce('div','po-t',x,'Paragraph…',v=>b.items[i]=v));
+       const bx=el('div','po-box');bx.appendChild(el('span','po-k',String(b.key[i]||'')));
+       it.appendChild(bx);w.appendChild(it);});return w;}
+   case'firstletter':{const w=el('div','flet');b.rows.forEach((r,i)=>{const it=el('div','fl-row');
+       it.appendChild(el('div','fl-n',String(i+1)));
+       const mid=el('div','fl-mid');const m=(r.s||'').split(/\[(.)\]/);
+       mid.appendChild(el('span','',esc(m[0]||'')));
+       const g=el('span','fl-gap');g.appendChild(el('b','',esc(m[1]||'')));
+       g.appendChild(ce('span','fl-a',(r.a||'').slice(1),'',v=>b.rows[i].a=(m[1]||'')+stripHtml(v)));
+       mid.appendChild(g);mid.appendChild(el('span','',esc(m[2]||'')));
+       it.appendChild(mid);w.appendChild(it);});return w;}
+   case'gappedtext':{const w=el('div','gtext');
+     w.appendChild(ce('div','gt-text',b.text,'Text with (1) ___ markers',v=>b.text=v));
+     const ol=el('div','gt-opts');
+     b.opts.forEach((o,i)=>{const r=el('div','gt-o');r.appendChild(el('span','gt-l',String.fromCharCode(65+i)));
+       r.appendChild(ce('span','',o,'sentence',v=>b.opts[i]=stripHtml(v)));ol.appendChild(r);});
+     w.appendChild(ol);
+     const k=el('div','gt-key');b.key.forEach((x,i)=>{const c=el('span','gt-kc');
+       c.appendChild(el('i','',String(i+1)));c.appendChild(el('b','',String.fromCharCode(64+(x||1))));k.appendChild(c);});
+     w.appendChild(k);return w;}
+   case'tfng':{const w=el('div','tfng');b.rows.forEach((r,i)=>{const it=el('div','tg-row');
+       it.appendChild(el('div','tg-n',String(i+1)));
+       it.appendChild(ce('div','tg-s',r,'Statement…',v=>b.rows[i]=v));
+       const bs=el('div','tg-b');
+       ['T','F','NG'].forEach(k=>{const bt=el('button','tg-x'+(b.correct[i]===k?' pick':''),k);
+         bt.onclick=()=>{b.correct[i]=k;snapshot();renderAll();};bs.appendChild(bt);});
+       it.appendChild(bs);w.appendChild(it);});return w;}
+   case'multimatch':{const w=el('div','mmatch');
+     const hd=el('div','mm-head');b.texts.forEach((t,i)=>{const c=el('div','mm-t');
+       c.appendChild(el('span','mm-l',String(i+1)));
+       c.appendChild(ce('span','',t,'Text…',v=>b.texts[i]=stripHtml(v)));hd.appendChild(c);});
+     w.appendChild(hd);
+     b.rows.forEach((r,i)=>{const it=el('div','mm-row');
+       it.appendChild(el('div','mm-n',String.fromCharCode(65+i)));
+       it.appendChild(ce('div','mm-s',r,'Which text…',v=>b.rows[i]=v));
+       it.appendChild(el('div','mm-box',String(b.key[i]||'')));
+       w.appendChild(it);});return w;}
+   case'punctuation':{const w=el('div','punct');b.rows.forEach((r,i)=>{const it=el('div','pu-row');
+       it.appendChild(el('div','pu-n',String(i+1)));
+       const bd=el('div','pu-b');bd.appendChild(ce('div','pu-s',r,'sentence with no punctuation',v=>b.rows[i]=v));
+       bd.appendChild(el('div','wl'));it.appendChild(bd);w.appendChild(it);});return w;}
+   case'answergrid':{const w=el('div','agrid');w.style.gridTemplateColumns='repeat('+b.cols+',1fr)';
+     for(let i=0;i<b.n;i++){const c=el('div','ag-c');c.appendChild(el('span','ag-n',String(i+1)));
+       c.appendChild(el('span','ag-b'));w.appendChild(c);}return w;}
+   case'wordfamily':{const t=el('table','wfam');
+     const hr=el('tr');b.cols.forEach((c,j)=>{const th=el('th');
+       th.appendChild(ce('span','',c,'',v=>b.cols[j]=stripHtml(v)));hr.appendChild(th);});
+     t.appendChild(hr);
+     b.rows.forEach((row,r)=>{const tr=el('tr');
+       for(let c=0;c<b.cols.length;c++){const td=el('td',row[c]?'given':'');
+         td.appendChild(ce('span','',row[c]||'','',v=>b.rows[r][c]=stripHtml(v)));tr.appendChild(td);}
+       t.appendChild(tr);});return t;}
+   case'synant':{const t=el('table','synant');
+     const hr=el('tr');['word','a word with the same meaning','a word with the opposite meaning'].forEach(h=>hr.appendChild(el('th','',h)));
+     t.appendChild(hr);
+     b.rows.forEach((r,i)=>{const tr=el('tr');
+       const a=el('td','given');a.appendChild(ce('span','',r.w,'word',v=>b.rows[i].w=stripHtml(v)));tr.appendChild(a);
+       const s=el('td');s.appendChild(ce('span','sa-a',r.s,'',v=>b.rows[i].s=stripHtml(v)));tr.appendChild(s);
+       const o=el('td');o.appendChild(ce('span','sa-a',r.a,'',v=>b.rows[i].a=stripHtml(v)));tr.appendChild(o);
+       t.appendChild(tr);});return t;}
+   case'dominoes':{const w=el('div','doms');b.rows.forEach((r,i)=>{const d=el('div','dom');
+       d.appendChild(ce('div','dom-h',r[0],'half',v=>b.rows[i][0]=stripHtml(v)));
+       d.appendChild(ce('div','dom-h dom-r',r[1],'half',v=>b.rows[i][1]=stripHtml(v)));
+       w.appendChild(d);});return w;}
+   case'flashcards':{const w=el('div','fcards');w.style.gridTemplateColumns='repeat('+b.cols+',1fr)';
+     b.rows.forEach((r,i)=>{const c=el('div','fc');
+       c.appendChild(ce('div','fc-f',r[0],'front',v=>b.rows[i][0]=stripHtml(v)));
+       c.appendChild(el('div','fc-fold'));
+       c.appendChild(ce('div','fc-b',r[1],'back',v=>b.rows[i][1]=stripHtml(v)));
+       w.appendChild(c);});return w;}
+   case'spelling':{const t=el('table','spell');
+     const hr=el('tr');['word','look · cover · write','write again','check'].forEach(h=>hr.appendChild(el('th','',h)));
+     t.appendChild(hr);
+     b.words.forEach((x,i)=>{const tr=el('tr');
+       const a=el('td','given');a.appendChild(ce('span','',x,'word',v=>b.words[i]=stripHtml(v)));tr.appendChild(a);
+       for(let k=0;k<3;k++)tr.appendChild(el('td','',''));
+       t.appendChild(tr);});return t;}
+   case'syllables':{const w=el('div','syll');
+     w.appendChild(el('div','sy-bank',b.words.map(x=>'<span>'+esc(x)+'</span>').join('')));
+     const g=el('div','sy-cols');
+     for(let i=1;i<=b.cols;i++){const c=el('div','sy-c');
+       c.appendChild(el('div','sy-h',i+' syllable'+(i>1?'s':'')));
+       c.appendChild(el('div','sy-drop'));g.appendChild(c);}
+     w.appendChild(g);return w;}
+   case'collfork':{const w=el('div','cfork');
+     w.appendChild(ce('div','cf-c',b.center,'WORD',v=>b.center=stripHtml(v)));
+     const l=el('div','cf-l');b.branches.forEach((x,i)=>l.appendChild(ce('div','cf-b',x,'…',v=>b.branches[i]=stripHtml(v))));
+     w.appendChild(l);return w;}
+   case'findsomeone':{const t=el('table','fsw');
+     const hr=el('tr');['Find someone who…','Name','Extra detail'].forEach(h=>hr.appendChild(el('th','',h)));
+     t.appendChild(hr);
+     b.rows.forEach((r,i)=>{const tr=el('tr');
+       const a=el('td','given');a.appendChild(ce('span','',r,'…',v=>b.rows[i]=stripHtml(v)));tr.appendChild(a);
+       tr.appendChild(el('td','',''));tr.appendChild(el('td','',''));t.appendChild(tr);});return t;}
+   case'debate':{const w=el('div','debate');
+     w.appendChild(ce('div','db-m',b.motion,'Motion…',v=>b.motion=v));
+     const g=el('div','db-g');
+     [['For','db-for'],['Against','db-ag']].forEach(([h,c])=>{const col=el('div','db-col '+c);
+       col.appendChild(el('div','db-h',h));
+       for(let i=0;i<b.n;i++){const r=el('div','db-r');r.appendChild(el('span','db-n',String(i+1)));
+         r.appendChild(el('span','db-l'));col.appendChild(r);}
+       g.appendChild(col);});
+     w.appendChild(g);return w;}
+   case'ranking':{const w=el('div','rank');
+     w.appendChild(el('div','rk-bank',b.items.map(x=>'<span>'+esc(x)+'</span>').join('')));
+     const l=el('div','rk-list');
+     for(let i=0;i<Math.min(9,b.items.length);i++){const r=el('div','rk-r');
+       r.appendChild(el('span','rk-n',String(i+1)));r.appendChild(el('span','rk-l'));l.appendChild(r);}
+     w.appendChild(l);return w;}
+   case'rolecards':{const w=el('div','roles');
+     [['A','a'],['B','b']].forEach(([lab,k])=>{const c=el('div','role');
+       c.appendChild(el('div','role-h','Student '+lab));
+       c.appendChild(ce('div','role-t',b[k],'Situation…',v=>b[k]=v));w.appendChild(c);});
+     return w;}
+   case'peerfeedback':{const w=el('div','pfb');
+     const hd=el('div','pf-h');hd.appendChild(el('span','','Work by:'));
+     hd.appendChild(ce('span','pf-a',b.author,'name',v=>b.author=stripHtml(v)));w.appendChild(hd);
+     for(let i=0;i<b.stars;i++){const r=el('div','pf-r');r.appendChild(el('span','pf-i','★'));
+       r.appendChild(el('span','pf-t','Something that works well'));r.appendChild(el('div','wl'));w.appendChild(r);}
+     const r=el('div','pf-r');r.appendChild(el('span','pf-i pf-w','✎'));
+     r.appendChild(el('span','pf-t','One thing to improve'));r.appendChild(el('div','wl'));w.appendChild(r);
+     return w;}
+   case'kwl':{const t=el('table','kwl');
+     const hr=el('tr');['What I know','What I want to know','What I learned'].forEach(h=>hr.appendChild(el('th','',h)));
+     t.appendChild(hr);
+     for(let i=0;i<b.n;i++){const tr=el('tr');for(let c=0;c<3;c++)tr.appendChild(el('td','',''));t.appendChild(tr);}
+     return t;}
+   case'causechain':{const w=el('div','chain');b.items.forEach((x,i)=>{
+       const c=el('div','ch-c');c.appendChild(ce('div','ch-t',x,'…',v=>b.items[i]=v));w.appendChild(c);
+       if(i<b.items.length-1)w.appendChild(el('div','ch-a','↓'));});
+     return w;}
+   case'exitticket':{const w=el('div','exit');b.rows.forEach((r,i)=>{const it=el('div','ex-r');
+       it.appendChild(el('div','ex-n',String(3-i)));
+       const bd=el('div','ex-b');bd.appendChild(ce('div','ex-q',r,'Prompt…',v=>b.rows[i]=v));
+       for(let k=0;k<=(2-i);k++)bd.appendChild(el('div','wl'));
+       it.appendChild(bd);w.appendChild(it);});return w;}
+   case'errorlog':{const t=el('table','elog');
+     const hr=el('tr');['What I wrote','The correction','The rule'].forEach(h=>hr.appendChild(el('th','',h)));
+     t.appendChild(hr);
+     for(let i=0;i<b.n;i++){const tr=el('tr');for(let c=0;c<3;c++)tr.appendChild(el('td','',''));t.appendChild(tr);}
+     return t;}
+   case'labelpic':{const w=el('div','lpic');
+     const box=el('div','lp-img');box.style.height=(b.h||240)+'px';
+     if(b.src){const im=el('img');im.src=b.src;box.appendChild(im);}
+     else box.appendChild(el('div','lp-ph','Add a picture in the panel on the left'));
+     w.appendChild(box);
+     const l=el('div','lp-list');
+     for(let i=0;i<b.n;i++){const r=el('div','lp-r');r.appendChild(el('span','lp-n',String(i+1)));
+       r.appendChild(el('span','lp-l'));l.appendChild(r);}
+     w.appendChild(l);return w;}
    case'venn':{const w=el('div','venn');
      const d=el('div','venn-d');
      const Lc=el('div','venn-c venn-l'),Rc=el('div','venn-c venn-r'),M=el('div','venn-m');
@@ -2127,6 +2541,22 @@ function answerText(b){
    case'collgrid':{const a=[];b.rows.forEach((r,i)=>{const on=b.cols.filter((c,j)=>b.key[i]&&b.key[i][j]);
      if(on.length)a.push(stripHtml(r)+' + '+on.map(stripHtml).join(', '));});
      return a.length?a.join('   ·   '):null;}
+   case'wordorder':{const a=b.rows.map(r=>stripHtml(r.a)).filter(Boolean);
+     return a.length?a.map((x,i)=>(i+1)+'. '+x).join('   '):null;}
+   case'paraorder':{if(!b.key.length)return null;
+     return b.key.map((n,i)=>String.fromCharCode(65+i)+'='+n).join(', ');}
+   case'firstletter':{const a=b.rows.map(r=>stripHtml(r.a)).filter(Boolean);
+     return a.length?a.map((x,i)=>(i+1)+'. '+x).join('   '):null;}
+   case'gappedtext':{if(!b.key.length)return null;
+     return b.key.map((k,i)=>(i+1)+'. '+String.fromCharCode(64+(k||1))).join('   ');}
+   case'tfng':{const a=b.correct.filter(Boolean);
+     return a.length?a.map((x,i)=>(i+1)+'. '+x).join('   '):null;}
+   case'multimatch':{if(!b.key.length)return null;
+     return b.key.map((k,i)=>String.fromCharCode(65+i)+'='+k).join(', ');}
+   case'synant':{const a=b.rows.filter(r=>r.s||r.a).map(r=>stripHtml(r.w)+': '+stripHtml(r.s||'—')+' / '+stripHtml(r.a||'—'));
+     return a.length?a.join('   ·   '):null;}
+   case'dominoes':{const a=b.rows.map(r=>stripHtml(r[0])+' + '+stripHtml(r[1]));
+     return a.length?a.join('   ·   '):null;}
    default:return null;
   }
 }
@@ -2294,6 +2724,124 @@ function refreshInspector(){
     w.appendChild(ta);box.appendChild(w);
     box.appendChild(el('div','hint','Students build sentences by taking one chunk from each column, left to right.'));
   }
+  else if(b.type==='wordorder'){
+    box.appendChild(seg('Answer line',[{l:'Show',v:true},{l:'Hide',v:false}],b.line,v=>b.line=v));
+    const w=el('div','field');w.innerHTML='<label>Items — "word / word / word = answer", one per line</label>';
+    const ta=el('textarea');ta.rows=6;ta.value=b.rows.map(r=>r.c+' = '+r.a).join('\n');
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(x=>x.trim()).map(l=>{
+      const p=l.split('=');return{c:(p[0]||'').trim(),a:(p[1]||'').trim()};});renderAll();});
+    w.appendChild(ta);box.appendChild(w);}
+  else if(b.type==='paraorder'){
+    const{w,ta}=list('Paragraphs (one per line, in the order shown on the page)',b.items);
+    ta.addEventListener('input',()=>{b.items=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);
+    const w2=el('div','field');w2.innerHTML='<label>Correct order — one number per paragraph, comma separated</label>';
+    const i2=el('input');i2.value=b.key.join(', ');
+    i2.addEventListener('input',()=>{b.key=i2.value.split(',').map(x=>parseInt(x)||0);renderAll();});
+    w2.appendChild(i2);box.appendChild(w2);}
+  else if(b.type==='firstletter'){
+    const w=el('div','field');w.innerHTML='<label>Items — "sentence with [d] = answer", one per line</label>';
+    const ta=el('textarea');ta.rows=6;ta.value=b.rows.map(r=>r.s+' = '+r.a).join('\n');
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(x=>x.trim()).map(l=>{
+      const p=l.split('=');return{s:(p[0]||'').trim(),a:(p[1]||'').trim()};});renderAll();});
+    w.appendChild(ta);box.appendChild(w);
+    box.appendChild(el('div','hint','Put the first letter in brackets: <b>[d]</b> prints “d______”.'));}
+  else if(b.type==='gappedtext'){
+    const w=el('div','field');w.innerHTML='<label>Text — mark the gaps (1) ___ , (2) ___ …</label>';
+    const ta=el('textarea');ta.rows=5;ta.value=stripHtml(b.text);
+    ta.addEventListener('input',()=>{b.text=ta.value;renderAll();});w.appendChild(ta);box.appendChild(w);
+    const{w:w2,ta:t2}=list('Sentences A, B, C… (one per line)',b.opts);
+    t2.addEventListener('input',()=>{b.opts=t2.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w2);
+    const w3=el('div','field');w3.innerHTML='<label>Key — which sentence goes in each gap (1=A, 2=B…)</label>';
+    const i3=el('input');i3.value=b.key.join(', ');
+    i3.addEventListener('input',()=>{b.key=i3.value.split(',').map(x=>parseInt(x)||0);renderAll();});
+    w3.appendChild(i3);box.appendChild(w3);}
+  else if(b.type==='tfng'){
+    const{w,ta}=list('Statements (one per line)',b.rows);
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);
+    box.appendChild(el('div','hint','Click T, F or NG on the page to set the key. NG = the text does not say.'));}
+  else if(b.type==='multimatch'){
+    const{w,ta}=list('Texts or speakers (one per line)',b.texts);
+    ta.addEventListener('input',()=>{b.texts=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);
+    const{w:w2,ta:t2}=list('Statements (one per line)',b.rows);
+    t2.addEventListener('input',()=>{b.rows=t2.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w2);
+    const w3=el('div','field');w3.innerHTML='<label>Key — which text for each statement, comma separated</label>';
+    const i3=el('input');i3.value=b.key.join(', ');
+    i3.addEventListener('input',()=>{b.key=i3.value.split(',').map(x=>parseInt(x)||0);renderAll();});
+    w3.appendChild(i3);box.appendChild(w3);}
+  else if(b.type==='punctuation'){
+    const{w,ta}=list('Sentences with no punctuation (one per line)',b.rows);
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);}
+  else if(b.type==='answergrid'){
+    box.appendChild(num('Number of answers',b.n,1,60,v=>b.n=v));
+    box.appendChild(num('Boxes per row',b.cols,2,10,v=>b.cols=v));}
+  else if(b.type==='wordfamily'){
+    const{w,ta}=list('Column headings (one per line)',b.cols);
+    ta.addEventListener('input',()=>{b.cols=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);
+    const w2=el('div','field');w2.innerHTML='<label>Rows — words separated by commas, blank where the student writes</label>';
+    const t2=el('textarea');t2.rows=6;t2.value=b.rows.map(r=>r.join(', ')).join('\n');
+    t2.addEventListener('input',()=>{b.rows=t2.value.split('\n').filter(x=>x.trim()).map(l=>l.split(',').map(x=>x.trim()));renderAll();});
+    w2.appendChild(t2);box.appendChild(w2);}
+  else if(b.type==='synant'){
+    const w=el('div','field');w.innerHTML='<label>Rows — "word = synonym = antonym", one per line</label>';
+    const ta=el('textarea');ta.rows=6;ta.value=b.rows.map(r=>[r.w,r.s,r.a].join(' = ')).join('\n');
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(x=>x.trim()).map(l=>{
+      const p=l.split('=');return{w:(p[0]||'').trim(),s:(p[1]||'').trim(),a:(p[2]||'').trim()};});renderAll();});
+    w.appendChild(ta);box.appendChild(w);
+    box.appendChild(el('div','hint','Leave the synonym and antonym empty to print blank boxes for the student.'));}
+  else if(b.type==='dominoes'){
+    const w=el('div','field');w.innerHTML='<label>Pairs — "left half = right half", one per line</label>';
+    const ta=el('textarea');ta.rows=6;ta.value=b.rows.map(r=>r.join(' = ')).join('\n');
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(x=>x.trim()).map(l=>l.split('=').map(x=>x.trim()));renderAll();});
+    w.appendChild(ta);box.appendChild(w);
+    box.appendChild(el('div','hint','Print, cut along the lines and let students match the halves.'));}
+  else if(b.type==='flashcards'){
+    box.appendChild(num('Cards per row',b.cols,2,4,v=>b.cols=v));
+    const w=el('div','field');w.innerHTML='<label>Cards — "front = back", one per line</label>';
+    const ta=el('textarea');ta.rows=7;ta.value=b.rows.map(r=>r.join(' = ')).join('\n');
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(x=>x.trim()).map(l=>l.split('=').map(x=>x.trim()));renderAll();});
+    w.appendChild(ta);box.appendChild(w);
+    box.appendChild(el('div','hint','Cut out, fold on the dotted line and the translation is on the back.'));}
+  else if(b.type==='spelling'){
+    const{w,ta}=list('Words (one per line)',b.words);
+    ta.addEventListener('input',()=>{b.words=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);}
+  else if(b.type==='syllables'){
+    box.appendChild(num('Number of columns',b.cols,2,5,v=>b.cols=v));
+    const{w,ta}=list('Words (one per line)',b.words);
+    ta.addEventListener('input',()=>{b.words=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);}
+  else if(b.type==='collfork'){
+    const w=el('div','field');w.innerHTML='<label>Centre word</label>';const i=el('input');i.value=b.center;
+    i.addEventListener('input',()=>{b.center=i.value;renderAll();});w.appendChild(i);box.appendChild(w);
+    const{w:w2,ta}=list('Partners (one per line)',b.branches);
+    ta.addEventListener('input',()=>{b.branches=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w2);}
+  else if(b.type==='findsomeone'){
+    const{w,ta}=list('Prompts (one per line)',b.rows);
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);}
+  else if(b.type==='debate'){
+    const w=el('div','field');w.innerHTML='<label>Motion</label>';const ta=el('textarea');ta.rows=2;ta.value=stripHtml(b.motion);
+    ta.addEventListener('input',()=>{b.motion=ta.value;renderAll();});w.appendChild(ta);box.appendChild(w);
+    box.appendChild(num('Lines on each side',b.n,2,8,v=>b.n=v));}
+  else if(b.type==='ranking'){
+    const{w,ta}=list('Items to rank (one per line)',b.items);
+    ta.addEventListener('input',()=>{b.items=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);}
+  else if(b.type==='rolecards'){
+    const mk=(lab,k)=>{const w=el('div','field');w.innerHTML='<label>'+lab+'</label>';const ta=el('textarea');ta.rows=4;
+      ta.value=stripHtml(b[k]);ta.addEventListener('input',()=>{b[k]=ta.value;renderAll();});w.appendChild(ta);return w;};
+    box.appendChild(mk('Student A','a'));box.appendChild(mk('Student B','b'));
+    box.appendChild(el('div','hint','Print one copy, cut in half and give each student only their own card.'));}
+  else if(b.type==='peerfeedback'){box.appendChild(num('Number of “stars”',b.stars,1,4,v=>b.stars=v));}
+  else if(b.type==='kwl'){box.appendChild(num('Rows',b.n,2,10,v=>b.n=v));}
+  else if(b.type==='causechain'){
+    const{w,ta}=list('Steps (one per line, in order)',b.items);
+    ta.addEventListener('input',()=>{b.items=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);}
+  else if(b.type==='exitticket'){
+    const{w,ta}=list('Three prompts (one per line)',b.rows);
+    ta.addEventListener('input',()=>{b.rows=ta.value.split('\n').filter(x=>x.trim());renderAll();});box.appendChild(w);}
+  else if(b.type==='errorlog'){box.appendChild(num('Rows',b.n,2,15,v=>b.n=v));}
+  else if(b.type==='labelpic'){
+    box.appendChild(num('Picture height (px)',b.h,100,420,v=>b.h=v));
+    box.appendChild(num('Number of labels',b.n,1,12,v=>b.n=v));
+    const bt=el('button','ibtn','🖼️ Choose a picture');
+    bt.onclick=()=>{imgTarget=b;$('#imgInput').click();};box.appendChild(bt);}
   else if(b.type==='venn'){
     const mk=(lab,cur,set)=>{const w=el('div','field');w.innerHTML='<label>'+lab+'</label>';const i=el('input');i.value=cur;
       i.addEventListener('input',()=>{set(i.value);renderAll();});w.appendChild(i);return w;};
@@ -5841,6 +6389,82 @@ const GRAMMAR_B1=[
     ['7  They ( did / made ) nothing all day.','did'],
     ['8  I usually ( have / make ) a shower in the morning.','have'])]},
   {n:'Your day',b:()=>[TASK('Write about yourself','Write eight sentences about a normal day, using make, do, take and have twice each.'),B('lines',{count:8})]}
+]},
+{id:'b1-future-three',name:'will · going to · present continuous for the future',
+ theory:T({icon:'🔮',title:'Three futures, three different reasons',
+  form:[{s:'will',x:'a decision now, a prediction, an offer — I <em>’ll</em> help you.'},{s:'going to',x:'a plan already made, or evidence now — We <em>’re going to</em> move house.'},{s:'present continuous',x:'a fixed arrangement with a time and place — I <em>’m meeting</em> Ana at six.'},{s:'together',x:'Look at those clouds — it <em>’s going to</em> rain. · I think it <em>will</em> rain.'}],
+  uses:[{r:'will = you decide as you speak',x:'The phone’s ringing. — I’ll get it.'},{r:'going to = you decided before',x:'I’m going to start Spanish next year.'},{r:'going to also for evidence you can see now',x:'She’s going to fall!'},{r:'present continuous = diary arrangement',x:'We’re flying to Rome on Friday.'}],
+  words:['I’ll…','I’m going to…','I’m meeting…','Look out, you’re going to…','Shall I…?'],
+  note:'<b>The quick test:</b> is it in your diary? → present continuous. Was it decided earlier? → going to. Deciding right now? → will.'}),
+ ex:[
+  {n:'Which future?',b:()=>[TASK('Complete the sentences','Write the correct future form of the verb in brackets.'),
+    ...FIBS('1  Look at that cyclist — he [is going to fall] (fall)!',
+    '2  The phone is ringing. — Don’t worry, I [will get] (get) it.',
+    '3  We [are flying] (fly) to Rome at six on Friday. Here are the tickets.',
+    '4  I [am going to study] (study) medicine next year. I have already applied.',
+    '5  I think it [will be] (be) a difficult exam.',
+    '6  What [are you doing] (you do) this evening? — I’m meeting Katia.',
+    '7  Those bags look heavy. I [will carry] (carry) one for you.',
+    '8  She [is going to tell] (tell) him tonight; she decided yesterday.',
+    '9  The train [leaves] (leave) at 7.40 — it’s the timetable.',
+    '10  Perhaps they [will come] (come) later.')]},
+  {n:'Choose the natural form',b:()=>[TASK('Circle the correct form','Think about why the speaker chose it.'),
+    CHOOSE(['1  I’ve decided — I ( will / am going to ) look for a new job.','am going to'],
+    ['2  That’s the doorbell. I ( ’ll / ’m going to ) answer it.','’ll'],
+    ['3  We ( meet / are meeting ) the lawyer at ten tomorrow.','are meeting'],
+    ['4  Careful, you ( will / are going to ) spill that!','are going to'],
+    ['5  In fifty years people ( will / are going to ) live longer.','will'],
+    ['6  ( Shall / Will ) I open the window?','Shall'],
+    ['7  I ( am seeing / will see ) the dentist on Monday at nine.','am seeing'],
+    ['8  It’s very cold. I think it ( will / is going to ) snow — look at that sky.','is going to'])]},
+  {n:'Why that form?',b:()=>[TASK('Choose the reason','Why did the speaker choose this future?'),
+    MC('I’ll give you a hand.',['a fixed arrangement','an offer made now','a plan from last week','a timetable'],1),
+    MC('We’re getting married in June.',['a sudden decision','a fixed arrangement','a prediction','evidence now'],1),
+    MC('She’s going to resign.',['a plan already decided','an offer','a timetable','a sudden thought'],0),
+    MC('Watch out — that shelf is going to fall!',['a plan','evidence you can see now','a promise','an arrangement'],1),
+    MC('I think robots will do most of this work.',['a prediction','an arrangement','a timetable','an offer'],0),
+    MC('The film starts at eight.',['a decision now','a timetable','a prediction','an offer'],1)]},
+  {n:'Answer naturally',b:()=>[TASK('Reply to each situation','Use will, going to or the present continuous.'),
+    WRITE(2)('Your friend’s bag splits and the shopping falls out.','Someone asks about your plans for the summer.','A colleague asks what you are doing on Thursday at four.','You see very dark clouds.','Someone asks what you think life will be like in 2080.','You have already decided to give up sugar.')]},
+  {n:'Your week and your year',b:()=>[TASK('Write about the future','Write eight sentences: arrangements this week, plans this year and two predictions.'),B('lines',{count:8})]}
+]},
+{id:'b1-just-already-yet',name:'just · already · yet · still',
+ theory:T({icon:'⏳',title:'Small words that change the timing',
+  form:[{s:'just',x:'a very short time ago — I’ve <em>just</em> finished.'},{s:'already',x:'sooner than expected — She’s <em>already</em> left.'},{s:'yet',x:'in questions and negatives, at the end — Have you eaten <em>yet</em>?'},{s:'still',x:'it continues, longer than expected — He’s <em>still</em> waiting.'}],
+  uses:[{r:'just and already go between have and the participle',x:'I have just arrived.'},{r:'yet goes at the end of a question or negative',x:'I haven’t finished yet.'},{r:'still goes before the main verb, after be',x:'She still works there. / He is still here.'},{r:'still + negative is stronger than not yet',x:'He still hasn’t replied.'}],
+  words:['I’ve just…','She’s already…','Have you … yet?','not … yet','still'],
+  note:'<b>Careful:</b> <i>already</i> goes in the middle, <i>yet</i> goes at the end. <i>I’ve already seen it</i> / <i>Have you seen it yet?</i>'}),
+ ex:[
+  {n:'Complete the sentences',b:()=>[TASK('Complete with just, already, yet or still','Write one word in each gap.'),
+    ...FIBS('1  I’ve [just] got home — give me five minutes.',
+    '2  Have you finished the report [yet]?',
+    '3  She has [already] read that book twice.',
+    '4  He [still] lives with his parents.',
+    '5  We haven’t decided [yet].',
+    '6  Don’t cook for me — I’ve [already] eaten.',
+    '7  Is she [still] angry with you?',
+    '8  The train has [just] left; you missed it by a minute.',
+    '9  I [still] haven’t heard from them, and it’s been a month.',
+    '10  Are you ready? — Not [yet], give me a moment.')]},
+  {n:'Where does it go?',b:()=>[TASK('Circle the correct sentence','Choose the sentence with the right word order.'),
+    CHOOSE(['1  ( I have already seen it. / I have seen already it. )','I have already seen it.'],
+    ['2  ( Have you yet finished? / Have you finished yet? )','Have you finished yet?'],
+    ['3  ( She still is here. / She is still here. )','She is still here.'],
+    ['4  ( I just have arrived. / I have just arrived. )','I have just arrived.'],
+    ['5  ( They haven’t yet replied. / They haven’t replied yet. )','They haven’t replied yet.'],
+    ['6  ( He still works there. / He works still there. )','He still works there.'],
+    ['7  ( Did you already eat? / Have you already eaten? )','Have you already eaten?'],
+    ['8  ( I haven’t still finished. / I still haven’t finished. )','I still haven’t finished.'])]},
+  {n:'What does it tell you?',b:()=>[TASK('Choose the correct meaning','Choose the closest meaning.'),
+    MC('I’ve just seen her.',['a long time ago','a few moments ago','I will see her','I never saw her'],1),
+    MC('They’ve already arrived.',['later than expected','sooner than expected','they are late','they are not coming'],1),
+    MC('He hasn’t called yet.',['he called','he may still call','he will never call','he called twice'],1),
+    MC('She still works there.',['she left','she continues to work there','she started yesterday','she retired'],1),
+    MC('I still haven’t been paid.',['I was paid','it is late and I am annoyed','I will be paid tomorrow','I was paid early'],1),
+    MC('Have you packed yet?',['you packed','asking whether it is done','you never pack','you packed early'],1)]},
+  {n:'Reply with the right word',b:()=>[TASK('Write a reply to each','Use just, already, yet or still.'),
+    WRITE(1)('Shall I make you a sandwich?','Is the meeting over?','Why isn’t he answering his phone?','Shall I tell you how the film ends?','Do you want to watch that series?','Is your brother at university?')]},
+  {n:'Your day so far',b:()=>[TASK('Write about today','Write eight sentences about what you have just done, already done and not done yet.'),B('lines',{count:8})]}
 ]}
 ];
 
@@ -14237,6 +14861,390 @@ const GRAMMAR_TOPICVOCAB=[
     B('venn',{left:'Benefits',right:'Costs',both:'Depends who you ask',li:['cheaper goods','wider opportunity'],ri:['local jobs lost','cultural flattening'],bi:['migration','faster change']})]},
   {n:'A global world',b:()=>[TASK('Discussion','Discuss in pairs, then report back.'),
     B('speaking',{icon:'🌐',title:'Discussion',prompts:['Has globalisation helped or harmed your country?','Should countries be able to choose who enters?','Can you belong to two cultures equally?','Is a single global language a gain or a loss?']})]}
+]},
+{id:'v-numbers',name:'Numbers, dates & money',
+ theory:T({icon:'🔢',title:'Saying how many, when and how much',
+  form:[{s:'numbers',x:'<em>thirteen</em> / <em>thirty</em> · <em>a hundred</em> · <em>a thousand</em>'},{s:'ordinals',x:'the <em>first</em> · the <em>second</em> · the <em>third</em> · the <em>twentieth</em>'},{s:'dates',x:'the <em>fifth of May</em> · <em>in</em> 2026 · <em>on</em> Monday'},{s:'money',x:'<em>fifty cents</em> · <em>ten euros</em> · <em>How much is it?</em>'}],
+  uses:[{r:'Careful with -teen and -ty',x:'thirteen /θɜːˈtiːn/ · thirty /ˈθɜːti/'},{r:'Dates use ordinal numbers',x:'the third of March'},{r:'in + year, on + day, at + time',x:'in 2026 · on Friday · at six o’clock'},{r:'Prices: the currency comes after the number',x:'twenty euros, not euro twenty'}],
+  words:['thirteen','thirty','first','second','third','a hundred','a thousand','How much is it?'],
+  note:'<b>Listen carefully:</b> the difference between <i>fifteen</i> and <i>fifty</i> is the stress — fif<b>TEEN</b> vs <b>FIF</b>ty.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Number words',['number','money','buy','year','day','month'],'both')]},
+  {n:'Listen and circle',b:()=>[TASK('Circle the number you hear','Your teacher says one word from each pair.'),
+    B('minimalpairs',{rows:[{a:'thirteen',b:'thirty',correct:0},{a:'fourteen',b:'forty',correct:1},{a:'fifteen',b:'fifty',correct:0},{a:'sixteen',b:'sixty',correct:1},{a:'seventeen',b:'seventy',correct:0},{a:'eighteen',b:'eighty',correct:1}]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  My birthday is on the [first] of June.',
+    '2  She was born [in] 1998.',
+    '3  The lesson starts [at] nine o’clock.',
+    '4  We meet [on] Tuesdays.',
+    '5  This book costs twelve [euros].',
+    '6  January is the [first] month of the year.',
+    '7  There are [twelve] months in a year.',
+    '8  A hundred years is a [century].',
+    '9  [How] much is a cup of coffee here?',
+    '10  March is the [third] month.')]},
+  {n:'Write them out',b:()=>[TASK('Write the words in full','Write each number or date in words.'),
+    WRITE(1)('14','40','3rd','21st','€12.50','1 May 2026')]},
+  {n:'Numbers around you',b:()=>[TASK('Speaking','Ask and answer in pairs.'),
+    B('speaking',{icon:'🔢',title:'Talk about numbers',prompts:['When is your birthday?','How much is a coffee in your town?','What time do you usually get up?','How many people live in your city?']})]}
+]},
+{id:'v-body',name:'The body & feeling ill',
+ theory:T({icon:'🧍',title:'Parts of the body and simple health words',
+  form:[{s:'head',x:'<em>hair</em> · <em>eye</em> · <em>ear</em> · <em>nose</em> · <em>mouth</em> · <em>tooth</em>'},{s:'body',x:'<em>arm</em> · <em>hand</em> · <em>finger</em> · <em>leg</em> · <em>foot</em> · <em>back</em>'},{s:'problems',x:'a <em>headache</em> · a <em>cold</em> · a <em>temperature</em> · a <em>sore throat</em>'},{s:'saying it',x:'My head <em>hurts</em>. · I <em>have got</em> a cold. · I <em>feel</em> ill.'}],
+  uses:[{r:'Irregular plurals: tooth → teeth · foot → feet',x:'My feet hurt.'},{r:'Use have got for illnesses',x:'I’ve got a headache.'},{r:'-ache words: headache, toothache, stomach ache, backache',x:'She has toothache.'},{r:'Go to the doctor, take medicine, stay in bed',x:'You should stay in bed.'}],
+  words:['head','hand','foot','tooth','headache','a cold','temperature','hurt','ill','doctor'],
+  note:'<b>Careful:</b> one <i>tooth</i>, two <i>teeth</i>; one <i>foot</i>, two <i>feet</i>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Body words',['head','hand','eye','doctor','ill','medicine'],'both')]},
+  {n:'Label the picture',b:()=>[TASK('Label the body','Write the number next to each part of the body.'),
+    B('labelpic',{h:230,n:8,src:''})]},
+  {n:'What’s wrong?',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  I’ve got a bad [headache]. Have you got an aspirin?',
+    '2  My throat is red and it hurts — I have a sore [throat].',
+    '3  She has a [temperature] of 38.5 degrees.',
+    '4  He’s got a [cold] and keeps sneezing.',
+    '5  My [teeth] hurt; I need to see a dentist.',
+    '6  After the walk my [feet] were very sore.',
+    '7  You look pale. Do you feel [ill]?',
+    '8  You should go to the [doctor] today.',
+    '9  Take this [medicine] twice a day.',
+    '10  My back [hurts] when I sit for too long.')]},
+  {n:'Which words go together?',b:()=>[TASK('Tick the correct combinations','Tick the box where the words go together.'),
+    B('collgrid',{rows:['have','go to','take','stay'],cols:['a cold','the doctor','medicine','in bed'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'At the doctor’s',b:()=>[TASK('Role play','Work in pairs. Cut out the cards and act out the conversation.'),
+    B('rolecards',{a:'Student A — You are the patient. You have had a headache and a temperature for three days. You did not sleep last night.',b:'Student B — You are the doctor. Ask what is wrong, how long it has lasted, and give some simple advice.'})]}
+]},
+{id:'v-jobs',name:'Jobs people do',
+ theory:T({icon:'👷',title:'Work, workplaces and what people do',
+  form:[{s:'jobs',x:'a <em>teacher</em> · a <em>nurse</em> · a <em>driver</em> · a <em>waiter</em> · an <em>engineer</em>'},{s:'places',x:'in a <em>school</em> · in a <em>hospital</em> · in an <em>office</em> · in a <em>shop</em>'},{s:'talking about it',x:'<em>work as</em> a nurse · <em>work for</em> a bank · <em>work in</em> a hospital'},{s:'questions',x:'<em>What do you do?</em> · <em>Where do you work?</em>'}],
+  uses:[{r:'Use a or an before a job',x:'She is a doctor. (not: She is doctor.)'},{r:'work as + job · work for + company · work in + place',x:'He works as a chef in a hotel.'},{r:'What do you do? asks about your job',x:'What do you do? — I’m a teacher.'},{r:'Many job words end in -er, -or or -ist',x:'driver · actor · dentist'}],
+  words:['teacher','nurse','driver','waiter','engineer','work as','work for','What do you do?'],
+  note:'<b>Careful:</b> <i>What do you do?</i> = what is your job. <i>What are you doing?</i> = right now.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Job words',['work','job','teacher','doctor','office','busy'],'both')]},
+  {n:'Who works where?',b:()=>[TASK('Match the job and the place','Match each job with the usual workplace.'),
+    B('match',{left:['a nurse','a teacher','a chef','a shop assistant','a pilot','a mechanic'],right:['a school','a garage','a hospital','a plane','a shop','a restaurant']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  She works [as] a nurse in a big hospital.',
+    '2  He works [for] a Japanese company.',
+    '3  My brother works [in] an office in the city centre.',
+    '4  What do you [do]? — I’m an engineer.',
+    '5  A [waiter] brings your food in a restaurant.',
+    '6  A [mechanic] repairs cars.',
+    '7  She is [a] dentist.',
+    '8  A [pilot] flies a plane.',
+    '9  He wants to [become] a doctor.',
+    '10  I [earn] about two thousand a month.')]},
+  {n:'Find someone who…',b:()=>[TASK('Class mingle','Walk around and ask your classmates. Write their names.'),
+    B('findsomeone',{rows:['…works at the weekend.','…would like to change job.','…works with children.','…has had more than three jobs.','…works outdoors.','…would like to be their own boss.']})]},
+  {n:'Describe a job',b:()=>[TASK('Write about these people','Write two sentences for each.'),
+    WRITE(2)('your job, or the job you want','a job in your family','a job you would hate','a job that helps people')]}
+]},
+{id:'v-transport',name:'Transport & getting around',
+ theory:T({icon:'🚌',title:'How you travel from A to B',
+  form:[{s:'vehicles',x:'a <em>bus</em> · a <em>train</em> · a <em>plane</em> · a <em>bike</em> · a <em>taxi</em> · the <em>underground</em>'},{s:'verbs',x:'<em>take</em> the bus · <em>catch</em> a train · <em>miss</em> the bus · <em>get on</em> / <em>get off</em>'},{s:'by…',x:'travel <em>by</em> bus · <em>by</em> car · <em>by</em> plane — but <em>on foot</em>'},{s:'places',x:'a <em>bus stop</em> · a <em>station</em> · an <em>airport</em> · a <em>ticket</em>'}],
+  uses:[{r:'by + transport with no article',x:'by bus, by train, by car'},{r:'But: on the bus, in the car',x:'I was on the bus.'},{r:'get on / get off a bus or train; get in / get out of a car',x:'She got off at the next stop.'},{r:'catch = be in time for it; miss = be too late',x:'I missed the last train.'}],
+  words:['take the bus','catch a train','miss the bus','get on','get off','by car','on foot','ticket'],
+  note:'<b>Careful:</b> we say <i>by car</i> but <i>on foot</i> — never <s>by foot</s>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Transport words',['bus','train','car','travel','ticket','fast'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  I usually [take] the bus to work.',
+    '2  Hurry up or we’ll [miss] the train!',
+    '3  We travel [by] car at the weekend.',
+    '4  It’s only ten minutes [on] foot.',
+    '5  [Get] off at the third stop.',
+    '6  She bought a return [ticket] to Moscow.',
+    '7  The train leaves from platform [four].',
+    '8  We waited at the bus [stop] for half an hour.',
+    '9  The plane lands at the [airport] at six.',
+    '10  I [ride] my bike to school every day.')]},
+  {n:'Choose the right word',b:()=>[TASK('Circle the correct word','Only one word fits.'),
+    CHOOSE(['1  I go to work ( by / on ) bus.','by'],
+    ['2  We walked there ( by / on ) foot.','on'],
+    ['3  She got ( on / in ) the train.','on'],
+    ['4  He got ( on / in ) the car.','in'],
+    ['5  I ( missed / lost ) the last bus.','missed'],
+    ['6  Let’s ( take / make ) a taxi.','take'],
+    ['7  The train was ( late / lately ) again.','late'],
+    ['8  Do you have a return ( ticket / card )?','ticket'])]},
+  {n:'How do you get around?',b:()=>[TASK('Mark your opinion','Mark the line, then explain to a partner.'),
+    B('opinionline',{left:'Never',right:'Every day',rows:['I travel by bus.','I walk.','I use a car.','I ride a bike.']})]},
+  {n:'Your journeys',b:()=>[TASK('Write about your travel','Write two sentences for each.'),
+    WRITE(2)('how you get to work or school','a long journey you made','the transport in your town','how you would like to travel')]}
+]},
+{id:'v-weather',name:'Weather & seasons',
+ theory:T({icon:'🌦️',title:'Talking about the weather',
+  form:[{s:'adjectives',x:'<em>sunny</em> · <em>cloudy</em> · <em>rainy</em> · <em>windy</em> · <em>snowy</em> · <em>foggy</em>'},{s:'temperature',x:'<em>hot</em> · <em>warm</em> · <em>cool</em> · <em>cold</em> · <em>freezing</em>'},{s:'seasons',x:'<em>spring</em> · <em>summer</em> · <em>autumn</em> · <em>winter</em>'},{s:'saying it',x:'<em>It’s</em> raining. · <em>What’s</em> the weather <em>like</em>?'}],
+  uses:[{r:'Use it is / it’s for the weather',x:'It’s cold today.'},{r:'rain, snow and wind are also verbs',x:'It’s raining. It snowed all night.'},{r:'Add -y to the noun to make the adjective',x:'sun → sunny · cloud → cloudy · wind → windy'},{r:'in + season',x:'in summer · in the winter'}],
+  words:['sunny','cloudy','rainy','windy','snowy','hot','cold','freezing','spring','summer'],
+  note:'<b>Useful question:</b> <i>What’s the weather like today?</i> — and the answer begins with <i>It’s…</i>'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Weather words',['weather','rain','sun','cold','hot','snow'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  Take an umbrella — it’s [raining].',
+    '2  It was very [sunny] yesterday, so we went to the beach.',
+    '3  In winter it is often [freezing] here, about minus ten.',
+    '4  It’s too [windy] to go sailing today.',
+    '5  What’s the weather [like] in your country in July?',
+    '6  The leaves fall in [autumn].',
+    '7  It [snowed] all night and the roads are closed.',
+    '8  It’s quite [cloudy] but it isn’t cold.',
+    '9  I love [spring], when everything turns green.',
+    '10  Be careful driving — it’s very [foggy].')]},
+  {n:'Make the adjective',b:()=>[TASK('Complete with the correct form of the word in capitals','Change the word so that it fits.'),
+    B('wordform',{rows:[{s:'It’s very [.] today — take your sunglasses.',r:'SUN',a:'sunny'},{s:'It was cold and [.] all week.',r:'WIND',a:'windy'},{s:'The morning was grey and [.].',r:'CLOUD',a:'cloudy'},{s:'Drive slowly, the road is [.].',r:'ICE',a:'icy'},{s:'It was a [.] night in the mountains.',r:'SNOW',a:'snowy'},{s:'The weather today is quite [.].',r:'RAIN',a:'rainy'}]})]},
+  {n:'Weather bingo',b:()=>[TASK('Play bingo','Your teacher describes the weather. Cross out the word you hear.'),
+    B('bingo',{size:3,title:'Weather bingo',words:['sunny','rainy','windy','cloudy','snowy','foggy','hot','cold','warm']})]},
+  {n:'Talk about the weather',b:()=>[TASK('Speaking','Ask and answer in pairs.'),
+    B('speaking',{icon:'🌦️',title:'Talk about the weather',prompts:['What’s the weather like today?','What is your favourite season? Why?','What is the weather like in your country in winter?','What do you do when it rains all day?']})]}
+]},
+{id:'v-freetime-a2',name:'What I like doing',
+ theory:T({icon:'🎈',title:'Simple free-time activities',
+  form:[{s:'at home',x:'<em>watch TV</em> · <em>play computer games</em> · <em>listen to music</em> · <em>read</em>'},{s:'outside',x:'<em>go for a walk</em> · <em>play football</em> · <em>meet friends</em> · <em>go shopping</em>'},{s:'how often',x:'<em>every day</em> · <em>at the weekend</em> · <em>twice a week</em> · <em>never</em>'},{s:'saying it',x:'I <em>like</em> swimming. · I’m <em>good at</em> drawing.'}],
+  uses:[{r:'play + games and sports with a ball',x:'play football · play chess'},{r:'go + -ing activities',x:'go swimming · go shopping · go dancing'},{r:'watch TV but listen to music',x:'I watch TV every evening.'},{r:'Add how often at the end',x:'I play tennis twice a week.'}],
+  words:['watch TV','listen to music','play football','go swimming','meet friends','go for a walk','read'],
+  note:'<b>Careful:</b> <i>play football</i>, <i>go swimming</i>, <i>do yoga</i> — three different verbs, learn them together.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Free-time words',['play','music','friend','walk','game','enjoy'],'both')]},
+  {n:'play, go or watch?',b:()=>[TASK('Sort the activities','Which verb goes with each activity?'),
+    B('wordbank',{title:'Activities',words:['football','swimming','TV','chess','shopping','a film','tennis','dancing','basketball','running','cartoons','video games']}),
+    B('sortcols',{cols:[{title:'play'},{title:'go'},{title:'watch'}]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  I [watch] TV for an hour every evening.',
+    '2  We [play] football in the park on Saturdays.',
+    '3  She likes to [listen] to music while she works.',
+    '4  Let’s [go] swimming this afternoon.',
+    '5  I [meet] my friends in the city centre.',
+    '6  He [reads] a book before he goes to sleep.',
+    '7  We go [for] a walk every Sunday morning.',
+    '8  My brother plays computer [games] all day.',
+    '9  I’m quite [good] at drawing.',
+    '10  They go [shopping] every Saturday.')]},
+  {n:'Find someone who…',b:()=>[TASK('Class mingle','Walk around and ask your classmates. Write their names.'),
+    B('findsomeone',{rows:['…watches TV every day.','…plays a sport.','…reads before bed.','…likes dancing.','…goes for a walk at the weekend.','…plays a musical instrument.']})]},
+  {n:'Your free time',b:()=>[TASK('Write about yourself','Write two sentences for each.'),
+    WRITE(2)('what you do after work or school','what you do at the weekend','something you are good at','something you would like to try')]}
+]},
+{id:'v-holidays',name:'Holidays & celebrations',
+ theory:T({icon:'🎉',title:'Festivals, parties and traditions',
+  form:[{s:'occasions',x:'a <em>birthday</em> · a <em>wedding</em> · an <em>anniversary</em> · a <em>public holiday</em>'},{s:'what people do',x:'<em>celebrate</em> · <em>decorate</em> · <em>give presents</em> · <em>get together</em>'},{s:'traditions',x:'a <em>custom</em> · a <em>tradition</em> · a <em>ceremony</em> · a <em>parade</em>'},{s:'wishes',x:'<em>Congratulations!</em> · <em>Happy anniversary!</em> · <em>All the best.</em>'}],
+  uses:[{r:'celebrate takes a direct object, with no preposition',x:'We celebrated her birthday. (not: celebrated for)'},{r:'on + a named day · at + a season',x:'on New Year’s Day · at Christmas'},{r:'A tradition is passed down; a custom is what people usually do',x:'It is a local custom to bring bread and salt.'},{r:'Fixed wishes: Congratulations on…, Happy birthday to…',x:'Congratulations on your new job!'}],
+  words:['celebrate','decorate','tradition','custom','ceremony','public holiday','give presents','Congratulations!'],
+  note:'<b>Careful:</b> you <i>celebrate</i> something — never <s>celebrate for</s> something.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Celebration words',['party','birthday','family','present','food','happy'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  We [celebrate] New Year with the whole family.',
+    '2  They [decorate] the house with lights in December.',
+    '3  It is a local [custom] to bring flowers to the host.',
+    '4  The wedding [ceremony] lasted two hours.',
+    '5  Monday is a public [holiday], so the banks are closed.',
+    '6  [Congratulations] on passing your exams!',
+    '7  Everyone [gets] together at my grandmother’s house.',
+    '8  It is a family [tradition] going back a hundred years.',
+    '9  We watched the [parade] from the balcony.',
+    '10  She got lots of [presents] for her birthday.')]},
+  {n:'Which words go together?',b:()=>[TASK('Tick the correct combinations','Tick the box where the words go together.'),
+    B('collgrid',{rows:['celebrate','give','keep','hold'],cols:['a birthday','a present','a tradition','a ceremony'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'Two celebrations',b:()=>[TASK('Compare two holidays','Write your ideas in the diagram, then compare with a partner.'),
+    B('venn',{left:'A holiday in your country',right:'A holiday abroad',both:'Both',li:['special food','family at home'],ri:['different date','public events'],bi:['time off work','presents']})]},
+  {n:'Celebrations',b:()=>[TASK('Discussion','Discuss in pairs, then report back.'),
+    B('speaking',{icon:'🎉',title:'Discussion',prompts:['What is the most important celebration in your country?','Have celebrations become too commercial?','Do you prefer a big party or a quiet day?','Which foreign celebration would you like to experience?']})]}
+]},
+{id:'v-places',name:'Describing places',
+ theory:T({icon:'🏞️',title:'Saying what a place is like',
+  form:[{s:'positive',x:'<em>lively</em> · <em>charming</em> · <em>peaceful</em> · <em>spotless</em> · <em>spacious</em>'},{s:'negative',x:'<em>dull</em> · <em>run-down</em> · <em>cramped</em> · <em>noisy</em> · <em>polluted</em>'},{s:'size & feel',x:'<em>vast</em> · <em>tiny</em> · <em>cosy</em> · <em>crowded</em> · <em>deserted</em>'},{s:'phrases',x:'<em>in the middle of nowhere</em> · <em>off the beaten track</em> · <em>within walking distance</em>'}],
+  uses:[{r:'Most of these adjectives go before the noun or after be',x:'a charming village / the village is charming'},{r:'cosy is small and comfortable; cramped is small and uncomfortable',x:'a cosy flat / a cramped office'},{r:'deserted = empty of people; abandoned = left for ever',x:'The beach was deserted at dawn.'},{r:'Opposites to learn in pairs',x:'lively ↔ dull · spacious ↔ cramped · spotless ↔ filthy'}],
+  words:['lively','charming','peaceful','spacious','dull','run-down','cramped','crowded','cosy','deserted'],
+  note:'<b>Careful:</b> <i>cosy</i> is a compliment, <i>cramped</i> is a complaint — both mean small.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Describing places',['place','quiet','beautiful','old','modern','building'],'both')]},
+  {n:'Find the opposites',b:()=>[TASK('Match the opposites','Match each adjective with its opposite.'),
+    B('match',{left:['lively','spacious','spotless','peaceful','charming','crowded'],right:['filthy','ugly','dull','cramped','empty','noisy']})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one adjective in each gap.'),
+    ...FIBS('1  The old town is absolutely [charming] — narrow streets and little cafés.',
+    '2  Our flat is tiny and [cramped]; there is nowhere to put anything.',
+    '3  The village is very [peaceful] — you only hear birds.',
+    '4  The beach was completely [deserted] at six in the morning.',
+    '5  Their kitchen is [spotless]; you could eat off the floor.',
+    '6  That part of the city is quite [run-down] and needs investment.',
+    '7  The square is [lively] at night, full of music and people.',
+    '8  I found the museum rather [dull], to be honest.',
+    '9  The new flat is bright and [spacious].',
+    '10  The market was so [crowded] I could hardly move.')]},
+  {n:'Build the right word',b:()=>[TASK('Complete with the correct form of the word in capitals','Change the word so that it fits.'),
+    B('wordform',{rows:[{s:'The village is famous for its [.].',r:'BEAUTIFUL',a:'beauty'},{s:'It is a surprisingly [.] city at night.',r:'LIFE',a:'lively'},{s:'The hotel was [.] clean.',r:'SPOT',a:'spotlessly'},{s:'The area suffers from serious [.].',r:'POLLUTE',a:'pollution'},{s:'The flat is in a very [.] location.',r:'CENTRE',a:'central'},{s:'The old factory is now [.].',r:'ABANDON',a:'abandoned'}]})]},
+  {n:'Describe four places',b:()=>[TASK('Write about each place','Write two sentences using the adjectives above.'),
+    WRITE(2)('your home town','a place you love','a place you would not go back to','your ideal place to live')]}
+]},
+{id:'v-lifeevents',name:'Life events & milestones',
+ theory:T({icon:'🧭',title:'From the first day of school to retirement',
+  form:[{s:'early life',x:'be <em>born</em> · <em>grow up</em> · <em>start school</em> · <em>make friends</em>'},{s:'adult life',x:'<em>leave home</em> · <em>graduate</em> · <em>get a job</em> · <em>settle down</em>'},{s:'relationships',x:'<em>go out with</em> · <em>get engaged</em> · <em>get married</em> · <em>split up</em>'},{s:'later',x:'<em>retire</em> · <em>move abroad</em> · <em>start a family</em> · <em>change career</em>'}],
+  uses:[{r:'be born is always passive',x:'I was born in 1998. (not: I born)'},{r:'grow up = become an adult; grow = get bigger',x:'I grew up in a small town.'},{r:'get + adjective/participle for changes',x:'get married · get divorced · get engaged'},{r:'Use the past simple with a finished time',x:'She graduated in 2020.'}],
+  words:['be born','grow up','leave home','graduate','get married','start a family','retire','settle down'],
+  note:'<b>Careful:</b> <i>I was born in 1998</i>, not <s>I am born</s> or <s>I born</s>.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Life events',['born','school','marry','children','old','life'],'both')]},
+  {n:'Put the life in order',b:()=>[TASK('Order the events','Number the events in the order they usually happen.'),
+    B('paraorder',{items:['He graduated and moved to the capital.','He was born in a small mountain village.','He retired at sixty-five and took up painting.','He started school at the age of six.','He got married and started a family.'],key:[2,1,5,3,4]})]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  She was [born] in Yerevan in 1990.',
+    '2  I [grew] up in a small town near the coast.',
+    '3  He [left] home at eighteen to study abroad.',
+    '4  She [graduated] from university last June.',
+    '5  They [got] married after three years together.',
+    '6  My parents want to [settle] down somewhere quiet.',
+    '7  He [retired] last year after forty years in teaching.',
+    '8  They decided to [start] a family.',
+    '9  Unfortunately they [split] up after two years.',
+    '10  She [changed] career at forty and became a nurse.')]},
+  {n:'Your timeline',b:()=>[TASK('Draw your life','Mark four or five events on the line and write a sentence for each.'),
+    B('lines',{count:8})]},
+  {n:'Life choices',b:()=>[TASK('Discussion','Discuss in pairs, then report back.'),
+    B('speaking',{icon:'🧭',title:'Discussion',prompts:['Is there a right age to leave home?','Is it ever too late to change career?','What has been the biggest change in your life so far?','What would you like to have done by the age of fifty?']})]}
+]},
+{id:'v-advertising',name:'Advertising & consumer culture',
+ theory:T({icon:'📣',title:'How things are sold to us',
+  form:[{s:'formats',x:'a <em>campaign</em> · a <em>billboard</em> · a <em>slogan</em> · a <em>jingle</em> · a <em>pop-up</em>'},{s:'techniques',x:'<em>target</em> an audience · <em>brand awareness</em> · an <em>endorsement</em> · <em>product placement</em>'},{s:'reactions',x:'<em>persuasive</em> · <em>intrusive</em> · <em>misleading</em> · <em>catchy</em> · <em>annoying</em>'},{s:'buying',x:'<em>impulse buy</em> · <em>brand loyalty</em> · a <em>discount</em> · <em>consumerism</em>'}],
+  uses:[{r:'An advert is targeted at a group of people',x:'The campaign targets under-25s.'},{r:'A celebrity endorses a product',x:'She endorses a sportswear brand.'},{r:'Misleading is not the same as false — it leads you to the wrong conclusion',x:'The label was misleading rather than untrue.'},{r:'Collocations: launch a campaign, raise awareness, boost sales',x:'They launched the campaign in May.'}],
+  words:['campaign','slogan','target','brand awareness','endorsement','persuasive','misleading','impulse buy'],
+  note:'<b>Useful pair:</b> an advert can be <i>catchy</i> (you remember it) and <i>intrusive</i> (it gets in your way) at the same time.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Advertising words',['advertisement','buy','product','brand','customer','money'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word or phrase in each gap.'),
+    ...FIBS('1  They launched a national advertising [campaign] in March.',
+    '2  The [slogan] was only three words long but everyone remembered it.',
+    '3  The adverts clearly [target] teenagers.',
+    '4  The company paid a footballer for his [endorsement].',
+    '5  The claim was not false, but it was certainly [misleading].',
+    '6  Pop-ups are the most [intrusive] form of advertising.',
+    '7  That jingle is incredibly [catchy] — I can’t get it out of my head.',
+    '8  Supermarkets place sweets at the till to encourage an impulse [buy].',
+    '9  The main aim was to raise brand [awareness], not to sell immediately.',
+    '10  Many people are tired of constant [consumerism].')]},
+  {n:'Which words go together?',b:()=>[TASK('Tick the correct combinations','Tick the box where the words go together.'),
+    B('collgrid',{rows:['launch','raise','boost','target'],cols:['a campaign','awareness','sales','an audience'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'How much do you agree?',b:()=>[TASK('Mark your opinion','Mark the line, then explain your choice.'),
+    B('opinionline',{left:'Strongly disagree',right:'Strongly agree',rows:['Advertising aimed at children should be banned.','Most advertising is simply dishonest.','Influencers must declare every paid post.','I am not influenced by advertising.']})]},
+  {n:'Plan a campaign',b:()=>[TASK('Discussion and writing','In pairs, plan an advert for a product nobody needs.'),
+    B('lines',{count:8})]}
+]},
+{id:'v-housing',name:'Housing & where we live',
+ theory:T({icon:'🏘️',title:'Renting, buying and living space',
+  form:[{s:'types',x:'a <em>detached house</em> · a <em>terraced house</em> · a <em>studio flat</em> · a <em>bedsit</em>'},{s:'renting',x:'a <em>tenant</em> · a <em>landlord</em> · a <em>deposit</em> · a <em>lease</em> · <em>bills included</em>'},{s:'buying',x:'a <em>mortgage</em> · an <em>estate agent</em> · a <em>viewing</em> · <em>property prices</em>'},{s:'condition',x:'<em>furnished</em> · <em>newly renovated</em> · <em>in need of work</em> · <em>damp</em>'}],
+  uses:[{r:'A tenant rents from a landlord',x:'The tenant pays rent on the first of the month.'},{r:'A deposit is returned; rent is not',x:'We got the deposit back in full.'},{r:'Collocations: pay rent, sign a lease, put down a deposit',x:'They signed a two-year lease.'},{r:'Housing is uncountable; houses are countable',x:'affordable housing / three houses'}],
+  words:['tenant','landlord','deposit','lease','mortgage','estate agent','furnished','property prices','rent'],
+  note:'<b>Careful:</b> <i>rent</i> is the money you pay monthly; a <i>deposit</i> is paid once and usually returned.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Housing words',['house','flat','rent','room','kitchen','neighbour'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  We pay the [rent] on the first of every month.',
+    '2  The [landlord] refused to repair the heating.',
+    '3  You have to put down a [deposit] of one month’s rent.',
+    '4  They signed a two-year [lease].',
+    '5  She took out a [mortgage] to buy the flat.',
+    '6  The [estate] agent showed us three properties.',
+    '7  We have a [viewing] at four o’clock on Thursday.',
+    '8  The flat comes [furnished], so we need no beds.',
+    '9  The walls were [damp] and the windows didn’t close.',
+    '10  [Property] prices have risen by a third.')]},
+  {n:'Build the right word',b:()=>[TASK('Complete with the correct form of the word in capitals','Change the word so that it fits.'),
+    B('wordform',{rows:[{s:'There is a serious shortage of [.] housing.',r:'AFFORD',a:'affordable'},{s:'The building has just been [.].',r:'RENOVATE',a:'renovated'},{s:'He is the [.] of three flats in the centre.',r:'OWN',a:'owner'},{s:'The room was [.] small for two people.',r:'HOPE',a:'hopelessly'},{s:'The area has become very [.] in the last ten years.',r:'DESIRE',a:'desirable'},{s:'Living alone is [.] expensive these days.',r:'INCREASE',a:'increasingly'}]})]},
+  {n:'Rent or buy?',b:()=>[TASK('Weigh it up','Write your ideas in the diagram, then compare with a partner.'),
+    B('venn',{left:'Renting',right:'Buying',both:'Both',li:['you can move easily','repairs are not your problem'],ri:['you build up value','you can change anything'],bi:['monthly payments','you need a deposit']})]},
+  {n:'Housing',b:()=>[TASK('Discussion','Discuss in pairs, then report back.'),
+    B('speaking',{icon:'🏘️',title:'Discussion',prompts:['Is it better to rent or to buy? Why?','Should there be a limit on how many homes one person can own?','What makes a neighbourhood a good place to live?','Would you live in a very small home to be in the centre?']})]}
+]},
+{id:'v-relationships-b2',name:'Relationships & social life',
+ theory:T({icon:'🤝',title:'Getting on, falling out, making up',
+  form:[{s:'getting closer',x:'<em>get to know</em> · <em>have a lot in common</em> · <em>get on well</em> · <em>grow close</em>'},{s:'problems',x:'<em>fall out</em> · <em>drift apart</em> · <em>lose touch</em> · <em>hold a grudge</em>'},{s:'repair',x:'<em>make up</em> · <em>apologise</em> · <em>clear the air</em> · <em>patch things up</em>'},{s:'kinds',x:'an <em>acquaintance</em> · a <em>close friend</em> · a <em>colleague</em> · a <em>mutual friend</em>'}],
+  uses:[{r:'fall out with someone = argue and stop being friends',x:'They fell out over money.'},{r:'drift apart is gradual; fall out is sudden',x:'We just drifted apart after university.'},{r:'make up = become friends again',x:'They argued but made up the next day.'},{r:'have a lot in common = share interests',x:'We have a lot in common.'}],
+  words:['get to know','get on well','have a lot in common','fall out','drift apart','lose touch','make up'],
+  note:'<b>Careful:</b> you <i>fall out with</i> someone and <i>make up with</i> them — the preposition is part of the phrase.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Relationship words',['friend','trust','argue','together','kind','social'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  It took me a while to [get] to know her properly.',
+    '2  We [have] a lot in common — both love hiking.',
+    '3  They [fell] out over something trivial and never spoke again.',
+    '4  After university we slowly [drifted] apart.',
+    '5  I’ve completely [lost] touch with my old classmates.',
+    '6  They argued on Friday but [made] up on Saturday.',
+    '7  We need to sit down and [clear] the air.',
+    '8  He still [holds] a grudge about what happened years ago.',
+    '9  She’s not a close friend, more of an [acquaintance].',
+    '10  We met through a [mutual] friend.')]},
+  {n:'Which words go together?',b:()=>[TASK('Tick the correct combinations','Tick the box where the words go together.'),
+    B('collgrid',{rows:['fall','lose','clear','hold'],cols:['out with someone','touch','the air','a grudge'],key:[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]})]},
+  {n:'What would you say?',b:()=>[TASK('Write two sentences for each situation','Use the vocabulary from this unit.'),
+    WRITE(2)('a friend you have not spoken to for five years','two colleagues who argued in a meeting','someone you have just met and like','a friendship that quietly ended','a family member who will not forgive you','a friend who apologised first')]},
+  {n:'Friendship',b:()=>[TASK('Discussion','Discuss in pairs, then report back.'),
+    B('speaking',{icon:'🤝',title:'Discussion',prompts:['Can a friendship survive a long silence?','Is it better to clear the air or let things go?','How many close friends can a person really have?','Do online friendships count?']})]}
+]},
+{id:'v-tourism',name:'Travel & tourism',
+ theory:T({icon:'🧳',title:'The industry, not just the holiday',
+  form:[{s:'the trade',x:'a <em>destination</em> · a <em>package holiday</em> · <em>peak season</em> · an <em>itinerary</em>'},{s:'kinds of travel',x:'<em>backpacking</em> · a <em>city break</em> · <em>eco-tourism</em> · a <em>guided tour</em>'},{s:'problems',x:'<em>overtourism</em> · <em>overbooked</em> · a <em>tourist trap</em> · <em>fully booked</em>'},{s:'experience',x:'<em>off the beaten track</em> · <em>unspoilt</em> · <em>breathtaking</em> · <em>overrated</em>'}],
+  uses:[{r:'Peak season is the busiest and dearest; low season is the opposite',x:'Prices double in peak season.'},{r:'An itinerary is the plan of a journey',x:'The itinerary includes three cities.'},{r:'Overtourism = too many visitors for a place to cope',x:'Venice is the classic case of overtourism.'},{r:'Collocations: book a flight, check in, go sightseeing',x:'We checked in online.'}],
+  words:['destination','peak season','itinerary','backpacking','city break','overtourism','unspoilt','tourist trap'],
+  note:'<b>Careful:</b> a <i>trip</i> is the whole journey, a <i>journey</i> is the travelling itself, and a <i>voyage</i> is by sea.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Travel words',['travel','holiday','hotel','visit','flight','abroad'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  Prices almost double in [peak] season.',
+    '2  The [itinerary] takes in four cities in ten days.',
+    '3  She spent a year [backpacking] around South America.',
+    '4  We only had time for a short city [break].',
+    '5  The island is still largely [unspoilt].',
+    '6  That restaurant by the cathedral is a complete tourist [trap].',
+    '7  The hotel was [overbooked] and they moved us.',
+    '8  Barcelona has struggled with [overtourism] for years.',
+    '9  The views from the pass were [breathtaking].',
+    '10  We prefer places off the beaten [track].')]},
+  {n:'Complete the brochure',b:()=>[TASK('Read the text and choose the best word','Choose A, B, C or D for each gap.'),
+    B('mccloze',{text:'If you want somewhere genuinely (1) __ , avoid the coast in August. The main (2) __ are crowded from June onwards, and the old harbour has become something of a tourist (3) __ . Travel in May instead: the weather is mild, the (4) __ is relaxed, and you will see the place as the people who live there do.',qs:[{opts:['unspoilt','overbooked','guided','package'],correct:0},{opts:['destinations','itineraries','brochures','passports'],correct:0},{opts:['trap','break','guide','class'],correct:0},{opts:['itinerary','overtourism','backpack','check-in'],correct:0}]})]},
+  {n:'Tourism',b:()=>[TASK('Discussion','Discuss in pairs, then report back.'),
+    B('speaking',{icon:'🧳',title:'Discussion',prompts:['Should cities limit the number of tourists?','Is budget air travel worth its environmental cost?','What makes a traveller different from a tourist?','Has your country changed because of tourism?']})]}
+]},
+{id:'c1v-business',name:'Business, negotiation and deals',
+ theory:T({icon:'💼',title:'The language of getting things agreed',
+  form:[{s:'the deal',x:'a <em>bid</em> · a <em>stake</em> · a <em>joint venture</em> · a <em>merger</em> · due <em>diligence</em>'},{s:'negotiating',x:'<em>table</em> an offer · <em>concede</em> a point · <em>hold out for</em> · <em>walk away</em>'},{s:'pressure',x:'a <em>deadlock</em> · a <em>sticking point</em> · a <em>deal-breaker</em> · a <em>climbdown</em>'},{s:'outcomes',x:'<em>strike</em> a deal · <em>a win-win</em> · <em>terms and conditions</em> · <em>fall through</em>'}],
+  uses:[{r:'Table has opposite senses: in Britain it means to present a proposal',x:'They tabled a revised offer on Friday.'},{r:'A sticking point is the issue blocking agreement',x:'Price was the only sticking point.'},{r:'A deal falls through when it collapses before completion',x:'The sale fell through at the last minute.'},{r:'Hedge in negotiation: we would be prepared to…, subject to…',x:'We would be prepared to move, subject to board approval.'}],
+  words:['table an offer','concede','sticking point','deadlock','strike a deal','fall through','due diligence'],
+  note:'<b>Register:</b> <i>haggle</i> is informal and slightly negative; <i>negotiate</i> is neutral; <i>renegotiate terms</i> is the formal move.'}),
+ ex:[
+  {n:'Word list with definitions',b:()=>[TASK('Study the words','Read the words and their meanings, then cover the right-hand side.'),
+    VSET('Business vocabulary',['business','company','offer','agree','price','contract'],'both')]},
+  {n:'Complete the sentences',b:()=>[TASK('Complete the sentences','Write one word or phrase in each gap.'),
+    ...FIBS('1  They [tabled] a revised offer on Friday afternoon.',
+    '2  Neither side would move and the talks reached [deadlock].',
+    '3  Delivery dates were the only remaining [sticking] point.',
+    '4  Exclusivity was an absolute deal-[breaker] for them.',
+    '5  After eleven hours they finally [struck] a deal.',
+    '6  The sale [fell] through two days before completion.',
+    '7  Their lawyers spent a month on due [diligence].',
+    '8  We were prepared to [concede] on price but not on timing.',
+    '9  The two firms announced a joint [venture] in Asia.',
+    '10  She bought a forty per cent [stake] in the company.')]},
+  {n:'Soften the position',b:()=>[TASK('Rewrite each line as a negotiator would say it','Use hedging: we would be prepared to…, subject to…, in principle…'),
+    B('lines',{count:8})]},
+  {n:'Plan the negotiation',b:()=>[TASK('Prepare both sides','Cut the cards and prepare your position in pairs.'),
+    B('rolecards',{a:'Student A — You are selling a small software company. You want at least 4 million and all staff kept on for two years. You can move on price if the staff guarantee is firm.',b:'Student B — You are buying. Your limit is 3.6 million and you cannot promise more than one year of staff guarantees. You have another target in mind if this fails.'})]},
+  {n:'For and against',b:()=>[TASK('Plan a short debate','One side argues for, the other against.'),
+    B('debate',{motion:'Companies should be legally required to publish every salary.',n:4})]}
 ]}
 ];
 
@@ -14283,7 +15291,10 @@ const TOPIC_LEVEL={
  'v-crime':'B2','v-money':'B2','v-sport':'B2','v-arts':'B2','v-city':'B2','v-science':'B2',
  'v-family':'A2','v-school':'A2','v-clothes':'A2','v-animals':'A2','v-daily':'A2','v-town':'A2',
  'v-hobbies':'B1','v-personality':'B1','v-nature':'B1','v-media-b1':'B1','v-housework':'B1',
- 'v-foodout':'B2','c1v-politics':'C1','c1v-health':'C1','c1v-media':'C1','c1v-global':'C1'
+ 'v-foodout':'B2','c1v-politics':'C1','c1v-health':'C1','c1v-media':'C1','c1v-global':'C1',
+ 'v-numbers':'A2','v-body':'A2','v-jobs':'A2','v-transport':'A2','v-weather':'A2','v-freetime-a2':'A2',
+ 'v-holidays':'B1','v-places':'B1','v-lifeevents':'B1',
+ 'v-advertising':'B2','v-housing':'B2','v-relationships-b2':'B2','v-tourism':'B2','c1v-business':'C1'
 };
 const GRAMMAR_B2=[
 {id:'b2-mixed-cond',name:'Mixed conditionals',
@@ -14790,6 +15801,130 @@ const GRAMMAR_A2=[
   {n:'In the shop',b:()=>[TASK('Write what you say','Write one sentence for each situation, using this, that, these or those.'),
     WRITE(1)('You want the shoes you are holding.','You point at a jacket across the shop.','You show the shop assistant two shirts in your hand.','You ask about the bags on the top shelf.','You introduce your friend standing beside you.','You answer the phone.')]},
   {n:'In your classroom',b:()=>[TASK('Look around the room','Write eight sentences about things near you and far from you.'),B('lines',{count:8})]}
+]},
+{id:'a2-must',name:'must · mustn’t · have to',
+ theory:T({icon:'🚦',title:'Rules: what you have to do and what is forbidden',
+  form:[{s:'obligation',x:'You <em>must</em> wear a seatbelt. · I <em>have to</em> work on Saturday.'},{s:'prohibition',x:'You <em>mustn’t</em> use your phone here.'},{s:'no obligation',x:'You <em>don’t have to</em> come — it’s optional.'},{s:'questions',x:'<em>Do</em> I <em>have to</em> pay now?'}],
+  uses:[{r:'must + infinitive without to',x:'You must stop. (not: must to stop)'},{r:'mustn’t = it is forbidden',x:'You mustn’t smoke here.'},{r:'don’t have to = it is not necessary',x:'You don’t have to wait.'},{r:'have to changes: I have to, he has to, I had to',x:'She has to leave early.'}],
+  words:['must','mustn’t','have to','has to','don’t have to','Do I have to…?'],
+  note:'<b>The big difference:</b> <i>mustn’t</i> = forbidden · <i>don’t have to</i> = not necessary. They are not the same.'}),
+ ex:[
+  {n:'Complete the rules',b:()=>[TASK('Complete the sentences','Write must, mustn’t, have to or don’t have to.'),
+    ...FIBS('1  You [mustn’t] park here — it’s a bus stop.',
+    '2  I [have to] get up at six on weekdays.',
+    '3  You [don’t have to] bring food; everything is provided.',
+    '4  Students [must] show their card at the door.',
+    '5  She [has to] work on Saturdays this month.',
+    '6  We [mustn’t] be late for the exam.',
+    '7  You [don’t have to] answer every question.',
+    '8  Do I [have to] wear a tie?',
+    '9  Passengers [must] keep their seatbelt fastened.',
+    '10  He [had to] take a taxi because he missed the bus.')]},
+  {n:'Forbidden or not necessary?',b:()=>[TASK('Circle the correct form','Read the meaning carefully.'),
+    CHOOSE(['1  It is free, so you ( mustn’t / don’t have to ) pay.','don’t have to'],
+    ['2  You ( mustn’t / don’t have to ) touch that — it’s dangerous.','mustn’t'],
+    ['3  Tomorrow is Sunday, so I ( mustn’t / don’t have to ) work.','don’t have to'],
+    ['4  You ( must / must to ) wear a helmet.','must'],
+    ['5  She ( have / has ) to finish by Friday.','has'],
+    ['6  ( Do / Does ) he have to come too?','Does'],
+    ['7  Yesterday I ( must / had to ) stay late.','had to'],
+    ['8  You ( mustn’t / don’t have to ) tell anyone. It’s a secret.','mustn’t'])]},
+  {n:'Make the rules',b:()=>[TASK('Build sentences about your school or workplace','Take one part from each column.'),
+    B('substitution',{cols:[['Students','Teachers','Visitors'],['must','mustn’t','don’t have to'],['arrive on time','use phones in class','wear a uniform','sign in at reception']]})]},
+  {n:'Write the rules',b:()=>[TASK('Write the rules for each place','Write one rule with <i>must</i> and one with <i>mustn’t</i>.'),
+    WRITE(2)('a library','a swimming pool','an aeroplane','a hospital','a museum','your classroom')]},
+  {n:'Your own rules',b:()=>[TASK('Write about your life','Write eight sentences about what you must, mustn’t and don’t have to do.'),B('lines',{count:8})]}
+]},
+{id:'a2-like-ing',name:'like · love · hate + -ing',
+ theory:T({icon:'❤️',title:'Saying what you enjoy',
+  form:[{s:'positive',x:'I <em>love</em> swimm<em>ing</em>. · She <em>likes</em> cook<em>ing</em>.'},{s:'negative',x:'I <em>don’t like</em> get<em>ting</em> up early. · He <em>hates</em> wait<em>ing</em>.'},{s:'in between',x:'I <em>don’t mind</em> clean<em>ing</em>. · They <em>enjoy</em> danc<em>ing</em>.'},{s:'questions',x:'<em>Do</em> you <em>like</em> read<em>ing</em>?'}],
+  uses:[{r:'After like, love, hate, enjoy and don’t mind we use -ing',x:'I enjoy cooking.'},{r:'Spelling: swim → swimming · make → making · study → studying',x:'Double the last letter after a short vowel.'},{r:'would like means "want" and takes to + verb',x:'I would like to go home.'},{r:'Answer short questions with do/don’t',x:'Do you like running? — Yes, I do.'}],
+  words:['like + -ing','love + -ing','hate + -ing','enjoy + -ing','don’t mind + -ing','would like to'],
+  note:'<b>Careful:</b> <i>I like swimming</i> (in general) but <i>I would like to swim</i> (now, this once).'}),
+ ex:[
+  {n:'Complete the sentences',b:()=>[TASK('Complete with the -ing form','Write the correct form of the verb in brackets.'),
+    ...FIBS('1  I love [swimming] (swim) in the sea.',
+    '2  She hates [waiting] (wait) for the bus.',
+    '3  Do you like [cooking] (cook)?',
+    '4  He doesn’t mind [working] (work) at the weekend.',
+    '5  We enjoy [watching] (watch) films together.',
+    '6  They don’t like [getting] (get) up early.',
+    '7  My sister loves [dancing] (dance).',
+    '8  I hate [doing] (do) the washing-up.',
+    '9  Does he enjoy [studying] (study) English?',
+    '10  I don’t mind [cleaning] (clean) the kitchen.')]},
+  {n:'-ing or to?',b:()=>[TASK('Circle the correct form','Only one form is correct.'),
+    CHOOSE(['1  I like ( reading / to reading ) before bed.','reading'],
+    ['2  I would like ( to go / going ) home now.','to go'],
+    ['3  She enjoys ( listen / listening ) to music.','listening'],
+    ['4  Do you like ( play / playing ) chess?','playing'],
+    ['5  He hates ( shopping / to shopping ).','shopping'],
+    ['6  Would you like ( to have / having ) a coffee?','to have'],
+    ['7  They don’t mind ( to wait / waiting ).','waiting'],
+    ['8  We love ( travel / travelling ).','travelling'])]},
+  {n:'How do you feel about it?',b:()=>[TASK('Mark your opinion','Mark the line for each activity, then tell a partner.'),
+    B('opinionline',{left:'I hate it',right:'I love it',rows:['getting up early','cooking','doing sport','travelling by plane']})]},
+  {n:'Write about people you know',b:()=>[TASK('Write two sentences for each','Use like, love, hate, enjoy or don’t mind.'),
+    WRITE(2)('you','your best friend','a member of your family','your teacher')]},
+  {n:'Likes and dislikes',b:()=>[TASK('Write about yourself','Write eight sentences: four things you like doing and four you don’t.'),B('lines',{count:8})]}
+]},
+{id:'a2-imperatives',name:'Imperatives & let’s',
+ theory:T({icon:'👉',title:'Telling, asking and suggesting',
+  form:[{s:'instruction',x:'<em>Open</em> your books. · <em>Turn</em> left at the lights.'},{s:'negative',x:'<em>Don’t</em> worry. · <em>Don’t</em> be late.'},{s:'politer',x:'<em>Please</em> sit down. · Sit down, <em>please</em>.'},{s:'suggestion',x:'<em>Let’s</em> go. · <em>Let’s not</em> argue.'}],
+  uses:[{r:'The imperative uses the bare verb — no subject',x:'Come here.'},{r:'Make it negative with don’t',x:'Don’t touch that.'},{r:'Add please to soften it',x:'Please wait here.'},{r:'Let’s = let us, for a suggestion including yourself',x:'Let’s take a break.'}],
+  words:['Open…','Don’t…','Please…','Let’s…','Let’s not…','Be careful!'],
+  note:'<b>Careful:</b> the imperative can sound blunt. With strangers, use <i>Could you…?</i> instead of a bare command.'}),
+ ex:[
+  {n:'Complete the instructions',b:()=>[TASK('Complete the sentences','Write one word in each gap.'),
+    ...FIBS('1  [Open] your books at page twenty.',
+    '2  [Don’t] forget your homework!',
+    '3  Please [sit] down and wait here.',
+    '4  [Let’s] go to the cinema tonight.',
+    '5  [Be] careful — the floor is wet.',
+    '6  [Don’t] be late tomorrow.',
+    '7  [Turn] left at the traffic lights.',
+    '8  Let’s [not] talk about work today.',
+    '9  [Listen] carefully and repeat.',
+    '10  [Take] the second street on the right.')]},
+  {n:'Which is right?',b:()=>[TASK('Circle the correct sentence','Choose the correct form.'),
+    CHOOSE(['1  ( You open the window. / Open the window. )','Open the window.'],
+    ['2  ( Not touch that. / Don’t touch that. )','Don’t touch that.'],
+    ['3  ( Let’s go. / Let’s to go. )','Let’s go.'],
+    ['4  ( Please to sit down. / Please sit down. )','Please sit down.'],
+    ['5  ( Be quiet. / Are quiet. )','Be quiet.'],
+    ['6  ( Don’t be afraid. / Don’t afraid. )','Don’t be afraid.'],
+    ['7  ( Let’s not waiting. / Let’s not wait. )','Let’s not wait.'],
+    ['8  ( Give me that, please. / Give to me that, please. )','Give me that, please.'])]},
+  {n:'Put the words in order',b:()=>[TASK('Make the instructions','Write the words in the correct order.'),
+    B('wordorder',{line:true,rows:[{c:'door / the / please / close',a:'Please close the door.'},{c:'be / don’t / silly',a:'Don’t be silly.'},{c:'go / let’s / home',a:'Let’s go home.'},{c:'your / name / write / here',a:'Write your name here.'},{c:'late / be / don’t',a:'Don’t be late.'}]})]},
+  {n:'Classroom instructions',b:()=>[TASK('Write your own','Write eight classroom instructions: four positive and four negative.'),B('lines',{count:8})]}
+]},
+{id:'a2-howmuch',name:'How much · how many · prices',
+ theory:T({icon:'💵',title:'Asking about quantity and cost',
+  form:[{s:'countable',x:'<em>How many</em> apples? · <em>How many</em> people?'},{s:'uncountable',x:'<em>How much</em> water? · <em>How much</em> time?'},{s:'price',x:'<em>How much is</em> it? · <em>How much are</em> they?'},{s:'answers',x:'It’s <em>five euros</em>. · There <em>are</em> three. · There <em>isn’t</em> much.'}],
+  uses:[{r:'How many + plural countable nouns',x:'How many brothers have you got?'},{r:'How much + uncountable nouns',x:'How much sugar do you want?'},{r:'For prices always use how much',x:'How much is this jacket?'},{r:'is for one thing, are for more than one',x:'How much is it? / How much are these?'}],
+  words:['How many…?','How much…?','How much is it?','a lot of','not many','not much','a few','a little'],
+  note:'<b>Remember:</b> <i>money, water, bread, time, music</i> are uncountable — always <i>how much</i>.'}),
+ ex:[
+  {n:'much or many?',b:()=>[TASK('Complete with how much or how many','Write two words in each gap.'),
+    ...FIBS('1  [How many] students are there in your class?',
+    '2  [How much] milk do we need?',
+    '3  [How much] is this T-shirt?',
+    '4  [How many] languages do you speak?',
+    '5  [How much] time have we got?',
+    '6  [How many] eggs are there in the fridge?',
+    '7  [How much] does a ticket cost?',
+    '8  [How many] people came to the party?',
+    '9  [How much] bread shall I buy?',
+    '10  [How many] hours do you work a day?')]},
+  {n:'Countable or uncountable?',b:()=>[TASK('Sort the nouns','Which word would you use with each noun?'),
+    B('wordbank',{title:'Words',words:['apples','water','books','money','people','time','eggs','bread','hours','music','friends','sugar']}),
+    B('sortcols',{cols:[{title:'how many'},{title:'how much'}]})]},
+  {n:'In the shop',b:()=>[TASK('Complete the conversation','Choose A, B, C or D for each gap.'),
+    B('mccloze',{text:'A: Excuse me, (1) __ is this jacket? B: It’s forty euros. A: And (2) __ shirts have you got in blue? B: Only two, I’m afraid. A: I haven’t got (3) __ money with me today. Could you keep one until tomorrow? B: Of course. (4) __ problem at all.',qs:[{opts:['how much','how many','how long','how often'],correct:0},{opts:['how many','how much','how far','how old'],correct:0},{opts:['much','many','a few','lot'],correct:0},{opts:['No','Not','None','Any'],correct:0}]})]},
+  {n:'Ask the questions',b:()=>[TASK('Write a question for each answer','Begin with How much or How many.'),
+    WRITE(1)('There are twenty-five students.','It costs fifteen euros.','We need two litres of milk.','I have three brothers.','About half an hour.','Not much, just a little.')]},
+  {n:'In a shop',b:()=>[TASK('Write a conversation','Write eight lines between a customer and a shop assistant.'),B('lines',{count:8})]}
 ]}
 ];
 function tagBank(bank,cat,fallback){bank.forEach(t=>{t.cat=cat;t.lvl=TOPIC_LEVEL[t.id]||fallback;});}
