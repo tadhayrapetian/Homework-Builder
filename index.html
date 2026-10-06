@@ -318,6 +318,20 @@ footer{padding-block:38px;font-size:15px;font-weight:600;background:var(--walnut
 footer .wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
 footer a{text-decoration:none;opacity:.72}
 footer a:hover{opacity:1}
+
+/* ── the confirmation-code step ─────────────────────────────── */
+.frm[hidden]{display:none}
+.codeh{margin:0 0 2px;font-size:19px;font-weight:700;letter-spacing:-.01em}
+#codeTo{margin:0 0 4px}
+#codeTo b{font-weight:650;word-break:break-all}
+.codein{font-size:27px!important;letter-spacing:.34em;text-align:center;font-variant-numeric:tabular-nums;
+  font-weight:650;padding:13px 10px!important}
+.codein::placeholder{letter-spacing:.34em;opacity:.26}
+.coderow{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;margin:-2px 0 2px}
+.linkbtn{border:0;background:none;padding:0;cursor:pointer;font:inherit;font-size:13.5px;
+  font-weight:600;color:var(--brand,#a5661f);text-decoration:underline;text-underline-offset:3px}
+.linkbtn:hover{opacity:.78}
+.linkbtn[disabled]{opacity:.45;cursor:default;text-decoration:none}
 </style>
 </head>
 <body>
@@ -563,6 +577,19 @@ footer a:hover{opacity:1}
           <button class="btn btn-solid" type="submit" id="joinSend" data-i="join.f.send">Create my account</button>
           <p class="note" data-i="join.f.fine">Seven days of full access, no card. Your address is only used to sign you in.</p>
         </form>
+        <form class="frm" id="codeForm" hidden novalidate>
+          <h3 class="codeh" data-i="join.c.h">Check your e-mail</h3>
+          <p class="note" id="codeTo"></p>
+          <div><label for="jCode" data-i="join.c.f">Confirmation code</label>
+            <input id="jCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6"
+                   pattern="[0-9]*" class="codein" placeholder="000000"></div>
+          <button class="btn btn-solid" type="submit" id="codeSend" data-i="join.c.send">Confirm and open the builder</button>
+          <div class="coderow">
+            <button type="button" class="linkbtn" id="codeAgain" data-i="join.c.again">Send the code again</button>
+            <button type="button" class="linkbtn" id="codeBack" data-i="join.c.back">Use a different address</button>
+          </div>
+          <p class="note" data-i="join.c.spam">Nothing yet? Have a look in the spam folder — it sometimes lands there.</p>
+        </form>
         <div class="formmsg" id="joinMsg"></div>
       </div>
     </div>
@@ -677,6 +704,16 @@ en:{
  'join.e.mail':'That e-mail address does not look right.',
  'join.e.short':'A password needs at least 8 characters.',
  'join.e.match':'The two passwords are not the same.',
+ 'join.c.h':'Check your e-mail',
+ 'join.c.p':'We have sent a six-digit code to %s. Type it in below. It stops working in 15 minutes.',
+ 'join.c.f':'Confirmation code',
+ 'join.c.send':'Confirm and open the builder',
+ 'join.c.sending':'Checking…',
+ 'join.c.again':'Send the code again',
+ 'join.c.sent':'A new code is on its way.',
+ 'join.c.back':'Use a different address',
+ 'join.c.e.short':'The code is six digits.',
+ 'join.c.spam':'Nothing yet? Have a look in the spam folder — it sometimes lands there.',
  'price.eyebrow':'Pricing','price.h2':'Three plans. Pick the one that matches your week.',
  'price.lede':'Every plan is the same builder — what changes is how much of the library you open and how far the printing goes.',
  'price.monthly':'Monthly','price.yearly':'Yearly','price.permonth':'per month','price.peryear':'per year','price.save':'Two months free',
@@ -754,6 +791,16 @@ ru:{
  'join.e.mail':'Такой адрес почты выглядит неправильно.',
  'join.e.short':'В пароле должно быть не меньше 8 символов.',
  'join.e.match':'Пароли не совпадают.',
+ 'join.c.h':'Проверьте почту',
+ 'join.c.p':'Мы отправили шестизначный код на %s. Введите его ниже. Он действует 15 минут.',
+ 'join.c.f':'Код подтверждения',
+ 'join.c.send':'Подтвердить и открыть конструктор',
+ 'join.c.sending':'Проверяем…',
+ 'join.c.again':'Отправить код ещё раз',
+ 'join.c.sent':'Новый код уже в пути.',
+ 'join.c.back':'Указать другой адрес',
+ 'join.c.e.short':'Код состоит из шести цифр.',
+ 'join.c.spam':'Письма нет? Загляните в папку «Спам» — иногда оно попадает туда.',
  'price.eyebrow':'Тарифы','price.h2':'Три тарифа. Выберите тот, что под вашу неделю.',
  'price.lede':'Конструктор во всех тарифах один и тот же — отличается то, сколько библиотеки открыто и как далеко можно зайти в печати.',
  'price.monthly':'Помесячно','price.yearly':'На год','price.permonth':'в месяц','price.peryear':'в год','price.save':'Два месяца в подарок',
@@ -831,6 +878,16 @@ hy:{
  'join.e.mail':'Փոստի այդ հասցեն սխալ տեսք ունի։',
  'join.e.short':'Գաղտնաբառը պետք է լինի առնվազն 8 նիշ։',
  'join.e.match':'Գաղտնաբառերը չեն համընկնում։',
+ 'join.c.h':'Ստուգեք ձեր էլ. փոստը',
+ 'join.c.p':'Վեցանիշ կոդ ուղարկեցինք %s հասցեին։ Մուտքագրեք այն ներքևում։ Այն գործում է 15 րոպե։',
+ 'join.c.f':'Հաստատման կոդ',
+ 'join.c.send':'Հաստատել և բացել կառուցիչը',
+ 'join.c.sending':'Ստուգում ենք…',
+ 'join.c.again':'Ուղարկել կոդը նորից',
+ 'join.c.sent':'Նոր կոդը ճանապարհին է։',
+ 'join.c.back':'Նշել այլ հասցե',
+ 'join.c.e.short':'Կոդը բաղկացած է վեց թվանշանից։',
+ 'join.c.spam':'Նամակը չկա՞։ Նայեք «Սպամ» թղթապանակում — երբեմն հայտնվում է այնտեղ։',
  'price.eyebrow':'Սակագներ','price.h2':'Երեք փաթեթ։ Ընտրեք ձեր շաբաթվան համապատասխանը։',
  'price.lede':'Կառուցիչը բոլոր փաթեթներում նույնն է — տարբերվում է այն, թե գրադարանից որքանն է բացված և որքան հեռու է գնում տպագրությունը։',
  'price.monthly':'Ամսական','price.yearly':'Տարեկան','price.permonth':'ամսական','price.peryear':'տարեկան','price.save':'Երկու ամիս նվեր',
@@ -886,6 +943,7 @@ hy:{
     });
     try{ localStorage.setItem(KEY, lang); }catch(e){}
     paintPrice();
+    if(typeof paintCodeTo === 'function') paintCodeTo();
   }
 
   function paintPrice(){
@@ -974,16 +1032,10 @@ hy:{
       return r.json().catch(function(){ return {}; }).then(function(d){ return { ok:r.ok, status:r.status, d:d }; });
     }).then(function(res){
       if(!res.ok) throw res;
-      /* hand the session to the builder and go */
-      try{
-        localStorage.setItem('ws_session', JSON.stringify({
-          token: res.d.token, account: res.d.account, seen: Date.now()
-        }));
-      }catch(err){}
-      msg.className = 'formmsg ok';
-      msg.textContent = dict['join.f.ok'];
-      form.style.display = 'none';
-      setTimeout(function(){ location.href = 'app.html'; }, 900);
+      /* The site may be set up to confirm the address first. When it is,
+         no account exists yet and the code step finishes the job. */
+      if(res.d && res.d.pending){ showCode(mail.value.trim()); return; }
+      signedUp(res.d);
     }).catch(function(res){
       /* No accounts server on this site yet? Then there is nothing to
          register with — the builder is open to everyone, so just go. */
@@ -1001,6 +1053,122 @@ hy:{
       send.disabled = false;
       send.textContent = dict['join.f.send'];
     });
+  });
+
+  /* ── confirming the address ───────────────────────────────────
+     Reached only when the site has an e-mail provider set up. Until then
+     /api/register signs people in directly and none of this runs. */
+  var codeForm  = document.getElementById('codeForm'),
+      codeInput = document.getElementById('jCode'),
+      codeSend  = document.getElementById('codeSend'),
+      codeAgain = document.getElementById('codeAgain'),
+      codeBack  = document.getElementById('codeBack'),
+      codeTo    = document.getElementById('codeTo'),
+      waitingOn = '';
+
+  function signedUp(d){
+    var dict = I18N[lang] || I18N.en;
+    try{
+      localStorage.setItem('ws_session', JSON.stringify({
+        token: d.token, account: d.account, seen: Date.now()
+      }));
+    }catch(err){}
+    msg.className = 'formmsg ok';
+    msg.textContent = dict['join.f.ok'];
+    form.hidden = true; form.style.display = 'none';
+    codeForm.hidden = true;
+    setTimeout(function(){ location.href = 'app.html'; }, 900);
+  }
+
+  /* "a code went to anna@example.com" with the address in bold, in
+     whichever language is on. */
+  function paintCodeTo(){
+    if(!waitingOn) return;
+    var dict = I18N[lang] || I18N.en;
+    var parts = String(dict['join.c.p'] || '%s').split('%s');
+    codeTo.textContent = '';
+    codeTo.appendChild(document.createTextNode(parts[0]));
+    var b = document.createElement('b'); b.textContent = waitingOn;
+    codeTo.appendChild(b);
+    codeTo.appendChild(document.createTextNode(parts[1] || ''));
+  }
+
+  function showCode(address){
+    waitingOn = address;
+    paintCodeTo();
+    form.hidden = true;
+    codeForm.hidden = false;
+    msg.className = 'formmsg';
+    msg.textContent = '';
+    codeInput.value = '';
+    codeInput.focus();
+  }
+
+  codeInput.addEventListener('input', function(){
+    codeInput.value = codeInput.value.replace(/\D/g, '').slice(0, 6);
+    codeInput.classList.remove('bad');
+    /* six digits in, nothing left to decide — send it */
+    if(codeInput.value.length === 6) codeForm.requestSubmit ? codeForm.requestSubmit() : codeSend.click();
+  });
+
+  codeForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var dict = I18N[lang] || I18N.en;
+    if(codeInput.value.length !== 6) return bad(codeInput, 'join.c.e.short');
+    codeSend.disabled = true;
+    codeSend.textContent = dict['join.c.sending'];
+    msg.className = 'formmsg'; msg.textContent = '';
+
+    fetch('/api/verify', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email: waitingOn, code: codeInput.value })
+    }).then(function(r){
+      return r.json().catch(function(){ return {}; }).then(function(d){ return { ok:r.ok, status:r.status, d:d }; });
+    }).then(function(res){
+      if(!res.ok) throw res;
+      signedUp(res.d);
+    }).catch(function(res){
+      msg.className = 'formmsg bad';
+      msg.textContent = (res && res.d && res.d.message) || dict['join.f.bad'];
+      codeInput.classList.add('bad');
+      codeInput.value = '';
+      codeInput.focus();
+      /* the code is gone for good — send them back to the first step */
+      if(res && (res.status === 410 || res.status === 429)){
+        codeForm.hidden = true; form.hidden = false;
+      }
+    }).then(function(){
+      codeSend.disabled = false;
+      codeSend.textContent = (I18N[lang] || I18N.en)['join.c.send'];
+    });
+  });
+
+  codeAgain.addEventListener('click', function(){
+    var dict = I18N[lang] || I18N.en;
+    codeAgain.disabled = true;
+    fetch('/api/resend', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email: waitingOn })
+    }).then(function(r){
+      return r.json().catch(function(){ return {}; }).then(function(d){ return { ok:r.ok, d:d }; });
+    }).then(function(res){
+      msg.className = 'formmsg' + (res.ok ? ' ok' : ' bad');
+      msg.textContent = res.ok ? dict['join.c.sent'] : (res.d.message || dict['join.f.bad']);
+    }).catch(function(){
+      msg.className = 'formmsg bad';
+      msg.textContent = dict['join.f.bad'];
+    }).then(function(){
+      /* the server allows one a minute; match that here */
+      setTimeout(function(){ codeAgain.disabled = false; }, 60000);
+    });
+  });
+
+  codeBack.addEventListener('click', function(){
+    codeForm.hidden = true;
+    form.hidden = false;
+    msg.className = 'formmsg'; msg.textContent = '';
+    document.getElementById('jMail').focus();
   });
 
   document.getElementById('yr').textContent = new Date().getFullYear();

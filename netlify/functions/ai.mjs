@@ -47,33 +47,64 @@ Rules that matter:
 - Every gap is written as three underscores: ___
 - "correct" is the ZERO-BASED index of the right option. Options must all be different.
 - Every answer must be genuinely derivable from the task. No trick items.
-- British English spelling.
 - Keep vocabulary and grammar inside the stated CEFR level.`;
 
 /* ── prompts ──────────────────────────────────────────────────────── */
 function generatePrompt(o) {
   const want = (o.kinds && o.kinds.length ? o.kinds : ['gapfill', 'mcq', 'match', 'writing']).join(', ');
+  const variety = o.variety === 'American' ? 'American' : 'British';
   return [
     `You are an experienced English teacher writing a printable worksheet.`,
+    ``,
+    `WHO IT IS FOR`,
     `CEFR level: ${o.level || 'B1'}`,
+    `Learners: ${o.age || 'adults'}`,
+    `The worksheet is for: ${o.purpose || 'practising language the class has already met'}`,
+    o.exam ? `It should follow the task formats and register of ${o.exam}.` : '',
+    ``,
+    `WHAT IT IS ABOUT`,
     `Topic: ${o.topic || 'everyday life'}`,
+    o.grammar ? `Grammar the worksheet must practise: ${o.grammar}. Build the text and the exercises around it.` : '',
+    o.vocab ? `Vocabulary that must appear: ${o.vocab}. Use each item at least once in the text or an exercise.` : '',
+    o.avoid ? `Keep these out of it completely: ${o.avoid}.` : '',
+    ``,
+    `THE TEXT`,
+    o.withText
+      ? `Start with ${o.genre || 'a short informative article'} of about ${o.length || 130} words. Tone: ${o.tone || 'neutral and clear'}. Every exercise must be answerable from the text or practise its language.`
+      : `Do not include a reading text; set "text" to null.`,
+    ``,
+    `THE EXERCISES`,
     `Exercise types to include, in this order: ${want}`,
-    o.withText ? `Start with a reading text of about ${o.length || 120} words on the topic. Every exercise must be answerable from the text or practise its language.`
-               : `Do not include a reading text; set "text" to null.`,
     `Items per exercise: about ${o.n || 8}.`,
-    o.notes ? `Extra instructions from the teacher: ${o.notes}` : '',
+    `Use ${variety} spelling and ${variety} conventions for dates, money and measurements.`,
+    `Age-appropriate throughout: the situations, names and examples must suit ${o.age || 'adults'}.`,
+    o.notes ? `` : '',
+    o.notes ? `ALSO FROM THE TEACHER` : '',
+    o.notes ? String(o.notes) : '',
     '',
     SCHEMA
-  ].filter(Boolean).join('\n');
+  ].filter(x => x !== '' || true).filter(Boolean).join('\n');
 }
 
-function checkPrompt(spec, issues) {
+function checkPrompt(spec, issues, brief) {
+  const b = brief || {};
+  const variety = b.variety === 'American' ? 'American' : 'British';
   return [
-    `You are proofreading a worksheet written for CEFR level ${spec.level || 'B1'}.`,
+    `You are proofreading a worksheet written for CEFR level ${spec.level || b.level || 'B1'}.`,
     `Check it for: wrong or missing answers; multiple-choice keys pointing at the wrong option;`,
     `options that are all wrong or two that are both right; gaps with more than one possible answer;`,
-    `language above or below the stated level; unclear instructions; British spelling; and any item`,
-    `that cannot actually be answered from what the student is given.`,
+    `language above or below the stated level; unclear instructions; spelling that is not ${variety};`,
+    `and any item that cannot actually be answered from what the student is given.`,
+    ``,
+    `It was written to this brief, so also check the brief was kept:`,
+    `- learners: ${b.age || 'adults'} — nothing in it should be unsuitable for them`,
+    `- the lesson is for: ${b.purpose || 'practice'}`,
+    b.exam ? `- it should match the task formats of ${b.exam}` : '',
+    b.grammar ? `- it must practise: ${b.grammar}` : '',
+    b.vocab ? `- these words must appear: ${b.vocab}` : '',
+    b.avoid ? `- these must NOT appear at all: ${b.avoid} — remove anything that does` : '',
+    b.withText && b.length ? `- the reading text should be roughly ${b.length} words (within about 20%)` : '',
+    ``,
     issues && issues.length ? `An automatic check already flagged these: ${issues.join(' | ')}` : '',
     '',
     `Return ONLY valid JSON in this shape:`,
@@ -238,7 +269,7 @@ export default async (req, context) => {
       const spec = body && body.spec;
       if (!spec) return json(400, { error: 'no_spec' });
       const local = validateSpec(spec);
-      const out = await callGemini(checkPrompt(spec, local), 0.2);
+      const out = await callGemini(checkPrompt(spec, local, body.brief), 0.2);
       const fixed = out && out.fixed ? out.fixed : spec;
       const after = validateSpec(fixed);
       return json(200, {

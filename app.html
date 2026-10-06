@@ -1336,6 +1336,41 @@ select.regfield option{background:#fff;color:#131313}
 #genAI .gen-f input,#genAI input[type=text],#genAI input:not([type=checkbox]){width:100%;padding:8px 10px;
   border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--ink);font-size:13px}
 #genGo:disabled{opacity:.5;cursor:not-allowed}
+
+/* ===== AI progress ===== */
+.ai-run{margin-top:12px;padding:12px 13px;border-radius:13px;background:var(--panel2);
+  border:1px solid var(--line)}
+.ai-bar{height:5px;border-radius:99px;background:var(--panel3);overflow:hidden;margin-bottom:11px}
+.ai-bar i{display:block;height:100%;width:4%;border-radius:99px;
+  background:linear-gradient(90deg,var(--brand),var(--brand2));
+  transition:width .5s cubic-bezier(.4,0,.2,1);position:relative}
+.ai-bar i:after{content:'';position:absolute;inset:0;border-radius:99px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);
+  animation:aiSheen 1.25s linear infinite}
+@keyframes aiSheen{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.ai-run.done .ai-bar i:after{animation:none;opacity:0}
+.ai-steps{display:grid;gap:6px}
+.ai-step{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--faint);transition:.2s}
+.ai-step .ai-dot{width:9px;height:9px;border-radius:50%;border:1.6px solid var(--line2);flex:none}
+.ai-step .ai-tick{margin-left:auto;opacity:0;color:var(--brand);font-weight:800}
+.ai-step.now{color:var(--ink);font-weight:600}
+.ai-step.now .ai-dot{border-color:var(--brand);background:var(--brand);
+  animation:aiPulse 1s ease-in-out infinite}
+@keyframes aiPulse{0%,100%{box-shadow:0 0 0 0 rgba(191,122,48,.45)}50%{box-shadow:0 0 0 6px rgba(191,122,48,0)}}
+.ai-step.done{color:var(--ink2)}
+.ai-step.done .ai-dot{border-color:var(--brand);background:var(--brand)}
+.ai-step.done .ai-tick{opacity:1}
+.ai-foot{display:flex;justify-content:space-between;gap:10px;margin-top:10px;
+  font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+#aiTextOpts[hidden]{display:none}
+
+/* ===== CONFIRMATION CODE ON THE LOCK SCREEN ===== */
+.code-to{margin:0 0 2px;font-size:13.5px;line-height:1.6;color:var(--ink2);text-align:center}
+.code-to b{color:var(--ink);font-weight:650;word-break:break-all}
+.regfield.codein{font-size:26px;letter-spacing:.34em;text-align:center;font-weight:650;
+  font-variant-numeric:tabular-nums;padding:13px 10px}
+.regfield.codein::placeholder{letter-spacing:.34em;opacity:.26}
+#codeAgain[disabled]{opacity:.45;cursor:default;text-decoration:none}
 </style>
 </head>
 <body class="locked">
@@ -1377,6 +1412,17 @@ select.regfield option{background:#fff;color:#131313}
       <div class="lock-hint">Seven days of full access, no card.
         Already registered? <button class="linky" type="button" data-go="in">Sign in</button>
         · <a href="index.html#pricing">See the plans</a></div>
+    </form>
+
+    <form class="pane" id="paneCode" novalidate hidden>
+      <p class="code-to" id="codeTo"></p>
+      <input class="regfield codein" id="rCode" inputmode="numeric" autocomplete="one-time-code"
+             maxlength="6" pattern="[0-9]*" placeholder="000000">
+      <button class="keygo" id="codeGo" type="submit">Confirm and open the builder</button>
+      <div class="lock-hint">
+        <button class="linky" type="button" id="codeAgain">Send the code again</button> ·
+        <button class="linky" type="button" id="codeBack">Use a different address</button><br>
+        Nothing yet? Have a look in the spam folder — it sometimes lands there.</div>
     </form>
 
     <div class="lock-msg" id="lockMsg"></div>
@@ -1595,13 +1641,86 @@ select.regfield option{background:#fff;color:#131313}
           <div id="genAI" hidden>
             <div class="gen-filters">
               <div class="gen-f"><label>Level</label><div class="seg" id="aiLvl"></div></div>
-              <div class="gen-f"><label>Items per exercise</label><input id="aiN" type="number" min="4" max="14" value="8"></div>
+              <div class="gen-f"><label>Age group</label><select id="aiAge">
+                <option value="children aged 7–10">Children · 7–10</option>
+                <option value="children aged 11–13">Children · 11–13</option>
+                <option value="teenagers aged 14–17">Teenagers · 14–17</option>
+                <option value="adults" selected>Adults</option>
+                <option value="university students">University students</option>
+                <option value="professionals in work">Professionals at work</option>
+                <option value="retired adults">Older adults</option>
+              </select></div>
             </div>
+
             <div class="field"><label>Topic</label><input id="aiTopic" placeholder="e.g. air travel, job interviews, climate"></div>
-            <div class="field"><label>Anything else the worksheet should do</label>
-              <textarea id="aiNotes" rows="2" placeholder="Optional: focus on the passive, avoid phrasal verbs, make it for teenagers…"></textarea></div>
+
+            <div class="gen-filters">
+              <div class="gen-f"><label>What the lesson is for</label><select id="aiPurpose">
+                <option value="presenting new language for the first time">Presenting new language</option>
+                <option value="practising language the class has already met" selected>Practice</option>
+                <option value="revision before a test">Revision</option>
+                <option value="a short test with a clear mark scheme">Test</option>
+                <option value="homework to be done alone">Homework</option>
+                <option value="a five-minute warm-up">Warm-up</option>
+                <option value="a substitute-teacher lesson that needs no preparation">Cover lesson</option>
+              </select></div>
+              <div class="gen-f"><label>Exam focus</label><select id="aiExam">
+                <option value="" selected>None — general English</option>
+                <option value="Cambridge A2 Key">Cambridge A2 Key</option>
+                <option value="Cambridge B1 Preliminary">Cambridge B1 Preliminary</option>
+                <option value="Cambridge B2 First">Cambridge B2 First</option>
+                <option value="Cambridge C1 Advanced">Cambridge C1 Advanced</option>
+                <option value="IELTS">IELTS</option>
+                <option value="TOEFL iBT">TOEFL iBT</option>
+              </select></div>
+            </div>
+
             <label class="gen-t on" id="aiTextTog"><input type="checkbox" checked><span>Start with a reading text</span></label>
-            <div class="field" style="margin-top:10px"><label>Exercises</label>
+
+            <div class="gen-filters" id="aiTextOpts" style="margin-top:10px">
+              <div class="gen-f"><label>Kind of text</label><select id="aiGenre">
+                <option value="a short informative article" selected>Article</option>
+                <option value="a short story">Story</option>
+                <option value="a dialogue between two people">Dialogue</option>
+                <option value="an email or letter">Email / letter</option>
+                <option value="a blog post">Blog post</option>
+                <option value="a review">Review</option>
+                <option value="an interview">Interview</option>
+                <option value="a factual report with some numbers">Report</option>
+                <option value="an advertisement or leaflet">Advert / leaflet</option>
+              </select></div>
+              <div class="gen-f"><label>Text length · <span id="aiLenV">130</span> words</label>
+                <input type="range" id="aiLen" class="gen-range" min="60" max="400" step="10" value="130"></div>
+            </div>
+
+            <div class="gen-filters">
+              <div class="gen-f"><label>Tone</label><select id="aiTone">
+                <option value="neutral and clear" selected>Neutral</option>
+                <option value="friendly and conversational">Friendly</option>
+                <option value="formal">Formal</option>
+                <option value="light and humorous">Light / funny</option>
+                <option value="serious and factual">Serious</option>
+              </select></div>
+              <div class="gen-f"><label>Spelling</label><select id="aiVariety">
+                <option value="British" selected>British</option>
+                <option value="American">American</option>
+              </select></div>
+            </div>
+
+            <div class="gen-filters">
+              <div class="gen-f"><label>Grammar to practise</label>
+                <input id="aiGrammar" placeholder="e.g. past simple, passive, conditionals"></div>
+              <div class="gen-f"><label>Vocabulary to include</label>
+                <input id="aiVocab" placeholder="e.g. delay, boarding pass, aisle"></div>
+            </div>
+
+            <div class="field"><label>Keep out of it</label>
+              <input id="aiAvoid" placeholder="e.g. phrasal verbs, war, religion, anything frightening"></div>
+
+            <div class="field"><label>Anything else the worksheet should do</label>
+              <textarea id="aiNotes" rows="2" placeholder="Optional: one more instruction in your own words"></textarea></div>
+
+            <div class="field"><label>Exercises</label>
               <div class="gen-tasks" id="aiKinds"></div></div>
           </div>
 
@@ -1620,6 +1739,11 @@ select.regfield option{background:#fff;color:#131313}
             <input type="range" id="genN" min="4" max="12" value="8" class="gen-range">
             <div class="hint"><span id="genNv">8</span> items where it makes sense</div></div>
           <div class="ai-state" id="aiState" hidden></div>
+          <div class="ai-run" id="aiRun" hidden>
+            <div class="ai-bar"><i id="aiBarFill"></i></div>
+            <div class="ai-steps" id="aiSteps"></div>
+            <div class="ai-foot"><span id="aiElapsed">0.0s</span><span id="aiNote"></span></div>
+          </div>
           <div class="gen-sum" id="genSum">Nothing selected yet.</div>
           <button class="keygo" id="genGo">Build the worksheet</button>
           <div class="hint" style="margin-top:8px">The blocks are added to a new page. Everything stays editable afterwards.</div>
@@ -2240,6 +2364,7 @@ function aiToBlocks(spec){
 /* ---------- generate → check → fix ---------- */
 async function aiRun(opts,say){
   say('Writing the worksheet…');
+  if(typeof aiProgress==='function')aiProgress('write',12,'asking '+(AI.model||'Gemini'));
   const g=await fetch(API+'/ai/generate',{method:'POST',headers:{'content-type':'application/json'},
     body:JSON.stringify(opts)});
   const gd=await g.json().catch(()=>({}));
@@ -2247,11 +2372,13 @@ async function aiRun(opts,say){
   let spec=gd.spec;
   let found=aiValidate(spec);
 
+  if(typeof aiProgress==='function')
+    aiProgress('check',45,found.length?found.length+' thing(s) to look at':'nothing obvious so far');
   say('Checking it'+(found.length?' — '+found.length+' thing(s) to look at':'')+'…');
   let issues=found.slice(),remaining=found.slice();
   try{
     const c=await fetch(API+'/ai/check',{method:'POST',headers:{'content-type':'application/json'},
-      body:JSON.stringify({spec:spec})});
+      body:JSON.stringify({spec:spec,brief:opts})});
     const cd=await c.json().catch(()=>({}));
     if(c.ok){
       if(cd.fixed&&aiValidate(cd.fixed).length<=aiValidate(spec).length)spec=cd.fixed;
@@ -2260,7 +2387,10 @@ async function aiRun(opts,say){
     }
   }catch(e){/* the draft still stands if the check cannot run */}
 
+  if(typeof aiProgress==='function')
+    aiProgress('fix',76,issues.length?'repairing '+issues.length+' point(s)':'nothing to repair');
   const pruned=aiPrune(spec);
+  if(typeof aiProgress==='function')aiProgress('build',92,'laying out the page');
   return{spec:pruned.spec,issues:issues,remaining:remaining,dropped:pruned.dropped,model:gd.model};
 }
 
@@ -17240,7 +17370,10 @@ function aiBuildUI(){
     const cb=el('input');cb.type='checkbox';cb.checked=!!aiOn[id];
     cb.onchange=()=>{aiOn[id]=cb.checked?1:0;row.classList.toggle('on',cb.checked);};
     row.appendChild(cb);row.appendChild(el('span','',name));k.appendChild(row);});
-  const tt=$('#aiTextTog');tt.onclick=()=>setTimeout(()=>tt.classList.toggle('on',tt.querySelector('input').checked),0);
+  const tt=$('#aiTextTog'),ttc=tt.querySelector('input');
+  const syncText=()=>{tt.classList.toggle('on',ttc.checked);$('#aiTextOpts').hidden=!ttc.checked;};
+  ttc.onchange=syncText;syncText();
+  const len=$('#aiLen');len.oninput=()=>{$('#aiLenV').textContent=len.value;};
 }
 function aiSay(msg,kind){
   const s=$('#aiState');s.hidden=false;
@@ -17257,12 +17390,44 @@ async function aiRefresh(){
   aiSay('Connected to <b>'+esc(AI.model||'Gemini')+'</b>. It writes the worksheet, then checks its own work and fixes what it finds.','ok');
   $('#genSum').innerHTML='The AI will write, check and repair the worksheet before it reaches the page.';
 }
+/* ---------- the progress animation ---------- */
+const AI_STEPS=[['write','Writing the worksheet'],['check','Checking it for mistakes'],
+                ['fix','Repairing what it found'],['build','Building the page']];
+let aiTimer=null;
+function aiRunStart(){
+  $('#aiState').hidden=true;
+  const r=$('#aiRun');r.hidden=false;r.classList.remove('done');
+  const s=$('#aiSteps');s.innerHTML='';
+  AI_STEPS.forEach(([k,label])=>{
+    const row=el('div','ai-step',
+      '<i class="ai-dot"></i><span>'+esc(label)+'</span><b class="ai-tick">✓</b>');
+    row.dataset.k=k;s.appendChild(row);});
+  aiProgress('write',0);
+  const t0=Date.now();
+  clearInterval(aiTimer);
+  aiTimer=setInterval(()=>{$('#aiElapsed').textContent=((Date.now()-t0)/1000).toFixed(1)+'s';},100);
+}
+function aiProgress(stage,pct,note){
+  const order=AI_STEPS.map(x=>x[0]);const i=order.indexOf(stage);
+  document.querySelectorAll('#aiSteps .ai-step').forEach((row,k)=>{
+    row.classList.toggle('now',k===i);
+    row.classList.toggle('done',k<i);});
+  $('#aiBarFill').style.width=Math.max(4,Math.min(100,pct))+'%';
+  if(note!==undefined)$('#aiNote').textContent=note;
+}
+function aiRunEnd(){clearInterval(aiTimer);
+  document.querySelectorAll('#aiSteps .ai-step').forEach(r=>{r.classList.remove('now');r.classList.add('done');});
+  $('#aiBarFill').style.width='100%';$('#aiRun').classList.add('done');
+  setTimeout(()=>{$('#aiRun').hidden=true;},1400);}
+function aiRunFail(){clearInterval(aiTimer);$('#aiRun').hidden=true;}
+
 async function aiGo(){
   if(AI.busy)return;
   const lvB=$('#aiLvl').querySelector('.on');
   const kinds=AI_KINDS.filter(([id])=>aiOn[id]).map(([id])=>id);
   if(!kinds.length){toast('Tick at least one exercise type');return;}
   AI.busy=true;$('#genGo').disabled=true;
+  aiRunStart();
   const t0=Date.now();
   try{
     const res=await aiRun({
@@ -17271,8 +17436,17 @@ async function aiGo(){
       notes:$('#aiNotes').value.trim(),
       kinds:kinds,
       withText:$('#aiTextTog').querySelector('input').checked,
-      n:parseInt($('#aiN').value)||8,
-      length:130
+      n:parseInt($('#genN').value)||8,
+      length:parseInt($('#aiLen').value)||130,
+      age:$('#aiAge').value,
+      purpose:$('#aiPurpose').value,
+      exam:$('#aiExam').value,
+      genre:$('#aiGenre').value,
+      tone:$('#aiTone').value,
+      variety:$('#aiVariety').value,
+      grammar:$('#aiGrammar').value.trim(),
+      vocab:$('#aiVocab').value.trim(),
+      avoid:$('#aiAvoid').value.trim()
     },m=>aiSay(m));
     const blocks=aiToBlocks(res.spec);
     if(!blocks.length)throw new Error('nothing usable came back');
@@ -17284,10 +17458,12 @@ async function aiGo(){
     let msg='<b>Done in '+secs+'s.</b> '+res.spec.exercises.length+' exercise(s), '+blocks.length+' blocks.';
     if(res.issues.length)msg+='<br>Checked and repaired: '+res.issues.length+' point(s).';
     if(res.dropped.length)msg+='<br><b>Left out because it stayed wrong:</b> '+res.dropped.map(esc).join('; ');
+    aiRunEnd();
     aiSay(msg,res.dropped.length?'warn':'ok');
     toast('AI worksheet added on a new page');
     const ps=document.querySelectorAll('.paper');if(ps.length)ps[ps.length-1].scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){
+    aiRunFail();
     aiSay('<b>It did not work.</b><br>'+esc(String(e.message||e))+
       '<br>The two tabs on the left still work without AI.','bad');
   }finally{AI.busy=false;$('#genGo').disabled=false;}
@@ -17538,12 +17714,16 @@ function authFail(msg){
 function authTab(which){
   document.querySelectorAll('#authTabs button').forEach(b=>b.classList.toggle('on',b.dataset.p===which));
   $('#paneIn').hidden=which!=='in';$('#paneUp').hidden=which!=='up';
+  $('#paneCode').hidden=which!=='code';
+  /* While a code is waiting there is nothing to switch to, so the tabs go. */
+  $('#authTabs').hidden=which==='code';
   $('#lockSub').textContent=which==='in'
     ? 'Your worksheets are where you left them.'
+    : which==='code' ? 'One last step — check your e-mail.'
     : 'Seven days of everything, no card.';
   $('#lockMsg').textContent='';$('#lockOk').textContent='';
   document.querySelectorAll('.regfield.bad').forEach(f=>f.classList.remove('bad'));
-  setTimeout(()=>{const f=which==='in'?$('#iMail'):$('#rName');if(f)f.focus();},60);
+  setTimeout(()=>{const f=which==='in'?$('#iMail'):which==='code'?$('#rCode'):$('#rName');if(f)f.focus();},60);
 }
 $('#authTabs').addEventListener('click',e=>{const b=e.target.closest('button[data-p]');if(b)authTab(b.dataset.p);});
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>authTab(b.dataset.go));
@@ -17594,9 +17774,14 @@ async function doRegister(){
   if(p1.value!==p2.value){p2.classList.add('bad');return authFail('The two passwords are not the same');}
   const btn=$('#upGo');busy(btn,'Creating…');
   try{
-    const {token,account}=await api('/register',{method:'POST',
+    const res=await api('/register',{method:'POST',
       body:{name:name.value.trim(),email:mail.value.trim(),password:p1.value}});
-    saveSession(token,account);
+    unbusy(btn);
+    /* With an e-mail provider set up the account is not made yet — the
+       six-digit code finishes it. Without one the server signs us in
+       straight away, exactly as before. */
+    if(res.pending){showCodeStep(mail.value.trim());return;}
+    saveSession(res.token,res.account);
     closeLock();
   }catch(e){
     unbusy(btn);
@@ -17605,17 +17790,58 @@ async function doRegister(){
   }
 }
 
+/* ---------- confirming the address ---------- */
+let codeFor='';
+function showCodeStep(address){
+  codeFor=address;
+  $('#codeTo').innerHTML='We have sent a six-digit code to <b>'+esc(address)+
+    '</b>. Type it in below — it stops working in 15 minutes.';
+  $('#rCode').value='';
+  authTab('code');
+}
+async function doVerify(){
+  const f=$('#rCode');f.classList.remove('bad');
+  if(f.value.length!==6){f.classList.add('bad');return authFail('The code is six digits');}
+  const btn=$('#codeGo');busy(btn,'Checking…');
+  try{
+    const {token,account}=await api('/verify',{method:'POST',body:{email:codeFor,code:f.value}});
+    saveSession(token,account);
+    closeLock();
+  }catch(e){
+    unbusy(btn);f.value='';f.classList.add('bad');f.focus();
+    authFail(e.status?e.message:OFFLINE_MSG);
+    /* the code is finished with — back to the beginning */
+    if(e.status===410||e.status===429||e.status===409)authTab(e.status===409?'in':'up');
+  }
+}
+$('#rCode').addEventListener('input',()=>{
+  const f=$('#rCode');f.value=f.value.replace(/\D/g,'').slice(0,6);
+  f.classList.remove('bad');
+  if(f.value.length===6)doVerify();
+});
+$('#paneCode').addEventListener('submit',e=>{e.preventDefault();doVerify();});
+$('#codeAgain').onclick=async()=>{
+  const b=$('#codeAgain');b.disabled=true;
+  try{
+    await api('/resend',{method:'POST',body:{email:codeFor}});
+    $('#lockMsg').textContent='';$('#lockOk').textContent='A new code is on its way.';
+  }catch(e){authFail(e.status?e.message:OFFLINE_MSG);}
+  /* the server allows one a minute; match that here */
+  setTimeout(()=>{b.disabled=false;},60000);
+};
+$('#codeBack').onclick=()=>{authTab('up');$('#rMail').focus();};
+
 function unlock(){
   document.body.classList.remove('locked');
   const lock=$('#lock');lock.classList.remove('show','ok','closing');
-  ['#iPass','#rPass','#rPass2'].forEach(s=>{const f=$(s);if(f)f.value='';});
+  ['#iPass','#rPass','#rPass2','#rCode'].forEach(s=>{const f=$(s);if(f)f.value='';});
   $('#lockMsg').textContent='';$('#lockOk').textContent='';
   if(!DOC.brand&&ME&&ME.name){DOC.brand=ME.name;renderAll();}
   applyPlan();
 }
 function lockNow(message){
   clearSession();
-  ['#iPass','#rPass','#rPass2'].forEach(s=>{const f=$(s);if(f)f.value='';});
+  ['#iPass','#rPass','#rPass2','#rCode'].forEach(s=>{const f=$(s);if(f)f.value='';});
   $('#lockOk').textContent='';
   $('#authTabs').hidden=false;authTab('in');
   $('#lockMsg').textContent=typeof message==='string'?message:'';

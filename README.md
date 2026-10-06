@@ -96,6 +96,28 @@ In Netlify → your site → **Site configuration → Environment variables**:
 
 Nothing works until both are set; the function says so plainly if they are missing. Changing `AUTH_SECRET` later signs everyone out (their passwords still work).
 
+### Confirming the e-mail address
+
+New teachers can be made to confirm their address with a six-digit code before the account exists. To switch that on, add **one** mail provider and the address the code is sent from:
+
+| Name | Value |
+| --- | --- |
+| `RESEND_API_KEY` | a key from [resend.com](https://resend.com) — needs a domain you own |
+| `BREVO_API_KEY` | or a key from [brevo.com](https://www.brevo.com) — free, and a single sender address can be verified without owning a domain |
+| `MAIL_FROM` | who the e-mail is from, e.g. `Worksheet Studio <hello@yourdomain.com>` |
+
+**Until one of those keys is set, sign-up works exactly as it did** and no code is asked for. Nothing breaks while you are still deciding on a provider.
+
+How it behaves once it is on:
+
+1. The sign-up form posts to `/api/register`. No account is made — the name, address and password hash wait in a separate store, together with an **HMAC of the code**. The code itself is never written down, so a stolen copy of the store contains no working code.
+2. The teacher types the six digits. The field accepts digits only and sends itself as soon as the sixth one lands.
+3. `/api/verify` creates the real account and signs them in.
+4. A code lasts **15 minutes** and survives **five** wrong guesses. After that it is destroyed and the sign-up starts again.
+5. **Send the code again** is allowed once a minute, on the server as well as in the page.
+
+The same two-step flow is on the landing page and on the builder's own lock screen.
+
 ## The AI generator
 
 The **Generate** button has three tabs. Two of them — a bank of graded texts, and your own pasted text — work offline and need nothing. The third writes a worksheet with **Gemini**, then sends it back to Gemini to be proof-read, and repairs what the check finds.
@@ -111,7 +133,29 @@ The key lives on the server only. The page never sees it: the browser calls `/ap
 
 Without the key, the AI tab says so and stays disabled; nothing else changes.
 
+**What you can ask it for**
+
+The AI tab is a brief, not a text box. Everything on it reaches the model and the proof-reader alike:
+
+| | |
+|---|---|
+| Level | A2 · B1 · B2 · C1 |
+| Age group | 7–10 · 11–13 · 14–17 · adults · university · professionals · older adults |
+| What the lesson is for | presenting · practice · revision · test · homework · warm-up · cover lesson |
+| Exam focus | none · A2 Key · B1 Preliminary · B2 First · C1 Advanced · IELTS · TOEFL |
+| Kind of text | article · story · dialogue · email · blog · review · interview · report · advert |
+| Text length | 60–400 words |
+| Tone | neutral · friendly · formal · light · serious |
+| Spelling | British or American |
+| Grammar to practise | free text — the text and the exercises are built around it |
+| Vocabulary to include | free text — each item must appear at least once |
+| Keep out of it | free text — removed if the model slips it in |
+
+The second pass is given the same brief, so it checks the worksheet against what was asked for and not only against itself.
+
 **How a worksheet is made**
+
+While it runs, the panel shows which of the four steps it is on, how long it has taken and what it is doing.
 
 1. Gemini writes a worksheet as structured JSON — reading text, exercises, answers.
 2. The app checks it with its own rules: every gap has an answer, every multiple-choice key points at a real option, no two options identical, no exercise with fewer than three items, true/false not all the same.
