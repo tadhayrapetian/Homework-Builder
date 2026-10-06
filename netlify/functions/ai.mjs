@@ -11,7 +11,7 @@
  * Optional:                      GEMINI_MODEL (default gemini-2.5-flash)
  */
 
-const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
 const KEY = process.env.GEMINI_API_KEY || '';
 const ENDPOINT = m =>
   `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(m)}:generateContent`;
