@@ -196,6 +196,19 @@ If the server cannot be reached, the admin page still opens the local order ledg
 
 There is **no "forgot my password" e-mail**, because the site has no mail service. If somebody forgets theirs, they will have to write to you — and today there is no way to reset it for them short of adding one. There is also no e-mail confirmation on sign-up, and no limit on how fast passwords can be guessed. Worth adding before this gets busy.
 
+## Printing and PDF
+
+A page in the builder grows as you fill it. A sheet of paper does not, and that difference is where worksheets used to break: whatever did not fit was simply cut off — half an exercise at the foot of a sheet, its first questions gone, and the footer printed across whatever was still underneath.
+
+Now a block that will not fit is **cut between its own rows** — between the sentences of a gap-fill, the paragraphs of a reading text, and, for a wall of text with nothing else to break between, its lines. Nothing is clipped and nothing is lost. The rules it follows:
+
+- An instruction card never ends up alone at the foot of a page; it travels with the exercise it introduces.
+- A block is kept whole when moving it down costs little. If keeping it whole would leave more than a third of the sheet empty, it is broken instead and carries on overleaf, the way a document does.
+- The footer gets its own strip; content stops above it.
+- The reading text is never shortened to make something fit.
+
+The same splitter serves the PDF export (both the vector and the image mode), the **Print** button and the **Pages** panel, which says how many A4 sheets the worksheet will actually come out as. They cannot disagree, because there is only one of it.
+
 ## A note on access control
 
 Which plan a teacher is on is decided on the server, and the admin password is checked there too, so neither can be changed from the browser.

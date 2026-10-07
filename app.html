@@ -1383,6 +1383,19 @@ select.regfield option{background:#fff;color:#131313}
   border-radius:8px;padding:3px 9px;font-size:11.5px;font-weight:650;cursor:pointer;
   font-variant-numeric:tabular-nums}
 .lenpre button:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-soft)}
+
+/* ===== HOW MANY SHEETS IT PRINTS AS ===== */
+.sheetnote{margin:9px 2px 0;font-size:11.5px;line-height:1.5;color:var(--muted);font-weight:600}
+.sheetnote:empty{display:none}
+.sheetnote.warn{color:var(--brand2)}
+
+/* ===== PRINTING ===== */
+.printonly{display:none}
+@media print{
+  body.printing .app{display:none !important}
+  body.printing .printonly{display:block !important}
+  .printonly .paper{margin:0 !important;box-shadow:none !important;border-radius:0 !important}
+}
 </style>
 </head>
 <body class="locked">
@@ -1495,6 +1508,7 @@ select.regfield option{background:#fff;color:#131313}
     <div class="sec">
       <h3>Pages</h3>
       <div class="plist" id="pageList"></div>
+      <div class="sheetnote" id="sheetNote"></div>
       <button class="ibtn" id="addPage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>New A4 page</button>
       <div class="toggle" id="keyTog" style="margin-top:11px"><div><b>Answer key page</b><small>Append a teacher key at the end</small></div><div class="sw-t"></div></div>
       <div class="toggle" id="numTog"><div><b>Number tasks automatically</b><small>Tasks renumber 1, 2, 3…</small></div><div class="sw-t"></div></div>
@@ -3762,6 +3776,28 @@ function refreshLeft(){
   const nt=$('#numTog');if(nt)nt.classList.toggle('on',!!DOC.autoNumber);
   refreshPdfQ();
   const bi=$('#brandInput');if(bi&&document.activeElement!==bi)bi.value=DOC.brand||'';
+  scheduleSheetCount();
+}
+
+/* A page on screen grows as you fill it; a sheet of paper does not. This
+   says how many sheets will come out, worked out with the very same
+   splitter the export uses, so the two can never disagree. It is
+   deferred because it measures the whole document. */
+let sheetTimer=null;
+function scheduleSheetCount(){
+  clearTimeout(sheetTimer);
+  sheetTimer=setTimeout(()=>{
+    const note=$('#sheetNote');if(!note)return;
+    let n=0;
+    try{document.querySelectorAll('.paper').forEach(p=>{n+=splitPaperPages(p,794,1123).length;});}
+    catch(e){n=0;}
+    if(!n){note.textContent='';return;}
+    const pages=DOC.pages.length+(DOC.appendKey?1:0);
+    note.textContent=n===pages
+      ? 'Prints as '+n+' A4 sheet'+(n===1?'':'s')+'.'
+      : 'Prints as '+n+' A4 sheets — the pages here hold more than one sheet each, and the export breaks them between exercises.';
+    note.classList.toggle('warn',n!==pages);
+  },260);
 }
 function buildThemeGallery(){const g=$('#themeGallery');g.innerHTML='';
   const tc=$('#themeCount');if(tc)tc.textContent=Math.min(THEMES.length,PLAN.themes);
@@ -4051,6 +4087,163 @@ function makePDF(imgs,ptW,ptH){
 }
 /* split one on-screen paper into as many A4 sheets as its content needs,
    cutting only between blocks so nothing is chopped in half */
+/* =====================================================================
+   PAGE BREAKING FOR EXPORT
+
+   A sheet is a fixed size and what is on it has to fit. The old rule was
+   "move a whole block to the next page if it does not fit" — which has
+   nothing to say about a block that is taller than a page on its own.
+   Those were simply clipped: half an exercise at the foot of one sheet,
+   its first two questions gone for good, and the footer printed across
+   whatever was still underneath.
+
+   So a block that will not fit is now cut between its OWN rows — between
+   the sentences of a gap-fill, the options of a question, the paragraphs
+   of a reading text, and, for a wall of text with nothing else to break
+   between, its lines. Everything is measured on a copy kept off-screen;
+   what the teacher is looking at is never touched.
+   ===================================================================== */
+
+/* The usable height of a sheet, once the footer has had its share. */
+function sheetRoom(paper,H){
+  const cs=getComputedStyle(paper);
+  const pt=parseFloat(cs.paddingTop)||0, pb=parseFloat(cs.paddingBottom)||0;
+  let room=H-pt-pb;
+  const foot=paper.querySelector('.pg-foot');
+  if(foot){
+    const fh=foot.getBoundingClientRect().height||22;
+    const bottom=parseFloat(getComputedStyle(foot).bottom)||22;
+    /* the footer normally sits inside the bottom margin; if it reaches
+       above it, the difference has to come out of the content */
+    const over=(fh+bottom+10)-pb;
+    if(over>0)room-=over;
+  }
+  return Math.max(140,room);
+}
+
+function pageStage(paper,width){
+  const s=document.createElement('div');
+  s.style.cssText='position:absolute;left:-99999px;top:0;width:'+width+'px;visibility:hidden;pointer-events:none';
+  paper.appendChild(s);return s;
+}
+
+const isIntro=n=>!!(n&&n.querySelector&&(n.querySelector('.ws-instr')||n.querySelector('.ws-header')||n.querySelector('.wordbank')));
+
+/* "one<br><br>two" has no element children to break between. Each run
+   between the breaks is wrapped in a div, with exactly the gap the
+   breaks made, so not a pixel moves. */
+function paraSplit(root){
+  const lh=parseFloat(getComputedStyle(root).lineHeight)||18;
+  const runs=[];let cur=[],pend=0;
+  [...root.childNodes].forEach(n=>{
+    if(n.nodeName==='BR'){pend++;return;}
+    if(pend>=2&&cur.length){runs.push(cur);cur=[];}
+    else if(pend===1&&cur.length)cur.push(document.createElement('br'));
+    pend=0;
+    if(n.nodeType===3&&!n.nodeValue.trim()&&!cur.length)return;
+    cur.push(n.cloneNode(true));
+  });
+  if(cur.length)runs.push(cur);
+  if(runs.length<2)return false;
+  root.innerHTML='';
+  runs.forEach((r,i)=>{
+    const d=document.createElement('div');
+    if(i)d.style.marginTop=lh+'px';
+    r.forEach(n=>d.appendChild(n));
+    root.appendChild(d);
+  });
+  return true;
+}
+
+/* One paragraph taller than a whole sheet. The browser knows where its
+   lines fall; a Range asks it, and each line becomes a row. */
+function lineSplit(root){
+  const texts=[...root.childNodes].filter(n=>n.nodeType===3&&n.nodeValue.trim());
+  if(texts.length!==1||root.children.length)return false;
+  const t=texts[0],str=t.nodeValue;
+  if(str.length<400)return false;
+  const r=document.createRange();
+  const cuts=[];let prev=null;
+  for(let i=1;i<str.length;i++){
+    if(str[i-1]!==' ')continue;
+    r.setStart(t,i-1);r.setEnd(t,i);
+    const top=r.getBoundingClientRect().top;
+    if(prev!==null&&top>prev+1)cuts.push(i);
+    prev=top;
+  }
+  if(cuts.length<2)return false;
+  const parts=[];let at=0;
+  cuts.forEach(c=>{parts.push(str.slice(at,c));at=c;});
+  parts.push(str.slice(at));
+  root.textContent='';
+  parts.forEach(p=>{const d=document.createElement('div');d.textContent=p;root.appendChild(d);});
+  return true;
+}
+
+/* The children a block can be cut between, descending past any wrappers
+   that have only one child of their own. */
+function rowsIn(block){
+  let node=block;
+  for(let depth=0;depth<8;depth++){
+    const kids=[...node.children].filter(c=>
+      !c.classList.contains('bhandle')&&!c.classList.contains('bbar')&&!c.classList.contains('drop-line'));
+    if(!kids.length)return (lineSplit(node)||paraSplit(node))?[...node.children]:null;
+    if(kids.length===1){node=kids[0];continue;}
+    if(kids.every(k=>k.tagName==='BR'))return paraSplit(node)?[...node.children]:null;
+    return kids;
+  }
+  return null;
+}
+
+/* → [{el, h, intro}], the block in as many pieces as it takes. The first
+   piece is cut to whatever is left of the sheet it starts on, so a long
+   exercise carries on from where the page is rather than wasting the
+   half-empty sheet above it. */
+function cutBlock(block,firstRoom,room,stage){
+  const whole=()=>[{el:block.cloneNode(true),h:block.getBoundingClientRect().height,intro:isIntro(block)}];
+  if(block.getBoundingClientRect().height<=firstRoom)return whole();
+
+  stage.innerHTML='';
+  const work=block.cloneNode(true);
+  work.querySelectorAll('.bbar,.bhandle,.drop-line').forEach(e=>e.remove());
+  stage.appendChild(work);
+
+  const rows=rowsIn(work);
+  if(!rows||rows.length<2){stage.innerHTML='';return whole();}
+
+  const box=work.getBoundingClientRect();
+  const first=rows[0].getBoundingClientRect(), last=rows[rows.length-1].getBoundingClientRect();
+  const chrome=(first.top-box.top)+(box.bottom-last.bottom);
+  if(room-chrome<60){stage.innerHTML='';return whole();}
+  if(firstRoom-chrome<60)firstRoom=room;
+
+  const tops=rows.map(r=>r.getBoundingClientRect().top-box.top);
+  const bots=rows.map(r=>r.getBoundingClientRect().bottom-box.top);
+  /* two rows at least, or the leftover is not worth using */
+  if(rows.length>1&&chrome+(bots[1]-tops[0])>firstRoom)firstRoom=room;
+  const spans=[];let from=0,limit=firstRoom;
+  for(let i=0;i<rows.length;i++){
+    if(i>from&&chrome+(bots[i]-tops[from])>limit){spans.push([from,i-1]);from=i;limit=room;}
+  }
+  spans.push([from,rows.length-1]);
+  if(spans.length<2){stage.innerHTML='';return whole();}
+
+  const out=spans.map(([a,b],n)=>{
+    stage.innerHTML='';
+    const c=work.cloneNode(true);
+    stage.appendChild(c);
+    const cr=rowsIn(c)||[];
+    cr.forEach((r,i)=>{if(i<a||i>b)r.remove();});
+    /* a continuation starts flush, not with the gap its first row had */
+    if(a>0&&cr[a])cr[a].style.marginTop='0px';
+    const h=c.getBoundingClientRect().height;
+    c.remove();
+    return {el:c,h:h,intro:n===0&&isIntro(c)};
+  });
+  stage.innerHTML='';
+  return out;
+}
+
 function splitPaperPages(paper,W,H){
   const cleanup=c=>{
     c.querySelectorAll('.bbar,.bhandle,.pg-tools,.pg-label,.drop-line').forEach(e=>e.remove());
@@ -4061,33 +4254,73 @@ function splitPaperPages(paper,W,H){
   const blocksEl=paper.querySelector('.blocks');
   const foot=paper.querySelector('.pg-foot');
   if(!blocksEl)return[cleanup(paper.cloneNode(true))];
-  const cs=getComputedStyle(paper);
-  const avail=H-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
-  const gap=parseFloat(getComputedStyle(blocksEl).gap)||18;
   const kids=[...blocksEl.children].filter(k=>k.classList.contains('block'));
   if(!kids.length)return[cleanup(paper.cloneNode(true))];
-  const groups=[];let cur=[],h=0;
-  kids.forEach(k=>{
-    const kh=k.getBoundingClientRect().height;
-    if(cur.length&&h+gap+kh>avail){groups.push(cur);cur=[k];h=kh;}
-    else{h+=(cur.length?gap:0)+kh;cur.push(k);}
-  });
-  if(cur.length)groups.push(cur);
-  // never leave a task card (or a heading) stranded at the foot of a page —
-  // push it forward so it stays with the exercise it introduces
-  const isIntro=n=>!!(n.querySelector&&(n.querySelector('.ws-instr')||n.querySelector('.ws-header')||n.querySelector('.wordbank')));
+
+  const room=sheetRoom(paper,H);
+  const gap=parseFloat(getComputedStyle(blocksEl).gap)||18;
+
+  const groups=[];let cur=[],used=0,cut=false;
+  const put=p=>{used+=(cur.length?gap:0)+p.h;cur.push(p);};
+  const flush=()=>{if(cur.length){groups.push(cur);cur=[];used=0;}};
+  const asIs=k=>({el:k.cloneNode(true),h:k.getBoundingClientRect().height,intro:isIntro(k)});
+  /* An instruction card left alone at the foot of a page belongs with
+     the exercise it introduces, so it travels with it. */
+  const turnPage=()=>{
+    const carry=[];
+    while(cur.length>1&&cur[cur.length-1].intro)carry.unshift(cur.pop());
+    flush();
+    carry.forEach(put);
+  };
+
+  const stage=pageStage(paper,blocksEl.getBoundingClientRect().width);
+  try{
+    kids.forEach(k=>{
+      const kh=k.getBoundingClientRect().height;
+      const left=room-used-(cur.length?gap:0);
+      if(kh<=left){put(asIs(k));return;}        // fits on this sheet
+      /* It does not fit here. Moving it down whole keeps it together,
+         which is worth a little white space but not a lot: if that
+         would leave more than a third of this sheet empty, it is cut
+         instead and carries on overleaf, the way a document does. */
+      if(kh<=room&&left<room*0.35){turnPage();put(asIs(k));return;}
+      /* too little of this sheet left to be worth starting in */
+      if(left<160)turnPage();
+      const ps=cutBlock(k,Math.max(0,room-used-(cur.length?gap:0)),room,stage);
+      if(ps.length>1){ps.forEach((p,i)=>{if(i>0)flush();put(p);});cut=true;}
+      else{turnPage();put(ps[0]);}
+    });
+  }catch(e){
+    /* measuring went wrong somewhere — fall back to whole blocks rather
+       than lose the export altogether */
+    groups.length=0;cur=[];used=0;cut=false;
+    kids.forEach(k=>{
+      const p=asIs(k);
+      if(cur.length&&used+gap+p.h>room)flush();
+      put(p);
+    });
+  }
+  flush();
+  stage.remove();
+
+  /* never leave a task card stranded at the foot of a page — push it
+     forward so it stays with the exercise it introduces, but only if
+     the next page can actually take it */
   for(let i=0;i<groups.length-1;i++){
-    while(groups[i].length>1&&isIntro(groups[i][groups[i].length-1])){
+    while(groups[i].length>1&&groups[i][groups[i].length-1].intro){
+      const moving=groups[i][groups[i].length-1];
+      const nextH=groups[i+1].reduce((a,p)=>a+p.h,0)+gap*(groups[i+1].length-1);
+      if(nextH+gap+moving.h>room)break;
       groups[i+1].unshift(groups[i].pop());
     }
   }
-  const nonEmpty=groups.filter(g=>g.length);
-  if(nonEmpty.length)groups.length=0,nonEmpty.forEach(g=>groups.push(g));
-  if(groups.length<2)return[cleanup(paper.cloneNode(true))];
+
+  if(groups.length<2&&!cut)return[cleanup(paper.cloneNode(true))];
+
   return groups.map(g=>{
     const c=paper.cloneNode(false);
     const nb=document.createElement('div');nb.className='blocks';
-    g.forEach(k=>nb.appendChild(k.cloneNode(true)));
+    g.forEach(p=>nb.appendChild(p.el));
     c.appendChild(nb);
     if(foot)c.appendChild(foot.cloneNode(true));
     return cleanup(c);
@@ -4344,7 +4577,37 @@ async function sharePDF(){
     else toast('Could not share — use the PDF button instead');
   }finally{if(btn)btn.innerHTML=label;pdfBusy=false;}
 }
-function printPDF(){toast('Set Margins to “None” and turn off headers');setTimeout(()=>window.print(),300);}
+/* Printing from the browser used to hand the live pages straight to the
+   printer, where a hard 297mm box cut whatever did not fit. It now gets
+   the same properly broken sheets the PDF export gets. */
+function printPDF(){
+  document.querySelectorAll('.printonly').forEach(e=>e.remove());
+  const live=[...document.querySelectorAll('.paper')];
+  if(!live.length){toast('Nothing to print');return;}
+  let sheets=[];
+  try{live.forEach(p=>{sheets=sheets.concat(splitPaperPages(p,794,1123));});}catch(e){sheets=[];}
+  toast('Set Margins to “None” and turn off headers');
+  if(!sheets.length){setTimeout(()=>window.print(),300);return;}
+
+  sheets.forEach((sh,i)=>{
+    const f=sh.querySelector('.pg-foot');
+    if(f&&f.lastElementChild)
+      f.lastElementChild.textContent=sh.classList.contains('akey')?'Answer key':('Page '+(i+1)+' / '+sheets.length);
+    /* let the print stylesheet set the sheet size in millimetres */
+    sh.style.height='';sh.style.minHeight='';sh.style.width='';
+  });
+  const holder=el('div','printonly');
+  sheets.forEach(sh=>holder.appendChild(sh));
+  document.body.appendChild(holder);
+  document.body.classList.add('printing');
+
+  let done=false;
+  const tidy=()=>{if(done)return;done=true;
+    holder.remove();document.body.classList.remove('printing');
+    window.removeEventListener('afterprint',tidy);};
+  window.addEventListener('afterprint',tidy);
+  setTimeout(()=>{window.print();setTimeout(tidy,60000);},300);
+}
 
 /* =====================================================================
    EXERCISE LIBRARY
