@@ -1371,6 +1371,18 @@ select.regfield option{background:#fff;color:#131313}
   font-variant-numeric:tabular-nums;padding:13px 10px}
 .regfield.codein::placeholder{letter-spacing:.34em;opacity:.26}
 #codeAgain[disabled]{opacity:.45;cursor:default;text-decoration:none}
+
+/* ===== TEXT LENGTH ===== */
+.lenbox{display:flex;align-items:center;gap:8px}
+.lenbox input{width:96px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;
+  background:var(--panel2);color:var(--ink);font-size:14px;font-weight:650;
+  font-variant-numeric:tabular-nums;text-align:center}
+.lenbox span{font-size:12.5px;color:var(--muted);font-weight:600}
+.lenpre{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.lenpre button{border:1px solid var(--line);background:var(--panel2);color:var(--ink2);
+  border-radius:8px;padding:3px 9px;font-size:11.5px;font-weight:650;cursor:pointer;
+  font-variant-numeric:tabular-nums}
+.lenpre button:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-soft)}
 </style>
 </head>
 <body class="locked">
@@ -1689,8 +1701,17 @@ select.regfield option{background:#fff;color:#131313}
                 <option value="a factual report with some numbers">Report</option>
                 <option value="an advertisement or leaflet">Advert / leaflet</option>
               </select></div>
-              <div class="gen-f"><label>Text length · <span id="aiLenV">130</span> words</label>
-                <input type="range" id="aiLen" class="gen-range" min="60" max="400" step="10" value="130"></div>
+              <div class="gen-f"><label>Text length</label>
+                <div class="lenbox">
+                  <input type="number" id="aiLen" min="20" step="10" value="130" inputmode="numeric">
+                  <span>words</span>
+                </div>
+                <div class="lenpre" id="aiLenPre">
+                  <button type="button" data-w="80">80</button><button type="button" data-w="130">130</button>
+                  <button type="button" data-w="250">250</button><button type="button" data-w="400">400</button>
+                  <button type="button" data-w="700">700</button><button type="button" data-w="1200">1200</button>
+                </div>
+                <div class="hint" id="aiLenV">about half a page · roughly 1 minute to read</div></div>
             </div>
 
             <div class="gen-filters">
@@ -2373,35 +2394,65 @@ function aiWhy(status){
 }
 
 /* ---------- generate → check → fix ---------- */
+async function aiPost(route,payload){
+  const r=await fetch(API+'/ai/'+route,{method:'POST',headers:{'content-type':'application/json'},
+    body:JSON.stringify(payload)});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(d.message||d.error||aiWhy(r.status));
+  return d;
+}
+
 async function aiRun(opts,say){
-  say('Writing the worksheet…');
-  if(typeof aiProgress==='function')aiProgress('write',12,'asking '+(AI.model||'Gemini'));
-  const g=await fetch(API+'/ai/generate',{method:'POST',headers:{'content-type':'application/json'},
-    body:JSON.stringify(opts)});
-  const gd=await g.json().catch(()=>({}));
-  if(!g.ok)throw new Error(gd.message||gd.error||aiWhy(g.status));
+  /* The passage is asked for on its own and the exercises are asked for
+     afterwards, against that passage. Each request then has a whole
+     budget to itself, which is why the text may be any length at all —
+     a thousand words is two ordinary requests, not one enormous one. */
+  let given=null;
+  if(opts.withText){
+    const words=opts.length||130;
+    say('Writing the text — about '+words+' words…');
+    if(typeof aiProgress==='function')
+      aiProgress('text',8,words>500?'a long one, this takes a moment':'asking '+(AI.model||'Gemini'));
+    const t=await aiPost('text',opts);
+    given=t.text;
+    say('Text written — '+t.words+' words. Now the exercises…');
+    if(typeof aiProgress==='function')aiProgress('write',32,t.words+' words written');
+  }else{
+    say('Writing the worksheet…');
+    if(typeof aiProgress==='function')aiProgress('write',14,'asking '+(AI.model||'Gemini'));
+  }
+
+  const gd=await aiPost('generate',given?Object.assign({},opts,{givenText:given}):opts);
   let spec=gd.spec;
+  if(given&&!spec.text)spec.text=given;
+  /* Models write a passage now and then even when told not to. If the
+     teacher turned the text off, it does not go on the page. */
+  if(!opts.withText)spec.text=null;
   let found=aiValidate(spec);
 
   if(typeof aiProgress==='function')
-    aiProgress('check',45,found.length?found.length+' thing(s) to look at':'nothing obvious so far');
+    aiProgress('check',58,found.length?found.length+' thing(s) to look at':'nothing obvious so far');
   say('Checking it'+(found.length?' — '+found.length+' thing(s) to look at':'')+'…');
   let issues=found.slice(),remaining=found.slice();
   try{
-    const c=await fetch(API+'/ai/check',{method:'POST',headers:{'content-type':'application/json'},
-      body:JSON.stringify({spec:spec,brief:opts})});
-    const cd=await c.json().catch(()=>({}));
-    if(c.ok){
-      if(cd.fixed&&aiValidate(cd.fixed).length<=aiValidate(spec).length)spec=cd.fixed;
-      issues=(cd.issues||[]).slice();
-      remaining=aiValidate(spec);
-    }
+    const cd=await aiPost('check',{spec:spec,
+      brief:given?Object.assign({},opts,{givenText:given}):opts});
+    if(cd.fixed&&aiValidate(cd.fixed).length<=aiValidate(spec).length)spec=cd.fixed;
+    /* The passage is the teacher's, at the length they asked for. The
+       proof-reader does not get to trim it. */
+    if(given)spec.text=given;
+    issues=(cd.issues||[]).slice();
+    remaining=aiValidate(spec);
   }catch(e){/* the draft still stands if the check cannot run */}
 
+  /* Again after the proof-reader, which hands back a whole worksheet and
+     can reinstate a passage nobody asked for. */
+  if(!opts.withText)spec.text=null;
+
   if(typeof aiProgress==='function')
-    aiProgress('fix',76,issues.length?'repairing '+issues.length+' point(s)':'nothing to repair');
+    aiProgress('fix',82,issues.length?'repairing '+issues.length+' point(s)':'nothing to repair');
   const pruned=aiPrune(spec);
-  if(typeof aiProgress==='function')aiProgress('build',92,'laying out the page');
+  if(typeof aiProgress==='function')aiProgress('build',94,'laying out the page');
   return{spec:pruned.spec,issues:issues,remaining:remaining,dropped:pruned.dropped,model:gd.model};
 }
 
@@ -17384,7 +17435,19 @@ function aiBuildUI(){
   const tt=$('#aiTextTog'),ttc=tt.querySelector('input');
   const syncText=()=>{tt.classList.toggle('on',ttc.checked);$('#aiTextOpts').hidden=!ttc.checked;};
   ttc.onchange=syncText;syncText();
-  const len=$('#aiLen');len.oninput=()=>{$('#aiLenV').textContent=len.value;};
+  const len=$('#aiLen');
+  const sayLen=()=>{
+    const w=parseInt(len.value)||0;
+    if(w<20){$('#aiLenV').textContent='at least 20 words';return;}
+    /* an A4 page of worksheet type holds roughly 450 words of prose */
+    const pages=w/450, mins=Math.max(1,Math.round(w/180));
+    const size=pages<0.35?'a short paragraph':pages<0.75?'about half a page':
+               pages<1.3?'about a page':Math.round(pages*10)/10+' pages of text';
+    $('#aiLenV').textContent=size+' · roughly '+mins+' minute'+(mins===1?'':'s')+' to read'+
+      (w>600?' · long ones take longer to write, but there is no limit':'');
+  };
+  len.oninput=sayLen;sayLen();
+  $('#aiLenPre').querySelectorAll('button').forEach(b=>b.onclick=()=>{len.value=b.dataset.w;sayLen();});
 }
 function aiSay(msg,kind){
   const s=$('#aiState');s.hidden=false;
@@ -17402,10 +17465,15 @@ async function aiRefresh(){
   $('#genSum').innerHTML='The AI will write, check and repair the worksheet before it reaches the page.';
 }
 /* ---------- the progress animation ---------- */
-const AI_STEPS=[['write','Writing the worksheet'],['check','Checking it for mistakes'],
-                ['fix','Repairing what it found'],['build','Building the page']];
+const AI_STEPS_TEXT=[['text','Writing the reading text'],['write','Writing the exercises'],
+                     ['check','Checking it for mistakes'],['fix','Repairing what it found'],
+                     ['build','Building the page']];
+const AI_STEPS_PLAIN=[['write','Writing the exercises'],['check','Checking it for mistakes'],
+                      ['fix','Repairing what it found'],['build','Building the page']];
+let AI_STEPS=AI_STEPS_PLAIN;
 let aiTimer=null;
 function aiRunStart(){
+  AI_STEPS=$('#aiTextTog').querySelector('input').checked?AI_STEPS_TEXT:AI_STEPS_PLAIN;
   $('#aiState').hidden=true;
   const r=$('#aiRun');r.hidden=false;r.classList.remove('done');
   const s=$('#aiSteps');s.innerHTML='';
@@ -17448,7 +17516,7 @@ async function aiGo(){
       kinds:kinds,
       withText:$('#aiTextTog').querySelector('input').checked,
       n:parseInt($('#genN').value)||8,
-      length:parseInt($('#aiLen').value)||130,
+      length:Math.max(20,parseInt($('#aiLen').value)||130),
       age:$('#aiAge').value,
       purpose:$('#aiPurpose').value,
       exam:$('#aiExam').value,

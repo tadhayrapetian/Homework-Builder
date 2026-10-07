@@ -71,6 +71,36 @@ Rules that matter:
 - Keep vocabulary and grammar inside the stated CEFR level.`;
 
 /* ── prompts ──────────────────────────────────────────────────────── */
+/* Writing a long passage and a dozen exercises in one answer is what used
+   to run out of time. The passage is asked for on its own, so a text of
+   any length gets a whole budget to itself, and the exercises get
+   another. Nobody has to be told how long their text may be. */
+function textPrompt(o) {
+  const words = o.length || 130;
+  const variety = o.variety === 'American' ? 'American' : 'British';
+  return [
+    `You are an experienced English teacher writing a reading text for a worksheet.`,
+    ``,
+    `CEFR level: ${o.level || 'B1'}`,
+    `Learners: ${o.age || 'adults'}`,
+    `Topic: ${o.topic || 'everyday life'}`,
+    `Write ${o.genre || 'a short informative article'}.`,
+    `Tone: ${o.tone || 'neutral and clear'}.`,
+    `Length: about ${words} words. This matters — come within 10% of it.`,
+    words > 450 ? `It is a long piece, so give it a clear shape: paragraphs of three to six sentences, one idea each, and a line of white space between them.` : '',
+    o.exam ? `The register should suit ${o.exam}.` : '',
+    o.grammar ? `Use ${o.grammar} naturally and often — the exercises will practise it.` : '',
+    o.vocab ? `Work these in: ${o.vocab}.` : '',
+    o.avoid ? `Keep these out of it completely: ${o.avoid}.` : '',
+    `Use ${variety} spelling and ${variety} conventions for dates, money and measurements.`,
+    `Nothing in it should be unsuitable for ${o.age || 'adults'}.`,
+    o.notes ? `Also from the teacher: ${o.notes}` : '',
+    ``,
+    `Return ONLY valid JSON, no markdown fence:`,
+    `{ "title": "a short title for the worksheet", "text": "the passage, with \\n\\n between paragraphs" }`
+  ].filter(Boolean).join('\n');
+}
+
 function generatePrompt(o) {
   const want = (o.kinds && o.kinds.length ? o.kinds : ['gapfill', 'mcq', 'match', 'writing']).join(', ');
   const variety = o.variety === 'American' ? 'American' : 'British';
@@ -90,7 +120,9 @@ function generatePrompt(o) {
     o.avoid ? `Keep these out of it completely: ${o.avoid}.` : '',
     ``,
     `THE TEXT`,
-    o.withText
+    o.givenText
+      ? `The reading text is ALREADY WRITTEN and is printed at the end of this message. Do not write another one and do not rewrite it — set "text" to null. Every exercise must be answerable from that text or practise its language, and every word you quote from it must be quoted exactly.`
+      : o.withText
       ? `Start with ${o.genre || 'a short informative article'} of about ${o.length || 130} words. Tone: ${o.tone || 'neutral and clear'}. Every exercise must be answerable from the text or practise its language.`
       : `Do not include a reading text; set "text" to null.`,
     ``,
@@ -103,8 +135,9 @@ function generatePrompt(o) {
     o.notes ? `ALSO FROM THE TEACHER` : '',
     o.notes ? String(o.notes) : '',
     '',
-    SCHEMA
-  ].filter(x => x !== '' || true).filter(Boolean).join('\n');
+    SCHEMA,
+    o.givenText ? `\nTHE TEXT THE EXERCISES MUST BE BUILT FROM:\n${o.givenText}` : ''
+  ].filter(Boolean).join('\n');
 }
 
 function checkPrompt(spec, issues, brief) {
@@ -124,7 +157,8 @@ function checkPrompt(spec, issues, brief) {
     b.grammar ? `- it must practise: ${b.grammar}` : '',
     b.vocab ? `- these words must appear: ${b.vocab}` : '',
     b.avoid ? `- these must NOT appear at all: ${b.avoid} — remove anything that does` : '',
-    b.withText && b.length ? `- the reading text should be roughly ${b.length} words (within about 20%)` : '',
+    b.givenText ? `- the reading text was written separately and is already approved: return it UNCHANGED, word for word, and do not shorten it`
+      : b.withText && b.length ? `- the reading text should be roughly ${b.length} words (within about 20%)` : '',
     ``,
     issues && issues.length ? `An automatic check already flagged these: ${issues.join(' | ')}` : '',
     '',
@@ -139,7 +173,7 @@ function checkPrompt(spec, issues, brief) {
 }
 
 /* ── one call to Gemini ───────────────────────────────────────────── */
-async function callGemini(prompt, temperature) {
+async function callGemini(prompt, temperature, maxTokens) {
   let res;
   try {
     res = await fetch(`${ENDPOINT(MODEL)}?key=${encodeURIComponent(KEY)}`, {
@@ -151,7 +185,7 @@ async function callGemini(prompt, temperature) {
       generationConfig: {
         temperature: typeof temperature === 'number' ? temperature : 0.7,
         responseMimeType: 'application/json',
-        maxOutputTokens: 8192
+        maxOutputTokens: maxTokens || 8192
       }
     })
     });
@@ -294,8 +328,25 @@ export default async (req, context) => {
   try { body = await req.json(); } catch (e) { return json(400, { error: 'bad_json' }); }
 
   try {
+    if (path === 'text') {
+      const o = body || {};
+      const words = Math.max(20, Math.round(Number(o.length) || 130));
+      /* Room for the answer, with a floor for short ones and a ceiling
+         the model will still accept. */
+      const out = await callGemini(textPrompt({ ...o, length: words }), 0.85,
+                                   Math.min(32768, Math.max(2048, Math.round(words * 2.6) + 900)));
+      const text = String(out && out.text || '').trim();
+      if (!text) throw new Error('Gemini sent back an empty text');
+      return json(200, { title: String(out.title || o.topic || 'Reading'), text,
+                         words: text.split(/\s+/).filter(Boolean).length, model: MODEL });
+    }
+
     if (path === 'generate') {
-      const spec = await callGemini(generatePrompt(body || {}), 0.8);
+      const o = body || {};
+      const spec = await callGemini(generatePrompt(o), 0.8);
+      /* The passage goes back in exactly as it was written, so nothing
+         the model does to it on the way through can shorten it. */
+      if (o.givenText) spec.text = o.givenText;
       return json(200, { spec, issues: validateSpec(spec), model: MODEL });
     }
 

@@ -148,7 +148,7 @@ The AI tab is a brief, not a text box. Everything on it reaches the model and th
 | What the lesson is for | presenting · practice · revision · test · homework · warm-up · cover lesson |
 | Exam focus | none · A2 Key · B1 Preliminary · B2 First · C1 Advanced · IELTS · TOEFL |
 | Kind of text | article · story · dialogue · email · blog · review · interview · report · advert |
-| Text length | 60–400 words |
+| Text length | **any number of words you type** — no ceiling |
 | Tone | neutral · friendly · formal · light · serious |
 | Spelling | British or American |
 | Grammar to practise | free text — the text and the exercises are built around it |
@@ -159,7 +159,9 @@ The second pass is given the same brief, so it checks the worksheet against what
 
 **How a worksheet is made**
 
-While it runs, the panel shows which of the four steps it is on, how long it has taken and what it is doing.
+While it runs, the panel shows which step it is on, how long it has taken and what it is doing.
+
+The passage is asked for **on its own**, and the exercises are asked for afterwards against that passage. That is what makes the length free: a thousand-word text is two ordinary requests rather than one enormous one, and each gets a whole budget to itself. The passage the teacher asked for is also put back into the worksheet verbatim, so neither the second pass nor the proof-reader can quietly shorten it.
 
 1. Gemini writes a worksheet as structured JSON — reading text, exercises, answers.
 2. The app checks it with its own rules: every gap has an answer, every multiple-choice key points at a real option, no two options identical, no exercise with fewer than three items, true/false not all the same.
