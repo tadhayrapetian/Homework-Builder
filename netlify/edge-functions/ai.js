@@ -312,7 +312,19 @@ export default async (req, context) => {
   const path = url.pathname.replace(/^.*\/ai\/?/, '').replace(/\/+$/, '');
 
   if (path === 'status') {
-    return json(200, { configured: !!KEY, model: KEY ? MODEL : null });
+    /* Enough to tell the three ways this can be broken apart without
+       anybody having to read a log: no key reached the runtime, the key
+       reached it but Google refuses it, or this function was never
+       asked in the first place (in which case the answer below is not
+       the one that arrives). The key itself is never sent — only
+       whether there is one, and how long it is. */
+    return json(200, {
+      configured: !!KEY,
+      model: KEY ? MODEL : null,
+      runtime: (typeof Netlify !== 'undefined' && Netlify.env) ? 'edge' : 'node',
+      keyLength: KEY ? KEY.length : 0,
+      served: 'ai'
+    });
   }
 
   if (!KEY) {
