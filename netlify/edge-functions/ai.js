@@ -4,15 +4,36 @@
  * the function talks to Google. Routes:
  *
  *   GET  /api/ai/status     → is a key configured, and which model
- *   POST /api/ai/generate   → {level, topic, kind, length, notes} → worksheet spec
- *   POST /api/ai/check      → {spec, issues} → {ok, issues, fixed}
+ *   POST /api/ai/generate   → the brief → a worksheet spec
+ *   POST /api/ai/check      → {spec, brief} → {ok, issues, fixed}
+ *
+ * This is an EDGE function, not an ordinary one, and that is deliberate.
+ * An ordinary Netlify function is killed after ten seconds, which Gemini
+ * regularly exceeds once the brief asks for a long text — the browser
+ * then gets a bare 502 from the platform with nothing in it to explain
+ * itself. An edge function is allowed forty seconds to answer, and time
+ * spent waiting for Google does not count against its CPU budget, which
+ * is exactly the shape of this job: wait, then hand the answer on.
  *
  * Required environment variable: GEMINI_API_KEY
  * Optional:                      GEMINI_MODEL (default gemini-3.8-flash)
  */
 
-const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
-const KEY = process.env.GEMINI_API_KEY || '';
+/* Deno at the edge, Node in the tests. */
+function env(name) {
+  try { if (typeof Netlify !== 'undefined' && Netlify.env) return Netlify.env.get(name) || ''; } catch (e) {}
+  try { if (typeof process !== 'undefined' && process.env) return process.env[name] || ''; } catch (e) {}
+  return '';
+}
+
+/* Read once per request, in the handler, so a key added in the Netlify
+   dashboard takes effect without a redeploy. */
+let MODEL = 'gemini-3.8-flash';
+let KEY = '';
+
+/* We stop waiting a little before the platform would, so the teacher
+   gets a sentence instead of a bare gateway error. */
+const GIVE_UP_AFTER = 34000;
 const ENDPOINT = m =>
   `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(m)}:generateContent`;
 
@@ -119,7 +140,10 @@ function checkPrompt(spec, issues, brief) {
 
 /* ── one call to Gemini ───────────────────────────────────────────── */
 async function callGemini(prompt, temperature) {
-  const res = await fetch(`${ENDPOINT(MODEL)}?key=${encodeURIComponent(KEY)}`, {
+  let res;
+  try {
+    res = await fetch(`${ENDPOINT(MODEL)}?key=${encodeURIComponent(KEY)}`, {
+    signal: AbortSignal.timeout(GIVE_UP_AFTER),
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
@@ -130,7 +154,14 @@ async function callGemini(prompt, temperature) {
         maxOutputTokens: 8192
       }
     })
-  });
+    });
+  } catch (e) {
+    const err = new Error(e && e.name === 'TimeoutError'
+      ? 'Gemini took longer than 34 seconds. Ask for a shorter text or fewer exercises and try again.'
+      : 'Could not reach Gemini: ' + String(e && e.message || e));
+    err.status = 504;
+    throw err;
+  }
 
   const raw = await res.text();
   if (!res.ok) {
@@ -240,6 +271,9 @@ export function validateSpec(spec) {
 
 /* ── routing ──────────────────────────────────────────────────────── */
 export default async (req, context) => {
+  MODEL = env('GEMINI_MODEL') || 'gemini-3.8-flash';
+  KEY = env('GEMINI_API_KEY');
+
   const url = new URL(req.url);
   const path = url.pathname.replace(/^.*\/ai\/?/, '').replace(/\/+$/, '');
 
@@ -283,10 +317,12 @@ export default async (req, context) => {
 
     return json(404, { error: 'unknown_route', path });
   } catch (err) {
-    const status = err.status === 429 ? 429 : err.status === 403 ? 403 : 502;
+    const status = [429, 403, 504].includes(err.status) ? err.status : 502;
     return json(status, {
       error: 'gemini_failed',
       message: String(err.message || err).slice(0, 400)
     });
   }
 };
+
+export const config = { path: '/api/ai/*' };

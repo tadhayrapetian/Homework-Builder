@@ -131,6 +131,10 @@ To switch that third tab on, add one more environment variable:
 
 The key lives on the server only. The page never sees it: the browser calls `/api/ai/…`, that function calls Google. Putting the key in the page instead would publish it to anyone who opens the site.
 
+**It is an edge function, not an ordinary one** (`netlify/edge-functions/ai.js`). An ordinary Netlify function is killed after ten seconds, and Gemini regularly needs longer once the brief asks for a three-hundred-word text — what reached the browser then was a bare `502` from the platform with nothing in it to explain itself. An edge function is given forty seconds to answer, and time spent waiting for Google does not count against its CPU budget, which is exactly this job. It gives up by itself at thirty-four seconds so the teacher gets a sentence rather than a gateway error.
+
+Edge functions are claimed before redirects, so `/api/ai/*` is **not** in the redirect list in `netlify.toml`; it is declared in `[[edge_functions]]` and in the function's own `config`. Everything else under `/api/` still goes to the ordinary accounts function.
+
 Without the key, the AI tab says so and stays disabled; nothing else changes.
 
 **What you can ask it for**

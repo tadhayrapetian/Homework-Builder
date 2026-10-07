@@ -10,6 +10,10 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+[[edge_functions]]
+  path = "/api/ai/*"
+  function = "ai"
+
 # ── Caching ──────────────────────────────────────────────────────────────
 # HTML must never be served from cache, or a new upload stays invisible for
 # hours. The browser revalidates on every visit and gets the new file at once.
@@ -37,13 +41,12 @@
 # ── Friendly URLs ────────────────────────────────────────────────────────
 # Everything under /api goes to the accounts function, which reads the path
 # to decide what to do (register, login, me, admin/…).
-# The AI routes must be matched before the catch-all below, because Netlify
-# takes the first rule that fits.
-[[redirects]]
-  from = "/api/ai/*"
-  to = "/.netlify/functions/ai/:splat"
-  status = 200
-
+#
+# /api/ai/* is NOT in this list. It is served by an edge function, declared
+# below and in the function's own `config`, and edge functions run before
+# redirects — so it is claimed before the catch-all here can see it. It has
+# to be an edge function: an ordinary one is killed after ten seconds and
+# Gemini often needs longer, which the browser only ever saw as a bare 502.
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/auth/:splat"

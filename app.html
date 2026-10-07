@@ -2361,6 +2361,17 @@ function aiToBlocks(spec){
   return out;
 }
 
+/* A gateway error arrives empty — the server never got to answer — so
+   there is nothing to quote and we have to say what it means ourselves. */
+function aiWhy(status){
+  if(status===502||status===504)
+    return 'the request took too long and the server gave up waiting. '+
+           'A shorter text, or fewer exercises, usually goes through.';
+  if(status===404)return 'that address is not on the server yet — the site may still be deploying.';
+  if(status===429)return 'too many requests just now. Wait a minute and try again.';
+  return 'the server answered '+status+'.';
+}
+
 /* ---------- generate → check → fix ---------- */
 async function aiRun(opts,say){
   say('Writing the worksheet…');
@@ -2368,7 +2379,7 @@ async function aiRun(opts,say){
   const g=await fetch(API+'/ai/generate',{method:'POST',headers:{'content-type':'application/json'},
     body:JSON.stringify(opts)});
   const gd=await g.json().catch(()=>({}));
-  if(!g.ok)throw new Error(gd.message||gd.error||('the server answered '+g.status));
+  if(!g.ok)throw new Error(gd.message||gd.error||aiWhy(g.status));
   let spec=gd.spec;
   let found=aiValidate(spec);
 
