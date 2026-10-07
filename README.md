@@ -170,6 +170,14 @@ The passage is asked for **on its own**, and the exercises are asked for afterwa
 
 That last step matters: the model is not trusted to mark its own homework. The deterministic check runs on both sides of it.
 
+**If it says it is not working**, the panel says which of the three things went wrong rather than making you guess:
+
+- *"The AI endpoint is not on this site"* — the edge function did not deploy and the request fell through to the accounts function. Redeploy, and check `netlify.toml` still has the `[[edge_functions]]` entry.
+- *"no key reached it (running as the edge function)"* — `GEMINI_API_KEY` must be scoped to Functions, and must **not** be marked as a secret: a secret value is not handed to an edge function. Redeploy after changing it.
+- *"[generate · 502] …"* — the key is fine and Google answered with that. The step and the status are in the brackets.
+
+Gemini 3.x Flash thinks before it answers and pays for the thinking out of the same budget as the answer, so too small a budget comes back empty or cut off mid-JSON. The floor is 16384 tokens, it grows with the length asked for, and a reply that still runs out is simply asked for again with twice as much.
+
 ### How it is put together
 
 Passwords are hashed with **scrypt** and a per-account salt, on the server. The hash never leaves it. A wrong password and an unknown e-mail get the same answer, so the form cannot be used to find out who has an account.

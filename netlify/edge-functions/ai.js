@@ -173,7 +173,17 @@ function checkPrompt(spec, issues, brief) {
 }
 
 /* ── one call to Gemini ───────────────────────────────────────────── */
-async function callGemini(prompt, temperature, maxTokens) {
+/* Gemini 3.x Flash thinks before it answers, and the thinking is paid
+   for out of the same budget as the answer. Give it too small a budget
+   and it spends the lot before writing a word: the reply comes back
+   empty, or cut off mid-JSON, with finishReason MAX_TOKENS. So the
+   floor here is generous — tokens are only charged if they are used —
+   and if it still runs out, the call is made once more with twice as
+   much rather than reported as a failure. */
+const ROOM = 16384;
+const roomFor = words => Math.min(65536, Math.max(ROOM, Math.round(words * 3) + 8192));
+
+async function callGemini(prompt, temperature, maxTokens, retried) {
   let res;
   try {
     res = await fetch(`${ENDPOINT(MODEL)}?key=${encodeURIComponent(KEY)}`, {
@@ -185,7 +195,7 @@ async function callGemini(prompt, temperature, maxTokens) {
       generationConfig: {
         temperature: typeof temperature === 'number' ? temperature : 0.7,
         responseMimeType: 'application/json',
-        maxOutputTokens: maxTokens || 8192
+        maxOutputTokens: maxTokens || ROOM
       }
     })
     });
@@ -215,9 +225,26 @@ async function callGemini(prompt, temperature, maxTokens) {
     throw new Error(blocked ? `the request was blocked (${blocked})` : 'Gemini returned no answer');
   }
   const text = (cand.content?.parts || []).map(p => p.text || '').join('').trim();
-  if (!text) throw new Error('Gemini returned an empty answer');
+  const why = cand.finishReason || '';
+  const again = () => callGemini(prompt, temperature, Math.min(65536, (maxTokens || ROOM) * 2), true);
 
-  return parseLoose(text);
+  if (!text) {
+    if (why === 'MAX_TOKENS' && !retried) return again();
+    throw new Error(why === 'MAX_TOKENS'
+      ? 'Gemini spent its whole answer budget before writing anything. Ask for a shorter text or fewer exercises.'
+      : 'Gemini returned an empty answer' + (why ? ' (' + why + ')' : ''));
+  }
+
+  try {
+    return parseLoose(text);
+  } catch (e) {
+    /* a reply cut off mid-JSON reads exactly like one that was never
+       valid, so the finish reason is what tells them apart */
+    if (why === 'MAX_TOKENS' && !retried) return again();
+    throw new Error(why === 'MAX_TOKENS'
+      ? 'Gemini ran out of room and the worksheet came back half-written. Ask for a shorter text or fewer exercises.'
+      : String(e.message || e));
+  }
 }
 
 /* Models occasionally wrap JSON in a fence even when asked not to. */
@@ -345,8 +372,7 @@ export default async (req, context) => {
       const words = Math.max(20, Math.round(Number(o.length) || 130));
       /* Room for the answer, with a floor for short ones and a ceiling
          the model will still accept. */
-      const out = await callGemini(textPrompt({ ...o, length: words }), 0.85,
-                                   Math.min(32768, Math.max(2048, Math.round(words * 2.6) + 900)));
+      const out = await callGemini(textPrompt({ ...o, length: words }), 0.85, roomFor(words));
       const text = String(out && out.text || '').trim();
       if (!text) throw new Error('Gemini sent back an empty text');
       return json(200, { title: String(out.title || o.topic || 'Reading'), text,
@@ -355,7 +381,8 @@ export default async (req, context) => {
 
     if (path === 'generate') {
       const o = body || {};
-      const spec = await callGemini(generatePrompt(o), 0.8);
+      const spec = await callGemini(generatePrompt(o), 0.8,
+        roomFor((o.givenText ? 0 : (Number(o.length) || 0)) + (Number(o.n) || 8) * (o.kinds || []).length * 40));
       /* The passage goes back in exactly as it was written, so nothing
          the model does to it on the way through can shorten it. */
       if (o.givenText) spec.text = o.givenText;
@@ -366,7 +393,10 @@ export default async (req, context) => {
       const spec = body && body.spec;
       if (!spec) return json(400, { error: 'no_spec' });
       const local = validateSpec(spec);
-      const out = await callGemini(checkPrompt(spec, local, body.brief), 0.2);
+      /* the proof-reader hands the whole worksheet back, so it needs
+         room for everything it was given, and then some */
+      const out = await callGemini(checkPrompt(spec, local, body.brief), 0.2,
+        roomFor(JSON.stringify(spec).length / 3));
       const fixed = out && out.fixed ? out.fixed : spec;
       const after = validateSpec(fixed);
       return json(200, {
